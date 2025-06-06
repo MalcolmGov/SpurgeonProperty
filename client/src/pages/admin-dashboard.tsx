@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { TrendingUp, Home, Users, DollarSign, ChevronUp, Eye, Plus } from "lucide-react";
 import AdminSidebar from "@/components/admin/sidebar";
 import StatsCard from "@/components/admin/stats-card";
+import NotificationPanel from "@/components/NotificationPanel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -40,6 +41,7 @@ export default function AdminDashboard() {
               </p>
             </div>
             <div className="flex items-center space-x-4">
+              <NotificationPanel />
               <Button>
                 <Plus className="mr-2 h-4 w-4" />
                 Add Property
