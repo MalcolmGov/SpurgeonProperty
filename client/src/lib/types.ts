@@ -8,6 +8,9 @@ export interface SearchFilters {
   city?: string;
   status?: string;
   featured?: boolean;
+  location?: string;
+  minArea?: number;
+  maxArea?: number;
 }
 
 export interface PropertySearchFilters extends SearchFilters {}
