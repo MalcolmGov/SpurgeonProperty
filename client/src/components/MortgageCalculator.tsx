@@ -8,7 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Calculator, PieChart, TrendingUp, Home, DollarSign, Info } from "lucide-react";
+import { Calculator, PieChart, TrendingUp, Home, Banknote, Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface MortgageCalculatorProps {
@@ -115,11 +115,9 @@ export default function MortgageCalculator({ propertyPrice }: MortgageCalculator
   }, [homePrice, downPayment, interestRate, loanTerm, monthlyIncome, monthlyDebts]);
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-ZA", {
-      style: "currency",
-      currency: "ZAR",
+    return `R ${new Intl.NumberFormat("en-ZA", {
       maximumFractionDigits: 0,
-    }).format(amount);
+    }).format(amount)}`;
   };
 
   const getAffordabilityColor = (rating: string) => {
@@ -171,7 +169,7 @@ export default function MortgageCalculator({ propertyPrice }: MortgageCalculator
                 Affordability
               </TabsTrigger>
               <TabsTrigger value="costs" className="flex items-center gap-2">
-                <DollarSign className="w-4 h-4" />
+                <Banknote className="w-4 h-4" />
                 Total Costs
               </TabsTrigger>
             </TabsList>
@@ -462,7 +460,7 @@ export default function MortgageCalculator({ propertyPrice }: MortgageCalculator
             <TabsContent value="costs" className="space-y-6">
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold flex items-center gap-2">
-                  <DollarSign className="w-5 h-5" />
+                  <Banknote className="w-5 h-5" />
                   Total Purchase Costs
                 </h3>
 

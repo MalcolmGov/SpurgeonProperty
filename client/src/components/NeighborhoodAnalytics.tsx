@@ -15,7 +15,7 @@ import {
   Shield,
   Star,
   Clock,
-  DollarSign,
+  Banknote,
   Home,
   BarChart3,
   AlertTriangle,
@@ -372,7 +372,7 @@ export default function NeighborhoodAnalytics({ property }: NeighborhoodAnalytic
                             {school.distance}km away
                           </span>
                           <span className="flex items-center">
-                            <DollarSign className="w-3 h-3 mr-1" />
+                            <Banknote className="w-3 h-3 mr-1" />
                             {school.fees}
                           </span>
                         </div>
