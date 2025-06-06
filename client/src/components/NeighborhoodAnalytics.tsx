@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { useQuery } from "@tanstack/react-query";
 import { 
   MapPin, 
   GraduationCap, 
@@ -18,7 +19,8 @@ import {
   Home,
   BarChart3,
   AlertTriangle,
-  CheckCircle
+  CheckCircle,
+  Loader2
 } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
 
@@ -148,11 +150,34 @@ const getSafetyRating = (suburb: string): SafetyRating => {
 };
 
 export default function NeighborhoodAnalytics({ property }: NeighborhoodAnalyticsProps) {
-  const [schools] = useState<SchoolData[]>(getSampleSchools(property.suburb));
-  const [amenities] = useState<AmenityData[]>(getSampleAmenities(property.suburb));
-  const [marketTrends] = useState<MarketTrend[]>(getSampleMarketTrends());
-  const [safetyRating] = useState<SafetyRating>(getSafetyRating(property.suburb));
   const [activeTab, setActiveTab] = useState("overview");
+  
+  // Fetch real neighborhood data using Google Places API
+  const { data: neighborhoodData, isLoading, error } = useQuery({
+    queryKey: ['neighborhood-analytics', property.latitude, property.longitude, property.suburb, property.city],
+    queryFn: async () => {
+      if (!property.latitude || !property.longitude) {
+        throw new Error('Property coordinates not available');
+      }
+      
+      const response = await fetch(
+        `/api/neighborhood-analytics?latitude=${property.latitude}&longitude=${property.longitude}&suburb=${property.suburb}&city=${property.city}`
+      );
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch neighborhood data');
+      }
+      
+      return response.json();
+    },
+    enabled: !!(property.latitude && property.longitude),
+    staleTime: 1000 * 60 * 30, // Cache for 30 minutes
+  });
+
+  const schools = neighborhoodData?.schools || [];
+  const amenities = neighborhoodData?.amenities || [];
+  const marketTrends = neighborhoodData?.marketTrends || [];
+  const safetyRating = neighborhoodData?.safetyRating || getSafetyRating(property.suburb);
 
   const getRatingColor = (rating: number) => {
     if (rating >= 4.5) return "text-green-600";
@@ -170,6 +195,53 @@ export default function NeighborhoodAnalytics({ property }: NeighborhoodAnalytic
     }
   };
 
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <MapPin className="w-5 h-5 mr-2 text-orange-primary" />
+            Neighborhood Analytics - {property.suburb}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-orange-primary mr-3" />
+            <span className="text-slate-600 dark:text-slate-400">
+              Loading neighborhood data...
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <MapPin className="w-5 h-5 mr-2 text-orange-primary" />
+            Neighborhood Analytics - {property.suburb}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center py-12">
+            <AlertTriangle className="w-8 h-8 text-yellow-500 mr-3" />
+            <div className="text-center">
+              <p className="text-slate-600 dark:text-slate-400 mb-2">
+                Unable to load neighborhood data
+              </p>
+              <p className="text-sm text-slate-500">
+                Please check your connection or try again later
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -178,7 +250,7 @@ export default function NeighborhoodAnalytics({ property }: NeighborhoodAnalytic
           Neighborhood Analytics - {property.suburb}
         </CardTitle>
         <p className="text-sm text-slate-600 dark:text-slate-400">
-          Comprehensive insights about the local area including schools, amenities, safety, and market trends
+          Real-time insights about schools, amenities, safety, and market trends from Google Places API
         </p>
       </CardHeader>
       
