@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { TrendingUp, Home, Users, DollarSign, ChevronUp, Eye, Plus } from "lucide-react";
+import { TrendingUp, Home, Users, Banknote, ChevronUp, Eye, Plus } from "lucide-react";
 import AdminSidebar from "@/components/admin/sidebar";
 import StatsCard from "@/components/admin/stats-card";
 import NotificationPanel from "@/components/NotificationPanel";
