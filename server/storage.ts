@@ -127,13 +127,11 @@ export class DatabaseStorage implements IStorage {
         conditions.push(eq(properties.featured, filters.featured));
       }
 
-      let finalQuery = query;
-      
       if (conditions.length > 0) {
-        finalQuery = finalQuery.where(and(...conditions));
+        query = query.where(and(...conditions));
       }
 
-      const results = await finalQuery
+      const results = await query
         .orderBy(desc(properties.createdAt))
         .limit(filters?.limit || 20)
         .offset(filters?.offset || 0);
@@ -164,21 +162,34 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createProperty(property: InsertProperty): Promise<Property> {
-    const [newProperty] = await db
-      .insert(properties)
-      .values([property])
-      .returning();
-    return newProperty;
+    try {
+      const [newProperty] = await db
+        .insert(properties)
+        .values(property)
+        .returning();
+      return newProperty;
+    } catch (error) {
+      console.error('Create property error:', error);
+      throw error;
+    }
   }
 
   async updateProperty(id: number, property: Partial<InsertProperty>): Promise<Property | undefined> {
-    const updateData = { ...property, updatedAt: new Date() };
-    const [updated] = await db
-      .update(properties)
-      .set(updateData)
-      .where(eq(properties.id, id))
-      .returning();
-    return updated || undefined;
+    try {
+      const cleanProperty = { ...property };
+      delete cleanProperty.createdAt;
+      const updateData = { ...cleanProperty, updatedAt: new Date() };
+      
+      const [updated] = await db
+        .update(properties)
+        .set(updateData)
+        .where(eq(properties.id, id))
+        .returning();
+      return updated || undefined;
+    } catch (error) {
+      console.error('Update property error:', error);
+      throw error;
+    }
   }
 
   async deleteProperty(id: number): Promise<boolean> {
@@ -213,11 +224,16 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createAgent(agent: InsertAgent): Promise<Agent> {
-    const [newAgent] = await db
-      .insert(agents)
-      .values([agent])
-      .returning();
-    return newAgent;
+    try {
+      const [newAgent] = await db
+        .insert(agents)
+        .values(agent)
+        .returning();
+      return newAgent;
+    } catch (error) {
+      console.error('Create agent error:', error);
+      throw error;
+    }
   }
 
   async updateAgent(id: number, agent: Partial<InsertAgent>): Promise<Agent | undefined> {

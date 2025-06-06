@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
+import { storage } from "./storage-simple";
 import { 
   insertPropertySchema, 
   insertLeadSchema, 
@@ -45,6 +45,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(properties);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch properties" });
+    }
+  });
+
+  app.get("/api/properties/featured", async (req, res) => {
+    try {
+      const properties = await storage.getProperties({ featured: true, limit: 6 });
+      res.json(properties);
+    } catch (error) {
+      console.error('Featured properties error:', error);
+      res.status(500).json({ message: "Failed to fetch featured properties" });
+    }
+  });
+
+  app.get("/api/properties/search", async (req, res) => {
+    try {
+      const { q: search } = req.query;
+      const filters = { search: search as string, limit: 20 };
+      const properties = await storage.getProperties(filters);
+      res.json(properties);
+    } catch (error) {
+      console.error('Property search error:', error);
+      res.status(500).json({ message: "Failed to search properties" });
     }
   });
 
