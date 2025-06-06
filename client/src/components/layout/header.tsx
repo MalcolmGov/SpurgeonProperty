@@ -2,13 +2,11 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useTheme } from "next-themes";
 import { Home, Building, Users, Sun, Moon, Menu } from "lucide-react";
 
 export default function Header() {
   const [location] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
 
   const isActive = (path: string) => location === path;
 
@@ -23,10 +21,12 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <Building className="h-8 w-8 text-purple-600" />
-            <span className="text-xl font-bold text-gray-900 dark:text-white">PropertyHub</span>
-          </Link>
+          <div className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2">
+              <Building className="h-8 w-8 text-purple-600" />
+              <span className="text-xl font-bold text-gray-900 dark:text-white">PropertyHub</span>
+            </Link>
+          </div>
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
@@ -43,16 +43,8 @@ export default function Header() {
             ))}
             
             {/* Theme Toggle */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            >
-              {theme === "dark" ? (
-                <Sun className="w-4 h-4" />
-              ) : (
-                <Moon className="w-4 h-4" />
-              )}
+            <Button variant="ghost" size="sm">
+              <Sun className="w-4 h-4" />
             </Button>
             
             <Button className="bg-purple-primary hover:bg-purple-secondary text-white">
