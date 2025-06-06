@@ -4,6 +4,8 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import PropertyGallery from "@/components/property/property-gallery";
 import ContactForm from "@/components/forms/contact-form";
+import SocialShare from "@/components/social/social-share";
+import OpenGraphMeta from "@/components/social/open-graph-meta";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -80,6 +82,7 @@ export default function PropertyDetail() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+      <OpenGraphMeta property={property} />
       <Header />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

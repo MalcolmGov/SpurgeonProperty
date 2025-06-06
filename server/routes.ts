@@ -72,6 +72,72 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Open Graph image generator
+  app.get("/api/og-image/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const property = await storage.getProperty(id);
+      
+      if (!property) {
+        return res.status(404).json({ message: "Property not found" });
+      }
+
+      // Generate SVG for Open Graph image
+      const svg = `
+        <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#bg)"/>
+          <rect x="60" y="60" width="1080" height="510" fill="white" rx="12"/>
+          
+          <!-- Property Title -->
+          <text x="120" y="140" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#1f2937">
+            ${property.title.substring(0, 50)}${property.title.length > 50 ? '...' : ''}
+          </text>
+          
+          <!-- Location -->
+          <text x="120" y="200" font-family="Arial, sans-serif" font-size="28" fill="#6b7280">
+            📍 ${property.suburb}, ${property.city}
+          </text>
+          
+          <!-- Price -->
+          <text x="120" y="260" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#059669">
+            R${parseInt(property.price).toLocaleString('en-ZA')}
+          </text>
+          
+          <!-- Property Details -->
+          <text x="120" y="320" font-family="Arial, sans-serif" font-size="24" fill="#374151">
+            🛏️ ${property.bedrooms} Beds  •  🛁 ${property.bathrooms} Baths  •  📐 ${property.area}sqm
+          </text>
+          
+          <!-- Property Type -->
+          <text x="120" y="380" font-family="Arial, sans-serif" font-size="24" fill="#6b7280">
+            ${property.propertyType.charAt(0).toUpperCase() + property.propertyType.slice(1)}
+          </text>
+          
+          <!-- Branding -->
+          <text x="120" y="480" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#1e40af">
+            Spurgeon Property
+          </text>
+          <text x="120" y="520" font-family="Arial, sans-serif" font-size="20" fill="#6b7280">
+            South Africa's Premier Real Estate Platform
+          </text>
+        </svg>
+      `;
+
+      res.setHeader('Content-Type', 'image/svg+xml');
+      res.setHeader('Cache-Control', 'public, max-age=3600');
+      res.send(svg);
+    } catch (error) {
+      console.error('OG Image generation error:', error);
+      res.status(500).json({ message: "Failed to generate image" });
+    }
+  });
+
   // Properties routes
   app.get("/api/properties", async (req, res) => {
     try {
