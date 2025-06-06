@@ -677,8 +677,8 @@ export class DatabaseStorage implements IStorage {
 
   async createLead(lead: InsertLead): Promise<Lead> {
     const query = `
-      INSERT INTO leads (name, email, phone, message, inquiry_type, status, priority, property_id, agent_id)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      INSERT INTO leads (name, email, phone, message, source, status, priority, property_id, agent_id, notes)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       RETURNING *
     `;
     
@@ -687,11 +687,12 @@ export class DatabaseStorage implements IStorage {
       lead.email,
       lead.phone,
       lead.message,
-      lead.inquiryType,
-      lead.status,
-      lead.priority,
-      lead.propertyId,
-      lead.agentId
+      lead.source || 'website',
+      lead.status || 'new',
+      lead.priority || 'medium',
+      lead.propertyId || null,
+      lead.agentId || null,
+      lead.notes || null
     ];
     
     const result = await pool.query(query, values);
@@ -703,12 +704,14 @@ export class DatabaseStorage implements IStorage {
       email: row.email,
       phone: row.phone,
       message: row.message,
-      inquiryType: row.inquiry_type,
-      status: row.status,
-      priority: row.priority,
       propertyId: row.property_id,
       agentId: row.agent_id,
-      createdAt: row.created_at
+      source: row.source,
+      status: row.status,
+      priority: row.priority,
+      notes: row.notes,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at
     };
   }
 
@@ -719,8 +722,7 @@ export class DatabaseStorage implements IStorage {
 
     Object.entries(lead).forEach(([key, value]) => {
       if (value !== undefined) {
-        const dbKey = key === 'inquiryType' ? 'inquiry_type' :
-                     key === 'propertyId' ? 'property_id' :
+        const dbKey = key === 'propertyId' ? 'property_id' :
                      key === 'agentId' ? 'agent_id' : key;
         
         updateFields.push(`${dbKey} = $${paramIndex}`);
@@ -729,11 +731,13 @@ export class DatabaseStorage implements IStorage {
       }
     });
 
+    if (updateFields.length === 0) return undefined;
+
     values.push(id);
 
     const query = `
       UPDATE leads 
-      SET ${updateFields.join(', ')}
+      SET ${updateFields.join(', ')}, updated_at = NOW()
       WHERE id = $${paramIndex}
       RETURNING *
     `;
@@ -749,12 +753,14 @@ export class DatabaseStorage implements IStorage {
       email: row.email,
       phone: row.phone,
       message: row.message,
-      inquiryType: row.inquiry_type,
-      status: row.status,
-      priority: row.priority,
       propertyId: row.property_id,
       agentId: row.agent_id,
-      createdAt: row.created_at
+      source: row.source,
+      status: row.status,
+      priority: row.priority,
+      notes: row.notes,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at
     };
   }
 
