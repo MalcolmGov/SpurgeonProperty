@@ -164,15 +164,16 @@ export class DatabaseStorage implements IStorage {
   async createProperty(property: InsertProperty): Promise<Property> {
     const [newProperty] = await db
       .insert(properties)
-      .values(property)
+      .values([property])
       .returning();
     return newProperty;
   }
 
   async updateProperty(id: number, property: Partial<InsertProperty>): Promise<Property | undefined> {
+    const updateData = { ...property, updatedAt: new Date() };
     const [updated] = await db
       .update(properties)
-      .set({ ...property, updatedAt: new Date() })
+      .set(updateData)
       .where(eq(properties.id, id))
       .returning();
     return updated || undefined;
@@ -212,7 +213,7 @@ export class DatabaseStorage implements IStorage {
   async createAgent(agent: InsertAgent): Promise<Agent> {
     const [newAgent] = await db
       .insert(agents)
-      .values(agent)
+      .values([agent])
       .returning();
     return newAgent;
   }
