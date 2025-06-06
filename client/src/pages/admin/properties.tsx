@@ -76,11 +76,9 @@ export default function AdminProperties() {
   };
 
   const formatPrice = (price: string) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return `R ${new Intl.NumberFormat('en-ZA', {
       minimumFractionDigits: 0,
-    }).format(parseFloat(price));
+    }).format(parseFloat(price))}`;
   };
 
   return (

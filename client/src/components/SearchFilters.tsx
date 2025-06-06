@@ -40,11 +40,9 @@ export default function SearchFilters({
   };
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+    return `R ${new Intl.NumberFormat("en-ZA", {
       maximumFractionDigits: 0,
-    }).format(price);
+    }).format(price)}`;
   };
 
   return (

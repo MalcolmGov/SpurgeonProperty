@@ -15,11 +15,9 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
   const [isFavorited, setIsFavorited] = useState(false);
 
   const formatPrice = (price: string) => {
-    return new Intl.NumberFormat('en-ZA', {
-      style: 'currency',
-      currency: 'ZAR',
+    return `R ${new Intl.NumberFormat('en-ZA', {
       minimumFractionDigits: 0,
-    }).format(parseFloat(price));
+    }).format(parseFloat(price))}`;
   };
 
   const toggleFavorite = (e: React.MouseEvent) => {
