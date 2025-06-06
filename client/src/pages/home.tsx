@@ -111,28 +111,30 @@ export default function Home() {
           }}>
             Home
           </span>
-          <span style={{ 
+          <a href="/properties" style={{ 
             color: '#e2e8f0',
             fontWeight: '500',
             fontSize: '16px',
             cursor: 'pointer',
             padding: '8px 16px',
             borderRadius: '8px',
-            transition: 'all 0.3s ease'
+            transition: 'all 0.3s ease',
+            textDecoration: 'none'
           }}>
             Properties
-          </span>
-          <span style={{ 
+          </a>
+          <a href="/admin/dashboard" style={{ 
             color: '#e2e8f0',
             fontWeight: '500',
             fontSize: '16px',
             cursor: 'pointer',
             padding: '8px 16px',
             borderRadius: '8px',
-            transition: 'all 0.3s ease'
+            transition: 'all 0.3s ease',
+            textDecoration: 'none'
           }}>
             Admin
-          </span>
+          </a>
         </nav>
       </div>
 
