@@ -245,12 +245,12 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
               />
             </div>
             <div>
-              <Label htmlFor="state">State *</Label>
+              <Label htmlFor="suburb">Suburb *</Label>
               <Input
-                id="state"
-                value={formData.state}
-                onChange={(e) => handleInputChange("state", e.target.value)}
-                placeholder="CA"
+                id="suburb"
+                value={formData.suburb}
+                onChange={(e) => handleInputChange("suburb", e.target.value)}
+                placeholder="Sandton"
                 required
               />
             </div>
@@ -258,12 +258,31 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <Label htmlFor="zipCode">Zip Code *</Label>
+              <Label htmlFor="province">Province *</Label>
+              <Select value={formData.province} onValueChange={(value) => handleInputChange("province", value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select province" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="gauteng">Gauteng</SelectItem>
+                  <SelectItem value="western-cape">Western Cape</SelectItem>
+                  <SelectItem value="kwazulu-natal">KwaZulu-Natal</SelectItem>
+                  <SelectItem value="eastern-cape">Eastern Cape</SelectItem>
+                  <SelectItem value="limpopo">Limpopo</SelectItem>
+                  <SelectItem value="mpumalanga">Mpumalanga</SelectItem>
+                  <SelectItem value="north-west">North West</SelectItem>
+                  <SelectItem value="northern-cape">Northern Cape</SelectItem>
+                  <SelectItem value="free-state">Free State</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="postalCode">Postal Code *</Label>
               <Input
-                id="zipCode"
-                value={formData.zipCode}
-                onChange={(e) => handleInputChange("zipCode", e.target.value)}
-                placeholder="90210"
+                id="postalCode"
+                value={formData.postalCode}
+                onChange={(e) => handleInputChange("postalCode", e.target.value)}
+                placeholder="2196"
                 required
               />
             </div>
@@ -276,8 +295,11 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
                 <SelectContent>
                   <SelectItem value="house">House</SelectItem>
                   <SelectItem value="apartment">Apartment</SelectItem>
-                  <SelectItem value="condo">Condo</SelectItem>
                   <SelectItem value="townhouse">Townhouse</SelectItem>
+                  <SelectItem value="flat">Flat</SelectItem>
+                  <SelectItem value="cluster_home">Cluster Home</SelectItem>
+                  <SelectItem value="farm">Farm</SelectItem>
+                  <SelectItem value="vacant_land">Vacant Land</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -312,23 +334,23 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
           {/* Additional Details */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <Label htmlFor="area">Area (sq ft) *</Label>
+              <Label htmlFor="area">Area (sqm) *</Label>
               <Input
                 id="area"
                 type="number"
                 value={formData.area}
                 onChange={(e) => handleInputChange("area", e.target.value)}
-                placeholder="2800"
+                placeholder="260"
                 required
               />
             </div>
             <div>
-              <Label htmlFor="lotSize">Lot Size</Label>
+              <Label htmlFor="lotSize">Lot Size (sqm)</Label>
               <Input
                 id="lotSize"
                 value={formData.lotSize}
                 onChange={(e) => handleInputChange("lotSize", e.target.value)}
-                placeholder="0.25 acres"
+                placeholder="1000"
               />
             </div>
             <div>
