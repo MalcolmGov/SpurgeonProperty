@@ -176,9 +176,10 @@ export class DatabaseStorage implements IStorage {
 
   async updateProperty(id: number, property: Partial<InsertProperty>): Promise<Property | undefined> {
     try {
-      const cleanProperty = { ...property };
-      delete cleanProperty.createdAt;
-      const updateData = { ...cleanProperty, updatedAt: new Date() };
+      const updateData = { 
+        ...property,
+        updatedAt: new Date()
+      };
       
       const [updated] = await db
         .update(properties)
