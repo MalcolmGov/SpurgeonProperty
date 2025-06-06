@@ -139,7 +139,7 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
           </h3>
           <p className="text-slate-600 dark:text-slate-300 mb-4 flex items-center">
             <MapPin className="w-4 h-4 text-orange-primary mr-2" />
-            {property.city}, {property.state}
+            {property.suburb}, {property.city}, {property.province}
           </p>
           <div className="flex items-center space-x-4 text-sm text-slate-600 dark:text-slate-400 mb-4">
             <span className="flex items-center">
