@@ -12,28 +12,53 @@ export default function Home() {
 
   return (
     <>
-      {/* SIMPLE HEADER TEST */}
+      {/* SPURGEON PROPERTY HEADER */}
       <div style={{
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
         height: '80px',
-        backgroundColor: '#ffffff',
-        borderBottom: '2px solid #7c3aed',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        borderBottom: '3px solid #f97316',
         zIndex: 9999,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
       }}>
         <div style={{
-          fontSize: '28px',
-          fontWeight: 'bold',
-          color: '#7c3aed',
-          textAlign: 'center'
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px'
         }}>
-          🏢 PropertyHub - Real Estate Platform
+          <div style={{
+            width: '40px',
+            height: '40px',
+            background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+            borderRadius: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 2px 8px rgba(249, 115, 22, 0.3)'
+          }}>
+            <span style={{ 
+              fontSize: '20px',
+              filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))'
+            }}>🏢</span>
+          </div>
+          <div style={{
+            fontSize: '32px',
+            fontWeight: 'bold',
+            background: 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            textShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            letterSpacing: '-0.5px'
+          }}>
+            SpurgeonProperty
+          </div>
         </div>
       </div>
 
