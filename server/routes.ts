@@ -9,6 +9,7 @@ import {
   insertAgentSchema 
 } from "@shared/schema";
 import { getNeighborhoodAnalytics } from "./neighborhood-service";
+import { openaiService, type PropertyDetails } from "./openai-service";
 import { z } from "zod";
 import multer from "multer";
 import path from "path";
@@ -380,6 +381,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Neighborhood analytics route
   app.get("/api/neighborhood-analytics", getNeighborhoodAnalytics);
+
+  // AI Property Description Generator routes
+  app.post("/api/ai/generate-description", async (req, res) => {
+    try {
+      const propertyDetails: PropertyDetails = req.body;
+      
+      // Validate required fields
+      if (!propertyDetails.propertyType || !propertyDetails.address || !propertyDetails.suburb || !propertyDetails.city || !propertyDetails.province) {
+        return res.status(400).json({ message: "Missing required property details" });
+      }
+
+      const generatedContent = await openaiService.generatePropertyDescription(propertyDetails);
+      res.json(generatedContent);
+    } catch (error) {
+      console.error("Error generating property description:", error);
+      res.status(500).json({ message: "Failed to generate property description" });
+    }
+  });
+
+  app.post("/api/ai/enhance-description", async (req, res) => {
+    try {
+      const { description, propertyDetails } = req.body;
+      
+      if (!description || !propertyDetails) {
+        return res.status(400).json({ message: "Missing description or property details" });
+      }
+
+      const enhancedDescription = await openaiService.enhancePropertyDescription(description, propertyDetails);
+      res.json({ description: enhancedDescription });
+    } catch (error) {
+      console.error("Error enhancing property description:", error);
+      res.status(500).json({ message: "Failed to enhance property description" });
+    }
+  });
+
+  app.post("/api/ai/generate-marketing", async (req, res) => {
+    try {
+      const propertyDetails: PropertyDetails = req.body;
+      
+      if (!propertyDetails.propertyType || !propertyDetails.suburb || !propertyDetails.city) {
+        return res.status(400).json({ message: "Missing required property details for marketing content" });
+      }
+
+      const marketingContent = await openaiService.generateMarketingContent(propertyDetails);
+      res.json(marketingContent);
+    } catch (error) {
+      console.error("Error generating marketing content:", error);
+      res.status(500).json({ message: "Failed to generate marketing content" });
+    }
+  });
 
   const httpServer = createServer(app);
   

@@ -12,6 +12,7 @@ import SellProperty from "@/pages/sell-property";
 import AdminDashboard from "@/pages/admin-dashboard";
 import AdminProperties from "@/pages/admin/properties";
 import AdminLeads from "@/pages/admin/leads";
+import AdminAITools from "@/pages/admin-ai-tools";
 import NotFound from "@/pages/not-found";
 
 function Router() {

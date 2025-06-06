@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Home, BarChart3, Building, Users, UserRoundCheck, TrendingUp } from "lucide-react";
+import { Home, BarChart3, Building, Users, UserRoundCheck, TrendingUp, Sparkles } from "lucide-react";
 
 const navigationItems = [
   { href: "/admin", label: "Dashboard", icon: BarChart3 },
@@ -8,6 +8,7 @@ const navigationItems = [
   { href: "/admin/leads", label: "Leads", icon: Users },
   { href: "/admin/agents", label: "Agents", icon: UserRoundCheck },
   { href: "/admin/analytics", label: "Analytics", icon: TrendingUp },
+  { href: "/admin/ai-tools", label: "AI Tools", icon: Sparkles },
 ];
 
 export default function AdminSidebar() {
