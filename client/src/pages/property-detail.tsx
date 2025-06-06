@@ -5,6 +5,7 @@ import Footer from "@/components/layout/footer";
 import PropertyGallery from "@/components/property/property-gallery";
 import ContactForm from "@/components/forms/contact-form";
 import MortgageCalculator from "@/components/MortgageCalculator";
+import NeighborhoodAnalytics from "@/components/NeighborhoodAnalytics";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -321,6 +322,11 @@ export default function PropertyDetail() {
         {/* Mortgage Calculator */}
         <div className="mt-8">
           <MortgageCalculator propertyPrice={parseInt(property.price)} />
+        </div>
+        
+        {/* Neighborhood Analytics */}
+        <div className="mt-8">
+          <NeighborhoodAnalytics property={property} />
         </div>
       </div>
       

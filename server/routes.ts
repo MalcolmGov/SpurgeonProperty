@@ -7,6 +7,7 @@ import {
   insertInquirySchema,
   insertAgentSchema 
 } from "@shared/schema";
+import { getNeighborhoodAnalytics } from "./neighborhood-service";
 import { z } from "zod";
 import multer from "multer";
 import path from "path";
@@ -356,6 +357,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to fetch stats" });
     }
   });
+
+  // Neighborhood analytics route
+  app.get("/api/neighborhood-analytics", getNeighborhoodAnalytics);
 
   const httpServer = createServer(app);
   return httpServer;
