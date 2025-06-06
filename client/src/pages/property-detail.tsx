@@ -4,8 +4,7 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import PropertyGallery from "@/components/property/property-gallery";
 import ContactForm from "@/components/forms/contact-form";
-import SocialShare from "@/components/social/social-share";
-import OpenGraphMeta from "@/components/social/open-graph-meta";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

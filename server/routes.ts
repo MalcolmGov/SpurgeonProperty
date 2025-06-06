@@ -201,17 +201,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/properties/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
-      const property = await storage.getProperty(id);
       
-      if (!property) {
+      // First try to get from database
+      try {
+        const property = await storage.getProperty(id);
+        if (property) {
+          await storage.incrementPropertyViews(id);
+          return res.json(property);
+        }
+      } catch (dbError) {
+        console.log('Database query failed, using direct query:', dbError);
+      }
+
+      // Fallback to direct database query
+      const { db } = await import("./db");
+      const { properties, agents } = await import("@shared/schema");
+      const { eq } = await import("drizzle-orm");
+
+      const result = await db
+        .select({
+          properties: properties,
+          agents: agents
+        })
+        .from(properties)
+        .leftJoin(agents, eq(properties.agentId, agents.id))
+        .where(eq(properties.id, id))
+        .limit(1);
+
+      if (result.length === 0) {
         return res.status(404).json({ message: "Property not found" });
       }
 
-      // Increment view count
-      await storage.incrementPropertyViews(id);
-      
+      const row = result[0];
+      const property = {
+        ...row.properties,
+        agent: row.agents || undefined
+      };
+
       res.json(property);
     } catch (error) {
+      console.error('Property fetch error:', error);
       res.status(500).json({ message: "Failed to fetch property" });
     }
   });
