@@ -9,13 +9,14 @@ export const properties = pgTable("properties", {
   description: text("description").notNull(),
   price: decimal("price", { precision: 12, scale: 2 }).notNull(),
   address: text("address").notNull(),
+  suburb: text("suburb").notNull(),
   city: text("city").notNull(),
-  state: text("state").notNull(),
-  zipCode: text("zip_code").notNull(),
-  propertyType: text("property_type").notNull(), // house, apartment, condo
+  province: text("province").notNull(),
+  postalCode: text("postal_code").notNull(),
+  propertyType: text("property_type").notNull(), // house, apartment, townhouse, flat, cluster_home, farm, vacant_land
   bedrooms: integer("bedrooms").notNull(),
   bathrooms: decimal("bathrooms", { precision: 3, scale: 1 }).notNull(),
-  area: integer("area").notNull(), // square feet
+  area: integer("area").notNull(), // square meters
   lotSize: text("lot_size"),
   yearBuilt: integer("year_built"),
   parking: text("parking"),

@@ -5,7 +5,9 @@ export interface SearchFilters {
   maxPrice?: number;
   bedrooms?: number;
   bathrooms?: number;
+  suburb?: string;
   city?: string;
+  province?: string;
   status?: string;
   featured?: boolean;
   location?: string;
