@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Home, Building, Users, Sun, Moon, Menu } from "lucide-react";
+import { Home, Building, Users, MapPin, Sun, Moon, Menu } from "lucide-react";
 
 export default function Header() {
   const [location] = useLocation();
@@ -15,6 +15,7 @@ export default function Header() {
   const navigation = [
     { name: "Home", href: "/", icon: Home },
     { name: "Properties", href: "/properties", icon: Building },
+    { name: "Map", href: "/map", icon: MapPin },
     { name: "Admin", href: "/admin", icon: Users },
   ];
 
