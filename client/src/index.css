@@ -31,6 +31,11 @@
   --orange-secondary: 20.5 90.2% 48.2%; /* #EA580C */
 }
 
+/* Hero background image class */
+.hero-bg {
+  background: url('/attached_assets/image_1749196807837.png') center/cover no-repeat;
+}
+
 .dark {
   --background: 222.2 84% 4.9%;
   --foreground: 210 40% 98%;
