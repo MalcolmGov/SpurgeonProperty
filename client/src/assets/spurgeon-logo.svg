@@ -1,39 +1,46 @@
-<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Modern SP Icon with Gradient -->
+<svg width="300" height="80" viewBox="0 0 300 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- High Contrast Logo for Header Visibility -->
   <defs>
-    <linearGradient id="spGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#7C3AED;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    <linearGradient id="whiteBoldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#F8FAFC;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
     </linearGradient>
-    <linearGradient id="orangeAccent" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#F97316;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#EAB308;stop-opacity:1" />
+    <linearGradient id="goldAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FBBF24;stop-opacity:1" />
     </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
   
-  <!-- Background Circle -->
-  <circle cx="30" cy="30" r="25" fill="url(#spGradient)" opacity="0.1"/>
+  <!-- Background Shape for Contrast -->
+  <rect x="5" y="10" width="70" height="60" rx="15" fill="rgba(255,255,255,0.15)" stroke="rgba(245,158,11,0.5)" stroke-width="2"/>
   
-  <!-- Modern SP Icon -->
-  <g transform="translate(10, 10)">
-    <!-- S Shape -->
-    <path d="M15 8 C20 8, 25 12, 25 18 C25 24, 20 28, 15 28 L10 28 C8 28, 6 30, 6 32 C6 34, 8 36, 10 36 L25 36" 
-          stroke="url(#spGradient)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Bold SP Icon -->
+  <g transform="translate(15, 20)">
+    <!-- S Shape - Bold and White -->
+    <path d="M20 12 C28 12, 35 18, 35 26 C35 34, 28 40, 20 40 L12 40 C8 40, 5 43, 5 47 C5 51, 8 54, 12 54 L35 54" 
+          stroke="#FFFFFF" stroke-width="5" fill="none" stroke-linecap="round" filter="url(#glow)"/>
     
-    <!-- P Shape -->
-    <path d="M30 8 L30 40 M30 8 L40 8 C44 8, 48 12, 48 16 C48 20, 44 24, 40 24 L30 24" 
-          stroke="url(#spGradient)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- P Shape - Bold and White -->
+    <path d="M42 12 L42 58 M42 12 L55 12 C62 12, 68 18, 68 25 C68 32, 62 38, 55 38 L42 38" 
+          stroke="#FFFFFF" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
     
-    <!-- Orange Accent Elements -->
-    <circle cx="42" cy="16" r="2" fill="url(#orangeAccent)"/>
-    <rect x="6" y="32" width="4" height="4" rx="2" fill="url(#orangeAccent)"/>
+    <!-- Gold Accent Elements -->
+    <circle cx="58" cy="25" r="4" fill="url(#goldAccent)" filter="url(#glow)"/>
+    <rect x="5" y="47" width="6" height="6" rx="3" fill="url(#goldAccent)" filter="url(#glow)"/>
   </g>
   
-  <!-- Company Name -->
-  <text x="65" y="20" font-family="Inter, sans-serif" font-size="18" font-weight="700" fill="#1F2937">SPURGEON</text>
-  <text x="65" y="40" font-family="Inter, sans-serif" font-size="16" font-weight="500" fill="url(#spGradient)">Property</text>
+  <!-- Company Name - Large and Bold -->
+  <text x="90" y="30" font-family="Inter, sans-serif" font-size="28" font-weight="900" fill="#FFFFFF" filter="url(#glow)">SPURGEON</text>
+  <text x="90" y="55" font-family="Inter, sans-serif" font-size="22" font-weight="600" fill="url(#goldAccent)" filter="url(#glow)">Property</text>
   
-  <!-- Tagline -->
-  <text x="65" y="52" font-family="Inter, sans-serif" font-size="8" font-weight="400" fill="#6B7280" opacity="0.8">Your Trusted Real Estate Partner</text>
+  <!-- Enhanced Tagline -->
+  <text x="90" y="70" font-family="Inter, sans-serif" font-size="12" font-weight="500" fill="#E5E7EB">Your Trusted Real Estate Partner</text>
 </svg>
