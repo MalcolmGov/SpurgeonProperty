@@ -1,0 +1,211 @@
+# Comprehensive Full-Stack Property Website Development Prompt
+
+## Project Overview
+Create a modern, professional, and eye-catching full-stack property website with vibrant purple and orange color scheme. The platform should serve both property seekers (front-end) and property managers/agents (back-end portal).
+
+## Design Requirements
+
+### Visual Design
+- **Color Scheme**: Primary purple (#8B5CF6 or #7C3AED) and vibrant orange (#F97316 or #EA580C) with complementary neutrals
+- **Style**: Modern, clean, professional with subtle animations and micro-interactions
+- **Typography**: Contemporary, readable fonts (Inter, Poppins, or similar)
+- **Layout**: Responsive, mobile-first design with seamless desktop scaling
+- **Visual Elements**: Gradient backgrounds, glassmorphism effects, subtle shadows, and modern card layouts
+
+### UI/UX Principles
+- Intuitive navigation with breadcrumb trails
+- Fast-loading pages with optimized images
+- Accessibility compliance (WCAG 2.1)
+- Progressive Web App (PWA) capabilities
+- Dark/light mode toggle option
+
+## Front-End Features (User Portal)
+
+### 1. Hero Section & Homepage
+- Stunning full-screen hero with property showcase
+- Interactive search bar with location autocomplete
+- Featured properties carousel
+- Animated statistics counters (total properties, successful sales, etc.)
+- Trust indicators and testimonials
+
+### 2. Advanced Property Search
+- **Filters**: Location, price range, property type, bedrooms/bathrooms, square footage, amenities
+- **Smart Search**: AI-powered natural language search ("3-bedroom house near schools under $500k")
+- **Map Integration**: Interactive Google Maps with clustered property markers
+- **Saved Searches**: User accounts with search alerts and notifications
+- **Sort Options**: Price, date listed, popularity, distance
+
+### 3. Property Listings & Details
+- **Grid/List View**: Toggle between card grid and detailed list layouts
+- **Property Cards**: High-quality thumbnails, key details, favorite button, quick actions
+- **Detailed Property Pages**: 
+  - Image gallery with full-screen carousel and thumbnail navigation
+  - Virtual 360° tours integration
+  - Interactive floor plans
+  - Neighborhood information and amenities
+  - School district details and ratings
+  - Mortgage calculator
+  - Property comparison tool
+  - Social sharing buttons
+
+### 4. Image Gallery & Media
+- **Carousel Features**: Touch/swipe support, zoom functionality, fullscreen mode
+- **Media Types**: Photos, videos, virtual tours, drone footage
+- **Progressive Loading**: Lazy loading for performance optimization
+- **Image Optimization**: WebP format support with fallbacks
+
+### 5. User Account System
+- **Registration/Login**: Email, social media, phone number options
+- **User Dashboard**: Saved properties, search alerts, application status
+- **Profile Management**: Personal information, preferences, communication settings
+- **Application History**: Track submitted applications and their status
+
+### 6. Communication Features
+- **Contact Forms**: Property-specific inquiry forms with lead capture
+- **Live Chat**: Real-time messaging with agents/support
+- **Appointment Scheduling**: Calendar integration for property viewings
+- **Video Calls**: Integrated video conferencing for virtual consultations
+- **Agent Profiles**: Detailed agent pages with ratings and reviews
+
+### 7. Online Application System
+- **Digital Forms**: Rental/purchase application forms
+- **Document Upload**: Secure file upload for required documents
+- **E-Signature**: Digital signature integration
+- **Application Tracking**: Real-time status updates
+- **Payment Integration**: Secure payment processing for application fees
+
+### 8. Additional Features
+- **Mortgage Calculator**: Loan estimation tools
+- **Neighborhood Guides**: Local amenities, schools, transportation
+- **Market Insights**: Price trends and analytics
+- **Reviews & Ratings**: Property and agent rating system
+- **Blog Section**: Real estate news, tips, and market updates
+- **Multi-language Support**: Internationalization capabilities
+
+## Back-End Portal (Admin/Agent Portal)
+
+### 1. Dashboard & Analytics
+- **Overview Dashboard**: Key metrics, recent activity, performance indicators
+- **Analytics**: Property views, lead generation, conversion rates
+- **Revenue Tracking**: Sales and rental income monitoring
+- **Report Generation**: Customizable reports with export options
+
+### 2. Property Management
+- **Listing Creation**: Comprehensive property listing forms
+- **Bulk Upload**: CSV/Excel import for multiple properties
+- **Media Management**: Drag-and-drop image/video uploads with auto-optimization
+- **Status Management**: Available, pending, sold, rented status tracking
+- **Pricing Tools**: Market analysis and pricing recommendations
+
+### 3. Content Management
+- **Rich Text Editor**: WYSIWYG editor for property descriptions
+- **Template System**: Pre-built description templates
+- **SEO Optimization**: Meta tags, schema markup automation
+- **Content Scheduling**: Schedule property launches and updates
+
+### 4. Lead & Customer Management
+- **CRM Integration**: Customer relationship management tools
+- **Lead Tracking**: Source attribution and conversion tracking
+- **Communication Hub**: Centralized messaging and email management
+- **Automated Workflows**: Follow-up sequences and reminders
+- **Client Portal**: Secure client communication area
+
+### 5. User & Role Management
+- **Multi-level Access**: Admin, manager, agent, viewer roles
+- **Permission System**: Granular permission controls
+- **Agent Profiles**: Manage agent information and assignments
+- **Team Collaboration**: Internal messaging and task management
+
+### 6. Application Management
+- **Application Review**: Screen and process applications
+- **Document Management**: Secure document storage and access
+- **Background Checks**: Integration with verification services
+- **Approval Workflows**: Multi-stage approval processes
+
+### 7. Financial Management
+- **Commission Tracking**: Agent commission calculations
+- **Invoice Generation**: Automated billing and invoicing
+- **Payment Processing**: Secure payment gateway integration
+- **Financial Reporting**: Revenue and expense analytics
+
+## Technical Requirements
+
+### Front-End Technology Stack
+- **Framework**: React.js or Next.js for optimal performance and SEO
+- **Styling**: Tailwind CSS for rapid, consistent styling
+- **State Management**: Redux Toolkit or Zustand
+- **Maps**: Google Maps API or Mapbox integration
+- **Authentication**: NextAuth.js or Auth0
+- **Image Optimization**: Next.js Image component or Cloudinary
+
+### Back-End Technology Stack
+- **Framework**: Node.js with Express.js or Django/FastAPI
+- **Database**: PostgreSQL with Redis for caching
+- **File Storage**: AWS S3 or Cloudinary for media management
+- **API**: RESTful API with GraphQL consideration
+- **Real-time**: Socket.io for chat and notifications
+- **Payment**: Stripe or PayPal integration
+
+### Security & Performance
+- **Authentication**: JWT tokens with refresh token rotation
+- **Data Encryption**: TLS 1.3, encrypted sensitive data storage
+- **Rate Limiting**: API rate limiting and DDoS protection
+- **CDN**: Content delivery network for global performance
+- **Monitoring**: Application performance monitoring (APM)
+- **Backup**: Automated database backups and disaster recovery
+
+### SEO & Marketing
+- **SEO Optimization**: Meta tags, structured data, sitemap generation
+- **Social Media**: Open Graph and Twitter Card integration
+- **Email Marketing**: Newsletter integration (Mailchimp/SendGrid)
+- **Analytics**: Google Analytics and conversion tracking
+- **Lead Generation**: Landing page optimization and A/B testing
+
+## Additional Specifications
+
+### Mobile Optimization
+- Progressive Web App (PWA) capabilities
+- Offline property browsing
+- Push notifications for new listings and updates
+- Touch-optimized interface elements
+- Fast loading on mobile networks
+
+### Accessibility Features
+- Screen reader compatibility
+- Keyboard navigation support
+- High contrast mode
+- Font size adjustment options
+- Alternative text for all images
+
+### Integration Requirements
+- **MLS Integration**: Multiple Listing Service data sync
+- **CRM Systems**: Salesforce, HubSpot compatibility
+- **Social Media**: Facebook, Instagram property sharing
+- **Google Services**: Maps, Places, Analytics, Search Console
+- **Third-party APIs**: Weather, demographics, school ratings
+
+### Deployment & Hosting
+- **Cloud Hosting**: AWS, Google Cloud, or Vercel
+- **CI/CD Pipeline**: Automated testing and deployment
+- **Environment Management**: Development, staging, production environments
+- **Monitoring**: Error tracking (Sentry) and performance monitoring
+- **Scaling**: Auto-scaling capabilities for traffic spikes
+
+## Success Metrics
+- Page load speed under 3 seconds
+- Mobile responsiveness score 90+
+- User engagement and time on site
+- Lead conversion rates
+- Property listing to inquiry ratio
+- User retention and return visits
+
+## Deliverables
+1. Fully functional responsive website
+2. Admin/agent portal
+3. Documentation and user guides
+4. Source code with comments
+5. Deployment and hosting setup
+6. Basic SEO setup and optimization
+7. Security audit and testing report
+
+This comprehensive specification ensures a modern, professional property website that competes with industry leaders while providing exceptional user experience and powerful management capabilities.
