@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage-working";
 import { 
   insertPropertySchema, 
@@ -277,6 +278,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertLeadSchema.parse(req.body);
       const lead = await storage.createLead(validatedData);
+      
+      // Broadcast to all connected admin clients via WebSocket
+      const wss = ((req.app as any).httpServer as any).wss;
+      if (wss) {
+        const notification = {
+          type: 'NEW_LEAD',
+          data: lead,
+          message: `New ${validatedData.source || 'property inquiry'} lead from ${validatedData.name}`,
+          timestamp: new Date().toISOString(),
+          priority: validatedData.priority || 'medium'
+        };
+        
+        wss.clients.forEach((client: any) => {
+          if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(notification));
+          }
+        });
+      }
+      
       res.status(201).json(lead);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -362,5 +382,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/neighborhood-analytics", getNeighborhoodAnalytics);
 
   const httpServer = createServer(app);
+  
+  // WebSocket server for real-time updates
+  const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
+  
+  wss.on('connection', (ws) => {
+    console.log('Admin client connected to WebSocket');
+    
+    ws.on('close', () => {
+      console.log('Admin client disconnected from WebSocket');
+    });
+    
+    ws.on('error', (error) => {
+      console.error('WebSocket error:', error);
+    });
+  });
+  
+  // Store WebSocket server reference for broadcasting
+  (httpServer as any).wss = wss;
+  
   return httpServer;
 }
