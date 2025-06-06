@@ -6,12 +6,13 @@ import { Button } from "@/components/ui/button";
 import { useProperties } from "@/hooks/use-properties";
 import { Link } from "wouter";
 import { Building, Users, TrendingUp, Award } from "lucide-react";
+import spurgeonLogo from "@/assets/spurgeon-logo.svg";
 
 export default function Home() {
   const { data: featuredProperties, isLoading } = useProperties({ featured: true, limit: 3 });
 
   return (
-    <>
+    <div>
       {/* SPURGEON PROPERTY HEADER */}
       <div style={{
         position: 'fixed',
@@ -34,61 +35,17 @@ export default function Home() {
           alignItems: 'center',
           gap: '16px'
         }}>
-          {/* Logo Icon */}
-          <div style={{
-            width: '50px',
-            height: '50px',
-            background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)',
-            borderRadius: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 4px 16px rgba(251, 191, 36, 0.4), inset 0 1px 0 rgba(255,255,255,0.2)',
-            position: 'relative',
-            overflow: 'hidden'
-          }}>
-            <div style={{
-              position: 'absolute',
-              top: '-50%',
-              left: '-50%',
-              width: '200%',
-              height: '200%',
-              background: 'linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)',
-              animation: 'shine 3s ease-in-out infinite'
-            }}></div>
-            <span style={{ 
-              fontSize: '24px',
-              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
-              zIndex: 1
-            }}>🏢</span>
-          </div>
-          
-          {/* Brand Name */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-            <div style={{
-              fontSize: '36px',
-              fontWeight: '800',
-              background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))',
-              letterSpacing: '-1px',
-              fontFamily: '"Inter", sans-serif'
-            }}>
-              SpurgeonProperty
-            </div>
-            <div style={{
-              fontSize: '12px',
-              color: '#fbbf24',
-              fontWeight: '600',
-              letterSpacing: '1px',
-              textTransform: 'uppercase',
-              marginLeft: '2px'
-            }}>
-              Premium Real Estate
-            </div>
-          </div>
+          {/* Spurgeon Property Logo */}
+          <img 
+            src={spurgeonLogo} 
+            alt="Spurgeon Property" 
+            style={{
+              height: '60px',
+              width: 'auto',
+              filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.2))'
+            }}
+          />
+        </div>
         </div>
 
         {/* Navigation */}
@@ -299,6 +256,7 @@ export default function Home() {
       </section>
 
       <Footer />
+      </div>
       </div>
     </>
   );
