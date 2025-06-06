@@ -155,37 +155,13 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
     }));
   };
 
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files || files.length === 0) return;
-
-    const uploadFormData = new FormData();
-    Array.from(files).forEach(file => {
-      uploadFormData.append('images', file);
-    });
-
-    try {
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: uploadFormData,
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        setFormData(prev => ({
-          ...prev,
-          images: [...prev.images, ...result.urls]
-        }));
-        toast({ title: "Images uploaded successfully" });
-      } else {
-        throw new Error('Upload failed');
-      }
-    } catch (error) {
-      toast({ 
-        title: "Upload failed", 
-        description: "Please try again",
-        variant: "destructive" 
-      });
+  const addImageUrl = () => {
+    const imageUrl = prompt("Enter image URL:");
+    if (imageUrl && imageUrl.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        images: [...prev.images, imageUrl.trim()]
+      }));
     }
   };
 
@@ -473,16 +449,10 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
                   </div>
                 ))}
               </div>
-              <div className="flex flex-col gap-2">
-                <Input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageUpload}
-                  className="file:mr-2 file:py-1 file:px-2 file:border-0 file:text-sm file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200"
-                />
-                <p className="text-xs text-slate-600">Select multiple images (max 5MB each)</p>
-              </div>
+              <Button type="button" variant="outline" size="sm" onClick={addImageUrl}>
+                <Upload className="w-4 h-4 mr-2" />
+                Add Image URL
+              </Button>
             </div>
           </div>
 
