@@ -124,9 +124,7 @@ export default function PropertyDetail() {
                     >
                       <Heart className={`w-4 h-4 ${isFavorited ? 'fill-current text-red-500' : ''}`} />
                     </Button>
-                    <Button variant="outline" size="sm">
-                      <Share2 className="w-4 h-4" />
-                    </Button>
+                    <SocialShare property={property} />
                   </div>
                 </div>
                 
