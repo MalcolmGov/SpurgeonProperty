@@ -117,25 +117,23 @@ export default function Home() {
           }}
         >
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="animate-slide-up">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-                Find Your Perfect
-                <span className="block bg-gradient-to-r from-orange-primary to-yellow-400 bg-clip-text text-transparent">
-                  Dream Home
-                </span>
-              </h1>
-              <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed">
-                Discover exceptional properties in South Africa's most desirable locations with personalized service from our expert agents
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-                <Button size="lg" className="bg-orange-primary hover:bg-orange-600 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-                  <Link href="/properties">Explore Properties</Link>
-                </Button>
-                <Button variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-slate-800 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300">
-                  <Link href="/sell-property">Sell Your Property</Link>
-                </Button>
-              </div>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+              Find Your Perfect
+              <span className="block bg-gradient-to-r from-orange-primary to-yellow-400 bg-clip-text text-transparent">
+                Dream Home
+              </span>
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Discover exceptional properties in South Africa's most desirable locations with personalized service from our expert agents
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+              <Button size="lg" className="bg-orange-primary hover:bg-orange-600 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                <Link href="/properties">Explore Properties</Link>
+              </Button>
+              <Button variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-slate-800 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300">
+                <Link href="/sell-property">Sell Your Property</Link>
+              </Button>
             </div>
 
             {/* Search Section */}
