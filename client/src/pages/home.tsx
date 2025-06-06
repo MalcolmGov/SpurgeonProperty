@@ -106,59 +106,66 @@ export default function Home() {
 
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900" style={{ marginTop: '90px' }}>
         {/* Hero Section */}
-        <section 
-          className="relative min-h-screen flex items-center justify-center overflow-hidden" 
-          style={{ 
-            paddingTop: '80px',
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url(${luxuryMansion})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-          }}
-        >
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-              Find Your Perfect
-              <span className="block text-orange-500">
-                Dream Home
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Discover exceptional properties in South Africa's most desirable locations with personalized service from our expert agents
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Button size="lg" className="bg-orange-primary hover:bg-orange-600 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-                <Link href="/properties">Explore Properties</Link>
-              </Button>
-              <Button variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-slate-800 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300">
-                <Link href="/sell-property">Sell Your Property</Link>
-              </Button>
-            </div>
+        <section className="relative h-screen">
+          {/* Background Image */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${luxuryMansion})` }}
+          ></div>
+          
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+          
+          {/* Content */}
+          <div className="relative z-10 h-full flex items-center justify-center text-center px-4">
+            <div className="max-w-5xl mx-auto">
+              <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+                Find Your Perfect
+                <br />
+                <span className="text-orange-500">Dream Home</span>
+              </h1>
+              
+              <p className="text-xl md:text-2xl text-gray-200 mb-10 max-w-3xl mx-auto">
+                Discover exceptional properties in South Africa's most desirable locations with personalized service from our expert agents
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+                <Link href="/properties">
+                  <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 text-lg font-semibold rounded-xl">
+                    Explore Properties
+                  </Button>
+                </Link>
+                <Link href="/sell-property">
+                  <Button variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-black px-8 py-4 text-lg font-semibold rounded-xl">
+                    Sell Your Property
+                  </Button>
+                </Link>
+              </div>
 
-            {/* Search Section */}
-            <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-2xl max-w-4xl mx-auto">
-              <PropertySearch />
+              {/* Search Section */}
+              <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-4xl mx-auto">
+                <PropertySearch />
+              </div>
             </div>
           </div>
 
           {/* Stats Section */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900/80 to-transparent p-8">
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-8">
             <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               <div>
-                <div className="text-3xl md:text-4xl font-bold text-white">500+</div>
+                <div className="text-3xl font-bold text-white">500+</div>
                 <div className="text-gray-300">Properties Listed</div>
               </div>
               <div>
-                <div className="text-3xl md:text-4xl font-bold text-white">200+</div>
+                <div className="text-3xl font-bold text-white">200+</div>
                 <div className="text-gray-300">Happy Clients</div>
               </div>
               <div>
-                <div className="text-3xl md:text-4xl font-bold text-white">50+</div>
+                <div className="text-3xl font-bold text-white">50+</div>
                 <div className="text-gray-300">Areas Covered</div>
               </div>
               <div>
-                <div className="text-3xl md:text-4xl font-bold text-white">150+</div>
+                <div className="text-3xl font-bold text-white">150+</div>
                 <div className="text-gray-300">Expert Agents</div>
               </div>
             </div>
