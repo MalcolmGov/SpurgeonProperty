@@ -127,11 +127,13 @@ export class DatabaseStorage implements IStorage {
         conditions.push(eq(properties.featured, filters.featured));
       }
 
+      let finalQuery = query;
+      
       if (conditions.length > 0) {
-        query = query.where(and(...conditions));
+        finalQuery = finalQuery.where(and(...conditions));
       }
 
-      const results = await query
+      const results = await finalQuery
         .orderBy(desc(properties.createdAt))
         .limit(filters?.limit || 20)
         .offset(filters?.offset || 0);
