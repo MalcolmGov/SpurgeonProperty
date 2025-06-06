@@ -152,23 +152,36 @@ const getSafetyRating = (suburb: string): SafetyRating => {
 export default function NeighborhoodAnalytics({ property }: NeighborhoodAnalyticsProps) {
   const [activeTab, setActiveTab] = useState("overview");
   
+  // Debug property coordinates
+  console.log('Property coordinates:', {
+    latitude: property.latitude,
+    longitude: property.longitude,
+    suburb: property.suburb,
+    city: property.city
+  });
+
   // Fetch real neighborhood data using Google Places API
   const { data: neighborhoodData, isLoading, error } = useQuery({
     queryKey: ['neighborhood-analytics', property.latitude, property.longitude, property.suburb, property.city],
     queryFn: async () => {
+      console.log('Fetching neighborhood data for:', property.latitude, property.longitude);
+      
       if (!property.latitude || !property.longitude) {
         throw new Error('Property coordinates not available');
       }
       
-      const response = await fetch(
-        `/api/neighborhood-analytics?latitude=${property.latitude}&longitude=${property.longitude}&suburb=${property.suburb}&city=${property.city}`
-      );
+      const url = `/api/neighborhood-analytics?latitude=${property.latitude}&longitude=${property.longitude}&suburb=${property.suburb}&city=${property.city}`;
+      console.log('API URL:', url);
+      
+      const response = await fetch(url);
       
       if (!response.ok) {
-        throw new Error('Failed to fetch neighborhood data');
+        throw new Error(`Failed to fetch neighborhood data: ${response.status}`);
       }
       
-      return response.json();
+      const data = await response.json();
+      console.log('Neighborhood data received:', data);
+      return data;
     },
     enabled: !!(property.latitude && property.longitude),
     staleTime: 1000 * 60 * 30, // Cache for 30 minutes
