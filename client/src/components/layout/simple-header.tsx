@@ -22,7 +22,7 @@ export default function SimpleHeader() {
       }}>
         {/* Logo */}
         <Link href="/">
-          <div style={{ 
+          <a style={{ 
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
@@ -41,37 +41,37 @@ export default function SimpleHeader() {
             }}>
               PropertyHub
             </span>
-          </div>
+          </a>
         </Link>
 
         {/* Navigation */}
         <nav style={{ display: 'flex', gap: '32px' }}>
           <Link href="/">
-            <span style={{ 
+            <a style={{ 
               color: '#6b7280',
               textDecoration: 'none',
               fontWeight: '500'
             }}>
               Home
-            </span>
+            </a>
           </Link>
           <Link href="/properties">
-            <span style={{ 
+            <a style={{ 
               color: '#6b7280',
               textDecoration: 'none',
               fontWeight: '500'
             }}>
               Properties
-            </span>
+            </a>
           </Link>
           <Link href="/admin">
-            <span style={{ 
+            <a style={{ 
               color: '#6b7280',
               textDecoration: 'none',
               fontWeight: '500'
             }}>
               Admin
-            </span>
+            </a>
           </Link>
         </nav>
       </div>
