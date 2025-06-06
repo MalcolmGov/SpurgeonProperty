@@ -106,16 +106,16 @@ export default function Home() {
 
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900" style={{ marginTop: '90px' }}>
         {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ paddingTop: '80px' }}>
-          <div className="absolute inset-0 z-0">
-            <img 
-              src={luxuryMansion} 
-              alt="Luxurious modern mansion" 
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 gradient-overlay"></div>
-          </div>
-          
+        <section 
+          className="relative min-h-screen flex items-center justify-center overflow-hidden" 
+          style={{ 
+            paddingTop: '80px',
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url(${luxuryMansion})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        >
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="animate-slide-up">
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
