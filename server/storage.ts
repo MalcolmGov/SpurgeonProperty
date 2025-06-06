@@ -170,7 +170,10 @@ export class DatabaseStorage implements IStorage {
   async getProperty(id: number): Promise<PropertyWithAgent | undefined> {
     try {
       const result = await db
-        .select()
+        .select({
+          properties: properties,
+          agents: agents
+        })
         .from(properties)
         .leftJoin(agents, eq(properties.agentId, agents.id))
         .where(eq(properties.id, id))
