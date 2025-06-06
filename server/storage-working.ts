@@ -1,4 +1,5 @@
-import { Pool } from "pg";
+import pg from "pg";
+const { Pool } = pg;
 import type { 
   Property, 
   InsertProperty, 
@@ -181,7 +182,7 @@ export class DatabaseStorage implements IStorage {
         id: row.id,
         title: row.title,
         description: row.description,
-        price: row.price,
+        price: row.price.toString(),
         address: row.address,
         suburb: row.suburb,
         city: row.city,
@@ -189,7 +190,7 @@ export class DatabaseStorage implements IStorage {
         postalCode: row.postal_code,
         propertyType: row.property_type,
         bedrooms: row.bedrooms,
-        bathrooms: row.bathrooms,
+        bathrooms: row.bathrooms.toString(),
         area: row.area,
         lotSize: row.lot_size,
         yearBuilt: row.year_built,
@@ -250,7 +251,7 @@ export class DatabaseStorage implements IStorage {
         id: row.id,
         title: row.title,
         description: row.description,
-        price: row.price,
+        price: row.price.toString(),
         address: row.address,
         suburb: row.suburb,
         city: row.city,
@@ -258,7 +259,7 @@ export class DatabaseStorage implements IStorage {
         postalCode: row.postal_code,
         propertyType: row.property_type,
         bedrooms: row.bedrooms,
-        bathrooms: row.bathrooms,
+        bathrooms: row.bathrooms.toString(),
         area: row.area,
         lotSize: row.lot_size,
         yearBuilt: row.year_built,
