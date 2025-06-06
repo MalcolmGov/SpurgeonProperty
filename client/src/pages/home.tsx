@@ -7,7 +7,7 @@ import { useProperties } from "@/hooks/use-properties";
 import { Link } from "wouter";
 import { Building, Users, TrendingUp, Award } from "lucide-react";
 import spurgeonLogo from "@/assets/spurgeon-logo.svg";
-import luxuryMansion from "@assets/image_1749195054251.png";
+import heroBackground from "@assets/image_1749196807837.png";
 
 export default function Home() {
   const { data: featuredProperties, isLoading } = useProperties({ featured: true, limit: 3 });
@@ -109,8 +109,14 @@ export default function Home() {
 
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900" style={{ marginTop: '90px' }}>
         {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 overflow-hidden">
-          <div className="absolute inset-0 bg-black/30"></div>
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden"
+          style={{
+            backgroundImage: `url(${heroBackground})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}>
+          <div className="absolute inset-0 bg-black/20"></div>
           
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="animate-fade-in">
