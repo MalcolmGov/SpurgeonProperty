@@ -22,7 +22,7 @@ function Router() {
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/properties/:id" component={PropertyDetail} />
       <Route path="/properties" component={Properties} />
-      <Route path="/sell" component={SellProperty} />
+      <Route path="/sell-property" component={SellProperty} />
       <Route path="/map" component={MapPage} />
       <Route path="/" component={Home} />
       <Route component={NotFound} />
