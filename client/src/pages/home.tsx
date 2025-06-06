@@ -119,7 +119,7 @@ export default function Home() {
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
               Find Your Perfect
-              <span className="block bg-gradient-to-r from-orange-primary to-yellow-400 bg-clip-text text-transparent">
+              <span className="block text-orange-500">
                 Dream Home
               </span>
             </h1>
