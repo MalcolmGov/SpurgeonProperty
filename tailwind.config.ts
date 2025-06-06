@@ -51,6 +51,15 @@ export default {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        // Custom property colors
+        orange: {
+          primary: "#F97316",
+          secondary: "#FB923C",
+        },
+        purple: {
+          primary: "#8B5CF6",
+          secondary: "#A78BFA",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

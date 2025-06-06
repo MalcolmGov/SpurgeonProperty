@@ -20,7 +20,7 @@ export default function AdminSidebar() {
   };
 
   return (
-    <div className="w-64 bg-card shadow-lg min-h-screen border-r border-border">
+    <div className="w-64 bg-card shadow-lg min-h-screen border-r border-gray-200">
       <div className="p-6">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2 mb-8">
@@ -50,7 +50,7 @@ export default function AdminSidebar() {
         </nav>
 
         {/* Back to Main Site */}
-        <div className="mt-8 pt-8 border-t border-border">
+        <div className="mt-8 pt-8 border-t border-gray-200">
           <Link href="/">
             <Button variant="outline" className="w-full">
               <Home className="w-4 h-4 mr-2" />
