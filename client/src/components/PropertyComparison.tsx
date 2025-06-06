@@ -65,7 +65,7 @@ export default function PropertyComparison({
   const getPropertyScore = (property: PropertyWithAgent) => {
     let score = 0;
     if (property.bedrooms >= 3) score += 20;
-    if (parseInt(property.bathrooms) >= 2) score += 15;
+    if (parseFloat(property.bathrooms) >= 2) score += 15;
     if (property.area >= 100) score += 20;
     if (property.yearBuilt && property.yearBuilt >= 2010) score += 15;
     if (property.featured) score += 10;

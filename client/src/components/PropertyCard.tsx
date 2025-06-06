@@ -240,10 +240,10 @@ export default function PropertyCard({
               <span>{property.yearBuilt}</span>
             </div>
           )}
-          {property.parkingSpaces && (
+          {property.lotSize && (
             <div className="flex items-center gap-1">
               <Car className="h-3 w-3" />
-              <span>{property.parkingSpaces} parking</span>
+              <span>{property.lotSize}m² lot</span>
             </div>
           )}
           {property.views && (

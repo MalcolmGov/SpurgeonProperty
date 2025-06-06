@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Grid, List, ChevronLeft, ChevronRight, GitCompare, Filter } from "lucide-react";
+import { Search, Grid, List, ChevronLeft, ChevronRight, GitCompare } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
 
 export default function Properties() {
@@ -382,70 +382,6 @@ export default function Properties() {
         </Tabs>
       </div>
 
-      <Footer />
-    </div>
-  );
-}
-              </div>
-            ) : properties && properties.length > 0 ? (
-              <>
-                <div className={`grid gap-6 ${viewMode === "grid" ? "grid-cols-1 md:grid-cols-2 xl:grid-cols-3" : "grid-cols-1"}`}>
-                  {properties.map((property) => (
-                    <PropertyCard key={property.id} property={property} viewMode={viewMode} />
-                  ))}
-                </div>
-                
-                {/* Pagination */}
-                {totalPages > 1 && (
-                  <div className="flex justify-center items-center space-x-2 mt-12">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                      disabled={currentPage === 1}
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                    </Button>
-                    
-                    {[...Array(Math.min(5, totalPages))].map((_, i) => {
-                      const page = i + 1;
-                      return (
-                        <Button
-                          key={page}
-                          variant={currentPage === page ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => setCurrentPage(page)}
-                          className={currentPage === page ? "bg-purple-primary" : ""}
-                        >
-                          {page}
-                        </Button>
-                      );
-                    })}
-                    
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                      disabled={currentPage === totalPages}
-                    >
-                      <ChevronRight className="w-4 h-4" />
-                    </Button>
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="text-center py-12">
-                <div className="text-slate-400 dark:text-slate-600 mb-4">
-                  <Search className="w-16 h-16 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold">No properties found</h3>
-                  <p>Try adjusting your search criteria or filters</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-      
       <Footer />
     </div>
   );
