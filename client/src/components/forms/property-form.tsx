@@ -46,8 +46,10 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
   const { toast } = useToast();
 
   // Fetch agents for the dropdown
-  const { data: agents = [] } = useQuery({
+  const { data: agents = [], isLoading: agentsLoading, error: agentsError } = useQuery({
     queryKey: ["/api/agents"],
+    retry: 3,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   useEffect(() => {
@@ -443,7 +445,7 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="unassigned">Unassigned</SelectItem>
-                  {agents?.map((agent: any) => (
+                  {Array.isArray(agents) && agents.map((agent: any) => (
                     <SelectItem key={agent.id} value={agent.id.toString()}>
                       {agent.name}
                     </SelectItem>
