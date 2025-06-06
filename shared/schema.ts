@@ -1,4 +1,5 @@
 import { pgTable, text, serial, integer, boolean, timestamp, decimal, jsonb } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -108,6 +109,38 @@ export type InsertInquiry = z.infer<typeof insertInquirySchema>;
 export type PropertyWithAgent = Property & {
   agent?: Agent;
 };
+
+// Relations
+export const propertiesRelations = relations(properties, ({ one }) => ({
+  agent: one(agents, {
+    fields: [properties.agentId],
+    references: [agents.id],
+  }),
+}));
+
+export const agentsRelations = relations(agents, ({ many }) => ({
+  properties: many(properties),
+  leads: many(leads),
+}));
+
+export const leadsRelations = relations(leads, ({ one, many }) => ({
+  property: one(properties, {
+    fields: [leads.propertyId],
+    references: [properties.id],
+  }),
+  agent: one(agents, {
+    fields: [leads.agentId],
+    references: [agents.id],
+  }),
+  inquiries: many(inquiries),
+}));
+
+export const inquiriesRelations = relations(inquiries, ({ one }) => ({
+  lead: one(leads, {
+    fields: [inquiries.leadId],
+    references: [leads.id],
+  }),
+}));
 
 export type LeadWithProperty = Lead & {
   property?: Property;
