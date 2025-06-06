@@ -24,12 +24,26 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3">
-            <img 
-              src="https://images.prop24.com/248206504/Fit600x300" 
-              alt="SpurgeonProperty"
-              className="h-10 w-auto object-contain"
-            />
-            <span className="text-xl font-bold text-slate-800 dark:text-white">SpurgeonProperty</span>
+            <div className="flex items-center space-x-2">
+              {/* Modern Property Icon */}
+              <div className="relative">
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                  </svg>
+                </div>
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-orange-400 rounded-full border-2 border-white"></div>
+              </div>
+              {/* Enhanced Text Logo */}
+              <div className="flex flex-col">
+                <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent leading-tight">
+                  Spurgeon
+                </span>
+                <span className="text-xs font-semibold text-gray-600 dark:text-gray-300 -mt-1 tracking-wider">
+                  PROPERTY
+                </span>
+              </div>
+            </div>
           </Link>
           
           {/* Desktop Navigation */}
