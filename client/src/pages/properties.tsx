@@ -281,7 +281,7 @@ export default function Properties() {
                   : "grid-cols-1"
               }`}>
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <PropertyCardSkeleton key={i} viewMode={viewMode} />
+                  <PropertyCardSkeleton key={i} viewMode={viewMode} index={i} />
                 ))}
               </div>
             ) : paginatedProperties.length === 0 ? (

@@ -2,12 +2,14 @@ import { Card, CardContent } from "@/components/ui/card";
 
 interface PropertyCardSkeletonProps {
   viewMode?: "grid" | "list";
+  index?: number;
 }
 
-export default function PropertyCardSkeleton({ viewMode = "grid" }: PropertyCardSkeletonProps) {
+export default function PropertyCardSkeleton({ viewMode = "grid", index = 0 }: PropertyCardSkeletonProps) {
+  const staggerClass = `skeleton-stagger-${Math.min(index + 1, 6)}`;
   if (viewMode === "list") {
     return (
-      <Card className="overflow-hidden">
+      <Card className={`overflow-hidden staggered-fade-in ${staggerClass}`}>
         <div className="flex">
           <div className="relative w-64 h-48 flex-shrink-0 skeleton-shimmer"></div>
           <CardContent className="flex-1 p-6">
@@ -38,7 +40,7 @@ export default function PropertyCardSkeleton({ viewMode = "grid" }: PropertyCard
   }
 
   return (
-    <Card className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg overflow-hidden">
+    <Card className={`bg-white dark:bg-slate-800 rounded-2xl shadow-lg overflow-hidden staggered-fade-in ${staggerClass}`}>
       <div className="relative">
         {/* Image skeleton */}
         <div className="w-full h-64 skeleton-shimmer"></div>

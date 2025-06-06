@@ -46,6 +46,28 @@
   }
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes staggeredFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
@@ -59,6 +81,21 @@
 .dark .skeleton-shimmer {
   background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
   background-size: 200px 100%;
+}
+
+.skeleton-stagger-1 { animation-delay: 0.1s; }
+.skeleton-stagger-2 { animation-delay: 0.2s; }
+.skeleton-stagger-3 { animation-delay: 0.3s; }
+.skeleton-stagger-4 { animation-delay: 0.4s; }
+.skeleton-stagger-5 { animation-delay: 0.5s; }
+.skeleton-stagger-6 { animation-delay: 0.6s; }
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.staggered-fade-in {
+  animation: staggeredFadeIn 0.8s ease-out both;
 }
 
 .dark {

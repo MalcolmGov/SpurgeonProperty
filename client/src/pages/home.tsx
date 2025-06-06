@@ -179,7 +179,7 @@ export default function Home() {
             {isLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {[1, 2, 3].map((i) => (
-                  <PropertyCardSkeleton key={i} />
+                  <PropertyCardSkeleton key={i} index={i - 1} />
                 ))}
               </div>
             ) : (
