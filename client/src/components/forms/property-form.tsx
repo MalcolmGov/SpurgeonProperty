@@ -10,7 +10,7 @@ import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { insertPropertySchema } from "@shared/schema";
-import { X, Upload } from "lucide-react";
+import { X, Upload, Plus } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
 
 interface PropertyFormProps {
