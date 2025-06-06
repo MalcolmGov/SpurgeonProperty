@@ -70,8 +70,49 @@ class OpenAIService {
       };
     } catch (error) {
       console.error("Error generating property description:", error);
-      throw new Error("Failed to generate property description");
+      
+      // Provide helpful fallback content when API is unavailable
+      return this.generateFallbackDescription(propertyDetails);
     }
+  }
+
+  private generateFallbackDescription(propertyDetails: PropertyDetails): GeneratedDescription {
+    const locationDescription = `${propertyDetails.suburb}, ${propertyDetails.city}`;
+    const propertyTypeFormatted = propertyDetails.propertyType.toLowerCase();
+    
+    const description = `AI Description Generator Currently Unavailable - API Quota Exceeded
+
+This ${propertyDetails.bedrooms}-bedroom ${propertyTypeFormatted} in ${locationDescription} offers ${propertyDetails.area}m² of comfortable living space. Located at ${propertyDetails.address}, this property presents an excellent opportunity for discerning buyers.
+
+Key features include ${propertyDetails.bedrooms} bedrooms and ${propertyDetails.bathrooms} bathrooms, positioned in the sought-after area of ${propertyDetails.suburb}. ${propertyDetails.lotSize ? `The property sits on a ${propertyDetails.lotSize}m² stand, ` : ''}providing ample space and potential.
+
+Priced at ${propertyDetails.price}, this property represents solid value in the ${propertyDetails.city} market. ${propertyDetails.yearBuilt ? `Built in ${propertyDetails.yearBuilt}, ` : ''}the property offers both character and modern convenience.
+
+Contact us today to arrange a viewing of this exceptional ${propertyTypeFormatted} in ${locationDescription}.
+
+Note: This is a template description. For AI-generated content, please check your OpenAI API quota and billing settings.`;
+
+    const highlights = [
+      `${propertyDetails.bedrooms} Bedrooms`,
+      `${propertyDetails.bathrooms} Bathrooms`, 
+      `${propertyDetails.area}m² Living Space`,
+      `Prime ${propertyDetails.suburb} Location`,
+      propertyDetails.lotSize ? `${propertyDetails.lotSize}m² Stand` : 'Well-positioned Property'
+    ];
+
+    const marketingTags = [
+      `${propertyDetails.bedrooms}BR ${propertyDetails.propertyType}`,
+      `${propertyDetails.suburb} Property`,
+      `${propertyDetails.city} Real Estate`,
+      `${propertyDetails.area}m² Living`,
+      'Move-in Ready'
+    ];
+
+    return {
+      description,
+      highlights,
+      marketingTags
+    };
   }
 
   async enhancePropertyDescription(existingDescription: string, propertyDetails: PropertyDetails): Promise<string> {
