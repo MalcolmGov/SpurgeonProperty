@@ -7,6 +7,7 @@ import { useProperties } from "@/hooks/use-properties";
 import { Link } from "wouter";
 import { Building, Users, TrendingUp, Award } from "lucide-react";
 import spurgeonLogo from "@/assets/spurgeon-logo.svg";
+import luxuryMansion from "@assets/image_1749195054251.png";
 
 export default function Home() {
   const { data: featuredProperties, isLoading } = useProperties({ featured: true, limit: 3 });
@@ -108,8 +109,8 @@ export default function Home() {
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ paddingTop: '80px' }}>
           <div className="absolute inset-0 z-0">
             <img 
-              src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080" 
-              alt="Modern city skyline" 
+              src={luxuryMansion} 
+              alt="Luxurious modern mansion" 
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 gradient-overlay"></div>
