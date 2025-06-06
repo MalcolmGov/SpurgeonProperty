@@ -85,62 +85,65 @@ export class DatabaseStorage implements IStorage {
     limit?: number;
     offset?: number;
   }): Promise<PropertyWithAgent[]> {
-    let query = db.select().from(properties).leftJoin(agents, eq(properties.agentId, agents.id));
+    try {
+      let query = db
+        .select()
+        .from(properties)
+        .leftJoin(agents, eq(properties.agentId, agents.id));
 
-    // Apply filters
-    const conditions = [];
-    if (filters?.search) {
-      conditions.push(
-        or(
-          ilike(properties.title, `%${filters.search}%`),
-          ilike(properties.description, `%${filters.search}%`),
-          ilike(properties.address, `%${filters.search}%`)
-        )
-      );
-    }
-    if (filters?.propertyType && filters.propertyType !== "any") {
-      conditions.push(eq(properties.propertyType, filters.propertyType));
-    }
-    if (filters?.minPrice) {
-      conditions.push(gte(properties.price, filters.minPrice.toString()));
-    }
-    if (filters?.maxPrice) {
-      conditions.push(lte(properties.price, filters.maxPrice.toString()));
-    }
-    if (filters?.bedrooms) {
-      conditions.push(eq(properties.bedrooms, filters.bedrooms));
-    }
-    if (filters?.bathrooms) {
-      conditions.push(eq(properties.bathrooms, filters.bathrooms.toString()));
-    }
-    if (filters?.city) {
-      conditions.push(ilike(properties.city, `%${filters.city}%`));
-    }
-    if (filters?.status && filters.status !== "any") {
-      conditions.push(eq(properties.status, filters.status));
-    }
-    if (filters?.featured !== undefined) {
-      conditions.push(eq(properties.featured, filters.featured));
-    }
+      const conditions = [];
+      
+      if (filters?.search) {
+        conditions.push(
+          or(
+            ilike(properties.title, `%${filters.search}%`),
+            ilike(properties.description, `%${filters.search}%`),
+            ilike(properties.address, `%${filters.search}%`)
+          )
+        );
+      }
+      if (filters?.propertyType && filters.propertyType !== "any") {
+        conditions.push(eq(properties.propertyType, filters.propertyType));
+      }
+      if (filters?.minPrice) {
+        conditions.push(gte(properties.price, filters.minPrice.toString()));
+      }
+      if (filters?.maxPrice) {
+        conditions.push(lte(properties.price, filters.maxPrice.toString()));
+      }
+      if (filters?.bedrooms) {
+        conditions.push(eq(properties.bedrooms, filters.bedrooms));
+      }
+      if (filters?.bathrooms) {
+        conditions.push(eq(properties.bathrooms, filters.bathrooms.toString()));
+      }
+      if (filters?.city) {
+        conditions.push(ilike(properties.city, `%${filters.city}%`));
+      }
+      if (filters?.status && filters.status !== "any") {
+        conditions.push(eq(properties.status, filters.status));
+      }
+      if (filters?.featured !== undefined) {
+        conditions.push(eq(properties.featured, filters.featured));
+      }
 
-    if (conditions.length > 0) {
-      query = query.where(and(...conditions));
-    }
+      if (conditions.length > 0) {
+        query = query.where(and(...conditions));
+      }
 
-    query = query.orderBy(desc(properties.createdAt));
+      const results = await query
+        .orderBy(desc(properties.createdAt))
+        .limit(filters?.limit || 20)
+        .offset(filters?.offset || 0);
 
-    if (filters?.limit) {
-      query = query.limit(filters.limit);
+      return results.map(row => ({
+        ...row.properties,
+        agent: row.agents || undefined
+      }));
+    } catch (error) {
+      console.error('Database error in getProperties:', error);
+      return [];
     }
-    if (filters?.offset) {
-      query = query.offset(filters.offset);
-    }
-
-    const results = await query;
-    return results.map(row => ({
-      ...row.properties,
-      agent: row.agents || undefined
-    }));
   }
 
   async getProperty(id: number): Promise<PropertyWithAgent | undefined> {
