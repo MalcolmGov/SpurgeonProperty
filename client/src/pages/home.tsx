@@ -11,59 +11,33 @@ export default function Home() {
   const { data: featuredProperties, isLoading } = useProperties({ featured: true, limit: 3 });
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      {/* Direct Header */}
-      <header style={{ 
+    <>
+      {/* SIMPLE HEADER TEST */}
+      <div style={{
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
-        zIndex: 1000,
-        backgroundColor: 'white',
-        borderBottom: '1px solid #e5e7eb',
-        padding: '16px 24px'
+        height: '80px',
+        backgroundColor: '#ffffff',
+        borderBottom: '2px solid #7c3aed',
+        zIndex: 9999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
       }}>
-        <div style={{ 
-          maxWidth: '1200px',
-          margin: '0 auto',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
+        <div style={{
+          fontSize: '28px',
+          fontWeight: 'bold',
+          color: '#7c3aed',
+          textAlign: 'center'
         }}>
-          <div style={{ 
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }}>
-            <div style={{ 
-              width: '32px',
-              height: '32px',
-              backgroundColor: '#7c3aed',
-              borderRadius: '4px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'white',
-              fontWeight: 'bold',
-              fontSize: '18px'
-            }}>
-              🏢
-            </div>
-            <span style={{ 
-              fontSize: '24px',
-              fontWeight: 'bold',
-              color: '#1f2937'
-            }}>
-              PropertyHub
-            </span>
-          </div>
-          <nav style={{ display: 'flex', gap: '32px' }}>
-            <span style={{ color: '#6b7280', fontWeight: '500' }}>Home</span>
-            <span style={{ color: '#6b7280', fontWeight: '500' }}>Properties</span>
-            <span style={{ color: '#6b7280', fontWeight: '500' }}>Admin</span>
-          </nav>
+          🏢 PropertyHub - Real Estate Platform
         </div>
-      </header>
+      </div>
+
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900" style={{ marginTop: '80px' }}>
       
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ paddingTop: '80px' }}>
@@ -216,6 +190,7 @@ export default function Home() {
       </section>
 
       <Footer />
-    </div>
+      </div>
+    </>
   );
 }
