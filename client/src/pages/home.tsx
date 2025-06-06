@@ -62,6 +62,15 @@ export default function Home() {
           }}>
             Properties
           </a>
+          <a href="/about" style={{
+            color: 'white',
+            fontWeight: '600',
+            fontSize: '16px',
+            transition: 'all 0.3s ease',
+            textDecoration: 'none'
+          }}>
+            About Us
+          </a>
           <a href="/sell-property" style={{
             color: 'white',
             fontWeight: '600',
