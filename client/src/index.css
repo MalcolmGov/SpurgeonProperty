@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --muted: 210 40% 98%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --primary: 262.1 83.3% 57.8%; /* Purple primary #8B5CF6 */
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 98%;
+  --secondary-foreground: 222.2 84% 4.9%;
+  --accent: 210 40% 98%;
+  --accent-foreground: 222.2 84% 4.9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --ring: 262.1 83.3% 57.8%;
+  --radius: 0.5rem;
+  
+  /* Custom purple and orange colors */
+  --purple-primary: 262.1 83.3% 57.8%; /* #8B5CF6 */
+  --purple-secondary: 263.4 70% 50.4%; /* #7C3AED */
+  --orange-primary: 24.6 95% 53.1%; /* #F97316 */
+  --orange-secondary: 20.5 90.2% 48.2%; /* #EA580C */
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --primary: 262.1 83.3% 57.8%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --ring: 262.1 83.3% 57.8%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+@layer components {
+  .glass-morphism {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .gradient-purple-orange {
+    background: linear-gradient(135deg, hsl(var(--purple-primary)) 0%, hsl(var(--orange-primary)) 100%);
+  }
+  
+  .gradient-overlay {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+  }
+  
+  .animate-bounce-gentle {
+    animation: bounceGentle 2s infinite;
+  }
+}
+
+@layer utilities {
+  .text-purple-primary {
+    color: hsl(var(--purple-primary));
+  }
+  
+  .text-purple-secondary {
+    color: hsl(var(--purple-secondary));
+  }
+  
+  .text-orange-primary {
+    color: hsl(var(--orange-primary));
+  }
+  
+  .text-orange-secondary {
+    color: hsl(var(--orange-secondary));
+  }
+  
+  .bg-purple-primary {
+    background-color: hsl(var(--purple-primary));
+  }
+  
+  .bg-purple-secondary {
+    background-color: hsl(var(--purple-secondary));
+  }
+  
+  .bg-orange-primary {
+    background-color: hsl(var(--orange-primary));
+  }
+  
+  .bg-orange-secondary {
+    background-color: hsl(var(--orange-secondary));
+  }
+  
+  .border-purple-primary {
+    border-color: hsl(var(--purple-primary));
+  }
+  
+  .border-orange-primary {
+    border-color: hsl(var(--orange-primary));
+  }
+  
+  .hover\:bg-purple-primary:hover {
+    background-color: hsl(var(--purple-primary));
+  }
+  
+  .hover\:bg-purple-secondary:hover {
+    background-color: hsl(var(--purple-secondary));
+  }
+  
+  .hover\:bg-orange-primary:hover {
+    background-color: hsl(var(--orange-primary));
+  }
+  
+  .hover\:bg-orange-secondary:hover {
+    background-color: hsl(var(--orange-secondary));
+  }
+  
+  .hover\:text-purple-primary:hover {
+    color: hsl(var(--purple-primary));
+  }
+  
+  .hover\:text-orange-primary:hover {
+    color: hsl(var(--orange-primary));
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes bounceGentle {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
