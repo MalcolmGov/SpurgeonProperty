@@ -155,6 +155,8 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
     }));
   };
 
+  const [isUploading, setIsUploading] = useState(false);
+
   const addImageUrl = () => {
     const imageUrl = prompt("Enter image URL:");
     if (imageUrl && imageUrl.trim()) {
@@ -162,6 +164,50 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
         ...prev,
         images: [...prev.images, imageUrl.trim()]
       }));
+    }
+  };
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    setIsUploading(true);
+    const uploadFormData = new FormData();
+    Array.from(files).forEach(file => {
+      uploadFormData.append('images', file);
+    });
+
+    try {
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setFormData(prev => ({
+          ...prev,
+          images: [...prev.images, ...result.urls]
+        }));
+        toast({ 
+          title: "Success", 
+          description: result.message || "Images uploaded successfully" 
+        });
+        // Clear the input
+        event.target.value = '';
+      } else {
+        const error = await response.json();
+        throw new Error(error.message || 'Upload failed');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast({ 
+        title: "Upload failed", 
+        description: error instanceof Error ? error.message : "Please try again",
+        variant: "destructive" 
+      });
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -434,25 +480,76 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
           {/* Images */}
           <div>
             <Label>Images</Label>
-            <div className="space-y-2">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                {formData.images.map((image, index) => (
-                  <div key={index} className="relative">
-                    <img src={image} alt={`Property ${index + 1}`} className="w-full h-20 object-cover rounded-lg" />
-                    <button
-                      type="button"
-                      onClick={() => removeImage(index)}
-                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button type="button" variant="outline" size="sm" onClick={addImageUrl}>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Image URL
+                </Button>
+                <div className="relative">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFileUpload}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    disabled={isUploading}
+                  />
+                  <Button 
+                    type="button" 
+                    variant="outline"
+                    size="sm"
+                    disabled={isUploading}
+                    className="flex items-center gap-2 w-full"
+                  >
+                    {isUploading ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+                        Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="h-4 w-4" />
+                        Upload Images
+                      </>
+                    )}
+                  </Button>
+                </div>
               </div>
-              <Button type="button" variant="outline" size="sm" onClick={addImageUrl}>
-                <Upload className="w-4 h-4 mr-2" />
-                Add Image URL
-              </Button>
+              <p className="text-sm text-muted-foreground">
+                You can either enter image URLs or upload files from your computer. Supported formats: JPEG, PNG, GIF, WebP (max 10MB each).
+              </p>
+              {formData.images.length > 0 && (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                  {formData.images.map((image, index) => (
+                    <div key={index} className="relative group">
+                      <img 
+                        src={image} 
+                        alt={`Property ${index + 1}`} 
+                        className="w-full h-20 object-cover rounded-lg border"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = `data:image/svg+xml;base64,${btoa(`
+                            <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                              <rect width="100" height="100" fill="#f3f4f6"/>
+                              <text x="50" y="50" text-anchor="middle" dy="0.3em" font-family="sans-serif" font-size="12" fill="#9ca3af">
+                                Image Error
+                              </text>
+                            </svg>
+                          `)}`;
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
