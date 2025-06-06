@@ -53,9 +53,10 @@ export interface PropertyFormData {
   description: string;
   price: string;
   address: string;
+  suburb: string;
   city: string;
-  state: string;
-  zipCode: string;
+  province: string;
+  postalCode: string;
   propertyType: string;
   bedrooms: string;
   bathrooms: string;

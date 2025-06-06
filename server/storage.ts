@@ -23,7 +23,9 @@ export interface IStorage {
     maxPrice?: number;
     bedrooms?: number;
     bathrooms?: number;
+    suburb?: string;
     city?: string;
+    province?: string;
     status?: string;
     featured?: boolean;
     limit?: number;
@@ -76,7 +78,9 @@ export class DatabaseStorage implements IStorage {
     maxPrice?: number;
     bedrooms?: number;
     bathrooms?: number;
+    suburb?: string;
     city?: string;
+    province?: string;
     status?: string;
     featured?: boolean;
     limit?: number;
@@ -122,8 +126,16 @@ export class DatabaseStorage implements IStorage {
         whereConditions.push(eq(properties.bathrooms, filters.bathrooms.toString()));
       }
 
+      if (filters?.suburb) {
+        whereConditions.push(ilike(properties.suburb, `%${filters.suburb}%`));
+      }
+
       if (filters?.city) {
         whereConditions.push(ilike(properties.city, `%${filters.city}%`));
+      }
+
+      if (filters?.province) {
+        whereConditions.push(ilike(properties.province, `%${filters.province}%`));
       }
 
       if (filters?.status && filters.status !== "any") {
