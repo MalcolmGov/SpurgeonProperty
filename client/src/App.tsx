@@ -18,6 +18,7 @@ import NotFound from "@/pages/not-found";
 function Router() {
   return (
     <Switch>
+      <Route path="/admin/ai-tools" component={AdminAITools} />
       <Route path="/admin/properties" component={AdminProperties} />
       <Route path="/admin/leads" component={AdminLeads} />
       <Route path="/admin" component={AdminDashboard} />

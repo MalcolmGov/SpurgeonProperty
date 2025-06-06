@@ -56,7 +56,6 @@ export default function AIPropertyDescriptionGenerator({
         price: property.price,
         lotSize: property.lotSize || undefined,
         yearBuilt: property.yearBuilt || undefined,
-        parkingSpaces: property.parkingSpaces || undefined,
         features: property.features || []
       };
 
