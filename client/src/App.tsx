@@ -7,7 +7,7 @@ import { ThemeProvider } from "next-themes";
 import Home from "@/pages/home";
 import Properties from "@/pages/properties";
 import PropertyDetail from "@/pages/property-detail";
-import AdminDashboard from "@/pages/admin/dashboard";
+import AdminDashboard from "@/pages/admin-dashboard";
 import AdminProperties from "@/pages/admin/properties";
 import AdminLeads from "@/pages/admin/leads";
 import NotFound from "@/pages/not-found";
