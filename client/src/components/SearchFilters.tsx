@@ -75,7 +75,7 @@ export default function SearchFilters({
               <SelectValue placeholder="Any Type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Any Type</SelectItem>
+              <SelectItem value="any">Any Type</SelectItem>
               <SelectItem value="house">House</SelectItem>
               <SelectItem value="apartment">Apartment</SelectItem>
               <SelectItem value="condo">Condo</SelectItem>

@@ -10,6 +10,8 @@ export interface SearchFilters {
   featured?: boolean;
 }
 
+export interface PropertySearchFilters extends SearchFilters {}
+
 export interface PaginationOptions {
   limit?: number;
   offset?: number;

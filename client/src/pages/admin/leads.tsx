@@ -142,7 +142,7 @@ export default function AdminLeads() {
                       <SelectValue placeholder="All Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Status</SelectItem>
+                      <SelectItem value="all">All Status</SelectItem>
                       <SelectItem value="new">New</SelectItem>
                       <SelectItem value="contacted">Contacted</SelectItem>
                       <SelectItem value="qualified">Qualified</SelectItem>
@@ -159,7 +159,7 @@ export default function AdminLeads() {
                       <SelectValue placeholder="All Priority" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Priority</SelectItem>
+                      <SelectItem value="all">All Priority</SelectItem>
                       <SelectItem value="high">High</SelectItem>
                       <SelectItem value="medium">Medium</SelectItem>
                       <SelectItem value="low">Low</SelectItem>
