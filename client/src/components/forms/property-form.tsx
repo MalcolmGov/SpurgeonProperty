@@ -37,7 +37,7 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
     features: [] as string[],
     images: [] as string[],
     status: "active",
-    agentId: "",
+    agentId: "unassigned",
     featured: false
   });
 
@@ -69,7 +69,7 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
         features: property.features || [],
         images: property.images || [],
         status: property.status,
-        agentId: property.agentId?.toString() || "",
+        agentId: property.agentId?.toString() || "unassigned",
         featured: property.featured || false
       });
     }
@@ -95,7 +95,7 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
         features: data.features,
         images: data.images,
         status: data.status,
-        agentId: data.agentId ? parseInt(data.agentId) : undefined,
+        agentId: data.agentId && data.agentId !== "unassigned" ? parseInt(data.agentId) : undefined,
         featured: data.featured
       };
 
@@ -371,7 +371,7 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
                   <SelectValue placeholder="Select agent" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Unassigned</SelectItem>
+                  <SelectItem value="unassigned">Unassigned</SelectItem>
                   {agents?.map((agent) => (
                     <SelectItem key={agent.id} value={agent.id.toString()}>
                       {agent.name}

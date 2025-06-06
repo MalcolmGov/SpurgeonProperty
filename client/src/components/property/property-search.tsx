@@ -60,7 +60,7 @@ export default function PropertySearch() {
               <SelectValue placeholder="Any Type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Any Type</SelectItem>
+              <SelectItem value="any">Any Type</SelectItem>
               <SelectItem value="house">House</SelectItem>
               <SelectItem value="apartment">Apartment</SelectItem>
               <SelectItem value="condo">Condo</SelectItem>
@@ -75,7 +75,7 @@ export default function PropertySearch() {
               <SelectValue placeholder="Any Price" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Any Price</SelectItem>
+              <SelectItem value="any">Any Price</SelectItem>
               <SelectItem value="0-300000">Under $300K</SelectItem>
               <SelectItem value="300000-500000">$300K - $500K</SelectItem>
               <SelectItem value="500000-1000000">$500K - $1M</SelectItem>
@@ -91,7 +91,7 @@ export default function PropertySearch() {
               <SelectValue placeholder="Any" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Any</SelectItem>
+              <SelectItem value="any">Any</SelectItem>
               <SelectItem value="1">1+</SelectItem>
               <SelectItem value="2">2+</SelectItem>
               <SelectItem value="3">3+</SelectItem>
