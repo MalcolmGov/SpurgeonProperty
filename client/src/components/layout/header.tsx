@@ -27,7 +27,7 @@ export default function Header() {
           <div className="flex items-center space-x-2">
             <Link href="/" className="flex items-center space-x-2">
               <Building className="h-8 w-8 text-purple-600" />
-              <span className="text-xl font-bold text-gray-900 dark:text-white">PropertyHub</span>
+              <span className="text-xl font-bold text-gray-900 dark:text-white">SpurgeonProperty</span>
             </Link>
           </div>
           

@@ -39,7 +39,7 @@ export default function SimpleHeader() {
               fontWeight: 'bold',
               color: '#1f2937'
             }}>
-              PropertyHub
+              SpurgeonProperty
             </span>
           </a>
         </Link>
