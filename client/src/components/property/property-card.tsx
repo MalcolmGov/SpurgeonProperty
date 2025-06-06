@@ -30,7 +30,7 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
 
   if (viewMode === "list") {
     return (
-      <Link href={`/property/${property.id}`}>
+      <Link href={`/properties/${property.id}`}>
         <Card className="hover:shadow-lg transition-shadow duration-300 overflow-hidden">
           <div className="flex">
             <div className="relative w-64 h-48 flex-shrink-0">
@@ -97,7 +97,7 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
   }
 
   return (
-    <Link href={`/property/${property.id}`}>
+    <Link href={`/properties/${property.id}`}>
       <Card className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
         <div className="relative">
           <img
