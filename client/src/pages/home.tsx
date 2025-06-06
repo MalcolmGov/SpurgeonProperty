@@ -34,7 +34,7 @@ export default function Home() {
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto">
-              Discover exceptional properties with our advanced search technology and expert guidance
+              Discover exceptional South African properties with our advanced search technology and expert guidance
             </p>
           </div>
           

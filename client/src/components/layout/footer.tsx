@@ -7,14 +7,16 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1">
-            <div className="flex items-center space-x-2 mb-6">
-              <div className="w-8 h-8 gradient-purple-orange rounded-lg flex items-center justify-center">
-                <Home className="w-4 h-4 text-white" />
-              </div>
-              <span className="text-xl font-bold">PropertyHub</span>
+            <div className="flex items-center space-x-3 mb-6">
+              <img 
+                src="https://images.prop24.com/248206504/Fit600x300" 
+                alt="SpurgeonProperty"
+                className="h-8 w-auto object-contain brightness-110"
+              />
+              <span className="text-xl font-bold">SpurgeonProperty</span>
             </div>
             <p className="text-slate-300 mb-6">
-              Your trusted partner in finding the perfect home. Expert guidance, exceptional service.
+              Your trusted partner in South African real estate. Expert guidance, exceptional service.
             </p>
             <div className="flex space-x-4">
               <a 
@@ -99,13 +101,13 @@ export default function Footer() {
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-orange-primary" />
-                <span>info@propertyhub.com</span>
+                <span>info@spurgeonproperty.com</span>
               </div>
               <div className="flex items-start space-x-3">
                 <MapPin className="w-4 h-4 text-orange-primary mt-1" />
                 <span>
-                  123 Real Estate Ave<br />
-                  Los Angeles, CA 90210
+                  South Africa<br />
+                  Property Services
                 </span>
               </div>
             </div>
@@ -113,7 +115,7 @@ export default function Footer() {
         </div>
         
         <div className="border-t border-slate-700 mt-12 pt-8 text-center text-slate-400">
-          <p>&copy; 2024 PropertyHub. All rights reserved. | Privacy Policy | Terms of Service</p>
+          <p>&copy; 2024 SpurgeonProperty. All rights reserved. | Privacy Policy | Terms of Service</p>
         </div>
       </div>
     </footer>
