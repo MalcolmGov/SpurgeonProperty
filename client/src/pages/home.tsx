@@ -2,6 +2,7 @@ import SimpleHeader from "@/components/layout/simple-header";
 import Footer from "@/components/layout/footer";
 import PropertySearch from "@/components/property/property-search";
 import PropertyCard from "@/components/property/property-card";
+import PropertyCardSkeleton from "@/components/property/property-card-skeleton";
 import { Button } from "@/components/ui/button";
 import { useProperties } from "@/hooks/use-properties";
 import { Link } from "wouter";
@@ -178,7 +179,7 @@ export default function Home() {
             {isLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="bg-gray-200 dark:bg-slate-700 rounded-xl h-96 animate-pulse"></div>
+                  <PropertyCardSkeleton key={i} />
                 ))}
               </div>
             ) : (

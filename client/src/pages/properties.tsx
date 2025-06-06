@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import PropertyCard from "@/components/PropertyCard";
+import PropertyCardSkeleton from "@/components/property/property-card-skeleton";
 import AdvancedPropertySearch from "@/components/AdvancedPropertySearch";
 import PropertyComparison from "@/components/PropertyComparison";
 import { Button } from "@/components/ui/button";
@@ -274,15 +275,13 @@ export default function Properties() {
 
             {/* Property Grid/List */}
             {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className={`grid gap-6 ${
+                viewMode === "grid" 
+                  ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" 
+                  : "grid-cols-1"
+              }`}>
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="animate-pulse">
-                    <div className="bg-gray-200 dark:bg-gray-700 h-48 rounded-lg mb-4" />
-                    <div className="space-y-2">
-                      <div className="bg-gray-200 dark:bg-gray-700 h-4 rounded w-3/4" />
-                      <div className="bg-gray-200 dark:bg-gray-700 h-4 rounded w-1/2" />
-                    </div>
-                  </div>
+                  <PropertyCardSkeleton key={i} viewMode={viewMode} />
                 ))}
               </div>
             ) : paginatedProperties.length === 0 ? (
