@@ -13,6 +13,8 @@ export const properties = pgTable("properties", {
   city: text("city").notNull(),
   province: text("province").notNull(),
   postalCode: text("postal_code").notNull(),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }),
   propertyType: text("property_type").notNull(), // house, apartment, townhouse, flat, cluster_home, farm, vacant_land
   bedrooms: integer("bedrooms").notNull(),
   bathrooms: decimal("bathrooms", { precision: 3, scale: 1 }).notNull(),
