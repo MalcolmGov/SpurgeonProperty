@@ -12,7 +12,7 @@ export default function Home() {
   const { data: featuredProperties, isLoading } = useProperties({ featured: true, limit: 3 });
 
   return (
-    <div>
+    <>
       {/* SPURGEON PROPERTY HEADER */}
       <div style={{
         position: 'fixed',
@@ -28,65 +28,65 @@ export default function Home() {
         justifyContent: 'space-between',
         padding: '0 2rem',
         boxShadow: '0 8px 32px rgba(79, 70, 229, 0.3), 0 4px 16px rgba(0,0,0,0.1)',
-        backdropFilter: 'blur(20px)'
+        backdropFilter: 'blur(12px)',
+        borderImageSource: 'linear-gradient(90deg, #f59e0b, #eab308, #f59e0b)',
+        borderImageSlice: 1
       }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '16px'
-        }}>
-          {/* Spurgeon Property Logo */}
+        {/* Logo Section */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <img 
             src={spurgeonLogo} 
             alt="Spurgeon Property" 
-            style={{
-              height: '60px',
-              width: 'auto',
-              filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.2))'
-            }}
+            style={{ height: '60px', width: 'auto' }}
           />
-        </div>
         </div>
 
         {/* Navigation */}
-        <nav style={{ 
-          display: 'flex', 
-          gap: '2rem',
-          alignItems: 'center'
-        }}>
-          <span style={{ 
-            color: '#ffffff',
+        <nav style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+          <a href="/" style={{
+            color: 'white',
             fontWeight: '600',
             fontSize: '16px',
-            cursor: 'pointer',
-            padding: '8px 16px',
-            borderRadius: '8px',
             transition: 'all 0.3s ease',
-            background: 'rgba(255,255,255,0.1)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255,255,255,0.2)'
+            textDecoration: 'none'
           }}>
             Home
-          </span>
-          <a href="/properties" style={{ 
-            color: '#e2e8f0',
-            fontWeight: '500',
+          </a>
+          <a href="/properties" style={{
+            color: 'white',
+            fontWeight: '600',
             fontSize: '16px',
-            cursor: 'pointer',
-            padding: '8px 16px',
-            borderRadius: '8px',
             transition: 'all 0.3s ease',
             textDecoration: 'none'
           }}>
             Properties
           </a>
-          <a href="/admin/dashboard" style={{ 
-            color: '#e2e8f0',
-            fontWeight: '500',
+          <a href="/sell-property" style={{
+            color: 'white',
+            fontWeight: '600',
             fontSize: '16px',
-            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            textDecoration: 'none'
+          }}>
+            Sell Property
+          </a>
+          <a href="/map" style={{
+            color: 'white',
+            fontWeight: '600',
+            fontSize: '16px',
+            transition: 'all 0.3s ease',
+            textDecoration: 'none'
+          }}>
+            Map
+          </a>
+          <a href="/admin" style={{
+            background: 'rgba(245, 158, 11, 0.2)',
             padding: '8px 16px',
             borderRadius: '8px',
+            color: 'white',
+            fontWeight: '600',
+            fontSize: '16px',
+            border: '1px solid rgba(245, 158, 11, 0.4)',
             transition: 'all 0.3s ease',
             textDecoration: 'none'
           }}>
@@ -104,159 +104,167 @@ export default function Home() {
       `}</style>
 
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900" style={{ marginTop: '90px' }}>
-      
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ paddingTop: '80px' }}>
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080" 
-            alt="Modern city skyline" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 gradient-overlay"></div>
-        </div>
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="animate-slide-up">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
-              Find Your
-              <span className="gradient-purple-orange bg-clip-text text-transparent ml-4">
-                Dream Home
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto">
-              Discover exceptional South African properties with our advanced search technology and expert guidance
-            </p>
+        {/* Hero Section */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ paddingTop: '80px' }}>
+          <div className="absolute inset-0 z-0">
+            <img 
+              src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080" 
+              alt="Modern city skyline" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 gradient-overlay"></div>
           </div>
           
-          <div className="glass-morphism rounded-2xl p-6 max-w-4xl mx-auto animate-fade-in">
-            <PropertySearch />
-          </div>
-          
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16">
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-white">12,500+</div>
-              <div className="text-gray-300">Properties</div>
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="animate-slide-up">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+                Find Your Perfect
+                <span className="block bg-gradient-to-r from-orange-primary to-yellow-400 bg-clip-text text-transparent">
+                  Dream Home
+                </span>
+              </h1>
+              <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed">
+                Discover exceptional properties in South Africa's most desirable locations with personalized service from our expert agents
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+                <Button size="lg" className="bg-orange-primary hover:bg-orange-600 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                  <Link href="/properties">Explore Properties</Link>
+                </Button>
+                <Button variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-slate-800 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300">
+                  <Link href="/sell-property">Sell Your Property</Link>
+                </Button>
+              </div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-white">8,200+</div>
-              <div className="text-gray-300">Happy Clients</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-white">15,600+</div>
-              <div className="text-gray-300">Sold Properties</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-white">150+</div>
-              <div className="text-gray-300">Expert Agents</div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Featured Properties */}
-      <section className="py-20 bg-white dark:bg-slate-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">
-              Featured Properties
-            </h2>
-            <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-              Discover handpicked properties that offer exceptional value and prime locations
-            </p>
+            {/* Search Section */}
+            <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-2xl max-w-4xl mx-auto">
+              <PropertySearch />
+            </div>
           </div>
-          
-          {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className="bg-slate-200 dark:bg-slate-700 rounded-2xl h-80 animate-pulse" />
-              ))}
+
+          {/* Stats Section */}
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900/80 to-transparent p-8">
+            <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+              <div>
+                <div className="text-3xl md:text-4xl font-bold text-white">500+</div>
+                <div className="text-gray-300">Properties Listed</div>
+              </div>
+              <div>
+                <div className="text-3xl md:text-4xl font-bold text-white">200+</div>
+                <div className="text-gray-300">Happy Clients</div>
+              </div>
+              <div>
+                <div className="text-3xl md:text-4xl font-bold text-white">50+</div>
+                <div className="text-gray-300">Areas Covered</div>
+              </div>
+              <div>
+                <div className="text-3xl md:text-4xl font-bold text-white">150+</div>
+                <div className="text-gray-300">Expert Agents</div>
+              </div>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredProperties?.map((property) => (
-                <PropertyCard key={property.id} property={property} />
-              ))}
+          </div>
+        </section>
+
+        {/* Featured Properties */}
+        <section className="py-20 bg-white dark:bg-slate-900">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">
+                Featured Properties
+              </h2>
+              <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+                Discover handpicked properties that offer exceptional value and prime locations
+              </p>
             </div>
-          )}
-          
-          <div className="text-center mt-12">
-            <Link href="/properties">
-              <Button className="bg-orange-primary hover:bg-orange-secondary text-white px-8 py-3 text-lg">
-                View All Properties
+            
+            {isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="bg-gray-200 dark:bg-slate-700 rounded-xl h-96 animate-pulse"></div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {featuredProperties?.map((property) => (
+                  <PropertyCard key={property.id} property={property} />
+                ))}
+              </div>
+            )}
+
+            <div className="text-center mt-12">
+              <Button size="lg" variant="outline" className="border-2 border-orange-primary text-orange-primary hover:bg-orange-primary hover:text-white">
+                <Link href="/properties">View All Properties</Link>
               </Button>
-            </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-slate-50 dark:bg-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">
-              Why Choose PropertyHub
-            </h2>
-            <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-              We provide comprehensive real estate services with cutting-edge technology
-            </p>
+        {/* Features Section */}
+        <section className="py-20 bg-slate-50 dark:bg-slate-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">
+                Why Choose Spurgeon Property
+              </h2>
+              <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+                We provide comprehensive real estate services with cutting-edge technology
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="text-center group">
+                <div className="w-16 h-16 bg-purple-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <Building className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
+                  Premium Properties
+                </h3>
+                <p className="text-slate-600 dark:text-slate-300">
+                  Carefully curated selection of luxury and family homes
+                </p>
+              </div>
+              
+              <div className="text-center group">
+                <div className="w-16 h-16 bg-orange-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <Users className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
+                  Expert Agents
+                </h3>
+                <p className="text-slate-600 dark:text-slate-300">
+                  Professional agents with deep market knowledge
+                </p>
+              </div>
+              
+              <div className="text-center group">
+                <div className="w-16 h-16 bg-green-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <TrendingUp className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
+                  Market Insights
+                </h3>
+                <p className="text-slate-600 dark:text-slate-300">
+                  Data-driven analysis and neighborhood analytics
+                </p>
+              </div>
+              
+              <div className="text-center group">
+                <div className="w-16 h-16 bg-blue-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <Award className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
+                  Trusted Service
+                </h3>
+                <p className="text-slate-600 dark:text-slate-300">
+                  Recognized excellence in real estate services
+                </p>
+              </div>
+            </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center group">
-              <div className="w-16 h-16 bg-purple-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <Building className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
-                Premium Properties
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300">
-                Carefully curated selection of luxury and family homes
-              </p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="w-16 h-16 bg-orange-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <Users className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
-                Expert Agents
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300">
-                Professional real estate experts to guide your journey
-              </p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="w-16 h-16 bg-purple-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <TrendingUp className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
-                Market Insights
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300">
-                Real-time market data and pricing analytics
-              </p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="w-16 h-16 bg-orange-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                <Award className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
-                Award Winning
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300">
-                Recognized excellence in real estate services
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <Footer />
-      </div>
+        <Footer />
       </div>
     </>
   );
