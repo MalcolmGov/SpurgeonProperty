@@ -8,6 +8,7 @@ import Home from "@/pages/home";
 import Properties from "@/pages/properties";
 import PropertyDetail from "@/pages/property-detail";
 import MapPage from "@/pages/map";
+import SellProperty from "@/pages/sell-property";
 import AdminDashboard from "@/pages/admin-dashboard";
 import AdminProperties from "@/pages/admin/properties";
 import AdminLeads from "@/pages/admin/leads";
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/properties/:id" component={PropertyDetail} />
       <Route path="/properties" component={Properties} />
+      <Route path="/sell" component={SellProperty} />
       <Route path="/map" component={MapPage} />
       <Route path="/" component={Home} />
       <Route component={NotFound} />

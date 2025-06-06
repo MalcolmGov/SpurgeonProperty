@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Home, Search, Users, Settings, Menu } from "lucide-react";
+import { Home, Search, Users, Settings, Menu, PlusCircle } from "lucide-react";
 import { useTheme } from "next-themes";
 
 export default function Navigation() {
@@ -22,6 +22,7 @@ export default function Navigation() {
   const navItems = [
     { href: "/", label: "Home", icon: Home },
     { href: "/properties", label: "Properties", icon: Search },
+    { href: "/sell", label: "Sell Property", icon: PlusCircle },
     { href: "/admin", label: "Admin", icon: Settings },
   ];
 
