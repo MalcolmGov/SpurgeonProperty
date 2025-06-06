@@ -96,13 +96,7 @@ export default function Home() {
         </nav>
       </div>
 
-      <style>{`
-        @keyframes shine {
-          0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-          50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-          100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-        }
-      `}</style>
+
 
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900" style={{ marginTop: '90px' }}>
         {/* Hero Section */}
