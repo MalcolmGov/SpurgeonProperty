@@ -134,7 +134,7 @@ export default function PropertyDetail() {
                 </h1>
                 <p className="text-slate-600 dark:text-slate-300 mb-6 flex items-center">
                   <MapPin className="w-4 h-4 text-orange-primary mr-2" />
-                  {property.address}, {property.city}, {property.state} {property.zipCode}
+                  {property.address}, {property.suburb}, {property.city}, {property.province} {property.postalCode}
                 </p>
                 
                 {/* Property Features */}
