@@ -18,51 +18,133 @@ export default function Home() {
         top: 0,
         left: 0,
         right: 0,
-        height: '80px',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        borderBottom: '3px solid #f97316',
+        height: '90px',
+        background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #c026d3 100%)',
+        borderBottom: '4px solid #f59e0b',
         zIndex: 9999,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+        justifyContent: 'space-between',
+        padding: '0 2rem',
+        boxShadow: '0 8px 32px rgba(79, 70, 229, 0.3), 0 4px 16px rgba(0,0,0,0.1)',
+        backdropFilter: 'blur(20px)'
       }}>
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '12px'
+          gap: '16px'
         }}>
+          {/* Logo Icon */}
           <div style={{
-            width: '40px',
-            height: '40px',
-            background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
-            borderRadius: '8px',
+            width: '50px',
+            height: '50px',
+            background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)',
+            borderRadius: '12px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 2px 8px rgba(249, 115, 22, 0.3)'
+            boxShadow: '0 4px 16px rgba(251, 191, 36, 0.4), inset 0 1px 0 rgba(255,255,255,0.2)',
+            position: 'relative',
+            overflow: 'hidden'
           }}>
+            <div style={{
+              position: 'absolute',
+              top: '-50%',
+              left: '-50%',
+              width: '200%',
+              height: '200%',
+              background: 'linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)',
+              animation: 'shine 3s ease-in-out infinite'
+            }}></div>
             <span style={{ 
-              fontSize: '20px',
-              filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))'
+              fontSize: '24px',
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
+              zIndex: 1
             }}>🏢</span>
           </div>
-          <div style={{
-            fontSize: '32px',
-            fontWeight: 'bold',
-            background: 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            textShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            letterSpacing: '-0.5px'
-          }}>
-            SpurgeonProperty
+          
+          {/* Brand Name */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <div style={{
+              fontSize: '36px',
+              fontWeight: '800',
+              background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))',
+              letterSpacing: '-1px',
+              fontFamily: '"Inter", sans-serif'
+            }}>
+              SpurgeonProperty
+            </div>
+            <div style={{
+              fontSize: '12px',
+              color: '#fbbf24',
+              fontWeight: '600',
+              letterSpacing: '1px',
+              textTransform: 'uppercase',
+              marginLeft: '2px'
+            }}>
+              Premium Real Estate
+            </div>
           </div>
         </div>
+
+        {/* Navigation */}
+        <nav style={{ 
+          display: 'flex', 
+          gap: '2rem',
+          alignItems: 'center'
+        }}>
+          <span style={{ 
+            color: '#ffffff',
+            fontWeight: '600',
+            fontSize: '16px',
+            cursor: 'pointer',
+            padding: '8px 16px',
+            borderRadius: '8px',
+            transition: 'all 0.3s ease',
+            background: 'rgba(255,255,255,0.1)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255,255,255,0.2)'
+          }}>
+            Home
+          </span>
+          <span style={{ 
+            color: '#e2e8f0',
+            fontWeight: '500',
+            fontSize: '16px',
+            cursor: 'pointer',
+            padding: '8px 16px',
+            borderRadius: '8px',
+            transition: 'all 0.3s ease'
+          }}>
+            Properties
+          </span>
+          <span style={{ 
+            color: '#e2e8f0',
+            fontWeight: '500',
+            fontSize: '16px',
+            cursor: 'pointer',
+            padding: '8px 16px',
+            borderRadius: '8px',
+            transition: 'all 0.3s ease'
+          }}>
+            Admin
+          </span>
+        </nav>
       </div>
 
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900" style={{ marginTop: '80px' }}>
+      <style>{`
+        @keyframes shine {
+          0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+          50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+          100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        }
+      `}</style>
+
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900" style={{ marginTop: '90px' }}>
       
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ paddingTop: '80px' }}>
