@@ -43,20 +43,20 @@ export default function PropertySearch() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="space-y-2">
-          <label className="text-white text-sm font-medium">Location</label>
+          <label className="text-slate-700 text-sm font-medium">Location</label>
           <Input
             type="text"
             placeholder="Enter city or neighborhood"
             value={searchData.location}
             onChange={(e) => handleInputChange("location", e.target.value)}
-            className="bg-white/20 border-white/30 text-white placeholder-gray-300 focus:ring-purple-primary"
+            className="bg-white border-slate-200 text-slate-900 placeholder-slate-400"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="text-white text-sm font-medium">Property Type</label>
+          <label className="text-slate-700 text-sm font-medium">Property Type</label>
           <Select value={searchData.propertyType} onValueChange={(value) => handleInputChange("propertyType", value)}>
-            <SelectTrigger className="bg-white/20 border-white/30 text-white focus:ring-purple-primary">
+            <SelectTrigger className="bg-white border-slate-200 text-slate-900">
               <SelectValue placeholder="Any Type" />
             </SelectTrigger>
             <SelectContent>
@@ -69,9 +69,9 @@ export default function PropertySearch() {
         </div>
         
         <div className="space-y-2">
-          <label className="text-white text-sm font-medium">Price Range</label>
+          <label className="text-slate-700 text-sm font-medium">Price Range</label>
           <Select value={searchData.priceRange} onValueChange={(value) => handleInputChange("priceRange", value)}>
-            <SelectTrigger className="bg-white/20 border-white/30 text-white focus:ring-purple-primary">
+            <SelectTrigger className="bg-white border-slate-200 text-slate-900">
               <SelectValue placeholder="Any Price" />
             </SelectTrigger>
             <SelectContent>
@@ -85,9 +85,9 @@ export default function PropertySearch() {
         </div>
         
         <div className="space-y-2">
-          <label className="text-white text-sm font-medium">Bedrooms</label>
+          <label className="text-slate-700 text-sm font-medium">Bedrooms</label>
           <Select value={searchData.bedrooms} onValueChange={(value) => handleInputChange("bedrooms", value)}>
-            <SelectTrigger className="bg-white/20 border-white/30 text-white focus:ring-purple-primary">
+            <SelectTrigger className="bg-white border-slate-200 text-slate-900">
               <SelectValue placeholder="Any" />
             </SelectTrigger>
             <SelectContent>
