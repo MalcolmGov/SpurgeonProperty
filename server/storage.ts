@@ -184,13 +184,17 @@ export class DatabaseStorage implements IStorage {
   }
 
   async incrementPropertyViews(id: number): Promise<void> {
-    await db
-      .update(properties)
-      .set({ 
-        views: properties.views + 1,
-        updatedAt: new Date()
-      })
-      .where(eq(properties.id, id));
+    // Get current property to increment views
+    const currentProperty = await this.getProperty(id);
+    if (currentProperty) {
+      await db
+        .update(properties)
+        .set({ 
+          views: (currentProperty.views || 0) + 1,
+          updatedAt: new Date()
+        })
+        .where(eq(properties.id, id));
+    }
   }
 
   async getAgents(): Promise<Agent[]> {
