@@ -33,8 +33,8 @@ export default function Header() {
             {navigation.map((item) => (
               <Link key={item.name} href={item.href}>
                 <button
-                  className={`text-slate-600 dark:text-slate-300 hover:text-purple-primary dark:hover:text-purple-primary transition-colors ${
-                    isActive(item.href) ? "text-purple-primary font-medium" : ""
+                  className={`text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors ${
+                    isActive(item.href) ? "text-purple-600 font-medium" : ""
                   }`}
                 >
                   {item.name}
@@ -47,7 +47,7 @@ export default function Header() {
               <Sun className="w-4 h-4" />
             </Button>
             
-            <Button className="bg-purple-primary hover:bg-purple-secondary text-white">
+            <Button className="bg-purple-600 hover:bg-purple-700 text-white">
               Sign In
             </Button>
           </div>

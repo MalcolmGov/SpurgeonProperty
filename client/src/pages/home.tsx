@@ -1,4 +1,4 @@
-import Header from "@/components/layout/header";
+import SimpleHeader from "@/components/layout/simple-header";
 import Footer from "@/components/layout/footer";
 import PropertySearch from "@/components/property/property-search";
 import PropertyCard from "@/components/property/property-card";
@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      <Header />
+      <SimpleHeader />
       
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
