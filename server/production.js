@@ -3,11 +3,13 @@ import { createServer } from "http";
 import { WebSocketServer } from "ws";
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import pg from "pg";
+import { Pool, neonConfig } from '@neondatabase/serverless';
+import ws from "ws";
 
-const { Pool } = pg;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+neonConfig.webSocketConstructor = ws;
 
 // Database setup with proper error handling
 if (!process.env.DATABASE_URL) {
@@ -16,11 +18,7 @@ if (!process.env.DATABASE_URL) {
 }
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  connectionString: process.env.DATABASE_URL
 });
 
 // Test database connection

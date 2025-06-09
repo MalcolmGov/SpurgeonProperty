@@ -1,5 +1,6 @@
-import pg from "pg";
-const { Pool } = pg;
+import { db } from './db';
+import { properties, agents, leads, inquiries } from '@shared/schema';
+import { eq, and, or, like, gte, lte, desc, asc } from 'drizzle-orm';
 import type { 
   Property, 
   InsertProperty, 
@@ -12,12 +13,6 @@ import type {
   PropertyWithAgent,
   LeadWithProperty 
 } from "@shared/schema";
-
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL must be set. Did you forget to provision a database?");
-}
-
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 export interface IStorage {
   // Properties

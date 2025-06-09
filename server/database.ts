@@ -1,22 +1,14 @@
-import pg from "pg";
-const { Pool } = pg;
+import { Pool, neonConfig } from '@neondatabase/serverless';
+import ws from "ws";
+
+neonConfig.webSocketConstructor = ws;
 
 if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL must be set. Did you forget to provision a database?");
 }
 
 const pool = new Pool({ 
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
-
-// Test database connection on startup
-pool.on('error', (err) => {
-  console.error('Unexpected error on idle database client:', err);
-  process.exit(-1);
+  connectionString: process.env.DATABASE_URL
 });
 
 export async function testDatabaseConnection(): Promise<void> {
