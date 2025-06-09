@@ -10,6 +10,7 @@ import {
 } from "@shared/schema";
 import { getNeighborhoodAnalytics } from "./neighborhood-service";
 import { openaiService, type PropertyDetails } from "./openai-service";
+import { anthropicService } from "./anthropic-service";
 import { z } from "zod";
 import multer from "multer";
 import path from "path";
