@@ -149,12 +149,19 @@ export default function PropertyCard({
         
         {/* Overlay Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
-          {property.featured && (
-            <Badge className="bg-yellow-500 text-white">Featured</Badge>
+          <div className="flex gap-2">
+            {property.featured && (
+              <Badge className="bg-yellow-500 text-white">Featured</Badge>
+            )}
+            <Badge className={getStatusColor(property.status || 'active')}>
+              {property.status || 'Active'}
+            </Badge>
+          </div>
+          {property.propertyType && (
+            <Badge className="bg-blue-600 text-white capitalize">
+              {property.propertyType.replace('_', ' ')}
+            </Badge>
           )}
-          <Badge className={getStatusColor(property.status || 'active')}>
-            {property.status || 'Active'}
-          </Badge>
         </div>
 
         {/* Action Buttons */}

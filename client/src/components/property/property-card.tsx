@@ -40,12 +40,22 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
                   e.currentTarget.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Im0xNzUgMTQwIDUwIDUwIDI1LTI1IDUwIDUwVjE4MEgxNzVWMTQwWiIgZmlsbD0iI0U1RTdFQiIvPgo8Y2lyY2xlIGN4PSIxODAiIGN5PSIxMjAiIHI9IjEwIiBmaWxsPSIjRTVFN0VCIi8+Cjx0ZXh0IHg9IjE0MCIgeT0iMTYwIiBmaWxsPSIjOUI5QjlCIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiI+UHJvcGVydHkgSW1hZ2U8L3RleHQ+Cjwvc3ZnPgo=";
                 }}
               />
-              <div className="absolute top-3 left-3">
-                {property.featured && (
-                  <Badge className="bg-orange-primary text-white">Featured</Badge>
-                )}
-                {property.status === "sold" && (
-                  <Badge className="bg-red-500 text-white ml-2">Sold</Badge>
+              <div className="absolute top-3 left-3 flex flex-col gap-2">
+                <div className="flex gap-2">
+                  {property.featured && (
+                    <Badge className="bg-orange-primary text-white">Featured</Badge>
+                  )}
+                  {property.status === "sold" && (
+                    <Badge className="bg-red-500 text-white">Sold</Badge>
+                  )}
+                  {property.status === "pending" && (
+                    <Badge className="bg-yellow-500 text-white">Pending</Badge>
+                  )}
+                </div>
+                {property.propertyType && (
+                  <Badge className="bg-blue-600 text-white capitalize">
+                    {property.propertyType.replace('_', ' ')}
+                  </Badge>
                 )}
               </div>
               <Button
@@ -106,15 +116,22 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
               e.currentTarget.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Im0xNzUgMTQwIDUwIDUwIDI1LTI1IDUwIDUwVjE4MEgxNzVWMTQwWiIgZmlsbD0iI0U1RTdFQiIvPgo8Y2lyY2xlIGN4PSIxODAiIGN5PSIxMjAiIHI9IjEwIiBmaWxsPSIjRTVFN0VCIi8+Cjx0ZXh0IHg9IjE0MCIgeT0iMTYwIiBmaWxsPSIjOUI5QjlCIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiI+UHJvcGVydHkgSW1hZ2U8L3RleHQ+Cjwvc3ZnPgo=";
             }}
           />
-          <div className="absolute top-4 left-4 flex gap-2">
-            {property.featured && (
-              <Badge className="bg-orange-primary text-white">Featured</Badge>
-            )}
-            {property.status === "sold" && (
-              <Badge className="bg-red-500 text-white">Sold</Badge>
-            )}
-            {property.status === "pending" && (
-              <Badge className="bg-yellow-500 text-white">Pending</Badge>
+          <div className="absolute top-4 left-4 flex flex-col gap-2">
+            <div className="flex gap-2">
+              {property.featured && (
+                <Badge className="bg-orange-primary text-white">Featured</Badge>
+              )}
+              {property.status === "sold" && (
+                <Badge className="bg-red-500 text-white">Sold</Badge>
+              )}
+              {property.status === "pending" && (
+                <Badge className="bg-yellow-500 text-white">Pending</Badge>
+              )}
+            </div>
+            {property.propertyType && (
+              <Badge className="bg-blue-600 text-white capitalize">
+                {property.propertyType.replace('_', ' ')}
+              </Badge>
             )}
           </div>
           <Button
