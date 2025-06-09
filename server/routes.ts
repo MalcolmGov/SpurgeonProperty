@@ -116,11 +116,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Property scraping route
-  app.post("/api/scrape-properties", async (req: Request, res: Response) => {
+  // Property extraction route
+  app.post("/api/extract-spurgeon-properties", async (req: Request, res: Response) => {
     try {
-      const { scrapeAndImportProperties } = await import('./property-scraper');
-      const result = await scrapeAndImportProperties();
+      const { extractSpurgeonProperties } = await import('./spurgeon-extractor');
+      console.log('Starting Spurgeon Property extraction...');
+      
+      const result = await extractSpurgeonProperties();
       
       res.json({
         success: result.success,
@@ -128,10 +130,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         propertiesImported: result.count
       });
     } catch (error) {
-      console.error("Property scraping error:", error);
+      console.error("Spurgeon property extraction error:", error);
       res.status(500).json({
         success: false,
-        message: "Failed to scrape properties",
+        message: "Failed to extract properties from Spurgeon Property",
         error: error instanceof Error ? error.message : "Unknown error"
       });
     }
