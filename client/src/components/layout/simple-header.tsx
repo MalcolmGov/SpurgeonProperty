@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Building } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 export default function SimpleHeader() {
   return (
@@ -25,22 +25,10 @@ export default function SimpleHeader() {
           <a style={{ 
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
             textDecoration: 'none',
             color: 'inherit'
           }}>
-            <Building style={{ 
-              width: '32px',
-              height: '32px',
-              color: '#7c3aed'
-            }} />
-            <span style={{ 
-              fontSize: '24px',
-              fontWeight: 'bold',
-              color: '#1f2937'
-            }}>
-              SpurgeonProperty
-            </span>
+            <Logo />
           </a>
         </Link>
 

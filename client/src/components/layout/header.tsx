@@ -4,6 +4,7 @@ import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Home, Building, Users, MapPin, Sun, Moon, Menu } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 export default function Header() {
   const [location] = useLocation();
@@ -23,10 +24,9 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <Link href="/" className="flex items-center space-x-2">
-              <Building className="h-8 w-8 text-purple-600" />
-              <span className="text-xl font-bold text-gray-900 dark:text-white">SpurgeonProperty</span>
+          <div className="flex items-center">
+            <Link href="/" className="flex items-center">
+              <Logo />
             </Link>
           </div>
           
