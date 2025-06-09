@@ -9,7 +9,7 @@ import { useProperties } from "@/hooks/use-properties";
 import { Link, useLocation } from "wouter";
 import { Building, Users, TrendingUp, Award } from "lucide-react";
 import spurgeonLogo from "@/assets/spurgeon-logo.svg";
-import heroBackground from "@assets/image_1749196807837.png";
+import heroBackground from "@assets/image_1749441033035.png";
 
 export default function Home() {
   const { data: featuredProperties, isLoading } = useProperties({ featured: true, limit: 3 });
