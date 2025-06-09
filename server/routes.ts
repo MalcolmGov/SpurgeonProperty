@@ -1,4 +1,5 @@
 import type { Express } from "express";
+import type { Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage-working";
@@ -60,29 +61,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Serve static uploaded files
   app.use('/uploads', express.static(uploadDir));
 
-  // Image upload route
-  app.post("/api/upload", upload.array('images', 10), (req, res) => {
-    try {
-      const files = req.files as Express.Multer.File[];
-      if (!files || files.length === 0) {
-        return res.status(400).json({ message: "No files uploaded" });
-      }
-
-      const imageUrls = files.map(file => `/uploads/${file.filename}`);
-      res.json({ 
-        success: true,
-        urls: imageUrls,
-        message: `Successfully uploaded ${files.length} image(s)`
-      });
-    } catch (error) {
-      console.error('Upload error:', error);
-      res.status(500).json({ 
-        success: false,
-        message: "Failed to upload files. Please try again." 
-      });
-    }
-  });
-
 
 
   // Properties routes
@@ -124,7 +102,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Import authentic Spurgeon Property listings
-  app.post("/api/import-spurgeon-properties", async (req: Request, res: Response) => {
+  app.post("/api/import-spurgeon-properties", async (req, res) => {
     try {
       const { importSpurgeonProperties } = await import('./property-data-importer');
       console.log('Importing authentic Spurgeon Property listings...');
@@ -147,20 +125,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // File upload endpoint for property images
-  app.post("/api/upload", upload.array('images', 10), async (req: Request, res: Response) => {
+  app.post("/api/upload", upload.array('images', 10), async (req, res) => {
     try {
-      if (!req.files || !Array.isArray(req.files) || req.files.length === 0) {
+      const files = req.files as Express.Multer.File[];
+      if (!files || files.length === 0) {
         return res.status(400).json({ 
           success: false, 
           message: "No files uploaded" 
         });
       }
 
-      const urls = req.files.map(file => `/uploads/${file.filename}`);
+      const urls = files.map(file => `/uploads/${file.filename}`);
       
       res.json({
         success: true,
-        message: `Successfully uploaded ${req.files.length} image(s)`,
+        message: `Successfully uploaded ${files.length} image(s)`,
         urls: urls
       });
     } catch (error) {
