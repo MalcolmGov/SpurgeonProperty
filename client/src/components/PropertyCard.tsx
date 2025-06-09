@@ -203,7 +203,7 @@ export default function PropertyCard({
       </div>
 
       <CardContent className="p-4">
-        <Link href={`/property/${property.id}`}>
+        <Link href={`/properties/${property.id}`}>
           <h3 className="font-semibold text-lg mb-2 hover:text-primary cursor-pointer line-clamp-2">
             {property.title}
           </h3>
@@ -297,7 +297,7 @@ export default function PropertyCard({
         )}
 
         {/* Action Button */}
-        <Link href={`/property/${property.id}`}>
+        <Link href={`/properties/${property.id}`}>
           <Button className="w-full mt-3">
             View Details
           </Button>
