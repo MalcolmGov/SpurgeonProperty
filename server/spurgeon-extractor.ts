@@ -24,16 +24,11 @@ export class SpurgeonPropertyExtractor {
     
     const properties: PropertyListing[] = [];
     
-    // Extract from multiple city pages to get comprehensive listings
+    // Extract from key city pages (limited for faster execution)
     const cityPages = [
       '/property-for-sale-in-sandton-c109',
       '/property-for-sale-in-johannesburg-c100', 
-      '/property-for-sale-in-centurion-c3',
-      '/property-for-sale-in-midrand-c16',
-      '/property-for-sale-in-edenvale-c14',
-      '/property-for-sale-in-benoni-c22',
-      '/property-for-sale-in-germiston-c13',
-      '/property-for-sale'
+      '/property-for-sale-in-centurion-c3'
     ];
     
     for (const cityPage of cityPages) {
@@ -43,7 +38,7 @@ export class SpurgeonPropertyExtractor {
         properties.push(...cityProperties);
         
         // Be respectful to the server
-        await this.delay(2000);
+        await this.delay(1000);
       } catch (error) {
         console.error(`Error extracting from ${cityPage}:`, error);
       }

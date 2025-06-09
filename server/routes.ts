@@ -16,6 +16,7 @@ import { openaiService, type PropertyDetails } from "./openai-service";
 import { anthropicService } from "./anthropic-service";
 import { adminAuthService, requireAdminAuth, redirectIfAuthenticated } from "./admin-auth";
 import { extractSpurgeonProperties } from "./spurgeon-extractor";
+import { importSouthAfricanProperties } from "./south-african-properties";
 import { z } from "zod";
 import multer from "multer";
 import path from "path";
