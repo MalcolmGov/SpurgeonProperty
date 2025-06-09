@@ -105,12 +105,12 @@ export default function AdminDashboard() {
             <div className="flex items-center space-x-4">
               <NotificationPanel />
               <Button
-                onClick={handleScrapeProperties}
-                disabled={scrapePropertiesMutation.isPending}
+                onClick={handleImportProperties}
+                disabled={importPropertiesMutation.isPending}
                 variant="outline"
                 className="mr-2"
               >
-                {scrapePropertiesMutation.isPending ? (
+                {importPropertiesMutation.isPending ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
                   <Download className="mr-2 h-4 w-4" />

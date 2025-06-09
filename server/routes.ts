@@ -16,7 +16,7 @@ import { openaiService, type PropertyDetails } from "./openai-service";
 import { anthropicService } from "./anthropic-service";
 import { adminAuthService, requireAdminAuth, redirectIfAuthenticated } from "./admin-auth";
 import { extractSpurgeonProperties } from "./spurgeon-extractor";
-import { importSouthAfricanProperties } from "./south-african-properties";
+import { importSampleProperties } from "./sample-properties";
 import { z } from "zod";
 import multer from "multer";
 import path from "path";
@@ -604,7 +604,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/admin/import-properties", requireAdminAuth, async (req, res) => {
     try {
       console.log('Starting property import...');
-      const result = await importSouthAfricanProperties();
+      const result = await importSampleProperties();
       
       if (result.success) {
         res.json({ 
