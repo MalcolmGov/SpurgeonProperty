@@ -26,9 +26,19 @@ export function ThemeProvider({
   storageKey = "spurgeon-ui-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
-  );
+  const [theme, setTheme] = useState<Theme>(() => {
+    // Clear any existing theme storage to force light mode
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem(storageKey) as Theme;
+      // If no stored theme or stored theme is system, use light
+      if (!stored || stored === 'system') {
+        localStorage.setItem(storageKey, 'light');
+        return 'light';
+      }
+      return stored;
+    }
+    return defaultTheme;
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;
