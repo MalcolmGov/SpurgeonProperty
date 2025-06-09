@@ -143,8 +143,8 @@ export default function AdminLogin() {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-500 rounded-full mb-4">
             <Building2 className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Admin Portal</h1>
-          <p className="text-slate-400">Secure access to property management</p>
+          <h1 className="text-3xl font-bold text-white mb-2">PropertyHub Admin</h1>
+          <p className="text-slate-400">Secure access to property management platform</p>
         </div>
 
         <Card className="bg-white/95 backdrop-blur-sm shadow-2xl">
