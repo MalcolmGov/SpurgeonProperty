@@ -18,11 +18,11 @@ export default function Footer() {
                 </div>
                 {/* Enhanced Text Logo */}
                 <div className="flex flex-col">
-                  <span className="text-lg font-bold bg-gradient-to-r from-purple-400 to-orange-400 bg-clip-text text-transparent leading-tight">
-                    Spurgeon
+                  <span className="text-lg font-bold bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent leading-tight">
+                    PropertyHub
                   </span>
                   <span className="text-xs font-semibold text-gray-400 -mt-1 tracking-wider">
-                    PROPERTY
+                    REAL ESTATE
                   </span>
                 </div>
               </div>

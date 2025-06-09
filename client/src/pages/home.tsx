@@ -8,8 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useProperties } from "@/hooks/use-properties";
 import { Link, useLocation } from "wouter";
 import { Building, Users, TrendingUp, Award } from "lucide-react";
-import spurgeonLogo from "@/assets/spurgeon-logo.svg";
-import heroBackground from "@/assets/image_1749441033035.png";
+import propertyLogo from "@/assets/property-logo.svg";
 
 export default function Home() {
   const { data: featuredProperties, isLoading } = useProperties({ featured: true, limit: 3 });
@@ -54,9 +53,9 @@ export default function Home() {
         {/* Logo Section */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <img 
-            src={spurgeonLogo} 
-            alt="Spurgeon Property" 
-            style={{ height: '70px', width: 'auto', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))' }}
+            src={propertyLogo} 
+            alt="PropertyHub - South African Real Estate" 
+            style={{ height: '50px', width: 'auto', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))' }}
           />
         </div>
 
@@ -136,13 +135,13 @@ export default function Home() {
           <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div>
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-                Find Your Perfect
+                Your Gateway to
                 <span className="block bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
-                  Dream Home
+                  Premium Properties
                 </span>
               </h1>
               <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed">
-                Discover exceptional properties in South Africa's most desirable locations with personalized service from our expert agents
+                Discover exceptional South African real estate with PropertyHub - your trusted partner for premium property investments and dream homes
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">

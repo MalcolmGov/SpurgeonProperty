@@ -17,11 +17,14 @@ export default function AdminSidebar() {
   return (
     <div className="w-64 bg-white dark:bg-slate-800 shadow-lg min-h-screen">
       <div className="p-6">
-        <Link href="/" className="flex items-center space-x-2 mb-8">
-          <div className="w-8 h-8 gradient-purple-orange rounded-lg flex items-center justify-center">
-            <Home className="w-4 h-4 text-white" />
+        <Link href="/" className="flex items-center space-x-3 mb-8">
+          <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-500 rounded-lg flex items-center justify-center">
+            <Home className="w-5 h-5 text-white" />
           </div>
-          <span className="text-xl font-bold text-slate-800 dark:text-white">Admin Portal</span>
+          <div>
+            <span className="text-lg font-bold text-slate-800 dark:text-white block">PropertyHub</span>
+            <span className="text-xs text-slate-600 dark:text-slate-400">Admin Portal</span>
+          </div>
         </Link>
         
         <nav className="space-y-2">
