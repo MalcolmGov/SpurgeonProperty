@@ -433,6 +433,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // AI Chat Assistant endpoint
+  app.post("/api/ai/chat", async (req, res) => {
+    try {
+      const { message, context, conversationHistory } = req.body;
+      
+      if (!message || typeof message !== 'string') {
+        return res.status(400).json({ message: "Invalid message format" });
+      }
+
+      const chatResponse = await anthropicService.processChat({
+        message: message.trim(),
+        context,
+        conversationHistory
+      });
+
+      res.json(chatResponse);
+    } catch (error) {
+      console.error("Error processing chat:", error);
+      res.status(500).json({ 
+        response: "I'm experiencing some technical difficulties right now. Please try again in a moment.",
+        intent: "error",
+        suggestions: [
+          "Find properties in my budget",
+          "Tell me about neighborhoods", 
+          "Calculate mortgage options",
+          "What should I know about buying?"
+        ]
+      });
+    }
+  });
+
   const httpServer = createServer(app);
   
   // WebSocket server for real-time updates

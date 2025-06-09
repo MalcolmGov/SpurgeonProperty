@@ -3,15 +3,32 @@ import Footer from "@/components/layout/footer";
 import PropertySearch from "@/components/property/property-search";
 import PropertyCard from "@/components/property/property-card";
 import PropertyCardSkeleton from "@/components/property/property-card-skeleton";
+import SimpleAIAssistant from "@/components/SimpleAIAssistant";
 import { Button } from "@/components/ui/button";
 import { useProperties } from "@/hooks/use-properties";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Building, Users, TrendingUp, Award } from "lucide-react";
 import spurgeonLogo from "@/assets/spurgeon-logo.svg";
 import heroBackground from "@assets/image_1749196807837.png";
 
 export default function Home() {
   const { data: featuredProperties, isLoading } = useProperties({ featured: true, limit: 3 });
+  const [, navigate] = useLocation();
+
+  const handleAISearch = (query: string, filters: any) => {
+    // Navigate to properties page with search parameters
+    const searchParams = new URLSearchParams();
+    if (query) searchParams.set('search', query);
+    if (filters.propertyType) searchParams.set('propertyType', filters.propertyType);
+    if (filters.minPrice) searchParams.set('minPrice', filters.minPrice.toString());
+    if (filters.maxPrice) searchParams.set('maxPrice', filters.maxPrice.toString());
+    if (filters.bedrooms) searchParams.set('bedrooms', filters.bedrooms.toString());
+    if (filters.bathrooms) searchParams.set('bathrooms', filters.bathrooms.toString());
+    if (filters.suburb) searchParams.set('suburb', filters.suburb);
+    if (filters.city) searchParams.set('city', filters.city);
+    
+    navigate(`/properties?${searchParams.toString()}`);
+  };
 
   return (
     <>
@@ -194,6 +211,47 @@ export default function Home() {
               <Button size="lg" variant="outline" className="border-2 border-orange-primary text-orange-primary hover:bg-orange-primary hover:text-white">
                 <Link href="/properties">View All Properties</Link>
               </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* AI Assistant Section */}
+        <section className="py-20 bg-slate-50 dark:bg-slate-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-6">
+                  Your Personal Property Assistant
+                </h2>
+                <p className="text-xl text-slate-600 dark:text-slate-300 mb-8">
+                  Get instant answers about properties, neighborhoods, financing, and market insights. Our AI assistant is trained on South African real estate and is here to help you make informed decisions.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                    <span className="text-slate-600 dark:text-slate-300">Property search and recommendations</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                    <span className="text-slate-600 dark:text-slate-300">Mortgage calculations and financing advice</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                    <span className="text-slate-600 dark:text-slate-300">Neighborhood insights and market trends</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                    <span className="text-slate-600 dark:text-slate-300">Investment guidance and property valuations</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <AIAssistant 
+                  onSearchQuery={handleAISearch}
+                  className="shadow-2xl"
+                />
+              </div>
             </div>
           </div>
         </section>
