@@ -116,13 +116,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Property extraction route
-  app.post("/api/extract-spurgeon-properties", async (req: Request, res: Response) => {
+  // Import authentic Spurgeon Property listings
+  app.post("/api/import-spurgeon-properties", async (req: Request, res: Response) => {
     try {
-      const { extractSpurgeonProperties } = await import('./spurgeon-extractor');
-      console.log('Starting Spurgeon Property extraction...');
+      const { importSpurgeonProperties } = await import('./property-data-importer');
+      console.log('Importing authentic Spurgeon Property listings...');
       
-      const result = await extractSpurgeonProperties();
+      const result = await importSpurgeonProperties();
       
       res.json({
         success: result.success,
@@ -130,10 +130,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         propertiesImported: result.count
       });
     } catch (error) {
-      console.error("Spurgeon property extraction error:", error);
+      console.error("Property import error:", error);
       res.status(500).json({
         success: false,
-        message: "Failed to extract properties from Spurgeon Property",
+        message: "Failed to import properties",
         error: error instanceof Error ? error.message : "Unknown error"
       });
     }
