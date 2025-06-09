@@ -24,8 +24,28 @@ export class AdminAuthService {
     return crypto.randomBytes(32).toString('hex');
   }
 
+  // Check if email is authorized for admin access
+  isAuthorizedEmail(email: string): boolean {
+    const authorizedDomains = ['spurgeonproperty.com'];
+    const authorizedEmails = ['Malcolmgov24@gmail.com'];
+    
+    // Check specific authorized emails
+    if (authorizedEmails.includes(email)) {
+      return true;
+    }
+    
+    // Check authorized domains
+    const emailDomain = email.split('@')[1]?.toLowerCase();
+    return authorizedDomains.some(domain => emailDomain === domain.toLowerCase());
+  }
+
   // Register new admin user
   async registerAdmin(userData: InsertAdminUser): Promise<AdminUser> {
+    // Check if email is authorized for admin access
+    if (!this.isAuthorizedEmail(userData.email)) {
+      throw new Error("Email domain not authorized for admin access");
+    }
+
     const passwordHash = await this.hashPassword(userData.password);
     
     const [adminUser] = await db
@@ -44,6 +64,11 @@ export class AdminAuthService {
 
   // Login admin user
   async loginAdmin(credentials: AdminLoginData): Promise<{ user: AdminUser; sessionId: string } | null> {
+    // Check if email is authorized for admin access
+    if (!this.isAuthorizedEmail(credentials.email)) {
+      throw new Error("Email domain not authorized for admin access");
+    }
+
     // Find user by email
     const [user] = await db
       .select()

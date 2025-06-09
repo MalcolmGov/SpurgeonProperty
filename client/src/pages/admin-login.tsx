@@ -264,11 +264,14 @@ export default function AdminLogin() {
                       <Input
                         id="register-email"
                         type="email"
-                        placeholder="admin@example.com"
+                        placeholder="admin@spurgeonproperty.com"
                         className="pl-10"
                         {...registerForm.register("email")}
                       />
                     </div>
+                    <p className="text-xs text-slate-500">
+                      Only @spurgeonproperty.com and Malcolmgov24@gmail.com are authorized
+                    </p>
                     {registerForm.formState.errors.email && (
                       <Alert variant="destructive">
                         <AlertDescription>

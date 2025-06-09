@@ -544,6 +544,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid registration data", errors: error.errors });
       }
+      if (error instanceof Error && error.message === "Email domain not authorized for admin access") {
+        return res.status(403).json({ 
+          message: "Only @spurgeonproperty.com email addresses and Malcolmgov24@gmail.com are authorized for admin access" 
+        });
+      }
       console.error('Admin registration error:', error);
       res.status(500).json({ message: "Failed to create admin user" });
     }
@@ -577,6 +582,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid login data", errors: error.errors });
+      }
+      if (error instanceof Error && error.message === "Email domain not authorized for admin access") {
+        return res.status(403).json({ 
+          message: "Only @spurgeonproperty.com email addresses and Malcolmgov24@gmail.com are authorized for admin access" 
+        });
       }
       console.error('Admin login error:', error);
       res.status(500).json({ message: "Failed to login" });
