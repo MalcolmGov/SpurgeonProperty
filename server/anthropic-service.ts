@@ -28,16 +28,17 @@ interface ChatResponse {
 }
 
 class AnthropicService {
-  private anthropic: Anthropic;
+  private anthropic: Anthropic | null = null;
 
   constructor() {
-    if (!process.env.ANTHROPIC_API_KEY) {
-      throw new Error('ANTHROPIC_API_KEY environment variable is required');
+    // Make Anthropic service optional for now
+    if (process.env.ANTHROPIC_API_KEY) {
+      this.anthropic = new Anthropic({
+        apiKey: process.env.ANTHROPIC_API_KEY,
+      });
+    } else {
+      console.warn('ANTHROPIC_API_KEY not provided - AI chat will use fallback responses');
     }
-    
-    this.anthropic = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY,
-    });
   }
 
   async processChat(chatQuery: ChatQuery): Promise<ChatResponse> {

@@ -247,7 +247,7 @@ export default function Home() {
               </div>
               
               <div>
-                <AIAssistant 
+                <SimpleAIAssistant 
                   onSearchQuery={handleAISearch}
                   className="shadow-2xl"
                 />
