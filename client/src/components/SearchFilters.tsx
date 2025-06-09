@@ -23,7 +23,7 @@ export default function SearchFilters({
 }: SearchFiltersProps) {
   const [priceRange, setPriceRange] = useState([
     filters.minPrice || 0,
-    filters.maxPrice || 2000000,
+    filters.maxPrice || 10000000,
   ]);
 
   const handleFilterChange = (key: keyof PropertySearchFilters, value: any) => {
@@ -88,9 +88,9 @@ export default function SearchFilters({
             <Slider
               value={priceRange}
               onValueChange={handlePriceRangeChange}
-              max={2000000}
+              max={10000000}
               min={0}
-              step={10000}
+              step={50000}
               className="w-full"
             />
           </div>

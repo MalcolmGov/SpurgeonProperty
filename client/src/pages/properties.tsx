@@ -17,7 +17,7 @@ export default function Properties() {
     search: "",
     propertyType: "all",
     minPrice: 0,
-    maxPrice: 50000000,
+    maxPrice: 20000000,
     bedrooms: "any",
     bathrooms: "any",
     minArea: 0,

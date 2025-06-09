@@ -76,10 +76,11 @@ export default function PropertySearch() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="any">Any Price</SelectItem>
-              <SelectItem value="0-300000">Under $300K</SelectItem>
-              <SelectItem value="300000-500000">$300K - $500K</SelectItem>
-              <SelectItem value="500000-1000000">$500K - $1M</SelectItem>
-              <SelectItem value="1000000-+">$1M+</SelectItem>
+              <SelectItem value="0-500000">Under R500K</SelectItem>
+              <SelectItem value="500000-1000000">R500K - R1M</SelectItem>
+              <SelectItem value="1000000-2000000">R1M - R2M</SelectItem>
+              <SelectItem value="2000000-5000000">R2M - R5M</SelectItem>
+              <SelectItem value="5000000-+">R5M+</SelectItem>
             </SelectContent>
           </Select>
         </div>

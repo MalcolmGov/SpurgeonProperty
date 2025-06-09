@@ -104,7 +104,7 @@ export default function AdvancedPropertySearch({
     if (filters.search) count++;
     if (filters.propertyType && filters.propertyType !== "all") count++;
     if (filters.minPrice > 0) count++;
-    if (filters.maxPrice < 50000000) count++;
+    if (filters.maxPrice < 20000000) count++;
     if (filters.bedrooms && filters.bedrooms !== "any") count++;
     if (filters.bathrooms && filters.bathrooms !== "any") count++;
     if (filters.province && filters.province !== "all") count++;
@@ -218,7 +218,7 @@ export default function AdvancedPropertySearch({
                 type="number"
                 placeholder="Max price"
                 value={filters.maxPrice || ''}
-                onChange={(e) => handleFilterChange('maxPrice', parseInt(e.target.value) || 50000000)}
+                onChange={(e) => handleFilterChange('maxPrice', parseInt(e.target.value) || 20000000)}
               />
             </div>
           </div>
