@@ -3,9 +3,14 @@ import { Link, useLocation } from "wouter";
 import { useTheme } from "@/contexts/theme-context";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Home, Building, Users, MapPin, Sun, Moon, Menu } from "lucide-react";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Home, Building, Users, MapPin, Sun, Moon, Menu, Settings } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function Header() {
   const [location] = useLocation();
@@ -45,27 +50,41 @@ export default function Header() {
               </Link>
             ))}
             
-            {/* Theme Toggle */}
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={() => {
-                if (theme === "light") {
-                  setTheme("dark");
-                } else if (theme === "dark") {
-                  setTheme("system");
-                } else {
-                  setTheme("light");
-                }
-              }}
-              className="relative"
-            >
-              {theme === "light" && <Sun className="w-4 h-4" />}
-              {theme === "dark" && <Moon className="w-4 h-4" />}
-              {theme === "system" && (
-                <div className="w-4 h-4 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full" />
-              )}
-            </Button>
+            {/* Settings Menu with Theme Options */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="relative">
+                  <Settings className="w-4 h-4" />
+                  <span className="sr-only">Settings</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem 
+                  onClick={() => setTheme("light")}
+                  className="flex items-center gap-2"
+                >
+                  <Sun className="w-4 h-4" />
+                  <span>Light Mode</span>
+                  {theme === "light" && <span className="ml-auto text-purple-600">✓</span>}
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setTheme("dark")}
+                  className="flex items-center gap-2"
+                >
+                  <Moon className="w-4 h-4" />
+                  <span>Dark Mode</span>
+                  {theme === "dark" && <span className="ml-auto text-purple-600">✓</span>}
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setTheme("system")}
+                  className="flex items-center gap-2"
+                >
+                  <div className="w-4 h-4 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full" />
+                  <span>System Mode</span>
+                  {theme === "system" && <span className="ml-auto text-purple-600">✓</span>}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             
             <Button className="bg-purple-600 hover:bg-purple-700 text-white">
               Sign In
@@ -99,37 +118,38 @@ export default function Header() {
                   ))}
                   
                   <div className="border-t border-slate-200 dark:border-slate-700 pt-4">
+                    <div className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300">
+                      Theme Settings
+                    </div>
+                    
                     <Button
                       variant="ghost"
                       className="w-full justify-start"
-                      onClick={() => {
-                        if (theme === "light") {
-                          setTheme("dark");
-                        } else if (theme === "dark") {
-                          setTheme("system");
-                        } else {
-                          setTheme("light");
-                        }
-                      }}
+                      onClick={() => setTheme("light")}
                     >
-                      {theme === "light" && (
-                        <>
-                          <Sun className="w-4 h-4 mr-3" />
-                          Light Mode
-                        </>
-                      )}
-                      {theme === "dark" && (
-                        <>
-                          <Moon className="w-4 h-4 mr-3" />
-                          Dark Mode
-                        </>
-                      )}
-                      {theme === "system" && (
-                        <>
-                          <div className="w-4 h-4 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full mr-3" />
-                          System Mode
-                        </>
-                      )}
+                      <Sun className="w-4 h-4 mr-3" />
+                      Light Mode
+                      {theme === "light" && <span className="ml-auto text-purple-600">✓</span>}
+                    </Button>
+                    
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start"
+                      onClick={() => setTheme("dark")}
+                    >
+                      <Moon className="w-4 h-4 mr-3" />
+                      Dark Mode
+                      {theme === "dark" && <span className="ml-auto text-purple-600">✓</span>}
+                    </Button>
+                    
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start"
+                      onClick={() => setTheme("system")}
+                    >
+                      <div className="w-4 h-4 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full mr-3" />
+                      System Mode
+                      {theme === "system" && <span className="ml-auto text-purple-600">✓</span>}
                     </Button>
                     
                     <Button className="w-full mt-4 bg-purple-primary hover:bg-purple-secondary text-white">
