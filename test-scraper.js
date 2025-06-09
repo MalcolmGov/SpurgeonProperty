@@ -33,10 +33,15 @@ async function testScraping() {
     console.log('\nTesting internal API...');
     
     const apiData = JSON.stringify({});
+    const baseUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://spurgeonproperty.replit.app' 
+      : 'http://localhost:5000';
+    
+    const url = new URL('/api/scrape-properties', baseUrl);
     const options = {
-      hostname: 'localhost',
-      port: 5000,
-      path: '/api/scrape-properties',
+      hostname: url.hostname,
+      port: url.port || (url.protocol === 'https:' ? 443 : 80),
+      path: url.pathname,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
