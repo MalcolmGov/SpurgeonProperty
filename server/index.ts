@@ -42,6 +42,9 @@ app.use((req, res, next) => {
 
 async function startServer() {
   try {
+    // Test database connection before starting server
+    await testDatabaseConnection();
+    
     const server = await registerRoutes(app);
     
     // Share the server instance with the app for WebSocket access
