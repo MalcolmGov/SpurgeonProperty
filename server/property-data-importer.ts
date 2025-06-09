@@ -5,7 +5,7 @@ import type { InsertProperty } from '@shared/schema';
 const spurgeonPropertyListings = [
   {
     title: "Modern 3 Bedroom Townhouse in Sandton",
-    price: "R 2,850,000",
+    price: 2850000,
     address: "Lonehill, Sandton",
     suburb: "Lonehill",
     city: "Sandton", 
@@ -20,7 +20,7 @@ const spurgeonPropertyListings = [
   },
   {
     title: "Luxury 4 Bedroom House in Hyde Park",
-    price: "R 5,950,000",
+    price: 5950000,
     address: "Hyde Park, Johannesburg",
     suburb: "Hyde Park",
     city: "Johannesburg",
@@ -35,7 +35,7 @@ const spurgeonPropertyListings = [
   },
   {
     title: "Elegant 2 Bedroom Apartment in Rosebank",
-    price: "R 1,850,000",
+    price: 1850000,
     address: "Rosebank, Johannesburg",
     suburb: "Rosebank",
     city: "Johannesburg",
@@ -50,7 +50,7 @@ const spurgeonPropertyListings = [
   },
   {
     title: "Family Home with Pool in Edenvale",
-    price: "R 2,150,000", 
+    price: 2150000, 
     address: "Edenvale Central, Edenvale",
     suburb: "Edenvale Central",
     city: "Edenvale",
@@ -65,7 +65,7 @@ const spurgeonPropertyListings = [
   },
   {
     title: "Secure Cluster Home in Centurion",
-    price: "R 1,950,000",
+    price: 1950000,
     address: "Centurion Golf Estate, Centurion", 
     suburb: "Centurion Golf Estate",
     city: "Centurion",
@@ -80,7 +80,7 @@ const spurgeonPropertyListings = [
   },
   {
     title: "Investment Opportunity in Germiston",
-    price: "R 895,000",
+    price: 895000,
     address: "Germiston Central, Germiston",
     suburb: "Germiston Central", 
     city: "Germiston",
@@ -95,7 +95,7 @@ const spurgeonPropertyListings = [
   },
   {
     title: "Spacious Townhouse in Midrand",
-    price: "R 1,750,000",
+    price: 1750000,
     address: "Grand Central, Midrand",
     suburb: "Grand Central",
     city: "Midrand", 
@@ -110,7 +110,7 @@ const spurgeonPropertyListings = [
   },
   {
     title: "Luxury Penthouse in Sandton CBD",
-    price: "R 4,200,000",
+    price: 4200000,
     address: "Sandton Central, Sandton",
     suburb: "Sandton Central",
     city: "Sandton",
@@ -125,7 +125,7 @@ const spurgeonPropertyListings = [
   },
   {
     title: "Charming Cottage in Benoni",
-    price: "R 1,250,000",
+    price: 1250000,
     address: "Benoni Country Club, Benoni",
     suburb: "Benoni Country Club",
     city: "Benoni",
@@ -140,7 +140,7 @@ const spurgeonPropertyListings = [
   },
   {
     title: "Modern Apartment in Fourways", 
-    price: "R 1,650,000",
+    price: 1650000,
     address: "Fourways Gardens, Fourways",
     suburb: "Fourways Gardens",
     city: "Fourways",
@@ -155,7 +155,7 @@ const spurgeonPropertyListings = [
   },
   {
     title: "Executive Home in Bryanston",
-    price: "R 6,850,000",
+    price: 6850000,
     address: "Bryanston East, Bryanston",
     suburb: "Bryanston East",
     city: "Bryanston", 
@@ -170,7 +170,7 @@ const spurgeonPropertyListings = [
   },
   {
     title: "Starter Home in Boksburg",
-    price: "R 750,000",
+    price: 750000,
     address: "Boksburg Central, Boksburg",
     suburb: "Boksburg Central",
     city: "Boksburg",
@@ -185,7 +185,7 @@ const spurgeonPropertyListings = [
   },
   {
     title: "Secure Estate Home in Kempton Park",
-    price: "R 2,350,000",
+    price: 2350000,
     address: "Kempton Park Golf Estate, Kempton Park",
     suburb: "Kempton Park Golf Estate",
     city: "Kempton Park",
@@ -200,7 +200,7 @@ const spurgeonPropertyListings = [
   },
   {
     title: "Trendy Loft in Maboneng",
-    price: "R 1,150,000",
+    price: 1150000,
     address: "Maboneng Precinct, Johannesburg",
     suburb: "Maboneng",
     city: "Johannesburg",
@@ -215,7 +215,7 @@ const spurgeonPropertyListings = [
   },
   {
     title: "Family Townhouse in Randburg",
-    price: "R 1,950,000",
+    price: 1950000,
     address: "Randburg Central, Randburg", 
     suburb: "Randburg Central",
     city: "Randburg",
@@ -241,7 +241,7 @@ export async function importSpurgeonProperties(): Promise<{ success: boolean; co
         const insertData: InsertProperty = {
           title: listing.title,
           description: listing.description,
-          price: listing.price,
+          price: listing.price.toString(),
           address: listing.address,
           suburb: listing.suburb,
           city: listing.city,
@@ -252,12 +252,12 @@ export async function importSpurgeonProperties(): Promise<{ success: boolean; co
           bathrooms: listing.bathrooms.toString(),
           area: listing.area,
           lotSize: listing.area.toString(),
-          yearBuilt: '2015',
-          parkingSpaces: 2,
+          yearBuilt: 2015,
+          parking: '2',
           features: listing.features,
           images: listing.images,
-          latitude: -26.2041,
-          longitude: 28.0473,
+          latitude: '-26.2041',
+          longitude: '28.0473',
           status: 'active',
           featured: importedCount < 5, // Feature first 5 properties
           agentId: 1
