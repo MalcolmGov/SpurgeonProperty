@@ -209,21 +209,6 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
           </div>
         )}
         
-        {/* Agent Info */}
-        {property.agent && (
-          <div className="flex items-center gap-2 mb-4 text-sm">
-            <img
-              src={property.agent.avatar || `/api/placeholder/32/32`}
-              alt={property.agent.name}
-              className="w-8 h-8 rounded-full object-cover"
-            />
-            <div>
-              <p className="font-medium text-slate-800 dark:text-white">{property.agent.name}</p>
-              <p className="text-xs text-slate-500">Real Estate Agent</p>
-            </div>
-          </div>
-        )}
-        
         {/* View Details Button */}
         <Link href={`/properties/${property.id}`}>
           <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
