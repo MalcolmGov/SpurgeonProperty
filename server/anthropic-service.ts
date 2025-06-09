@@ -1,8 +1,9 @@
 import Anthropic from '@anthropic-ai/sdk';
 
-interface VoiceSearchQuery {
-  query: string;
-  confidence: number;
+interface ChatQuery {
+  message: string;
+  context?: any;
+  conversationHistory?: any[];
 }
 
 interface SearchFilters {
@@ -17,11 +18,13 @@ interface SearchFilters {
   features?: string[];
 }
 
-interface ProcessedVoiceSearch {
-  searchQuery: string;
-  filters: SearchFilters;
+interface ChatResponse {
+  response: string;
+  searchQuery?: string;
+  filters?: SearchFilters;
+  propertyData?: any;
+  suggestions?: string[];
   intent: string;
-  extractedEntities: any;
 }
 
 class AnthropicService {
@@ -37,87 +40,89 @@ class AnthropicService {
     });
   }
 
-  async processVoiceSearch(voiceQuery: VoiceSearchQuery): Promise<ProcessedVoiceSearch> {
+  async processChat(chatQuery: ChatQuery): Promise<ChatResponse> {
     try {
-      const prompt = this.buildVoiceSearchPrompt(voiceQuery.query);
+      const prompt = this.buildChatPrompt(chatQuery);
       
       const response = await this.anthropic.messages.create({
         model: 'claude-sonnet-4-20250514', // the newest Anthropic model is "claude-sonnet-4-20250514" which was released May 14, 2025. Use this by default unless user has already selected claude-3-7-sonnet-20250219
-        max_tokens: 1000,
+        max_tokens: 1500,
         messages: [
           {
             role: 'user',
             content: prompt
           }
         ],
-        system: `You are a South African real estate search AI assistant. Process voice commands into structured property search queries with appropriate filters for the South African market. Always respond in valid JSON format.`
+        system: `You are Emma, a professional South African real estate assistant. You help clients find properties, understand neighborhoods, calculate mortgages, and navigate the property market. Always be helpful, knowledgeable about South African property market, and provide actionable advice. Respond conversationally but professionally.`
       });
 
       const content = response.content[0];
       if (content.type !== 'text') {
         throw new Error('Unexpected response type from Anthropic');
       }
-      const result = JSON.parse((content as any).text);
+      
+      // Try to parse JSON response, fallback to plain text
+      let result;
+      try {
+        result = JSON.parse((content as any).text);
+      } catch {
+        result = {
+          response: (content as any).text,
+          intent: 'general'
+        };
+      }
       
       return {
-        searchQuery: result.searchQuery || voiceQuery.query,
-        filters: this.validateFilters(result.filters || {}),
-        intent: result.intent || 'search',
-        extractedEntities: result.extractedEntities || {}
+        response: result.response || (content as any).text,
+        searchQuery: result.searchQuery,
+        filters: result.filters ? this.validateFilters(result.filters) : undefined,
+        propertyData: result.propertyData,
+        suggestions: result.suggestions || this.getContextualSuggestions(chatQuery.message),
+        intent: result.intent || 'general'
       };
 
     } catch (error) {
-      console.error('Anthropic processing error:', error);
+      console.error('Anthropic chat processing error:', error);
       
-      // Fallback processing using basic text analysis
-      return this.fallbackProcessing(voiceQuery.query);
+      return this.fallbackChatResponse(chatQuery.message);
     }
   }
 
-  private buildVoiceSearchPrompt(query: string): string {
+  private buildChatPrompt(chatQuery: ChatQuery): string {
+    const conversationContext = chatQuery.conversationHistory 
+      ? chatQuery.conversationHistory.slice(-3).map(msg => 
+          `${msg.type}: ${msg.content}`
+        ).join('\n')
+      : '';
+
+    const propertyContext = chatQuery.context 
+      ? `Current property context: ${JSON.stringify(chatQuery.context)}`
+      : '';
+
     return `
-Analyze this South African property search voice command and extract structured information:
+You are Emma, a professional South African real estate assistant. Respond to this client message naturally and helpfully.
 
-Voice Input: "${query}"
+${conversationContext ? `Recent conversation:\n${conversationContext}\n` : ''}
+${propertyContext ? `${propertyContext}\n` : ''}
 
-Extract and return a JSON response with the following structure:
-{
-  "searchQuery": "cleaned search terms for property search",
-  "filters": {
-    "propertyType": "house|apartment|townhouse|flat|cluster_home|farm|vacant_land",
-    "minPrice": number (in ZAR),
-    "maxPrice": number (in ZAR),
-    "bedrooms": number,
-    "bathrooms": number,
-    "suburb": "suburb name",
-    "city": "city name", 
-    "province": "Gauteng|Western Cape|KwaZulu-Natal|Eastern Cape|Free State|Limpopo|Mpumalanga|North West|Northern Cape",
-    "features": ["pool", "garden", "garage", "security", "pet_friendly", "furnished", etc.]
-  },
-  "intent": "search|buy|rent|sell|view",
-  "extractedEntities": {
-    "priceTerms": ["under 2 million", "between 1.5M and 3M"],
-    "locationTerms": ["Sandton", "Cape Town", "Durban"],
-    "propertyFeatures": ["pool", "double garage"],
-    "urgency": "low|medium|high"
-  }
-}
+Client message: "${chatQuery.message}"
+
+Respond in a conversational, helpful manner. If the client is asking about property searches, neighborhoods, financing, or specific properties, provide relevant information and guidance.
+
+If the message suggests they want to search for properties, you can optionally include search parameters in JSON format at the end of your response like this:
+SEARCH_DATA: {"searchQuery": "search terms", "filters": {"propertyType": "house", "maxPrice": 2000000, "bedrooms": 3}}
 
 South African Context:
 - Currency: South African Rand (ZAR/R)
-- Common price formats: "2 million", "2M", "R2,000,000", "under 3 mil"
-- Major cities: Johannesburg, Cape Town, Durban, Pretoria, Port Elizabeth
+- Major cities: Johannesburg, Cape Town, Durban, Pretoria
 - Popular suburbs: Sandton, Camps Bay, Umhlanga, Centurion, Stellenbosch
 - Property types: House, apartment, townhouse, cluster home, security estate
 - Common features: Pool, braai area, domestic quarters, borehole, solar power
+- Price ranges typically: R500k - R50M depending on area and type
+- Interest rates currently around 11-12% for home loans
+- Transfer duties and bond registration costs apply
 
-Extract price ranges intelligently:
-- "under 2 million" = maxPrice: 2000000
-- "between 1.5 and 3 million" = minPrice: 1500000, maxPrice: 3000000
-- "around 2 million" = minPrice: 1800000, maxPrice: 2200000
-- "budget of 1.5M" = maxPrice: 1500000
-
-Only include filters that are explicitly mentioned or strongly implied in the voice input.
+Provide helpful, accurate advice about the South African property market.
 `;
   }
 
@@ -171,44 +176,63 @@ Only include filters that are explicitly mentioned or strongly implied in the vo
     return validatedFilters;
   }
 
-  private fallbackProcessing(query: string): ProcessedVoiceSearch {
-    const lowerQuery = query.toLowerCase();
-    const filters: SearchFilters = {};
+  private getContextualSuggestions(message: string): string[] {
+    const lowerMessage = message.toLowerCase();
     
-    // Basic price extraction
-    const priceMatches = lowerQuery.match(/(\d+(?:\.\d+)?)\s*(?:million|mil|m|k|thousand)/gi);
-    if (priceMatches) {
-      const price = parseFloat(priceMatches[0]);
-      if (lowerQuery.includes('under') || lowerQuery.includes('below')) {
-        filters.maxPrice = price * (priceMatches[0].includes('million') || priceMatches[0].includes('mil') || priceMatches[0].includes('m') ? 1000000 : 1000);
-      }
+    if (lowerMessage.includes('search') || lowerMessage.includes('find') || lowerMessage.includes('looking')) {
+      return [
+        "Show me houses under R2 million",
+        "Find apartments in Sandton",
+        "Search for family homes with pools",
+        "What's available in Cape Town?"
+      ];
     }
-
-    // Basic bedroom extraction
-    const bedroomMatch = lowerQuery.match(/(\d+)\s*bedroom/);
-    if (bedroomMatch) {
-      filters.bedrooms = parseInt(bedroomMatch[1]);
+    
+    if (lowerMessage.includes('mortgage') || lowerMessage.includes('finance') || lowerMessage.includes('loan')) {
+      return [
+        "Calculate mortgage for R1.5 million",
+        "What are current interest rates?",
+        "How much can I afford to spend?",
+        "Explain transfer duties and costs"
+      ];
     }
-
-    // Basic property type extraction
-    if (lowerQuery.includes('house')) filters.propertyType = 'house';
-    else if (lowerQuery.includes('apartment') || lowerQuery.includes('flat')) filters.propertyType = 'apartment';
-    else if (lowerQuery.includes('townhouse')) filters.propertyType = 'townhouse';
-
-    // Basic location extraction
-    const southAfricanCities = ['johannesburg', 'cape town', 'durban', 'pretoria', 'sandton', 'centurion'];
-    for (const city of southAfricanCities) {
-      if (lowerQuery.includes(city)) {
-        filters.city = city;
-        break;
-      }
+    
+    if (lowerMessage.includes('area') || lowerMessage.includes('neighborhood') || lowerMessage.includes('location')) {
+      return [
+        "Tell me about Sandton schools",
+        "What's the crime rate in this area?",
+        "Best family neighborhoods in Johannesburg",
+        "Investment potential of this location"
+      ];
     }
+    
+    return [
+      "Find properties in my budget",
+      "Tell me about this neighborhood",
+      "Calculate my mortgage options",
+      "What should I know about buying property?"
+    ];
+  }
 
+  private fallbackChatResponse(message: string): ChatResponse {
+    const lowerMessage = message.toLowerCase();
+    
+    let response = "I understand you're interested in property assistance. ";
+    
+    if (lowerMessage.includes('search') || lowerMessage.includes('find')) {
+      response += "I can help you search for properties. Try asking me something like 'Find 3 bedroom houses under R2 million in Sandton' or tell me about your specific requirements.";
+    } else if (lowerMessage.includes('mortgage') || lowerMessage.includes('finance')) {
+      response += "I can help with mortgage calculations and financing questions. Feel free to ask about interest rates, affordability, or monthly payments.";
+    } else if (lowerMessage.includes('area') || lowerMessage.includes('neighborhood')) {
+      response += "I can provide information about different areas, schools, amenities, and market trends. Which area are you interested in learning about?";
+    } else {
+      response += "I can help you with property searches, neighborhood information, mortgage calculations, and general real estate advice. What would you like to know?";
+    }
+    
     return {
-      searchQuery: query,
-      filters,
-      intent: 'search',
-      extractedEntities: {}
+      response,
+      intent: 'general',
+      suggestions: this.getContextualSuggestions(message)
     };
   }
 }
