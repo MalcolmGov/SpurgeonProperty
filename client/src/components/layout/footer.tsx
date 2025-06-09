@@ -106,14 +106,28 @@ export default function Footer() {
           
           <div>
             <h4 className="text-lg font-semibold mb-6">Contact Info</h4>
-            <div className="space-y-3 text-slate-300">
+            <div className="space-y-4 text-slate-300">
               <div className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-orange-primary" />
-                <span>(555) 123-4567</span>
+                <span>011 391 2152</span>
               </div>
-              <div className="flex items-center space-x-3">
-                <Mail className="w-4 h-4 text-orange-primary" />
-                <span>info@spurgeonproperty.com</span>
+              <div className="space-y-2">
+                <div className="flex items-start space-x-3">
+                  <Phone className="w-4 h-4 text-orange-primary mt-1" />
+                  <div>
+                    <div className="font-medium">Spurgeon Peter</div>
+                    <div>084 208 9307</div>
+                    <div className="text-sm">Peter@spurgeonproperty.com</div>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <Phone className="w-4 h-4 text-orange-primary mt-1" />
+                  <div>
+                    <div className="font-medium">Louis Smit</div>
+                    <div>083 677 3748</div>
+                    <div className="text-sm">louissm@spurgeonproperty.com</div>
+                  </div>
+                </div>
               </div>
               <div className="flex items-start space-x-3">
                 <MapPin className="w-4 h-4 text-orange-primary mt-1" />
