@@ -46,7 +46,26 @@ export default function Header() {
             ))}
             
             {/* Theme Toggle */}
-            <ThemeToggle />
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => {
+                if (theme === "light") {
+                  setTheme("dark");
+                } else if (theme === "dark") {
+                  setTheme("system");
+                } else {
+                  setTheme("light");
+                }
+              }}
+              className="relative"
+            >
+              {theme === "light" && <Sun className="w-4 h-4" />}
+              {theme === "dark" && <Moon className="w-4 h-4" />}
+              {theme === "system" && (
+                <div className="w-4 h-4 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full" />
+              )}
+            </Button>
             
             <Button className="bg-purple-600 hover:bg-purple-700 text-white">
               Sign In
