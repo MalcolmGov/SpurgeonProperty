@@ -287,7 +287,7 @@ export default function Home() {
               </div>
               
               <div className="text-center group">
-                <div className="w-16 h-16 bg-green-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 bg-green-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                   <TrendingUp className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
@@ -299,7 +299,7 @@ export default function Home() {
               </div>
               
               <div className="text-center group">
-                <div className="w-16 h-16 bg-blue-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 bg-blue-500 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                   <Award className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
