@@ -34,9 +34,9 @@ export default function AdminDashboard() {
     enabled: isAuthenticated,
   });
 
-  const scrapePropertiesMutation = useMutation({
+  const importPropertiesMutation = useMutation({
     mutationFn: async () => {
-      const response = await fetch("/api/admin/scrape-properties", {
+      const response = await fetch("/api/admin/import-properties", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,14 +62,14 @@ export default function AdminDashboard() {
     onError: (error: any) => {
       toast({
         title: "Error",
-        description: error.message || "Failed to scrape properties",
+        description: error.message || "Failed to import properties",
         variant: "destructive",
       });
     },
   });
 
-  const handleScrapeProperties = () => {
-    scrapePropertiesMutation.mutate();
+  const handleImportProperties = () => {
+    importPropertiesMutation.mutate();
   };
 
   // Early returns after all hooks are called

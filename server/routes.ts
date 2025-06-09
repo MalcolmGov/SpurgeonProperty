@@ -600,11 +600,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Property scraping endpoint
-  app.post("/api/admin/scrape-properties", requireAdminAuth, async (req, res) => {
+  // Property import endpoint
+  app.post("/api/admin/import-properties", requireAdminAuth, async (req, res) => {
     try {
-      console.log('Starting property extraction from Spurgeon Property...');
-      const result = await extractSpurgeonProperties();
+      console.log('Starting property import...');
+      const result = await importSouthAfricanProperties();
       
       if (result.success) {
         res.json({ 
@@ -613,13 +613,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       } else {
         res.status(500).json({ 
-          message: result.message || "Failed to extract properties"
+          message: result.message || "Failed to import properties"
         });
       }
     } catch (error) {
-      console.error('Property scraping error:', error);
+      console.error('Property import error:', error);
       res.status(500).json({ 
-        message: "Failed to scrape properties",
+        message: "Failed to import properties",
         error: error instanceof Error ? error.message : "Unknown error"
       });
     }

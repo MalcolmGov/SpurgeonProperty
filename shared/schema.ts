@@ -17,7 +17,7 @@ export const properties = pgTable("properties", {
   longitude: decimal("longitude", { precision: 11, scale: 8 }),
   propertyType: text("property_type").notNull(), // house, apartment, townhouse, flat, cluster_home, farm, vacant_land
   bedrooms: integer("bedrooms").notNull(),
-  bathrooms: decimal("bathrooms", { precision: 3, scale: 1 }).notNull(),
+  bathrooms: text("bathrooms").notNull(),
   area: integer("area").notNull(), // square meters
   lotSize: text("lot_size"),
   yearBuilt: integer("year_built"),

@@ -2,7 +2,7 @@ import { storage } from "./storage-simple";
 import type { InsertProperty } from "@shared/schema";
 
 // Authentic South African property data representing various market segments
-const southAfricanProperties: Omit<InsertProperty, 'agentId'>[] = [
+const southAfricanProperties: Omit<InsertProperty, 'agentId' | 'views'>[] = [
   {
     title: "Luxury 4 Bedroom House in Sandton",
     description: "Stunning contemporary home in prestigious Sandton area. Features include gourmet kitchen with granite countertops, spacious living areas, master suite with en-suite bathroom, swimming pool, and double garage. Located in secure estate with 24-hour security.",
@@ -11,11 +11,12 @@ const southAfricanProperties: Omit<InsertProperty, 'agentId'>[] = [
     suburb: "Sandton",
     city: "Johannesburg",
     province: "Gauteng",
+    postalCode: "2196",
     propertyType: "house",
     bedrooms: 4,
     bathrooms: "3.5",
     area: 450,
-    lotSize: 800,
+    lotSize: "800",
     yearBuilt: 2018,
     images: [
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop",
@@ -23,8 +24,7 @@ const southAfricanProperties: Omit<InsertProperty, 'agentId'>[] = [
     ],
     features: ["Swimming Pool", "Double Garage", "Security Estate", "Garden", "Study", "Servant's Quarters"],
     status: "active",
-    featured: true,
-    views: 245
+    featured: true
   },
   {
     title: "Modern 2 Bedroom Apartment in Cape Town City Bowl",
@@ -34,6 +34,7 @@ const southAfricanProperties: Omit<InsertProperty, 'agentId'>[] = [
     suburb: "City Bowl",
     city: "Cape Town",
     province: "Western Cape",
+    postalCode: "8001",
     propertyType: "apartment",
     bedrooms: 2,
     bathrooms: "2",
@@ -45,8 +46,7 @@ const southAfricanProperties: Omit<InsertProperty, 'agentId'>[] = [
     ],
     features: ["Mountain Views", "Balcony", "Modern Kitchen", "Security", "City Center Location"],
     status: "active",
-    featured: true,
-    views: 189
+    featured: true
   },
   {
     title: "Family Home in Centurion with Pool",
