@@ -6,16 +6,20 @@ import {
   insertPropertySchema, 
   insertLeadSchema, 
   insertInquirySchema,
-  insertAgentSchema 
+  insertAgentSchema,
+  insertAdminUserSchema,
+  adminLoginSchema
 } from "@shared/schema";
 import { getNeighborhoodAnalytics } from "./neighborhood-service";
 import { openaiService, type PropertyDetails } from "./openai-service";
 import { anthropicService } from "./anthropic-service";
+import { adminAuthService, requireAdminAuth, redirectIfAuthenticated } from "./admin-auth";
 import { z } from "zod";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
 import express from "express";
+import cookieParser from "cookie-parser";
 
 // Configure multer for file uploads
 const uploadDir = path.join(process.cwd(), 'uploads');
