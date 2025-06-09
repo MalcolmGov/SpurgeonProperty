@@ -10,8 +10,27 @@ import { Badge } from "@/components/ui/badge";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 
 export default function AdminDashboard() {
+  // All hooks must be called at the top level, before any early returns
   const { isLoading: authLoading, isAuthenticated } = useAdminAuth();
+  
+  const { data: stats, isLoading } = useQuery({
+    queryKey: ["/api/analytics/dashboard"],
+    enabled: isAuthenticated, // Only run when authenticated
+  });
 
+  const { data: recentProperties } = useQuery({
+    queryKey: ["/api/properties"],
+    select: (data) => data?.slice(0, 5) || [],
+    enabled: isAuthenticated,
+  });
+
+  const { data: recentLeads } = useQuery({
+    queryKey: ["/api/leads"],
+    select: (data) => data?.slice(0, 5) || [],
+    enabled: isAuthenticated,
+  });
+
+  // Early returns after all hooks are called
   if (authLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -23,19 +42,6 @@ export default function AdminDashboard() {
   if (!isAuthenticated) {
     return null; // useAdminAuth will redirect to login
   }
-  const { data: stats, isLoading } = useQuery({
-    queryKey: ["/api/analytics/dashboard"],
-  });
-
-  const { data: recentProperties } = useQuery({
-    queryKey: ["/api/properties"],
-    select: (data) => data?.properties?.slice(0, 5) || [],
-  });
-
-  const { data: recentLeads } = useQuery({
-    queryKey: ["/api/leads"],
-    select: (data) => data?.slice(0, 5) || [],
-  });
 
   return (
     <div className="pt-16 min-h-screen bg-gray-100 dark:bg-gray-900">
