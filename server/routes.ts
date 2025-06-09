@@ -139,6 +139,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // File upload endpoint for property images
+  app.post("/api/upload", upload.array('images', 10), async (req: Request, res: Response) => {
+    try {
+      if (!req.files || !Array.isArray(req.files) || req.files.length === 0) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "No files uploaded" 
+        });
+      }
+
+      const urls = req.files.map(file => `/uploads/${file.filename}`);
+      
+      res.json({
+        success: true,
+        message: `Successfully uploaded ${req.files.length} image(s)`,
+        urls: urls
+      });
+    } catch (error) {
+      console.error("Upload error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to upload images",
+        error: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
+  });
+
   app.get("/api/properties/featured", async (req, res) => {
     try {
       const properties = await storage.getProperties({ featured: true, limit: 6 });
