@@ -107,7 +107,7 @@ export default function Home() {
           }}>
             Map
           </a>
-          <a href="/admin" style={{
+          <a href="/admin/login" style={{
             background: 'rgba(245, 158, 11, 0.2)',
             padding: '8px 16px',
             borderRadius: '8px',
