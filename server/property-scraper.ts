@@ -72,7 +72,7 @@ class PropertyScraper {
         urls.push(...pageUrls);
       }
       
-      return [...new Set(urls)]; // Remove duplicates
+      return Array.from(new Set(urls)); // Remove duplicates
     } catch (error) {
       console.error('Error getting property listing URLs:', error);
       return [];
@@ -300,8 +300,8 @@ class PropertyScraper {
           bedrooms: prop.bedrooms,
           bathrooms: prop.bathrooms.toString(),
           area: prop.area,
-          lotSize: prop.area,
-          yearBuilt: 2020,
+          lotSize: prop.area.toString(),
+          yearBuilt: 2020.toString(),
           parkingSpaces: 2,
           features: prop.features,
           images: prop.images,

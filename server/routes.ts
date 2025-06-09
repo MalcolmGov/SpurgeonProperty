@@ -116,6 +116,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Property scraping route
+  app.post("/api/scrape-properties", async (req: Request, res: Response) => {
+    try {
+      const { scrapeAndImportProperties } = await import('./property-scraper');
+      const result = await scrapeAndImportProperties();
+      
+      res.json({
+        success: result.success,
+        message: result.message,
+        propertiesImported: result.count
+      });
+    } catch (error) {
+      console.error("Property scraping error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to scrape properties",
+        error: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
+  });
+
   app.get("/api/properties/featured", async (req, res) => {
     try {
       const properties = await storage.getProperties({ featured: true, limit: 6 });
