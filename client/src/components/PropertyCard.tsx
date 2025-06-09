@@ -279,23 +279,6 @@ export default function PropertyCard({
           </div>
         )}
 
-        {/* Agent Info */}
-        {property.agent && (
-          <div className="border-t pt-3">
-            <div className="flex items-center gap-2">
-              <img
-                src={property.agent.avatar || `/api/placeholder/32/32`}
-                alt={property.agent.name}
-                className="w-8 h-8 rounded-full object-cover"
-              />
-              <div>
-                <p className="text-sm font-medium">{property.agent.name}</p>
-                <p className="text-xs text-gray-500">Real Estate Agent</p>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Action Button */}
         <Link href={`/properties/${property.id}`}>
           <Button className="w-full mt-3">
