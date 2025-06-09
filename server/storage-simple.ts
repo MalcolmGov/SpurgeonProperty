@@ -1,6 +1,6 @@
-import { db } from "./db";
-import { properties, agents, leads, inquiries } from "@shared/schema";
-import { eq, and, or, ilike, gte, lte, desc } from "drizzle-orm";
+import { db } from './db';
+import { properties, agents, leads, inquiries } from '@shared/schema';
+import { eq, and, or, like, gte, lte, desc, asc, count } from 'drizzle-orm';
 import type { 
   Property, 
   InsertProperty, 
@@ -83,50 +83,31 @@ export class DatabaseStorage implements IStorage {
     offset?: number;
   }): Promise<PropertyWithAgent[]> {
     try {
-      // Start with basic query
-      let queryBuilder = db
-        .select()
-        .from(properties)
-        .leftJoin(agents, eq(properties.agentId, agents.id));
-
-      // Apply filters one by one
       const whereConditions = [];
 
       if (filters?.search) {
         whereConditions.push(
           or(
-            ilike(properties.title, `%${filters.search}%`),
-            ilike(properties.description, `%${filters.search}%`),
-            ilike(properties.address, `%${filters.search}%`)
+            like(properties.title, `%${filters.search}%`),
+            like(properties.description, `%${filters.search}%`),
+            like(properties.address, `%${filters.search}%`)
           )
         );
       }
 
-      if (filters?.propertyType && filters.propertyType !== "any") {
+      if (filters?.propertyType) {
         whereConditions.push(eq(properties.propertyType, filters.propertyType));
-      }
-
-      if (filters?.minPrice) {
-        whereConditions.push(gte(properties.price, filters.minPrice.toString()));
-      }
-
-      if (filters?.maxPrice) {
-        whereConditions.push(lte(properties.price, filters.maxPrice.toString()));
       }
 
       if (filters?.bedrooms) {
         whereConditions.push(eq(properties.bedrooms, filters.bedrooms));
       }
 
-      if (filters?.bathrooms) {
-        whereConditions.push(eq(properties.bathrooms, filters.bathrooms.toString()));
-      }
-
       if (filters?.city) {
-        whereConditions.push(ilike(properties.city, `%${filters.city}%`));
+        whereConditions.push(eq(properties.city, filters.city));
       }
 
-      if (filters?.status && filters.status !== "any") {
+      if (filters?.status) {
         whereConditions.push(eq(properties.status, filters.status));
       }
 
@@ -134,24 +115,37 @@ export class DatabaseStorage implements IStorage {
         whereConditions.push(eq(properties.featured, filters.featured));
       }
 
-      // Apply where conditions if any exist
+      let query = db
+        .select({
+          property: properties,
+          agent: agents
+        })
+        .from(properties)
+        .leftJoin(agents, eq(properties.agentId, agents.id));
+
       if (whereConditions.length > 0) {
-        queryBuilder = queryBuilder.where(and(...whereConditions));
+        query = query.where(and(...whereConditions));
       }
 
-      // Apply ordering and pagination
-      const results = await queryBuilder
-        .orderBy(desc(properties.createdAt))
-        .limit(filters?.limit || 20)
-        .offset(filters?.offset || 0);
+      query = query.orderBy(desc(properties.createdAt));
+
+      if (filters?.limit) {
+        query = query.limit(filters.limit);
+      }
+
+      if (filters?.offset) {
+        query = query.offset(filters.offset);
+      }
+
+      const results = await query;
 
       return results.map(row => ({
-        ...row.properties,
-        agent: row.agents || undefined
+        ...row.property,
+        agent: row.agent || undefined
       }));
     } catch (error) {
-      console.error('Database error in getProperties:', error);
-      return [];
+      console.error('Error fetching properties:', error);
+      throw new Error('Failed to fetch properties');
     }
   }
 
@@ -159,8 +153,8 @@ export class DatabaseStorage implements IStorage {
     try {
       const result = await db
         .select({
-          properties: properties,
-          agents: agents
+          property: properties,
+          agent: agents
         })
         .from(properties)
         .leftJoin(agents, eq(properties.agentId, agents.id))
@@ -169,68 +163,101 @@ export class DatabaseStorage implements IStorage {
 
       if (result.length === 0) return undefined;
 
-      const row = result[0];
       return {
-        ...row.properties,
-        agent: row.agents || undefined
+        ...result[0].property,
+        agent: result[0].agent
       };
     } catch (error) {
-      console.error('Database error in getProperty:', error);
-      return undefined;
+      console.error('Error fetching property:', error);
+      throw new Error('Failed to fetch property');
     }
   }
 
   async createProperty(property: InsertProperty): Promise<Property> {
-    const result = await db.insert(properties).values(property).returning();
-    return result[0];
+    try {
+      const result = await db.insert(properties).values(property).returning();
+      return result[0];
+    } catch (error) {
+      console.error('Error creating property:', error);
+      throw new Error('Failed to create property');
+    }
   }
 
   async updateProperty(id: number, property: Partial<InsertProperty>): Promise<Property | undefined> {
-    const updateData = { ...property, updatedAt: new Date() };
-    const result = await db
-      .update(properties)
-      .set(updateData)
-      .where(eq(properties.id, id))
-      .returning();
-    return result[0] || undefined;
+    try {
+      const result = await db
+        .update(properties)
+        .set({ ...property, updatedAt: new Date() })
+        .where(eq(properties.id, id))
+        .returning();
+
+      return result.length > 0 ? result[0] : undefined;
+    } catch (error) {
+      console.error('Error updating property:', error);
+      throw new Error('Failed to update property');
+    }
   }
 
   async deleteProperty(id: number): Promise<boolean> {
-    const result = await db
-      .delete(properties)
-      .where(eq(properties.id, id))
-      .returning();
-    return result.length > 0;
+    try {
+      const result = await db.delete(properties).where(eq(properties.id, id));
+      return true;
+    } catch (error) {
+      console.error('Error deleting property:', error);
+      return false;
+    }
   }
 
   async incrementPropertyViews(id: number): Promise<void> {
-    await db
-      .update(properties)
-      .set({ views: properties.views + 1 })
-      .where(eq(properties.id, id));
+    try {
+      await db.execute(`UPDATE properties SET views = views + 1 WHERE id = ${id}`);
+    } catch (error) {
+      console.error('Error incrementing property views:', error);
+    }
   }
 
   async getAgents(): Promise<Agent[]> {
-    return await db.select().from(agents);
+    try {
+      return await db.select().from(agents).orderBy(asc(agents.name));
+    } catch (error) {
+      console.error('Error fetching agents:', error);
+      throw new Error('Failed to fetch agents');
+    }
   }
 
   async getAgent(id: number): Promise<Agent | undefined> {
-    const result = await db.select().from(agents).where(eq(agents.id, id)).limit(1);
-    return result[0] || undefined;
+    try {
+      const result = await db.select().from(agents).where(eq(agents.id, id)).limit(1);
+      return result.length > 0 ? result[0] : undefined;
+    } catch (error) {
+      console.error('Error fetching agent:', error);
+      throw new Error('Failed to fetch agent');
+    }
   }
 
   async createAgent(agent: InsertAgent): Promise<Agent> {
-    const result = await db.insert(agents).values(agent).returning();
-    return result[0];
+    try {
+      const result = await db.insert(agents).values(agent).returning();
+      return result[0];
+    } catch (error) {
+      console.error('Error creating agent:', error);
+      throw new Error('Failed to create agent');
+    }
   }
 
   async updateAgent(id: number, agent: Partial<InsertAgent>): Promise<Agent | undefined> {
-    const result = await db
-      .update(agents)
-      .set(agent)
-      .where(eq(agents.id, id))
-      .returning();
-    return result[0] || undefined;
+    try {
+      const result = await db
+        .update(agents)
+        .set(agent)
+        .where(eq(agents.id, id))
+        .returning();
+
+      return result.length > 0 ? result[0] : undefined;
+    } catch (error) {
+      console.error('Error updating agent:', error);
+      throw new Error('Failed to update agent');
+    }
   }
 
   async getLeads(filters?: {
@@ -241,50 +268,65 @@ export class DatabaseStorage implements IStorage {
     offset?: number;
   }): Promise<LeadWithProperty[]> {
     try {
-      let queryBuilder = db
-        .select()
+      let query = db
+        .select({
+          lead: leads,
+          property: properties,
+          agent: agents
+        })
         .from(leads)
         .leftJoin(properties, eq(leads.propertyId, properties.id))
         .leftJoin(agents, eq(leads.agentId, agents.id));
 
-      const whereConditions = [];
+      const conditions = [];
 
-      if (filters?.status && filters.status !== "all") {
-        whereConditions.push(eq(leads.status, filters.status));
+      if (filters?.status) {
+        conditions.push(eq(leads.status, filters.status));
       }
 
       if (filters?.agentId) {
-        whereConditions.push(eq(leads.agentId, filters.agentId));
+        conditions.push(eq(leads.agentId, filters.agentId));
       }
 
       if (filters?.propertyId) {
-        whereConditions.push(eq(leads.propertyId, filters.propertyId));
+        conditions.push(eq(leads.propertyId, filters.propertyId));
       }
 
-      if (whereConditions.length > 0) {
-        queryBuilder = queryBuilder.where(and(...whereConditions));
+      if (conditions.length > 0) {
+        query = query.where(and(...conditions));
       }
 
-      const results = await queryBuilder
-        .orderBy(desc(leads.createdAt))
-        .limit(filters?.limit || 20)
-        .offset(filters?.offset || 0);
+      query = query.orderBy(desc(leads.createdAt));
+
+      if (filters?.limit) {
+        query = query.limit(filters.limit);
+      }
+
+      if (filters?.offset) {
+        query = query.offset(filters.offset);
+      }
+
+      const results = await query;
 
       return results.map(row => ({
-        ...row.leads,
-        property: row.properties || undefined,
-        agent: row.agents || undefined
+        ...row.lead,
+        property: row.property,
+        agent: row.agent
       }));
     } catch (error) {
-      console.error('Database error in getLeads:', error);
-      return [];
+      console.error('Error fetching leads:', error);
+      throw new Error('Failed to fetch leads');
     }
   }
 
   async getLead(id: number): Promise<LeadWithProperty | undefined> {
     try {
       const result = await db
-        .select()
+        .select({
+          lead: leads,
+          property: properties,
+          agent: agents
+        })
         .from(leads)
         .leftJoin(properties, eq(leads.propertyId, properties.id))
         .leftJoin(agents, eq(leads.agentId, agents.id))
@@ -293,42 +335,65 @@ export class DatabaseStorage implements IStorage {
 
       if (result.length === 0) return undefined;
 
-      const row = result[0];
       return {
-        ...row.leads,
-        property: row.properties || undefined,
-        agent: row.agents || undefined
+        ...result[0].lead,
+        property: result[0].property,
+        agent: result[0].agent
       };
     } catch (error) {
-      console.error('Database error in getLead:', error);
-      return undefined;
+      console.error('Error fetching lead:', error);
+      throw new Error('Failed to fetch lead');
     }
   }
 
   async createLead(lead: InsertLead): Promise<Lead> {
-    const result = await db.insert(leads).values(lead).returning();
-    return result[0];
+    try {
+      const result = await db.insert(leads).values(lead).returning();
+      return result[0];
+    } catch (error) {
+      console.error('Error creating lead:', error);
+      throw new Error('Failed to create lead');
+    }
   }
 
   async updateLead(id: number, lead: Partial<InsertLead>): Promise<Lead | undefined> {
-    const result = await db
-      .update(leads)
-      .set(lead)
-      .where(eq(leads.id, id))
-      .returning();
-    return result[0] || undefined;
+    try {
+      const result = await db
+        .update(leads)
+        .set({ ...lead, updatedAt: new Date() })
+        .where(eq(leads.id, id))
+        .returning();
+
+      return result.length > 0 ? result[0] : undefined;
+    } catch (error) {
+      console.error('Error updating lead:', error);
+      throw new Error('Failed to update lead');
+    }
   }
 
   async getInquiries(leadId?: number): Promise<Inquiry[]> {
-    if (leadId) {
-      return await db.select().from(inquiries).where(eq(inquiries.leadId, leadId));
+    try {
+      let query = db.select().from(inquiries);
+
+      if (leadId) {
+        query = query.where(eq(inquiries.leadId, leadId));
+      }
+
+      return await query.orderBy(desc(inquiries.createdAt));
+    } catch (error) {
+      console.error('Error fetching inquiries:', error);
+      throw new Error('Failed to fetch inquiries');
     }
-    return await db.select().from(inquiries);
   }
 
   async createInquiry(inquiry: InsertInquiry): Promise<Inquiry> {
-    const result = await db.insert(inquiries).values(inquiry).returning();
-    return result[0];
+    try {
+      const result = await db.insert(inquiries).values(inquiry).returning();
+      return result[0];
+    } catch (error) {
+      console.error('Error creating inquiry:', error);
+      throw new Error('Failed to create inquiry');
+    }
   }
 
   async getStats(): Promise<{
@@ -341,37 +406,32 @@ export class DatabaseStorage implements IStorage {
   }> {
     try {
       const [
-        totalProperties,
-        activeProperties,
-        totalLeads,
-        newLeads,
-        totalAgents
+        totalPropertiesResult,
+        activePropertiesResult,
+        totalLeadsResult,
+        newLeadsResult,
+        totalAgentsResult,
+        recentSalesResult
       ] = await Promise.all([
-        db.select().from(properties),
-        db.select().from(properties).where(eq(properties.status, 'active')),
-        db.select().from(leads),
-        db.select().from(leads).where(eq(leads.status, 'new')),
-        db.select().from(agents)
+        db.select({ count: count() }).from(properties),
+        db.select({ count: count() }).from(properties).where(eq(properties.status, 'active')),
+        db.select({ count: count() }).from(leads),
+        db.select({ count: count() }).from(leads).where(eq(leads.status, 'new')),
+        db.select({ count: count() }).from(agents),
+        db.select({ count: count() }).from(properties).where(eq(properties.status, 'sold'))
       ]);
 
       return {
-        totalProperties: totalProperties.length,
-        activeProperties: activeProperties.length,
-        totalLeads: totalLeads.length,
-        newLeads: newLeads.length,
-        totalAgents: totalAgents.length,
-        recentSales: 0 // Placeholder for now
+        totalProperties: totalPropertiesResult[0].count,
+        activeProperties: activePropertiesResult[0].count,
+        totalLeads: totalLeadsResult[0].count,
+        newLeads: newLeadsResult[0].count,
+        totalAgents: totalAgentsResult[0].count,
+        recentSales: recentSalesResult[0].count
       };
     } catch (error) {
-      console.error('Database error in getStats:', error);
-      return {
-        totalProperties: 0,
-        activeProperties: 0,
-        totalLeads: 0,
-        newLeads: 0,
-        totalAgents: 0,
-        recentSales: 0
-      };
+      console.error('Error fetching stats:', error);
+      throw new Error('Failed to fetch statistics');
     }
   }
 }

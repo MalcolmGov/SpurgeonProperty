@@ -2,7 +2,7 @@ import type { Express } from "express";
 import type { Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
-import { storage } from "./storage-working";
+import { storage } from "./storage-simple";
 import { 
   insertPropertySchema, 
   insertLeadSchema, 
