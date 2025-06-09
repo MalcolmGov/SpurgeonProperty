@@ -71,16 +71,30 @@ export function Logo({ className, showText = true, variant = "default" }: LogoPr
       {/* Company Text */}
       {showText && (
         <div className="flex flex-col">
-          <span className={cn(
-            "text-xl font-bold tracking-tight bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 bg-clip-text text-transparent",
-            variant === "white" && "from-white via-purple-100 to-white bg-clip-text text-transparent"
-          )}>
+          <span 
+            className="text-xl font-bold tracking-tight"
+            style={{
+              background: variant === "white" 
+                ? "linear-gradient(to right, #ffffff, #e9d5ff, #ffffff)"
+                : "linear-gradient(to right, #9333ea, #a855f7, #4f46e5)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text"
+            }}
+          >
             Spurgeon
           </span>
-          <span className={cn(
-            "text-sm font-medium bg-gradient-to-r from-orange-500 via-orange-400 to-yellow-500 bg-clip-text text-transparent -mt-1",
-            variant === "white" && "from-orange-300 via-yellow-200 to-orange-200 bg-clip-text text-transparent"
-          )}>
+          <span 
+            className="text-sm font-medium -mt-1"
+            style={{
+              background: variant === "white"
+                ? "linear-gradient(to right, #fed7aa, #fde68a, #fed7aa)"
+                : "linear-gradient(to right, #f97316, #fb923c, #eab308)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text"
+            }}
+          >
             Property
           </span>
         </div>
