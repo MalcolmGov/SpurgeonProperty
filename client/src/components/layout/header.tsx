@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/contexts/theme-context";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Home, Building, Users, MapPin, Sun, Moon, Menu } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function Header() {
   const [location] = useLocation();
@@ -45,9 +46,7 @@ export default function Header() {
             ))}
             
             {/* Theme Toggle */}
-            <Button variant="ghost" size="sm">
-              <Sun className="w-4 h-4" />
-            </Button>
+            <ThemeToggle />
             
             <Button className="bg-purple-600 hover:bg-purple-700 text-white">
               Sign In
@@ -84,17 +83,32 @@ export default function Header() {
                     <Button
                       variant="ghost"
                       className="w-full justify-start"
-                      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                      onClick={() => {
+                        if (theme === "light") {
+                          setTheme("dark");
+                        } else if (theme === "dark") {
+                          setTheme("system");
+                        } else {
+                          setTheme("light");
+                        }
+                      }}
                     >
-                      {theme === "dark" ? (
+                      {theme === "light" && (
                         <>
                           <Sun className="w-4 h-4 mr-3" />
                           Light Mode
                         </>
-                      ) : (
+                      )}
+                      {theme === "dark" && (
                         <>
                           <Moon className="w-4 h-4 mr-3" />
                           Dark Mode
+                        </>
+                      )}
+                      {theme === "system" && (
+                        <>
+                          <div className="w-4 h-4 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full mr-3" />
+                          System Mode
                         </>
                       )}
                     </Button>
