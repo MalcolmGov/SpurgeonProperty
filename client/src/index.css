@@ -31,12 +31,9 @@
   --orange-secondary: 20.5 90.2% 48.2%; /* #EA580C */
 }
 
-/* Hero background image class */
+/* Hero background image class - cleaned up */
 .hero-bg {
-  background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/hero-background.png');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  background: url('/hero-background.png') center/cover no-repeat;
   min-height: 100vh;
 }
 
