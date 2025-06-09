@@ -97,15 +97,6 @@ export default function Home() {
           }}>
             Sell Property
           </a>
-          <a href="/map" style={{
-            color: 'white',
-            fontWeight: '600',
-            fontSize: '16px',
-            transition: 'all 0.3s ease',
-            textDecoration: 'none'
-          }}>
-            Map
-          </a>
           <a href="/admin/login" style={{
             background: 'rgba(245, 158, 11, 0.2)',
             padding: '8px 16px',
