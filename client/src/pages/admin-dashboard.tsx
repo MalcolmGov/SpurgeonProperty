@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { TrendingUp, Home, Users, Banknote, ChevronUp, Eye, Plus } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { TrendingUp, Home, Users, Banknote, ChevronUp, Eye, Plus, Download, Loader2 } from "lucide-react";
 import AdminSidebar from "@/components/admin/sidebar";
 import StatsCard from "@/components/admin/stats-card";
 import NotificationPanel from "@/components/NotificationPanel";
@@ -8,10 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AdminDashboard() {
   // All hooks must be called at the top level, before any early returns
   const { isLoading: authLoading, isAuthenticated } = useAdminAuth();
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
   
   const { data: stats, isLoading } = useQuery({
     queryKey: ["/api/admin/dashboard/stats"],
@@ -29,6 +33,44 @@ export default function AdminDashboard() {
     select: (data: any[]) => Array.isArray(data) ? data.slice(0, 5) : [],
     enabled: isAuthenticated,
   });
+
+  const scrapePropertiesMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch("/api/admin/scrape-properties", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to scrape properties");
+      }
+      
+      return response.json();
+    },
+    onSuccess: (data: any) => {
+      toast({
+        title: "Success",
+        description: `Successfully imported ${data.count} properties from Spurgeon Property`,
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/properties"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/dashboard/stats"] });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to scrape properties",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleScrapeProperties = () => {
+    scrapePropertiesMutation.mutate();
+  };
 
   // Early returns after all hooks are called
   if (authLoading) {
@@ -62,6 +104,19 @@ export default function AdminDashboard() {
             </div>
             <div className="flex items-center space-x-4">
               <NotificationPanel />
+              <Button
+                onClick={handleScrapeProperties}
+                disabled={scrapePropertiesMutation.isPending}
+                variant="outline"
+                className="mr-2"
+              >
+                {scrapePropertiesMutation.isPending ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Download className="mr-2 h-4 w-4" />
+                )}
+                Import Properties
+              </Button>
               <Button>
                 <Plus className="mr-2 h-4 w-4" />
                 Add Property

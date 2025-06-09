@@ -15,6 +15,7 @@ import { getNeighborhoodAnalytics } from "./neighborhood-service";
 import { openaiService, type PropertyDetails } from "./openai-service";
 import { anthropicService } from "./anthropic-service";
 import { adminAuthService, requireAdminAuth, redirectIfAuthenticated } from "./admin-auth";
+import { extractSpurgeonProperties } from "./spurgeon-extractor";
 import { z } from "zod";
 import multer from "multer";
 import path from "path";
@@ -595,6 +596,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Admin user fetch error:', error);
       res.status(500).json({ message: "Failed to fetch user data" });
+    }
+  });
+
+  // Property scraping endpoint
+  app.post("/api/admin/scrape-properties", requireAdminAuth, async (req, res) => {
+    try {
+      console.log('Starting property extraction from Spurgeon Property...');
+      const result = await extractSpurgeonProperties();
+      
+      if (result.success) {
+        res.json({ 
+          message: `Successfully imported ${result.count} properties`,
+          count: result.count
+        });
+      } else {
+        res.status(500).json({ 
+          message: result.message || "Failed to extract properties"
+        });
+      }
+    } catch (error) {
+      console.error('Property scraping error:', error);
+      res.status(500).json({ 
+        message: "Failed to scrape properties",
+        error: error instanceof Error ? error.message : "Unknown error"
+      });
     }
   });
 
