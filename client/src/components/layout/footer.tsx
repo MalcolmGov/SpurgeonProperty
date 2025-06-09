@@ -19,7 +19,7 @@ export default function Footer() {
                 {/* Enhanced Text Logo */}
                 <div className="flex flex-col">
                   <span className="text-lg font-bold bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent leading-tight">
-                    PropertyHub
+                    SpurgeonProperty
                   </span>
                   <span className="text-xs font-semibold text-gray-400 -mt-1 tracking-wider">
                     REAL ESTATE

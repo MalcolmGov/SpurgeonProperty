@@ -22,7 +22,7 @@ export default function AdminSidebar() {
             <Home className="w-5 h-5 text-white" />
           </div>
           <div>
-            <span className="text-lg font-bold text-slate-800 dark:text-white block">PropertyHub</span>
+            <span className="text-lg font-bold text-slate-800 dark:text-white block">SpurgeonProperty</span>
             <span className="text-xs text-slate-600 dark:text-slate-400">Admin Portal</span>
           </div>
         </Link>

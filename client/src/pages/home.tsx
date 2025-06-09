@@ -54,7 +54,7 @@ export default function Home() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <img 
             src={propertyLogo} 
-            alt="PropertyHub - South African Real Estate" 
+            alt="SpurgeonProperty - Your Trusted Real Estate Partner" 
             style={{ height: '50px', width: 'auto', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))' }}
           />
         </div>
@@ -141,7 +141,7 @@ export default function Home() {
                 </span>
               </h1>
               <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed">
-                Discover exceptional South African real estate with PropertyHub - your trusted partner for premium property investments and dream homes
+                Discover exceptional South African real estate with SpurgeonProperty - your trusted partner for premium property investments and dream homes
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
