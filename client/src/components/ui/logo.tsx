@@ -71,10 +71,16 @@ export function Logo({ className, showText = true, variant = "default" }: LogoPr
       {/* Company Text */}
       {showText && (
         <div className="flex flex-col">
-          <span className={cn("text-xl font-bold tracking-tight", textColor)}>
+          <span className={cn(
+            "text-xl font-bold tracking-tight bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 bg-clip-text text-transparent",
+            variant === "white" && "from-white via-purple-100 to-white bg-clip-text text-transparent"
+          )}>
             Spurgeon
           </span>
-          <span className={cn("text-sm font-medium text-purple-600 dark:text-purple-400 -mt-1")}>
+          <span className={cn(
+            "text-sm font-medium bg-gradient-to-r from-orange-500 via-orange-400 to-yellow-500 bg-clip-text text-transparent -mt-1",
+            variant === "white" && "from-orange-300 via-yellow-200 to-orange-200 bg-clip-text text-transparent"
+          )}>
             Property
           </span>
         </div>
