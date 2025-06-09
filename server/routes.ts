@@ -54,6 +54,9 @@ const upload = multer({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Middleware
+  app.use(cookieParser());
+  
   // Serve static uploaded files
   app.use('/uploads', express.static(uploadDir));
 
@@ -515,6 +518,105 @@ export async function registerRoutes(app: Express): Promise<Server> {
           "What should I know about buying?"
         ]
       });
+    }
+  });
+
+  // Admin Authentication Routes
+  app.post("/api/admin/register", async (req, res) => {
+    try {
+      const validatedData = insertAdminUserSchema.parse(req.body);
+      
+      // Check if email already exists
+      const emailExists = await adminAuthService.emailExists(validatedData.email);
+      if (emailExists) {
+        return res.status(400).json({ message: "Email already registered" });
+      }
+      
+      const adminUser = await adminAuthService.registerAdmin(validatedData);
+      
+      // Remove sensitive data from response
+      const { passwordHash, ...userResponse } = adminUser;
+      res.status(201).json({ 
+        message: "Admin user created successfully",
+        user: userResponse 
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid registration data", errors: error.errors });
+      }
+      console.error('Admin registration error:', error);
+      res.status(500).json({ message: "Failed to create admin user" });
+    }
+  });
+
+  app.post("/api/admin/login", async (req, res) => {
+    try {
+      const validatedData = adminLoginSchema.parse(req.body);
+      
+      const loginResult = await adminAuthService.loginAdmin(validatedData);
+      if (!loginResult) {
+        return res.status(401).json({ message: "Invalid email or password" });
+      }
+      
+      const { user, sessionId } = loginResult;
+      
+      // Set session cookie
+      res.cookie('adminSession', sessionId, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+      });
+      
+      // Remove sensitive data from response
+      const { passwordHash, ...userResponse } = user;
+      res.json({ 
+        message: "Login successful",
+        user: userResponse 
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid login data", errors: error.errors });
+      }
+      console.error('Admin login error:', error);
+      res.status(500).json({ message: "Failed to login" });
+    }
+  });
+
+  app.post("/api/admin/logout", requireAdminAuth, async (req, res) => {
+    try {
+      const sessionId = req.cookies?.adminSession;
+      if (sessionId) {
+        await adminAuthService.logout(sessionId);
+      }
+      
+      res.clearCookie('adminSession');
+      res.json({ message: "Logout successful" });
+    } catch (error) {
+      console.error('Admin logout error:', error);
+      res.status(500).json({ message: "Failed to logout" });
+    }
+  });
+
+  app.get("/api/admin/me", requireAdminAuth, async (req, res) => {
+    try {
+      const user = (req as any).adminUser;
+      const { passwordHash, ...userResponse } = user;
+      res.json(userResponse);
+    } catch (error) {
+      console.error('Admin user fetch error:', error);
+      res.status(500).json({ message: "Failed to fetch user data" });
+    }
+  });
+
+  // Protected Admin Routes (require authentication)
+  app.get("/api/admin/dashboard/stats", requireAdminAuth, async (req, res) => {
+    try {
+      const stats = await storage.getStats();
+      res.json(stats);
+    } catch (error) {
+      console.error('Admin stats error:', error);
+      res.status(500).json({ message: "Failed to fetch dashboard stats" });
     }
   });
 
