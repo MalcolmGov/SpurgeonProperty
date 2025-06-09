@@ -5,10 +5,10 @@ import PropertyCard from "@/components/property/property-card";
 import PropertyCardSkeleton from "@/components/property/property-card-skeleton";
 import SimpleAIAssistant from "@/components/SimpleAIAssistant";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/ui/logo";
 import { useProperties } from "@/hooks/use-properties";
 import { Link, useLocation } from "wouter";
 import { Building, Users, TrendingUp, Award } from "lucide-react";
-import propertyLogo from "@/assets/property-logo.svg";
 
 export default function Home() {
   const { data: featuredProperties, isLoading } = useProperties({ featured: true, limit: 3 });
@@ -52,11 +52,9 @@ export default function Home() {
       }}>
         {/* Logo Section */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <img 
-            src={propertyLogo} 
-            alt="SpurgeonProperty - Your Trusted Real Estate Partner" 
-            style={{ height: '50px', width: 'auto', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))' }}
-          />
+          <div style={{ filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))' }}>
+            <Logo variant="white" />
+          </div>
         </div>
 
         {/* Navigation */}
