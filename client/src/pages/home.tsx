@@ -127,8 +127,13 @@ export default function Home() {
 
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900" style={{ marginTop: '90px' }}>
         {/* Hero Section */}
-        <section className="hero-bg relative min-h-screen flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 bg-black/20"></div>
+        <section 
+          className="relative min-h-screen flex items-center justify-center overflow-hidden"
+          style={{
+            background: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/hero-background.png') center/cover no-repeat`,
+            minHeight: '100vh'
+          }}
+        >
           
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="animate-fade-in">
