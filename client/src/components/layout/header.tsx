@@ -37,7 +37,7 @@ export default function Header() {
           </div>
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-8">
             {navigation.map((item) => (
               <Link key={item.name} href={item.href}>
                 <button
@@ -96,73 +96,33 @@ export default function Header() {
           </div>
           
           {/* Mobile Menu */}
-          <div className="md:hidden flex items-center space-x-2">
-            {/* Theme toggle for mobile */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="relative text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400"
-                >
-                  <Settings className="w-4 h-4" />
-                  <span className="sr-only">Settings</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-                <DropdownMenuItem 
-                  onClick={() => setTheme("light")}
-                  className="flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700"
-                >
-                  <Sun className="w-4 h-4" />
-                  <span>Light Mode</span>
-                  {theme === "light" && <span className="ml-auto text-purple-600">✓</span>}
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => setTheme("dark")}
-                  className="flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700"
-                >
-                  <Moon className="w-4 h-4" />
-                  <span>Dark Mode</span>
-                  {theme === "dark" && <span className="ml-auto text-purple-600">✓</span>}
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => setTheme("system")}
-                  className="flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700"
-                >
-                  <div className="w-4 h-4 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full" />
-                  <span>System Mode</span>
-                  {theme === "system" && <span className="ml-auto text-purple-600">✓</span>}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            
+          <div className="flex lg:hidden items-center space-x-2">
             {/* Hamburger Menu */}
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="relative p-2 text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                  className="relative p-3 text-slate-700 dark:text-slate-200 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200"
                 >
-                  <div className="flex flex-col items-center justify-center w-6 h-6">
+                  <div className="flex flex-col items-center justify-center w-6 h-6 space-y-1">
                     <span 
-                      className={`block h-0.5 w-6 bg-current transition-all duration-300 ease-out ${
-                        mobileMenuOpen ? 'rotate-45 translate-y-1' : '-translate-y-0.5'
+                      className={`block h-0.5 w-6 bg-current transition-all duration-300 ease-out rounded-sm ${
+                        mobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''
                       }`}
                     />
                     <span 
-                      className={`block h-0.5 w-6 bg-current transition-all duration-300 ease-out ${
+                      className={`block h-0.5 w-6 bg-current transition-all duration-300 ease-out rounded-sm ${
                         mobileMenuOpen ? 'opacity-0' : 'opacity-100'
                       }`}
                     />
                     <span 
-                      className={`block h-0.5 w-6 bg-current transition-all duration-300 ease-out ${
-                        mobileMenuOpen ? '-rotate-45 -translate-y-1' : 'translate-y-0.5'
+                      className={`block h-0.5 w-6 bg-current transition-all duration-300 ease-out rounded-sm ${
+                        mobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
                       }`}
                     />
                   </div>
-                  <span className="sr-only">Open menu</span>
+                  <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-80 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-700">
@@ -195,8 +155,56 @@ export default function Header() {
                     </nav>
                   </div>
                   
+                  {/* Theme Settings */}
+                  <div className="border-t border-slate-200 dark:border-slate-700 pt-4">
+                    <div className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">
+                      Theme Settings
+                    </div>
+                    
+                    <div className="space-y-1">
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start text-left px-4"
+                        onClick={() => {
+                          setTheme("light");
+                          setMobileMenuOpen(false);
+                        }}
+                      >
+                        <Sun className="w-4 h-4 mr-3" />
+                        Light Mode
+                        {theme === "light" && <span className="ml-auto text-purple-600">✓</span>}
+                      </Button>
+                      
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start text-left px-4"
+                        onClick={() => {
+                          setTheme("dark");
+                          setMobileMenuOpen(false);
+                        }}
+                      >
+                        <Moon className="w-4 h-4 mr-3" />
+                        Dark Mode
+                        {theme === "dark" && <span className="ml-auto text-purple-600">✓</span>}
+                      </Button>
+                      
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start text-left px-4"
+                        onClick={() => {
+                          setTheme("system");
+                          setMobileMenuOpen(false);
+                        }}
+                      >
+                        <div className="w-4 h-4 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full mr-3" />
+                        System Mode
+                        {theme === "system" && <span className="ml-auto text-purple-600">✓</span>}
+                      </Button>
+                    </div>
+                  </div>
+
                   {/* Footer Actions */}
-                  <div className="border-t border-slate-200 dark:border-slate-700 pt-6 pb-4">
+                  <div className="border-t border-slate-200 dark:border-slate-700 pt-6 pb-4 mt-4">
                     <Button 
                       className="w-full mb-4 bg-purple-600 hover:bg-purple-700 text-white shadow-lg"
                       onClick={() => setMobileMenuOpen(false)}
