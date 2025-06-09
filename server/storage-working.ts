@@ -1,5 +1,4 @@
-import pg from "pg";
-const { Pool } = pg;
+import { pool } from "./database.js";
 import type { 
   Property, 
   InsertProperty, 
@@ -12,8 +11,6 @@ import type {
   PropertyWithAgent,
   LeadWithProperty 
 } from "@shared/schema";
-
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 export interface IStorage {
   // Properties
