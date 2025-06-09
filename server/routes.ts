@@ -546,7 +546,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       if (error instanceof Error && error.message === "Email domain not authorized for admin access") {
         return res.status(403).json({ 
-          message: "Only @spurgeonproperty.com email addresses and Malcolmgov24@gmail.com are authorized for admin access" 
+          message: "Not Authorized to access the portal" 
         });
       }
       console.error('Admin registration error:', error);
@@ -585,7 +585,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       if (error instanceof Error && error.message === "Email domain not authorized for admin access") {
         return res.status(403).json({ 
-          message: "Only @spurgeonproperty.com email addresses and Malcolmgov24@gmail.com are authorized for admin access" 
+          message: "Not Authorized to access the portal" 
         });
       }
       console.error('Admin login error:', error);
