@@ -53,15 +53,19 @@ export default function Header() {
             {/* Settings Menu with Theme Options */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="relative">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="relative text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400"
+                >
                   <Settings className="w-4 h-4" />
                   <span className="sr-only">Settings</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                 <DropdownMenuItem 
                   onClick={() => setTheme("light")}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700"
                 >
                   <Sun className="w-4 h-4" />
                   <span>Light Mode</span>
@@ -69,7 +73,7 @@ export default function Header() {
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => setTheme("dark")}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700"
                 >
                   <Moon className="w-4 h-4" />
                   <span>Dark Mode</span>
@@ -77,7 +81,7 @@ export default function Header() {
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => setTheme("system")}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700"
                 >
                   <div className="w-4 h-4 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full" />
                   <span>System Mode</span>
