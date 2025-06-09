@@ -127,16 +127,10 @@ export default function Home() {
 
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900" style={{ marginTop: '90px' }}>
         {/* Hero Section */}
-        <section 
-          className="relative min-h-screen flex items-center justify-center overflow-hidden"
-          style={{
-            background: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/hero-background.png') center/cover no-repeat`,
-            minHeight: '100vh'
-          }}
-        >
+        <section className="hero-bg relative min-h-screen flex items-center justify-center overflow-hidden">
           
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="animate-fade-in">
+            <div>
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
                 Find Your Perfect
                 <span className="block bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
@@ -148,7 +142,7 @@ export default function Home() {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-                <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300">
                   <Link href="/properties">Explore Properties</Link>
                 </Button>
                 <Button variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-slate-800 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300">

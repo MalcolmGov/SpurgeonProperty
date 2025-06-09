@@ -33,7 +33,10 @@
 
 /* Hero background image class */
 .hero-bg {
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/attached_assets/image_1749441033035.png') center/cover no-repeat;
+  background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/hero-background.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   min-height: 100vh;
 }
 
