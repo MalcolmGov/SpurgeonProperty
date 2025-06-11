@@ -31,6 +31,17 @@ const createPropertyIcon = (price: string, propertyType: string) => {
                propertyType === 'cluster_home' ? '#ef4444' :
                propertyType === 'farm' ? '#84cc16' : '#6b7280';
 
+  const formatPrice = (priceStr: string) => {
+    const numPrice = parseFloat(priceStr.replace(/[^\d.]/g, ''));
+    if (isNaN(numPrice) || numPrice <= 0) {
+      return 'POA';
+    }
+    if (numPrice >= 1000000) {
+      return `R${(numPrice / 1000000).toFixed(1)}M`;
+    }
+    return `R${numPrice.toLocaleString()}`;
+  };
+
   return L.divIcon({
     html: `
       <div style="
@@ -45,7 +56,7 @@ const createPropertyIcon = (price: string, propertyType: string) => {
         box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         min-width: 60px;
       ">
-        R${parseInt(price).toLocaleString()}
+        ${formatPrice(price)}
       </div>
     `,
     className: 'custom-property-marker',
@@ -304,7 +315,10 @@ export default function PropertyMapExplorer() {
                         </div>
                         
                         <p className="text-2xl font-bold text-orange-primary mb-2">
-                          R{parseInt(property.price).toLocaleString()}
+                          {(() => {
+                            const numPrice = parseFloat(property.price.replace(/[^\d.]/g, ''));
+                            return isNaN(numPrice) || numPrice <= 0 ? 'Price on request' : `R${numPrice.toLocaleString()}`;
+                          })()}
                         </p>
                         
                         <p className="text-sm text-slate-600 mb-3 flex items-center">

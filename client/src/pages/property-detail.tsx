@@ -74,9 +74,18 @@ export default function PropertyDetail() {
   }
 
   const formatPrice = (price: string) => {
+    if (!price || price === '' || price === 'null' || price === 'undefined') {
+      return 'Price on request';
+    }
+    
+    const numericPrice = parseFloat(price.replace(/[^\d.]/g, ''));
+    if (isNaN(numericPrice) || numericPrice <= 0) {
+      return 'Price on request';
+    }
+    
     return `R ${new Intl.NumberFormat('en-ZA', {
       minimumFractionDigits: 0,
-    }).format(parseFloat(price))}`;
+    }).format(numericPrice)}`;
   };
 
   return (
