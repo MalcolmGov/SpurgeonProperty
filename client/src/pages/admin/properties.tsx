@@ -20,6 +20,8 @@ export default function AdminProperties() {
   const [statusFilter, setStatusFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   
+  console.log("AdminProperties render - showPropertyForm:", showPropertyForm);
+  
   const queryClient = useQueryClient();
   const { toast } = useToast();
   
@@ -114,8 +116,10 @@ export default function AdminProperties() {
             </div>
             <Button
               onClick={() => {
+                console.log("Add Property button clicked");
                 setEditingProperty(null);
                 setShowPropertyForm(true);
+                console.log("State updated: showPropertyForm =", true);
               }}
               className="bg-purple-primary hover:bg-purple-secondary"
             >
@@ -332,13 +336,17 @@ export default function AdminProperties() {
       
       {/* Property Form Modal */}
       {showPropertyForm && (
-        <PropertyForm
-          property={editingProperty}
-          onClose={() => {
-            setShowPropertyForm(false);
-            setEditingProperty(null);
-          }}
-        />
+        <>
+          {console.log("Rendering PropertyForm with showPropertyForm:", showPropertyForm)}
+          <PropertyForm
+            property={editingProperty}
+            onClose={() => {
+              console.log("PropertyForm onClose called");
+              setShowPropertyForm(false);
+              setEditingProperty(null);
+            }}
+          />
+        </>
       )}
     </div>
   );
