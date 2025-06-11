@@ -220,27 +220,33 @@ export default function PropertyCard({
         </p>
 
         {/* Property Details */}
-        <div className="grid grid-cols-3 gap-4 mb-4">
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1 text-gray-600">
-              <Bed className="h-4 w-4" />
-              <span className="text-sm">{property.bedrooms}</span>
+        <div className="flex justify-between mb-4 py-3 border-y border-gray-100 dark:border-gray-700">
+          <div className="flex items-center">
+            <div className="w-8 h-8 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mr-2">
+              <Bed className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             </div>
-            <p className="text-xs text-gray-500">Bedrooms</p>
+            <div className="text-left">
+              <span className="font-semibold text-gray-800 dark:text-white block">{property.bedrooms}</span>
+              <span className="text-xs text-gray-500">Bedrooms</span>
+            </div>
           </div>
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1 text-gray-600">
-              <Bath className="h-4 w-4" />
-              <span className="text-sm">{property.bathrooms}</span>
+          <div className="flex items-center">
+            <div className="w-8 h-8 bg-green-50 dark:bg-green-900/20 rounded-lg flex items-center justify-center mr-2">
+              <Bath className="w-4 h-4 text-green-600 dark:text-green-400" />
             </div>
-            <p className="text-xs text-gray-500">Bathrooms</p>
+            <div className="text-left">
+              <span className="font-semibold text-gray-800 dark:text-white block">{property.bathrooms}</span>
+              <span className="text-xs text-gray-500">Bathrooms</span>
+            </div>
           </div>
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1 text-gray-600">
-              <Square className="h-4 w-4" />
-              <span className="text-sm">{property.area}m²</span>
+          <div className="flex items-center">
+            <div className="w-8 h-8 bg-purple-50 dark:bg-purple-900/20 rounded-lg flex items-center justify-center mr-2">
+              <Square className="w-4 h-4 text-purple-600 dark:text-purple-400" />
             </div>
-            <p className="text-xs text-gray-500">Area</p>
+            <div className="text-left">
+              <span className="font-semibold text-gray-800 dark:text-white block">{property.area}m²</span>
+              <span className="text-xs text-gray-500">Area</span>
+            </div>
           </div>
         </div>
 

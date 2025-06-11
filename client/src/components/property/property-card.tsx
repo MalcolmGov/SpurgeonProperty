@@ -90,18 +90,33 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
                 {property.address}, {property.suburb}, {property.city}, {property.province}
               </p>
               <div className="flex items-center space-x-6 text-sm text-slate-600 dark:text-slate-400 mb-4">
-                <span className="flex items-center">
-                  <Bed className="w-4 h-4 mr-1" />
-                  {property.bedrooms} Beds
-                </span>
-                <span className="flex items-center">
-                  <Bath className="w-4 h-4 mr-1" />
-                  {property.bathrooms} Baths
-                </span>
-                <span className="flex items-center">
-                  <Square className="w-4 h-4 mr-1" />
-                  {property.area.toLocaleString()} sq ft
-                </span>
+                <div className="flex items-center">
+                  <div className="w-8 h-8 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mr-2">
+                    <Bed className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div className="text-left">
+                    <span className="font-semibold text-slate-800 dark:text-white block">{property.bedrooms}</span>
+                    <span className="text-xs text-slate-500">Bedrooms</span>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-8 h-8 bg-green-50 dark:bg-green-900/20 rounded-lg flex items-center justify-center mr-2">
+                    <Bath className="w-4 h-4 text-green-600 dark:text-green-400" />
+                  </div>
+                  <div className="text-left">
+                    <span className="font-semibold text-slate-800 dark:text-white block">{property.bathrooms}</span>
+                    <span className="text-xs text-slate-500">Bathrooms</span>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-8 h-8 bg-purple-50 dark:bg-purple-900/20 rounded-lg flex items-center justify-center mr-2">
+                    <Square className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <div className="text-left">
+                    <span className="font-semibold text-slate-800 dark:text-white block">{property.area}m²</span>
+                    <span className="text-xs text-slate-500">Area</span>
+                  </div>
+                </div>
               </div>
               <p className="text-slate-600 dark:text-slate-300 text-sm line-clamp-2">
                 {property.description}
@@ -179,21 +194,33 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
         </p>
         
         {/* Property Details */}
-        <div className="flex justify-between text-center mb-4 py-2 border-y border-slate-200 dark:border-slate-600">
+        <div className="flex justify-between text-center mb-4 py-3 border-y border-slate-200 dark:border-slate-600">
           <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
-            <Bed className="w-4 h-4 mr-1" />
-            <span className="font-medium">{property.bedrooms}</span>
-            <span className="ml-1 text-xs">Bedrooms</span>
+            <div className="w-8 h-8 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mr-2">
+              <Bed className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div className="text-left">
+              <span className="font-semibold text-slate-800 dark:text-white block">{property.bedrooms}</span>
+              <span className="text-xs text-slate-500">Bedrooms</span>
+            </div>
           </div>
           <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
-            <Bath className="w-4 h-4 mr-1" />
-            <span className="font-medium">{property.bathrooms}</span>
-            <span className="ml-1 text-xs">Bathrooms</span>
+            <div className="w-8 h-8 bg-green-50 dark:bg-green-900/20 rounded-lg flex items-center justify-center mr-2">
+              <Bath className="w-4 h-4 text-green-600 dark:text-green-400" />
+            </div>
+            <div className="text-left">
+              <span className="font-semibold text-slate-800 dark:text-white block">{property.bathrooms}</span>
+              <span className="text-xs text-slate-500">Bathrooms</span>
+            </div>
           </div>
           <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
-            <Square className="w-4 h-4 mr-1" />
-            <span className="font-medium">{property.area}m²</span>
-            <span className="ml-1 text-xs">Area</span>
+            <div className="w-8 h-8 bg-purple-50 dark:bg-purple-900/20 rounded-lg flex items-center justify-center mr-2">
+              <Square className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div className="text-left">
+              <span className="font-semibold text-slate-800 dark:text-white block">{property.area}m²</span>
+              <span className="text-xs text-slate-500">Area</span>
+            </div>
           </div>
         </div>
         
