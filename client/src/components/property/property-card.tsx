@@ -15,9 +15,18 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
   const [isFavorited, setIsFavorited] = useState(false);
 
   const formatPrice = (price: string) => {
+    if (!price || price === '' || price === 'null' || price === 'undefined') {
+      return 'Price on request';
+    }
+    
+    const numericPrice = parseFloat(price.replace(/[^\d.]/g, ''));
+    if (isNaN(numericPrice) || numericPrice <= 0) {
+      return 'Price on request';
+    }
+    
     return `R ${new Intl.NumberFormat('en-ZA', {
       minimumFractionDigits: 0,
-    }).format(parseFloat(price))}`;
+    }).format(numericPrice)}`;
   };
 
   const toggleFavorite = (e: React.MouseEvent) => {
@@ -121,17 +130,12 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
           {property.featured && (
             <Badge className="bg-orange-500 text-white px-2 py-1 text-xs rounded">Featured</Badge>
           )}
-          {property.status && property.status !== "active" && (
-            <Badge className={`text-white px-2 py-1 text-xs rounded ${
-              property.status === "sold" ? "bg-red-500" : 
-              property.status === "pending" ? "bg-yellow-500" : "bg-green-500"
-            }`}>
-              {property.status}
-            </Badge>
+          {property.status === "sold" && (
+            <Badge className="bg-red-500 text-white px-2 py-1 text-xs rounded">Sold</Badge>
           )}
-          {!property.status || property.status === "active" ? (
-            <Badge className="bg-green-500 text-white px-2 py-1 text-xs rounded">active</Badge>
-          ) : null}
+          {property.status === "pending" && (
+            <Badge className="bg-yellow-500 text-white px-2 py-1 text-xs rounded">Pending</Badge>
+          )}
         </div>
         
         {property.propertyType && (

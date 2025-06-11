@@ -36,7 +36,15 @@ export default function PropertyCard({
   const [imageError, setImageError] = useState(false);
 
   const formatPrice = (price: string) => {
+    if (!price || price === '' || price === 'null' || price === 'undefined') {
+      return 'Price on request';
+    }
+    
     const numPrice = parseFloat(price.replace(/[^\d.]/g, ''));
+    if (isNaN(numPrice) || numPrice <= 0) {
+      return 'Price on request';
+    }
+    
     if (numPrice >= 1000000) {
       return `R${(numPrice / 1000000).toFixed(1)}M`;
     }
