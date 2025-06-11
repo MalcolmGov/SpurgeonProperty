@@ -19,8 +19,13 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
       return 'Price on request';
     }
     
-    // Handle both string and numeric price values
-    const numericPrice = typeof price === 'string' ? parseFloat(price) : parseFloat(String(price));
+    // If price is already formatted (starts with "R"), return as is
+    if (price.toString().trim().startsWith('R')) {
+      return price.toString().trim();
+    }
+    
+    // Extract numeric value from string
+    const numericPrice = parseFloat(price.toString().replace(/[^\d.]/g, ''));
     
     if (isNaN(numericPrice)) {
       return 'Price on request';

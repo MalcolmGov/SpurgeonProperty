@@ -59,8 +59,13 @@ export default function PropertyComparison({
       return 'Price on request';
     }
     
-    // Handle both string and numeric price values
-    const numPrice = typeof price === 'string' ? parseFloat(price) : parseFloat(String(price));
+    // If price is already formatted (starts with "R"), return as is
+    if (price.toString().trim().startsWith('R')) {
+      return price.toString().trim();
+    }
+    
+    // Extract numeric value from string
+    const numPrice = parseFloat(price.toString().replace(/[^\d.]/g, ''));
     
     if (isNaN(numPrice)) {
       return 'Price on request';

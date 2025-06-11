@@ -32,7 +32,19 @@ const createPropertyIcon = (price: string, propertyType: string) => {
                propertyType === 'farm' ? '#84cc16' : '#6b7280';
 
   const formatPrice = (priceStr: string) => {
-    const numPrice = typeof priceStr === 'string' ? parseFloat(priceStr) : parseFloat(String(priceStr));
+    if (!priceStr) return 'POA';
+    
+    // If price is already formatted (starts with "R"), return shortened version
+    if (priceStr.toString().trim().startsWith('R')) {
+      const numPrice = parseFloat(priceStr.toString().replace(/[^\d.]/g, ''));
+      if (isNaN(numPrice)) return 'POA';
+      if (numPrice >= 1000000) {
+        return `R${(numPrice / 1000000).toFixed(1)}M`;
+      }
+      return `R${numPrice.toLocaleString()}`;
+    }
+    
+    const numPrice = parseFloat(priceStr.toString().replace(/[^\d.]/g, ''));
     if (isNaN(numPrice)) {
       return 'POA';
     }
@@ -316,7 +328,14 @@ export default function PropertyMapExplorer() {
                         
                         <p className="text-2xl font-bold text-orange-primary mb-2">
                           {(() => {
-                            const numPrice = typeof property.price === 'string' ? parseFloat(property.price) : parseFloat(String(property.price));
+                            if (!property.price) return 'Price on request';
+                            
+                            // If price is already formatted (starts with "R"), return as is
+                            if (property.price.toString().trim().startsWith('R')) {
+                              return property.price.toString().trim();
+                            }
+                            
+                            const numPrice = parseFloat(property.price.toString().replace(/[^\d.]/g, ''));
                             return isNaN(numPrice) ? 'Price on request' : `R ${numPrice.toLocaleString()}`;
                           })()}
                         </p>
