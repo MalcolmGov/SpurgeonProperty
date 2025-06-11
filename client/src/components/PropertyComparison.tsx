@@ -55,11 +55,21 @@ export default function PropertyComparison({
   }
 
   const formatPrice = (price: string) => {
-    const numPrice = parseFloat(price.replace(/[^\d.]/g, ''));
-    if (numPrice >= 1000000) {
-      return `R${(numPrice / 1000000).toFixed(1)}M`;
+    if (!price || price === '' || price === 'null' || price === 'undefined') {
+      return 'Price on request';
     }
-    return `R${numPrice.toLocaleString()}`;
+    
+    // Handle both string and numeric price values
+    const numPrice = typeof price === 'string' ? parseFloat(price) : parseFloat(String(price));
+    
+    if (isNaN(numPrice)) {
+      return 'Price on request';
+    }
+    
+    return `R ${new Intl.NumberFormat('en-ZA', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(numPrice)}`;
   };
 
   const getPropertyScore = (property: PropertyWithAgent) => {

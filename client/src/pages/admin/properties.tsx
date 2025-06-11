@@ -80,13 +80,16 @@ export default function AdminProperties() {
       return 'Price on request';
     }
     
-    const numericPrice = parseFloat(price.replace(/[^\d.]/g, ''));
-    if (isNaN(numericPrice) || numericPrice <= 0) {
+    // Handle both string and numeric price values
+    const numericPrice = typeof price === 'string' ? parseFloat(price) : parseFloat(String(price));
+    
+    if (isNaN(numericPrice)) {
       return 'Price on request';
     }
     
     return `R ${new Intl.NumberFormat('en-ZA', {
       minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     }).format(numericPrice)}`;
   };
 

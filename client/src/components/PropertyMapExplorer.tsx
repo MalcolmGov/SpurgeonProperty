@@ -32,8 +32,8 @@ const createPropertyIcon = (price: string, propertyType: string) => {
                propertyType === 'farm' ? '#84cc16' : '#6b7280';
 
   const formatPrice = (priceStr: string) => {
-    const numPrice = parseFloat(priceStr.replace(/[^\d.]/g, ''));
-    if (isNaN(numPrice) || numPrice <= 0) {
+    const numPrice = typeof priceStr === 'string' ? parseFloat(priceStr) : parseFloat(String(priceStr));
+    if (isNaN(numPrice)) {
       return 'POA';
     }
     if (numPrice >= 1000000) {
@@ -316,8 +316,8 @@ export default function PropertyMapExplorer() {
                         
                         <p className="text-2xl font-bold text-orange-primary mb-2">
                           {(() => {
-                            const numPrice = parseFloat(property.price.replace(/[^\d.]/g, ''));
-                            return isNaN(numPrice) || numPrice <= 0 ? 'Price on request' : `R${numPrice.toLocaleString()}`;
+                            const numPrice = typeof property.price === 'string' ? parseFloat(property.price) : parseFloat(String(property.price));
+                            return isNaN(numPrice) ? 'Price on request' : `R ${numPrice.toLocaleString()}`;
                           })()}
                         </p>
                         
