@@ -153,9 +153,6 @@ export default function PropertyCard({
             {property.featured && (
               <Badge className="bg-yellow-500 text-white">Featured</Badge>
             )}
-            <Badge className={getStatusColor(property.status || 'active')}>
-              {property.status || 'Active'}
-            </Badge>
           </div>
           {property.propertyType && (
             <Badge className="bg-blue-600 text-white capitalize">
