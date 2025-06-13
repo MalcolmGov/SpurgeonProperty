@@ -26,8 +26,8 @@ export default function Header() {
   ];
 
   return (
-    <nav className="mobile-nav fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 border-b border-gray-200 dark:border-gray-700 shadow-sm backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+    <nav className="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-700 shadow-sm backdrop-blur-md">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
@@ -37,7 +37,7 @@ export default function Header() {
           </div>
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden sm:flex items-center space-x-8">
             {navigation.map((item) => (
               <Link key={item.name} href={item.href}>
                 <button
@@ -95,74 +95,18 @@ export default function Header() {
             </Button>
           </div>
           
-          {/* Mobile Menu - Enhanced for Touch */}
-          <div className="flex md:hidden items-center space-x-2">
-            {/* Mobile Theme Toggle */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="p-3 min-h-[44px] min-w-[44px] text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 touch-manipulation"
-                >
-                  <Settings className="w-5 h-5" />
-                  <span className="sr-only">Settings</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-                <DropdownMenuItem 
-                  onClick={() => setTheme("light")}
-                  className="flex items-center gap-3 p-3 hover:bg-slate-50 dark:hover:bg-slate-700 touch-manipulation"
-                >
-                  <Sun className="w-5 h-5" />
-                  <span>Light Mode</span>
-                  {theme === "light" && <span className="ml-auto text-purple-600">✓</span>}
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => setTheme("dark")}
-                  className="flex items-center gap-3 p-3 hover:bg-slate-50 dark:hover:bg-slate-700 touch-manipulation"
-                >
-                  <Moon className="w-5 h-5" />
-                  <span>Dark Mode</span>
-                  {theme === "dark" && <span className="ml-auto text-purple-600">✓</span>}
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => setTheme("system")}
-                  className="flex items-center gap-3 p-3 hover:bg-slate-50 dark:hover:bg-slate-700 touch-manipulation"
-                >
-                  <div className="w-5 h-5 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full" />
-                  <span>System Mode</span>
-                  {theme === "system" && <span className="ml-auto text-purple-600">✓</span>}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* Enhanced Hamburger Menu */}
+          {/* Mobile Menu - Visible on all mobile devices */}
+          <div className="flex sm:hidden items-center space-x-1">
+            {/* Hamburger Menu Button - Most prominent */}
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button 
-                  variant="ghost" 
+                  variant="outline" 
                   size="sm" 
-                  className="relative p-2 min-h-[48px] min-w-[48px] bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg transition-all duration-200 touch-manipulation"
+                  className="p-3 min-h-[48px] min-w-[48px] bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-2 border-slate-300 dark:border-slate-600 hover:bg-purple-50 dark:hover:bg-purple-900 hover:border-purple-300 dark:hover:border-purple-600 rounded-lg shadow-sm touch-manipulation"
                 >
-                  <div className="flex flex-col items-center justify-center w-6 h-6 space-y-1.5">
-                    <span 
-                      className={`block h-0.5 w-5 bg-current transition-all duration-300 ease-out rounded-sm ${
-                        mobileMenuOpen ? 'rotate-45 translate-y-2' : ''
-                      }`}
-                    />
-                    <span 
-                      className={`block h-0.5 w-5 bg-current transition-all duration-300 ease-out rounded-sm ${
-                        mobileMenuOpen ? 'opacity-0' : 'opacity-100'
-                      }`}
-                    />
-                    <span 
-                      className={`block h-0.5 w-5 bg-current transition-all duration-300 ease-out rounded-sm ${
-                        mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''
-                      }`}
-                    />
-                  </div>
-                  <span className="sr-only">Toggle menu</span>
+                  <Menu className="w-6 h-6" />
+                  <span className="sr-only">Menu</span>
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[90vw] max-w-sm bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-700 scroll-container">

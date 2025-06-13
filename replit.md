@@ -118,6 +118,8 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
+- **June 13, 2025 - Mobile Navigation Fix**: Fixed hamburger menu visibility issues on mobile devices. Replaced complex custom hamburger icon with clear Menu icon from Lucide React. Updated responsive breakpoints to sm: (640px) for better mobile compatibility. Simplified mobile menu structure with prominent button styling using outline variant, white background, and clear borders for maximum visibility. Removed fixed positioning that was causing layout issues and white space problems.
+
 - **June 13, 2025 - Modern Feature Tags Enhancement**: Modernized property feature tags across all components with contemporary colorful badge styling. Updated PropertyCard, property-card, and PropertyComparison components to use pill-shaped badges with varied colors, dark mode support, and hover animations for better visual hierarchy.
 
 - **June 13, 2025 - Import Feature Removal**: Removed import properties button and functionality from admin dashboard per user request. Cleaned up related code including mutations, handlers, and unused imports. Database cleaned to maintain only authentic user-added properties.
