@@ -16,6 +16,7 @@ import AdminLogin from "@/pages/admin-login";
 import AdminDashboard from "@/pages/admin-dashboard";
 import AdminProperties from "@/pages/admin/properties";
 import AdminLeads from "@/pages/admin/leads";
+import AdminAgents from "@/pages/admin-agents";
 import AdminAITools from "@/pages/admin-ai-tools";
 import NotFound from "@/pages/not-found";
 
@@ -33,6 +34,7 @@ function Router() {
       <Route path="/admin/ai-tools" component={AdminAITools} />
       <Route path="/admin/properties" component={AdminProperties} />
       <Route path="/admin/leads" component={AdminLeads} />
+      <Route path="/admin/agents" component={AdminAgents} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/properties/:id" component={PropertyDetail} />

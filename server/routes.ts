@@ -9,7 +9,9 @@ import {
   insertInquirySchema,
   insertAgentSchema,
   insertAdminUserSchema,
-  adminLoginSchema
+  adminLoginSchema,
+  agentLoginSchema,
+  agentRegistrationSchema
 } from "@shared/schema";
 import { getNeighborhoodAnalytics, neighborhoodService } from "./neighborhood-service";
 import { openaiService, type PropertyDetails } from "./openai-service";
@@ -481,6 +483,153 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(stats);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch stats" });
+    }
+  });
+
+  // Agent management routes (admin protected)
+  app.get("/api/admin/agents", requireAdminAuth, async (req, res) => {
+    try {
+      const agents = await storage.getAgents();
+      res.json(agents);
+    } catch (error) {
+      console.error("Error fetching agents:", error);
+      res.status(500).json({ message: "Failed to fetch agents" });
+    }
+  });
+
+  app.post("/api/admin/agents", requireAdminAuth, async (req, res) => {
+    try {
+      const validatedData = agentRegistrationSchema.parse(req.body);
+      
+      // Check if email already exists
+      const emailExists = await agentAuthService.emailExists(validatedData.email);
+      if (emailExists) {
+        return res.status(400).json({ message: "Email already exists" });
+      }
+
+      const agent = await agentAuthService.registerAgent(validatedData);
+      res.status(201).json(agent);
+    } catch (error) {
+      console.error("Error creating agent:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid agent data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create agent" });
+    }
+  });
+
+  app.put("/api/admin/agents/:id", requireAdminAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const validatedData = agentRegistrationSchema.partial().parse(req.body);
+      
+      const agent = await agentAuthService.updateAgent(id, validatedData);
+      if (!agent) {
+        return res.status(404).json({ message: "Agent not found" });
+      }
+      
+      res.json(agent);
+    } catch (error) {
+      console.error("Error updating agent:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid agent data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update agent" });
+    }
+  });
+
+  app.delete("/api/admin/agents/:id", requireAdminAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteAgent(id);
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting agent:", error);
+      res.status(500).json({ message: "Failed to delete agent" });
+    }
+  });
+
+  // Agent authentication routes
+  app.post("/api/agent/login", async (req, res) => {
+    try {
+      const validatedData = agentLoginSchema.parse(req.body);
+      const result = await agentAuthService.loginAgent(validatedData);
+      
+      if (!result) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+
+      // Set session cookie
+      res.cookie('agent_session', result.sessionId, {
+        httpOnly: true,
+        secure: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
+
+      res.json({ agent: result.agent, sessionId: result.sessionId });
+    } catch (error) {
+      console.error("Error logging in agent:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid login data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to login" });
+    }
+  });
+
+  app.post("/api/agent/logout", requireAgentAuth, async (req: any, res) => {
+    try {
+      const sessionId = req.headers.authorization?.replace('Bearer ', '') || req.cookies?.agent_session;
+      if (sessionId) {
+        await agentAuthService.logout(sessionId);
+      }
+      res.clearCookie('agent_session');
+      res.status(200).json({ message: "Logged out successfully" });
+    } catch (error) {
+      console.error("Error logging out agent:", error);
+      res.status(500).json({ message: "Failed to logout" });
+    }
+  });
+
+  app.get("/api/agent/profile", requireAgentAuth, async (req: any, res) => {
+    try {
+      res.json(req.agent);
+    } catch (error) {
+      console.error("Error fetching agent profile:", error);
+      res.status(500).json({ message: "Failed to fetch profile" });
+    }
+  });
+
+  // Agent enquiry management
+  app.get("/api/agent/enquiries", requireAgentAuth, async (req: any, res) => {
+    try {
+      const agentId = req.agent.id;
+      const enquiries = await storage.getAgentEnquiries(agentId);
+      res.json(enquiries);
+    } catch (error) {
+      console.error("Error fetching agent enquiries:", error);
+      res.status(500).json({ message: "Failed to fetch enquiries" });
+    }
+  });
+
+  app.put("/api/agent/enquiries/:id/respond", requireAgentAuth, async (req: any, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { response, status } = req.body;
+      
+      const enquiry = await storage.updateEnquiryResponse(id, {
+        agentResponse: response,
+        status: status || 'responded',
+        respondedAt: new Date()
+      });
+
+      if (!enquiry) {
+        return res.status(404).json({ message: "Enquiry not found" });
+      }
+
+      res.json(enquiry);
+    } catch (error) {
+      console.error("Error responding to enquiry:", error);
+      res.status(500).json({ message: "Failed to respond to enquiry" });
     }
   });
 

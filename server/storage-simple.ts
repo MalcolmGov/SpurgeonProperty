@@ -40,6 +40,9 @@ export interface IStorage {
   getAgent(id: number): Promise<Agent | undefined>;
   createAgent(agent: InsertAgent): Promise<Agent>;
   updateAgent(id: number, agent: Partial<InsertAgent>): Promise<Agent | undefined>;
+  deleteAgent(id: number): Promise<boolean>;
+  getAgentEnquiries(agentId: number): Promise<Lead[]>;
+  updateEnquiryResponse(id: number, response: { agentResponse: string; status: string; respondedAt: Date }): Promise<Lead | undefined>;
 
   // Leads
   getLeads(filters?: {
@@ -259,6 +262,61 @@ export class DatabaseStorage implements IStorage {
     } catch (error) {
       console.error('Error updating agent:', error);
       throw new Error('Failed to update agent');
+    }
+  }
+
+  async deleteAgent(id: number): Promise<boolean> {
+    try {
+      const result = await db
+        .delete(agents)
+        .where(eq(agents.id, id))
+        .returning();
+
+      return result.length > 0;
+    } catch (error) {
+      console.error('Error deleting agent:', error);
+      throw new Error('Failed to delete agent');
+    }
+  }
+
+  async getAgentEnquiries(agentId: number): Promise<Lead[]> {
+    try {
+      const result = await db
+        .select({
+          lead: leads,
+          property: properties
+        })
+        .from(leads)
+        .leftJoin(properties, eq(leads.propertyId, properties.id))
+        .where(eq(leads.agentId, agentId))
+        .orderBy(desc(leads.createdAt));
+
+      return result.map(row => ({
+        ...row.lead,
+        property: row.property
+      })) as Lead[];
+    } catch (error) {
+      console.error('Error fetching agent enquiries:', error);
+      throw new Error('Failed to fetch agent enquiries');
+    }
+  }
+
+  async updateEnquiryResponse(id: number, response: { agentResponse: string; status: string; respondedAt: Date }): Promise<Lead | undefined> {
+    try {
+      const result = await db
+        .update(leads)
+        .set({
+          agentResponse: response.agentResponse,
+          status: response.status,
+          respondedAt: response.respondedAt
+        })
+        .where(eq(leads.id, id))
+        .returning();
+
+      return result.length > 0 ? result[0] : undefined;
+    } catch (error) {
+      console.error('Error updating enquiry response:', error);
+      throw new Error('Failed to update enquiry response');
     }
   }
 
