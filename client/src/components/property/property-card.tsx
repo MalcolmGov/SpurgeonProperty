@@ -239,12 +239,30 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
         
         {/* Features Tags */}
         {property.features && property.features.length > 0 && (
-          <div className="flex gap-1 mb-4 flex-wrap">
-            {property.features.map((feature, index) => (
-              <Badge key={index} className="bg-slate-100 text-slate-700 text-xs px-2 py-1 rounded">
-                {feature}
-              </Badge>
-            ))}
+          <div className="flex gap-2 mb-4 flex-wrap">
+            {property.features.map((feature, index) => {
+              // Create color variations for different features
+              const colors = [
+                'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
+                'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+                'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
+                'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300',
+                'bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-300',
+                'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300',
+                'bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-300',
+                'bg-rose-100 text-rose-800 dark:bg-rose-900/30 dark:text-rose-300'
+              ];
+              const colorClass = colors[index % colors.length];
+              
+              return (
+                <span 
+                  key={index} 
+                  className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${colorClass} transition-all duration-200 hover:scale-105`}
+                >
+                  {feature}
+                </span>
+              );
+            })}
           </div>
         )}
         

@@ -118,6 +118,8 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
+- **June 13, 2025 - Modern Feature Tags Enhancement**: Modernized property feature tags across all components with contemporary colorful badge styling. Updated PropertyCard, property-card, and PropertyComparison components to use pill-shaped badges with varied colors, dark mode support, and hover animations for better visual hierarchy.
+
 - **June 13, 2025 - Import Feature Removal**: Removed import properties button and functionality from admin dashboard per user request. Cleaned up related code including mutations, handlers, and unused imports. Database cleaned to maintain only authentic user-added properties.
 
 - **June 13, 2025 - SimplePropertyForm Implementation**: Created simplified property form to replace complex PropertyForm. Added comprehensive debugging, streamlined dialog state management, and improved form reset logic for reliable Add Property functionality.
