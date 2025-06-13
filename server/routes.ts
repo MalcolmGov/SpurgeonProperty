@@ -11,7 +11,7 @@ import {
   insertAdminUserSchema,
   adminLoginSchema
 } from "@shared/schema";
-import { getNeighborhoodAnalytics } from "./neighborhood-service";
+import { getNeighborhoodAnalytics, neighborhoodService } from "./neighborhood-service";
 import { openaiService, type PropertyDetails } from "./openai-service";
 import { anthropicService } from "./anthropic-service";
 import { aiChatbotService } from "./ai-chatbot-service";
@@ -483,7 +483,107 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Neighborhood analytics route
+  // Google Maps API powered routes
+  app.get("/api/neighborhood/analytics", async (req, res) => {
+    try {
+      const { latitude, longitude, suburb, city } = req.query;
+      
+      if (!latitude || !longitude) {
+        return res.status(400).json({ message: "Latitude and longitude are required" });
+      }
+      
+      const lat = parseFloat(latitude as string);
+      const lng = parseFloat(longitude as string);
+      
+      const analytics = await neighborhoodService.getNeighborhoodAnalytics(
+        lat, 
+        lng, 
+        suburb as string || '', 
+        city as string || ''
+      );
+      
+      res.json(analytics);
+    } catch (error) {
+      console.error('Neighborhood analytics error:', error);
+      res.status(500).json({ message: "Failed to fetch neighborhood analytics" });
+    }
+  });
+
+  app.post("/api/geocode/address", async (req, res) => {
+    try {
+      const { address } = req.body;
+      
+      if (!address) {
+        return res.status(400).json({ message: "Address is required" });
+      }
+      
+      const result = await neighborhoodService.geocodeAddress(address);
+      
+      if (!result) {
+        return res.status(404).json({ message: "Address not found" });
+      }
+      
+      res.json(result);
+    } catch (error) {
+      console.error('Geocoding error:', error);
+      res.status(500).json({ message: "Failed to geocode address" });
+    }
+  });
+
+  app.get("/api/geocode/reverse", async (req, res) => {
+    try {
+      const { latitude, longitude } = req.query;
+      
+      if (!latitude || !longitude) {
+        return res.status(400).json({ message: "Latitude and longitude are required" });
+      }
+      
+      const lat = parseFloat(latitude as string);
+      const lng = parseFloat(longitude as string);
+      
+      const result = await neighborhoodService.reverseGeocode(lat, lng);
+      
+      if (!result) {
+        return res.status(404).json({ message: "Location not found" });
+      }
+      
+      res.json(result);
+    } catch (error) {
+      console.error('Reverse geocoding error:', error);
+      res.status(500).json({ message: "Failed to reverse geocode location" });
+    }
+  });
+
+  // Enhanced property creation with geocoding
+  app.post("/api/properties/geocoded", async (req, res) => {
+    try {
+      const propertyData = req.body;
+      
+      // Auto-geocode if coordinates are missing
+      if (!propertyData.latitude || !propertyData.longitude) {
+        const fullAddress = `${propertyData.address}, ${propertyData.suburb}, ${propertyData.city}, ${propertyData.province}`;
+        const geocodedResult = await neighborhoodService.geocodeAddress(fullAddress);
+        
+        if (geocodedResult) {
+          propertyData.latitude = geocodedResult.latitude.toString();
+          propertyData.longitude = geocodedResult.longitude.toString();
+        }
+      }
+      
+      const validatedData = insertPropertySchema.parse(propertyData);
+      const property = await storage.createProperty(validatedData);
+      
+      res.status(201).json(property);
+    } catch (error) {
+      console.error('Geocoded property creation error:', error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid property data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create property" });
+    }
+  });
+
+  // Neighborhood analytics route (legacy)
   app.get("/api/neighborhood-analytics", getNeighborhoodAnalytics);
 
   // AI Property Description Generator routes
