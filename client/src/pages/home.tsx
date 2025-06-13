@@ -3,7 +3,7 @@ import Footer from "@/components/layout/footer";
 import PropertySearch from "@/components/property/property-search";
 import PropertyCard from "@/components/property/property-card";
 import PropertyCardSkeleton from "@/components/property/property-card-skeleton";
-import SimpleAIAssistant from "@/components/SimpleAIAssistant";
+import AIAssistant from "@/components/AIAssistant";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
 import { useProperties } from "@/hooks/use-properties";
@@ -230,7 +230,7 @@ export default function Home() {
               </div>
               
               <div>
-                <SimpleAIAssistant 
+                <AIAssistant 
                   onSearchQuery={handleAISearch}
                   className="shadow-2xl"
                 />
