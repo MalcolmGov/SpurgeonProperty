@@ -219,39 +219,41 @@ export default function Home() {
         {/* AI Assistant Section */}
         <section className="py-20 bg-slate-50 dark:bg-slate-800">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+              <div className="order-2 lg:order-1">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4 sm:mb-6">
                   Your Personal Property Assistant
                 </h2>
-                <p className="text-xl text-slate-600 dark:text-slate-300 mb-8">
+                <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 mb-6 sm:mb-8">
                   Get instant answers about properties, neighborhoods, financing, and market insights. Our AI assistant is trained on South African real estate and is here to help you make informed decisions.
                 </p>
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                    <span className="text-slate-600 dark:text-slate-300">Property search and recommendations</span>
+                    <div className="w-2 h-2 bg-orange-500 rounded-full flex-shrink-0"></div>
+                    <span className="text-sm sm:text-base text-slate-600 dark:text-slate-300">Property search and recommendations</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                    <span className="text-slate-600 dark:text-slate-300">Mortgage calculations and financing advice</span>
+                    <div className="w-2 h-2 bg-orange-500 rounded-full flex-shrink-0"></div>
+                    <span className="text-sm sm:text-base text-slate-600 dark:text-slate-300">Mortgage calculations and financing advice</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                    <span className="text-slate-600 dark:text-slate-300">Neighborhood insights and market trends</span>
+                    <div className="w-2 h-2 bg-orange-500 rounded-full flex-shrink-0"></div>
+                    <span className="text-sm sm:text-base text-slate-600 dark:text-slate-300">Neighborhood insights and market trends</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                    <span className="text-slate-600 dark:text-slate-300">Investment guidance and property valuations</span>
+                    <div className="w-2 h-2 bg-orange-500 rounded-full flex-shrink-0"></div>
+                    <span className="text-sm sm:text-base text-slate-600 dark:text-slate-300">Investment guidance and property valuations</span>
                   </div>
                 </div>
               </div>
               
-              <div>
-                <AIAssistant 
-                  onSearchQuery={handleAISearch}
-                  className="shadow-2xl"
-                />
+              <div className="order-1 lg:order-2 w-full">
+                <div className="max-w-full overflow-hidden">
+                  <AIAssistant 
+                    onSearchQuery={handleAISearch}
+                    className="shadow-2xl w-full"
+                  />
+                </div>
               </div>
             </div>
           </div>

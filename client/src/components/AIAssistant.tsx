@@ -175,28 +175,28 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
   };
 
   return (
-    <div className={cn("flex flex-col h-[700px] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden", className)}>
+    <div className={cn("flex flex-col w-full max-w-full h-[600px] sm:h-[700px] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden", className)}>
       {/* Chatbot Header */}
-      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 text-white p-4 flex items-center gap-3">
+      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 text-white p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
         <div className="relative">
-          <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-            <Bot className="w-5 h-5 text-white" />
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+            <Bot className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </div>
-          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></div>
+          <div className="absolute -bottom-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-green-400 rounded-full border-2 border-white"></div>
         </div>
-        <div className="flex-1">
-          <h3 className="font-semibold text-lg">Property Assistant</h3>
-          <p className="text-white/80 text-sm">Online • Ready to help you find your perfect home</p>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-semibold text-base sm:text-lg truncate">Property Assistant</h3>
+          <p className="text-white/80 text-xs sm:text-sm truncate">Online • Ready to help you find your perfect home</p>
         </div>
-        <Badge variant="secondary" className="bg-white/20 text-white border-white/30 hover:bg-white/30">
+        <Badge variant="secondary" className="bg-white/20 text-white border-white/30 hover:bg-white/30 text-xs">
           AI Powered
         </Badge>
       </div>
       
       {/* Chat Messages Area */}
       <div className="flex-1 overflow-hidden bg-gray-50 dark:bg-gray-800/50">
-        <ScrollArea className="h-full p-4">
-          <div className="space-y-6">
+        <ScrollArea className="h-full p-2 sm:p-4">
+          <div className="space-y-4 sm:space-y-6">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -215,7 +215,7 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
                 
                 <div
                   className={cn(
-                    "max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-sm",
+                    "max-w-[90%] sm:max-w-[85%] rounded-2xl px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm shadow-sm",
                     message.type === 'user'
                       ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-br-md"
                       : "bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-600 rounded-bl-md"
@@ -229,12 +229,12 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
                         Found {message.properties.length} property matches:
                       </p>
                       {message.properties.slice(0, 3).map((property: any, index: number) => (
-                        <div key={index} className="p-2 bg-white/90 dark:bg-gray-800/90 rounded border text-gray-900 dark:text-gray-100">
-                          <div className="flex justify-between items-start mb-1">
-                            <p className="text-xs font-medium truncate flex-1">
+                        <div key={index} className="p-2 sm:p-3 bg-white/90 dark:bg-gray-800/90 rounded border text-gray-900 dark:text-gray-100">
+                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-1 gap-1">
+                            <p className="text-xs font-medium line-clamp-2 flex-1">
                               {property.title}
                             </p>
-                            <Badge variant="outline" className="ml-2 text-xs">
+                            <Badge variant="outline" className="text-xs self-start sm:ml-2 shrink-0">
                               {property.price ? `R${parseInt(property.price).toLocaleString()}` : 'Contact for price'}
                             </Badge>
                           </div>
@@ -316,38 +316,38 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
         </ScrollArea>
         
         {/* Chat Input Area */}
-        <div className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-4">
-          <div className="flex gap-3 items-end">
-            <div className="flex-1 relative">
+        <div className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-3 sm:p-4">
+          <div className="flex gap-2 sm:gap-3 items-end">
+            <div className="flex-1 relative min-w-0">
               <Input
                 ref={inputRef}
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Ask about properties, neighborhoods, financing, or anything else..."
+                placeholder="Ask about properties..."
                 disabled={isProcessing}
-                className="w-full pr-12 py-3 text-sm border-gray-300 dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 dark:bg-gray-800"
+                className="w-full py-2 sm:py-3 text-xs sm:text-sm border-gray-300 dark:border-gray-600 rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 dark:bg-gray-800"
               />
             </div>
             <Button
               onClick={sendMessage}
               disabled={!inputMessage.trim() || isProcessing}
-              className="h-12 w-12 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg"
+              className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg flex-shrink-0"
             >
               {isProcessing ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
+                <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
               ) : (
-                <Send className="w-5 h-5" />
+                <Send className="w-4 h-4 sm:w-5 sm:h-5" />
               )}
             </Button>
           </div>
           
           {/* Quick Action Buttons */}
-          <div className="flex flex-wrap gap-2 mt-3">
+          <div className="flex flex-wrap gap-1 sm:gap-2 mt-2 sm:mt-3">
             {quickSuggestions.map((suggestion, index) => (
               <button
                 key={index}
-                className="text-xs px-3 py-1.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600"
+                className="text-xs px-2 py-1 sm:px-3 sm:py-1.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600 flex-shrink-0"
                 onClick={() => handleSuggestionClick(suggestion)}
                 disabled={isProcessing}
               >
