@@ -59,13 +59,7 @@ const upload = multer({
                   file.mimetype === 'application/x-zip-compressed' ||
                   file.mimetype === 'application/octet-stream');
     
-    console.log('File filter check:', {
-      filename: file.originalname,
-      mimetype: file.mimetype,
-      extname,
-      isImage,
-      isZip
-    });
+
     
     if (isImage || isZip) {
       return cb(null, true);

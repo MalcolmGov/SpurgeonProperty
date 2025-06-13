@@ -331,15 +331,14 @@ export default function AdminProperties() {
       </div>
       
       {/* Property Form Modal */}
-      {showPropertyForm && (
-        <PropertyForm
-          property={editingProperty}
-          onClose={() => {
-            setShowPropertyForm(false);
-            setEditingProperty(null);
-          }}
-        />
-      )}
+      <PropertyForm
+        property={editingProperty}
+        open={showPropertyForm}
+        onClose={() => {
+          setShowPropertyForm(false);
+          setEditingProperty(null);
+        }}
+      />
     </div>
   );
 }

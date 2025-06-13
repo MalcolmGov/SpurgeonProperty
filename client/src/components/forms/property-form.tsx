@@ -15,10 +15,11 @@ import type { PropertyWithAgent } from "@shared/schema";
 
 interface PropertyFormProps {
   property?: PropertyWithAgent | null;
+  open: boolean;
   onClose: () => void;
 }
 
-export default function PropertyForm({ property, onClose }: PropertyFormProps) {
+export default function PropertyForm({ property, open, onClose }: PropertyFormProps) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -277,7 +278,7 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
 
   
   return (
-    <Dialog open={true} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center justify-between">

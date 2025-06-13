@@ -116,9 +116,15 @@ The platform follows a full-stack TypeScript architecture with the following lay
 - **API Rate Limiting**: Implemented for external service calls
 - **Caching**: Query result caching via TanStack Query
 
-## Changelog
+## Recent Changes
 
-- June 13, 2025. Initial setup
+- **June 13, 2025 - ZIP Upload Enhancement**: Enhanced image upload system with ZIP file support for bulk property image uploads. Server now processes ZIP files containing multiple images using adm-zip library. Added dedicated ZIP upload button with improved file type detection supporting multiple MIME types.
+
+- **June 13, 2025 - Dialog State Management Fix**: Improved PropertyForm dialog reliability by implementing proper controlled component pattern with explicit open/close state management instead of conditional rendering.
+
+- **June 13, 2025 - Currency Localization Complete**: Successfully localized all currency displays to South African Rand (ZAR) with proper formatting for 50 authentic properties.
+
+- **June 13, 2025 - Mobile Navigation Enhancement**: Improved hamburger menu with slide-out panel, theme settings integration, and proper active state highlighting.
 
 ## User Preferences
 
