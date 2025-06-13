@@ -8,43 +8,54 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { useAdminAuth } from "@/hooks/useAdminAuth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function AdminDashboard() {
-  // All hooks must be called at the top level, before any early returns
-  const { isLoading: authLoading, isAuthenticated } = useAdminAuth();
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  
+  // Simple authentication check using direct API call
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/admin/profile', {
+          credentials: 'include'
+        });
+        if (response.ok) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+          window.location.href = '/admin/login';
+        }
+      } catch (error) {
+        setIsAuthenticated(false);
+        window.location.href = '/admin/login';
+      }
+    };
+    
+    checkAuth();
+  }, []);
   
   const { data: stats, isLoading } = useQuery({
     queryKey: ["/api/admin/dashboard/stats"],
-    enabled: isAuthenticated, // Only run when authenticated
+    enabled: isAuthenticated === true,
   });
 
   const { data: recentProperties } = useQuery({
     queryKey: ["/api/properties"],
     select: (data: any[]) => Array.isArray(data) ? data.slice(0, 5) : [],
-    enabled: isAuthenticated,
+    enabled: isAuthenticated === true,
   });
 
   const { data: recentLeads } = useQuery({
     queryKey: ["/api/leads"],
     select: (data: any[]) => Array.isArray(data) ? data.slice(0, 5) : [],
-    enabled: isAuthenticated,
+    enabled: isAuthenticated === true,
   });
 
-
-
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      window.location.href = '/admin/login';
-    }
-  }, [authLoading, isAuthenticated]);
-
-  // Early returns after all hooks are called
-  if (authLoading) {
+  // Show loading while checking authentication
+  if (isAuthenticated === null) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div>
