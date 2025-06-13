@@ -55,6 +55,7 @@ export default function PropertyForm({ property, open, onClose }: PropertyFormPr
 
   useEffect(() => {
     if (property) {
+      // Edit mode - populate with existing property data
       setFormData({
         title: property.title,
         description: property.description,
@@ -77,8 +78,32 @@ export default function PropertyForm({ property, open, onClose }: PropertyFormPr
         agentId: property.agentId?.toString() || "unassigned",
         featured: property.featured || false
       });
+    } else {
+      // Add mode - reset to empty form
+      setFormData({
+        title: "",
+        description: "",
+        price: "",
+        address: "",
+        suburb: "",
+        city: "",
+        province: "",
+        postalCode: "",
+        propertyType: "house",
+        bedrooms: "1",
+        bathrooms: "1",
+        area: "",
+        lotSize: "",
+        yearBuilt: "",
+        parking: "",
+        features: [] as string[],
+        images: [] as string[],
+        status: "active",
+        agentId: "unassigned",
+        featured: false
+      });
     }
-  }, [property]);
+  }, [property, open]);
 
   const mutation = useMutation({
     mutationFn: async (data: typeof formData) => {
