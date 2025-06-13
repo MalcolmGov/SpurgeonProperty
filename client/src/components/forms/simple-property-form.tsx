@@ -5,11 +5,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { X, Loader2 } from "lucide-react";
-import type { PropertyWithAgent } from "@shared/schema";
+import type { PropertyWithAgent, Agent } from "@shared/schema";
 
 interface SimplePropertyFormProps {
   property?: PropertyWithAgent | null;
@@ -30,7 +30,8 @@ const INITIAL_FORM_DATA = {
   bedrooms: "3",
   bathrooms: "2",
   area: "",
-  status: "active"
+  status: "active",
+  agentId: ""
 };
 
 export default function SimplePropertyForm({ property, open, onClose }: SimplePropertyFormProps) {
@@ -41,6 +42,12 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
   const formRef = useRef<HTMLFormElement>(null);
   const prevOpenRef = useRef(open);
   const prevPropertyRef = useRef(property);
+
+  // Fetch agents for selection
+  const { data: agents = [], isLoading: agentsLoading } = useQuery<Agent[]>({
+    queryKey: ["/api/admin/agents"],
+    enabled: open, // Only fetch when dialog is open
+  });
 
   // Robust form initialization
   useEffect(() => {
@@ -63,7 +70,8 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
           bedrooms: property.bedrooms?.toString() || "3",
           bathrooms: property.bathrooms || "2",
           area: property.area?.toString() || "",
-          status: property.status || "active"
+          status: property.status || "active",
+          agentId: property.agentId?.toString() || ""
         });
       } else {
         // Add mode - reset to initial values
@@ -356,20 +364,38 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
             </div>
           </div>
 
-          {/* Status */}
-          <div>
-            <Label htmlFor="status">Status</Label>
-            <Select value={formData.status} onValueChange={(value) => handleInputChange("status", value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="sold">Sold</SelectItem>
-                <SelectItem value="rented">Rented</SelectItem>
-              </SelectContent>
-            </Select>
+          {/* Status and Agent Assignment */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="status">Status</Label>
+              <Select value={formData.status} onValueChange={(value) => handleInputChange("status", value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="sold">Sold</SelectItem>
+                  <SelectItem value="rented">Rented</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="agentId">Assigned Agent</Label>
+              <Select value={formData.agentId} onValueChange={(value) => handleInputChange("agentId", value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder={agentsLoading ? "Loading agents..." : "Select agent"} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">No agent assigned</SelectItem>
+                  {agents.map((agent) => (
+                    <SelectItem key={agent.id} value={agent.id.toString()}>
+                      {agent.name} {agent.title ? `(${agent.title})` : ''}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           {/* Submit Button */}
