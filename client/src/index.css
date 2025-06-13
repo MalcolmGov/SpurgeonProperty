@@ -15,6 +15,7 @@ html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  touch-action: auto; /* Allow all touch gestures including pinch-zoom */
 }
 
 html, body {
@@ -81,7 +82,17 @@ html {
 button, [role="button"], .clickable {
   min-height: 44px; /* iOS recommended touch target size */
   min-width: 44px;
-  touch-action: manipulation;
+  touch-action: manipulation; /* Prevent zoom on buttons but allow on page */
+}
+
+/* Override for main content areas to ensure zoom works */
+.page-container *, section *, main *, .property-card *, .hero-section * {
+  touch-action: auto !important;
+}
+
+/* Keep buttons optimized but allow zoom everywhere else */
+button, [role="button"], .clickable, input, select, textarea {
+  touch-action: manipulation !important;
 }
 
 /* Improve scrolling on mobile */
