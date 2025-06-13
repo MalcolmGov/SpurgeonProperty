@@ -42,6 +42,17 @@ export const agents = pgTable("agents", {
   specialties: jsonb("specialties").$type<string[]>().default([]),
   rating: decimal("rating", { precision: 3, scale: 2 }).default("0"),
   totalSales: integer("total_sales").default(0),
+  password: text("password").notNull(),
+  isActive: boolean("is_active").default(true),
+  lastLogin: timestamp("last_login"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const agentSessions = pgTable("agent_sessions", {
+  id: serial("id").primaryKey(),
+  agentId: integer("agent_id").notNull(),
+  sessionId: text("session_id").notNull().unique(),
+  expiresAt: timestamp("expires_at").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -123,7 +134,28 @@ export const insertAgentSchema = createInsertSchema(agents).omit({
   id: true,
   rating: true,
   totalSales: true,
+  isActive: true,
+  lastLogin: true,
   createdAt: true,
+});
+
+export const insertAgentSessionSchema = createInsertSchema(agentSessions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const agentLoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1),
+});
+
+export const agentRegistrationSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  phone: z.string().optional(),
+  password: z.string().min(6),
+  bio: z.string().optional(),
+  specialties: z.array(z.string()).default([]),
 });
 
 export const insertLeadSchema = createInsertSchema(leads).omit({
@@ -153,6 +185,10 @@ export type Property = typeof properties.$inferSelect;
 export type InsertProperty = z.infer<typeof insertPropertySchema>;
 export type Agent = typeof agents.$inferSelect;
 export type InsertAgent = z.infer<typeof insertAgentSchema>;
+export type AgentSession = typeof agentSessions.$inferSelect;
+export type InsertAgentSession = z.infer<typeof insertAgentSessionSchema>;
+export type AgentLogin = z.infer<typeof agentLoginSchema>;
+export type AgentRegistration = z.infer<typeof agentRegistrationSchema>;
 export type Lead = typeof leads.$inferSelect;
 export type InsertLead = z.infer<typeof insertLeadSchema>;
 export type Inquiry = typeof inquiries.$inferSelect;
