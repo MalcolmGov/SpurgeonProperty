@@ -19,6 +19,7 @@ export default function AdminProperties() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
+  const [formKey, setFormKey] = useState(0);
   
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -114,8 +115,10 @@ export default function AdminProperties() {
             </div>
             <Button
               onClick={() => {
+                console.log("Add Property clicked - forcing form open");
                 setEditingProperty(null);
                 setShowPropertyForm(true);
+                setFormKey(prev => prev + 1);
               }}
               className="bg-purple-primary hover:bg-purple-secondary"
             >
@@ -251,7 +254,7 @@ export default function AdminProperties() {
                                   {property.title}
                                 </div>
                                 <div className="text-sm text-slate-500 dark:text-slate-400">
-                                  {property.city}, {property.state}
+                                  {property.city}, {property.province}
                                 </div>
                               </div>
                             </div>
@@ -332,6 +335,7 @@ export default function AdminProperties() {
       
       {/* Property Form Modal */}
       <PropertyForm
+        key={formKey}
         property={editingProperty}
         open={showPropertyForm}
         onClose={() => {
