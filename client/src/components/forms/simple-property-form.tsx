@@ -115,6 +115,7 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
         bathrooms: data.bathrooms,
         area: parseInt(data.area) || 0,
         status: data.status,
+        agentId: data.agentId ? parseInt(data.agentId) : null,
         features: [],
         images: []
       };
