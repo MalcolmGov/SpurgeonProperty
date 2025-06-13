@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Bed, 
   Bath, 
@@ -13,7 +14,9 @@ import {
   GitCompare,
   Calendar,
   Car,
-  Eye
+  Eye,
+  Check,
+  Copy
 } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
 
@@ -34,6 +37,8 @@ export default function PropertyCard({
 }: PropertyCardProps) {
   const [isFavorited, setIsFavorited] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [shareClicked, setShareClicked] = useState(false);
+  const { toast } = useToast();
 
   const formatPrice = (price: string) => {
     if (!price || price === '' || price === 'null' || price === 'undefined') {
@@ -69,6 +74,54 @@ export default function PropertyCard({
 
   const handleImageError = () => {
     setImageError(true);
+  };
+
+  const handleShare = async () => {
+    const propertyUrl = `${window.location.origin}/properties/${property.id}`;
+    const shareData = {
+      title: property.title,
+      text: `Check out this property: ${property.title} - ${formatPrice(property.price)} in ${property.suburb}, ${property.city}`,
+      url: propertyUrl
+    };
+
+    // Try Web Share API first (mobile devices)
+    if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+      try {
+        await navigator.share(shareData);
+        setShareClicked(true);
+        setTimeout(() => setShareClicked(false), 2000);
+        return;
+      } catch (error) {
+        // User cancelled sharing or error occurred
+        console.log('Share cancelled');
+      }
+    }
+
+    // Fallback to clipboard copy
+    try {
+      await navigator.clipboard.writeText(propertyUrl);
+      setShareClicked(true);
+      setTimeout(() => setShareClicked(false), 2000);
+      toast({
+        title: "Link copied!",
+        description: "Property link has been copied to your clipboard",
+      });
+    } catch (error) {
+      // Final fallback - create a temporary input and copy
+      const textArea = document.createElement('textarea');
+      textArea.value = propertyUrl;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      
+      setShareClicked(true);
+      setTimeout(() => setShareClicked(false), 2000);
+      toast({
+        title: "Link copied!",
+        description: "Property link has been copied to your clipboard",
+      });
+    }
   };
 
   const mainImage = property.images?.[0] || `/api/placeholder/400/300`;
@@ -200,9 +253,10 @@ export default function PropertyCard({
           <Button
             variant="secondary"
             size="sm"
+            onClick={handleShare}
             className="bg-white/90 backdrop-blur-sm"
           >
-            <Share2 className="h-4 w-4" />
+            {shareClicked ? <Check className="h-4 w-4 text-green-600" /> : <Share2 className="h-4 w-4" />}
           </Button>
         </div>
 

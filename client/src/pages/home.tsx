@@ -15,6 +15,7 @@ export default function Home() {
   const { data: featuredProperties, isLoading } = useProperties({ featured: true, limit: 3 });
   const [, navigate] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [comparisonProperties, setComparisonProperties] = useState<number[]>([]);
 
   const handleAISearch = (query: string, filters: any) => {
     // Navigate to properties page with search parameters
@@ -29,6 +30,17 @@ export default function Home() {
     if (filters.city) searchParams.set('city', filters.city);
     
     navigate(`/properties?${searchParams.toString()}`);
+  };
+
+  const handleCompareToggle = (propertyId: number) => {
+    setComparisonProperties(prev => {
+      if (prev.includes(propertyId)) {
+        return prev.filter(id => id !== propertyId);
+      } else if (prev.length < 4) {
+        return [...prev, propertyId];
+      }
+      return prev;
+    });
   };
 
   return (
