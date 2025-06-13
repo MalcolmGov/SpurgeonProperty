@@ -118,6 +118,8 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
+- **June 13, 2025 - Page Scroll Position Fix**: Fixed page auto-scrolling to bottom on load. Implemented scroll restoration with window.scrollTo(0, 0) on route changes and initial load, disabled browser scroll restoration, and updated CSS scroll-behavior. Pages now consistently start at the top when loaded or navigated to.
+
 - **June 13, 2025 - Pinch-to-Zoom Mobile Enhancement**: Implemented comprehensive pinch-to-zoom functionality for mobile devices. Updated viewport meta tag to allow scaling up to 5x, added touch-action: auto to universal CSS reset and content areas, configured specific touch handling for buttons vs content areas. Mobile users can now pinch-zoom on all page content while maintaining optimized touch targets for interactive elements.
 
 - **June 13, 2025 - Navigation Layout Complete Fix**: Successfully resolved navigation layout issues with comprehensive CSS reset and proper positioning. Fixed white space above header, implemented working mobile hamburger menu with slide-out functionality, and ensured header sits flush at page top. Mobile menu now toggles correctly with proper responsive breakpoints at md: (768px). Navigation layout is fully functional across all devices.

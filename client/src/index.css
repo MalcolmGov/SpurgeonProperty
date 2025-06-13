@@ -25,10 +25,10 @@ html, body {
   /* Optimize for touch devices */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Enable hardware acceleration for smooth scrolling */
-  transform: translateZ(0);
   /* Improve touch responsiveness */
   -webkit-tap-highlight-color: transparent;
+  /* Ensure pages always start at top */
+  scroll-behavior: auto;
 }
 
 #root {

@@ -1,5 +1,5 @@
-import React from "react";
-import { Switch, Route } from "wouter";
+import React, { useEffect } from "react";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -20,6 +20,13 @@ import AdminAITools from "@/pages/admin-ai-tools";
 import NotFound from "@/pages/not-found";
 
 function Router() {
+  const [location] = useLocation();
+
+  // Scroll to top whenever route changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
   return (
     <Switch>
       <Route path="/admin/login" component={AdminLogin} />
@@ -40,6 +47,15 @@ function Router() {
 }
 
 function App() {
+  // Ensure page starts at top on initial load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // Prevent browser scroll restoration
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light">
