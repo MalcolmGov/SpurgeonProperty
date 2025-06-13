@@ -44,9 +44,25 @@ html, body {
 }
 
 /* Ensure fixed headers sit at absolute top */
-[style*="position: fixed"][style*="top: 0"] {
-  margin-top: 0 !important;
+header.fixed {
+  position: fixed !important;
   top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin: 0 !important;
+  z-index: 50 !important;
+}
+
+/* Remove any browser default spacing on body */
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Ensure no space above fixed elements */
+.page-container {
+  margin-top: 0;
+  padding-top: 80px; /* Space for fixed header */
 }
 
 /* Enhanced touch targets for mobile */

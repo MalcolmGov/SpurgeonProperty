@@ -9,10 +9,12 @@ import { Logo } from "@/components/ui/logo";
 import { useProperties } from "@/hooks/use-properties";
 import { Link, useLocation } from "wouter";
 import { Building, Users, TrendingUp, Award } from "lucide-react";
+import { useState } from "react";
 
 export default function Home() {
   const { data: featuredProperties, isLoading } = useProperties({ featured: true, limit: 3 });
   const [, navigate] = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleAISearch = (query: string, filters: any) => {
     // Navigate to properties page with search parameters
@@ -32,89 +34,78 @@ export default function Home() {
   return (
     <div style={{ margin: 0, padding: 0 }}>
       {/* SPURGEON PROPERTY HEADER */}
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: '90px',
-        background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #c026d3 100%)',
-        borderBottom: '4px solid #f59e0b',
-        zIndex: 9999,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 2rem',
-        boxShadow: '0 8px 32px rgba(79, 70, 229, 0.3), 0 4px 16px rgba(0,0,0,0.1)',
-        backdropFilter: 'blur(12px)',
-        borderImageSource: 'linear-gradient(90deg, #f59e0b, #eab308, #f59e0b)',
-        borderImageSlice: 1,
-        margin: 0
-      }}>
-        {/* Logo Section */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))' }}>
-            <Logo variant="white" />
+      <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-purple-600 via-purple-700 to-purple-800 border-b-4 border-orange-400 shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <div className="flex items-center">
+              <Link href="/">
+                <div className="flex items-center space-x-2">
+                  <Logo variant="white" />
+                </div>
+              </Link>
+            </div>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center space-x-8">
+              <Link href="/" className="text-white hover:text-orange-300 px-3 py-2 text-sm font-medium transition-colors">
+                Home
+              </Link>
+              <Link href="/properties" className="text-white hover:text-orange-300 px-3 py-2 text-sm font-medium transition-colors">
+                Properties
+              </Link>
+              <Link href="/about" className="text-white hover:text-orange-300 px-3 py-2 text-sm font-medium transition-colors">
+                About
+              </Link>
+              <Link href="/sell-property" className="text-white hover:text-orange-300 px-3 py-2 text-sm font-medium transition-colors">
+                Sell Property
+              </Link>
+              <Link href="/admin/login" className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                Admin
+              </Link>
+            </nav>
+
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="text-white hover:text-orange-300 p-2 rounded-md"
+              >
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            </div>
           </div>
+
+          {/* Mobile Navigation */}
+          {mobileMenuOpen && (
+            <div className="md:hidden">
+              <div className="px-2 pt-2 pb-3 space-y-1 bg-purple-800 rounded-lg mt-2">
+                <Link href="/" className="text-white hover:text-orange-300 block px-3 py-2 text-base font-medium">
+                  Home
+                </Link>
+                <Link href="/properties" className="text-white hover:text-orange-300 block px-3 py-2 text-base font-medium">
+                  Properties
+                </Link>
+                <Link href="/about" className="text-white hover:text-orange-300 block px-3 py-2 text-base font-medium">
+                  About
+                </Link>
+                <Link href="/sell-property" className="text-white hover:text-orange-300 block px-3 py-2 text-base font-medium">
+                  Sell Property
+                </Link>
+                <Link href="/admin/login" className="bg-orange-500 hover:bg-orange-600 text-white block px-3 py-2 rounded-lg text-base font-medium mt-2">
+                  Admin
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
-
-        {/* Navigation */}
-        <nav style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-          <a href="/" style={{
-            color: 'white',
-            fontWeight: '600',
-            fontSize: '16px',
-            transition: 'all 0.3s ease',
-            textDecoration: 'none'
-          }}>
-            Home
-          </a>
-          <a href="/properties" style={{
-            color: 'white',
-            fontWeight: '600',
-            fontSize: '16px',
-            transition: 'all 0.3s ease',
-            textDecoration: 'none'
-          }}>
-            Properties
-          </a>
-          <a href="/about" style={{
-            color: 'white',
-            fontWeight: '600',
-            fontSize: '16px',
-            transition: 'all 0.3s ease',
-            textDecoration: 'none'
-          }}>
-            About Us
-          </a>
-          <a href="/sell-property" style={{
-            color: 'white',
-            fontWeight: '600',
-            fontSize: '16px',
-            transition: 'all 0.3s ease',
-            textDecoration: 'none'
-          }}>
-            Sell Property
-          </a>
-          <a href="/admin/login" style={{
-            background: 'rgba(245, 158, 11, 0.2)',
-            padding: '8px 16px',
-            borderRadius: '8px',
-            color: 'white',
-            fontWeight: '600',
-            fontSize: '16px',
-            border: '1px solid rgba(245, 158, 11, 0.4)',
-            transition: 'all 0.3s ease',
-            textDecoration: 'none'
-          }}>
-            Admin
-          </a>
-        </nav>
-      </div>
+      </header>
 
 
 
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900" style={{ marginTop: '90px' }}>
+      <div className="page-container min-h-screen bg-slate-50 dark:bg-slate-900">
         {/* Hero Section */}
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
           {/* Modern gradient background */}
