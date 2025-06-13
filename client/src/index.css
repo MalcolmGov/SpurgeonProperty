@@ -29,6 +29,12 @@ html, body {
   -webkit-tap-highlight-color: transparent;
   /* Ensure pages always start at top */
   scroll-behavior: auto;
+  /* Fix iOS mobile scrolling issues */
+  -webkit-overflow-scrolling: touch;
+  /* Ensure body can scroll on mobile */
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 100vh;
 }
 
 #root {
@@ -42,6 +48,30 @@ html, body {
 #root > div {
   margin: 0;
   padding: 0;
+}
+
+/* Mobile scrolling optimizations */
+@media (max-width: 768px) {
+  body {
+    /* Force enable scrolling on mobile devices */
+    overflow-y: scroll !important;
+    -webkit-overflow-scrolling: touch;
+    /* Prevent horizontal scrolling issues */
+    overflow-x: hidden;
+    /* Allow momentum scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Remove sticky positioning on mobile to prevent scroll issues */
+  .lg\:sticky {
+    position: static !important;
+  }
+  
+  /* Ensure content areas are scrollable */
+  .page-container, [data-radix-scroll-area-viewport] {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 /* Ensure fixed headers sit at absolute top */

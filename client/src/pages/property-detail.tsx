@@ -97,11 +97,11 @@ export default function PropertyDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 overflow-x-hidden">
 
       <Header />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-safe">
         {/* Breadcrumb */}
         <Breadcrumb className="mb-8">
           <BreadcrumbList>
@@ -126,7 +126,7 @@ export default function PropertyDetail() {
           
           {/* Property Info Sidebar */}
           <div className="lg:col-span-1">
-            <Card className="sticky top-24">
+            <Card className="lg:sticky lg:top-24">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-3xl font-bold text-purple-primary">
