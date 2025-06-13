@@ -142,6 +142,19 @@ export default function Footer() {
         
         <div className="border-t border-slate-700 mt-12 pt-8 text-center text-slate-400">
           <p>&copy; 2024 SpurgeonProperty. All rights reserved. | Privacy Policy | Terms of Service</p>
+          <div className="mt-4">
+            <a 
+              href="https://www.movedigital.africa" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center space-x-2 text-sm font-medium text-slate-400 hover:text-orange-400 transition-colors duration-300 group"
+            >
+              <span>Powered by</span>
+              <span className="bg-gradient-to-r from-orange-400 to-purple-500 bg-clip-text text-transparent font-bold group-hover:from-orange-300 group-hover:to-purple-400 transition-all duration-300">
+                Move Digital
+              </span>
+            </a>
+          </div>
         </div>
       </div>
     </footer>

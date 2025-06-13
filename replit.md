@@ -118,6 +118,10 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
+- **June 13, 2025 - Move Digital Footer Attribution**: Added attractive "Powered by Move Digital" attribution to footer with gradient styling, hover animations, and external link to www.movedigital.africa. Features orange-to-purple gradient text effects matching site branding with smooth transitions.
+
+- **June 13, 2025 - Mobile Property Details Scrolling Fix**: Resolved mobile scrolling issues on property detail pages by disabling sticky positioning on mobile devices and adding iOS-specific webkit overflow scrolling optimizations for smooth touch interactions.
+
 - **June 13, 2025 - Property Image Display Fix**: Resolved missing images in property cards by fixing empty image arrays in database and enhancing PropertyCard component with robust image handling. Added intelligent image path validation, improved error handling, and consistent fallback behavior for missing or broken images.
 
 - **June 13, 2025 - Responsive Mobile UI Animations Complete**: Successfully implemented comprehensive responsive mobile UI animations using Framer Motion throughout the PropertyCard component. Added smooth entrance animations, hover effects, and tap feedback with optimized durations for mobile interactions. Property cards now feature fade-in animations on load, subtle lift effects on hover, and satisfying scale feedback on touch interactions, enhancing the overall mobile user experience.
