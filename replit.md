@@ -118,6 +118,8 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
+- **June 13, 2025 - Premium Property Card Styling**: Implemented sophisticated premium styling for property cards optimized for both desktop and mobile. Enhanced with gradient backgrounds, image zoom effects on hover, glassmorphism action buttons, animated feature tags, premium agent cards with status indicators, and gradient call-to-action buttons. Cards now feature borderless design with shadow effects, backdrop blur elements, and smooth Framer Motion animations for professional user experience.
+
 - **June 13, 2025 - Move Digital Footer Attribution**: Added attractive "Powered by Move Digital" attribution to footer with gradient styling, hover animations, and external link to www.movedigital.africa. Features orange-to-purple gradient text effects matching site branding with smooth transitions.
 
 - **June 13, 2025 - Mobile Property Details Scrolling Fix**: Resolved mobile scrolling issues on property detail pages by disabling sticky positioning on mobile devices and adding iOS-specific webkit overflow scrolling optimizations for smooth touch interactions.
