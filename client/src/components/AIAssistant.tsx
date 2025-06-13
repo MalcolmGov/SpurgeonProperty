@@ -167,44 +167,50 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
   };
 
   return (
-    <Card className={cn("flex flex-col h-[600px]", className)}>
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2">
-          <div className="p-2 bg-blue-100 rounded-full">
-            <Sparkles className="w-5 h-5 text-blue-600" />
+    <div className={cn("flex flex-col h-[700px] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden", className)}>
+      {/* Chatbot Header */}
+      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 text-white p-4 flex items-center gap-3">
+        <div className="relative">
+          <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+            <Bot className="w-5 h-5 text-white" />
           </div>
-          Property Assistant
-          <Badge variant="secondary" className="ml-auto">
-            AI Powered
-          </Badge>
-        </CardTitle>
-      </CardHeader>
+          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></div>
+        </div>
+        <div className="flex-1">
+          <h3 className="font-semibold text-lg">Property Assistant</h3>
+          <p className="text-white/80 text-sm">Online • Ready to help you find your perfect home</p>
+        </div>
+        <Badge variant="secondary" className="bg-white/20 text-white border-white/30 hover:bg-white/30">
+          AI Powered
+        </Badge>
+      </div>
       
-      <CardContent className="flex flex-col flex-1 p-0">
-        <ScrollArea className="flex-1 p-4">
-          <div className="space-y-4">
+      {/* Chat Messages Area */}
+      <div className="flex-1 overflow-hidden bg-gray-50 dark:bg-gray-800/50">
+        <ScrollArea className="h-full p-4">
+          <div className="space-y-6">
             {messages.map((message) => (
               <div
                 key={message.id}
                 className={cn(
-                  "flex gap-3",
+                  "flex gap-3 max-w-full",
                   message.type === 'user' ? "justify-end" : "justify-start"
                 )}
               >
                 {message.type === 'assistant' && (
-                  <Avatar className="w-8 h-8 bg-blue-100">
-                    <AvatarFallback>
-                      <Bot className="w-4 h-4 text-blue-600" />
-                    </AvatarFallback>
-                  </Avatar>
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                      <Bot className="w-4 h-4 text-white" />
+                    </div>
+                  </div>
                 )}
                 
                 <div
                   className={cn(
-                    "max-w-[80%] rounded-lg px-3 py-2 text-sm",
+                    "max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-sm",
                     message.type === 'user'
-                      ? "bg-blue-500 text-white ml-12"
-                      : "bg-gray-100 text-gray-900"
+                      ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-br-md"
+                      : "bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-600 rounded-bl-md"
                   )}
                 >
                   <p className="whitespace-pre-wrap">{message.content}</p>
@@ -253,11 +259,11 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
                 </div>
                 
                 {message.type === 'user' && (
-                  <Avatar className="w-8 h-8 bg-gray-100">
-                    <AvatarFallback>
-                      <User className="w-4 h-4 text-gray-600" />
-                    </AvatarFallback>
-                  </Avatar>
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-full flex items-center justify-center">
+                      <User className="w-4 h-4 text-white" />
+                    </div>
+                  </div>
                 )}
               </div>
             ))}
@@ -281,16 +287,18 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
             
             {isProcessing && (
               <div className="flex gap-3 justify-start">
-                <Avatar className="w-8 h-8 bg-blue-100">
-                  <AvatarFallback>
-                    <Bot className="w-4 h-4 text-blue-600" />
-                  </AvatarFallback>
-                </Avatar>
-                <div className="bg-gray-100 rounded-lg px-3 py-2">
-                  <div className="flex items-center gap-2">
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span className="text-sm text-gray-600">Thinking...</span>
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                    <Bot className="w-4 h-4 text-white" />
                   </div>
+                </div>
+                <div className="bg-white dark:bg-gray-700 rounded-2xl rounded-bl-md px-4 py-3 flex items-center gap-2 shadow-sm border border-gray-200 dark:border-gray-600">
+                  <div className="flex gap-1">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  </div>
+                  <span className="text-sm text-gray-600 dark:text-gray-300 ml-2">Assistant is typing...</span>
                 </div>
               </div>
             )}
@@ -299,46 +307,54 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
           </div>
         </ScrollArea>
         
-        <div className="p-4 border-t">
-          <div className="flex gap-2">
-            <Input
-              ref={inputRef}
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Ask about properties, neighborhoods, or financing..."
-              disabled={isProcessing}
-              className="flex-1"
-            />
+        {/* Chat Input Area */}
+        <div className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-4">
+          <div className="flex gap-3 items-end">
+            <div className="flex-1 relative">
+              <Input
+                ref={inputRef}
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Ask about properties, neighborhoods, financing, or anything else..."
+                disabled={isProcessing}
+                className="w-full pr-12 py-3 text-sm border-gray-300 dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 dark:bg-gray-800"
+              />
+            </div>
             <Button
               onClick={sendMessage}
               disabled={!inputMessage.trim() || isProcessing}
-              size="icon"
+              className="h-12 w-12 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg"
             >
               {isProcessing ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
-                <Send className="w-4 h-4" />
+                <Send className="w-5 h-5" />
               )}
             </Button>
           </div>
           
-          <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-            <div className="flex items-center gap-1">
-              <Home className="w-3 h-3" />
-              Property Search
-            </div>
-            <div className="flex items-center gap-1">
-              <Calculator className="w-3 h-3" />
-              Mortgage Advice
-            </div>
-            <div className="flex items-center gap-1">
-              <MapPin className="w-3 h-3" />
-              Area Insights
-            </div>
+          {/* Quick Action Buttons */}
+          <div className="flex flex-wrap gap-2 mt-3">
+            {quickSuggestions.map((suggestion, index) => (
+              <button
+                key={index}
+                className="text-xs px-3 py-1.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600"
+                onClick={() => handleSuggestionClick(suggestion)}
+                disabled={isProcessing}
+              >
+                {suggestion}
+              </button>
+            ))}
+          </div>
+          
+          {/* Powered by indicator */}
+          <div className="flex items-center justify-center mt-3 text-xs text-gray-400 dark:text-gray-500">
+            <Sparkles className="w-3 h-3 mr-1" />
+            Powered by OpenAI GPT-4o
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
