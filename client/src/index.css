@@ -34,6 +34,19 @@ html, body {
   /* Ensure root element has no spacing */
   margin: 0;
   padding: 0;
+  position: relative;
+}
+
+/* Force all page containers to start at top */
+#root > div {
+  margin: 0;
+  padding: 0;
+}
+
+/* Ensure fixed headers sit at absolute top */
+[style*="position: fixed"][style*="top: 0"] {
+  margin-top: 0 !important;
+  top: 0 !important;
 }
 
 /* Enhanced touch targets for mobile */
