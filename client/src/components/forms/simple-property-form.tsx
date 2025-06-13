@@ -31,7 +31,7 @@ const INITIAL_FORM_DATA = {
   bathrooms: "2",
   area: "",
   status: "active",
-  agentId: ""
+  agentId: "none"
 };
 
 export default function SimplePropertyForm({ property, open, onClose }: SimplePropertyFormProps) {
@@ -71,7 +71,7 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
           bathrooms: property.bathrooms || "2",
           area: property.area?.toString() || "",
           status: property.status || "active",
-          agentId: property.agentId?.toString() || ""
+          agentId: property.agentId ? property.agentId.toString() : "none"
         });
       } else {
         // Add mode - reset to initial values
@@ -115,7 +115,7 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
         bathrooms: data.bathrooms,
         area: parseInt(data.area) || 0,
         status: data.status,
-        agentId: data.agentId ? parseInt(data.agentId) : null,
+        agentId: data.agentId && data.agentId !== "none" ? parseInt(data.agentId) : null,
         features: [],
         images: []
       };
@@ -388,7 +388,7 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
                   <SelectValue placeholder={agentsLoading ? "Loading agents..." : "Select agent"} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">No agent assigned</SelectItem>
+                  <SelectItem value="none">No agent assigned</SelectItem>
                   {agents.map((agent) => (
                     <SelectItem key={agent.id} value={agent.id.toString()}>
                       {agent.name} {agent.title ? `(${agent.title})` : ''}
