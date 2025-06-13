@@ -220,6 +220,8 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
     }));
   };
 
+  console.log("PropertyForm rendering - property:", property);
+  
   return (
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
