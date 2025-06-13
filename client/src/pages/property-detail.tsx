@@ -320,15 +320,24 @@ export default function PropertyDetail() {
               </TabsContent>
               
               <TabsContent value="neighborhood">
-                <div className="text-center py-12">
-                  <MapPin className="w-16 h-16 text-slate-400 dark:text-slate-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
-                    Neighborhood Information
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-400">
-                    Detailed neighborhood analytics and amenities coming soon.
-                  </p>
-                </div>
+                {property.latitude && property.longitude ? (
+                  <NeighborhoodAnalytics 
+                    latitude={parseFloat(property.latitude)}
+                    longitude={parseFloat(property.longitude)}
+                    suburb={property.suburb}
+                    city={property.city}
+                  />
+                ) : (
+                  <div className="text-center py-12">
+                    <MapPin className="w-16 h-16 text-slate-400 dark:text-slate-600 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
+                      Neighborhood Information
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      Location coordinates needed for neighborhood analytics.
+                    </p>
+                  </div>
+                )}
               </TabsContent>
             </div>
           </Tabs>
@@ -338,18 +347,6 @@ export default function PropertyDetail() {
         <div className="mt-8">
           <MortgageCalculator propertyPrice={parseInt(property.price)} />
         </div>
-        
-        {/* Neighborhood Analytics */}
-        {property.latitude && property.longitude && (
-          <div className="mt-8">
-            <NeighborhoodAnalytics 
-              latitude={parseFloat(property.latitude)}
-              longitude={parseFloat(property.longitude)}
-              suburb={property.suburb}
-              city={property.city}
-            />
-          </div>
-        )}
       </div>
       
       {/* Contact Form Modal */}
