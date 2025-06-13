@@ -274,7 +274,7 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
     }));
   };
 
-  console.log("PropertyForm rendering - property:", property);
+
   
   return (
     <Dialog open={true} onOpenChange={onClose}>

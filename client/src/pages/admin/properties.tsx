@@ -331,12 +331,10 @@ export default function AdminProperties() {
       </div>
       
       {/* Property Form Modal */}
-      {console.log("Render check - showPropertyForm:", showPropertyForm)}
       {showPropertyForm && (
         <PropertyForm
           property={editingProperty}
           onClose={() => {
-            console.log("PropertyForm onClose called");
             setShowPropertyForm(false);
             setEditingProperty(null);
           }}
