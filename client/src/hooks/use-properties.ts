@@ -36,6 +36,17 @@ export function useProperties(options: UsePropertiesOptions = {}) {
   return useQuery<PropertyWithAgent[]>({
     queryKey: [endpoint],
     staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: (failureCount, error) => {
+      // Retry up to 3 times for network errors, especially on mobile
+      if (failureCount < 3) {
+        return true;
+      }
+      return false;
+    },
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: true,
+    networkMode: 'online',
   });
 }
 

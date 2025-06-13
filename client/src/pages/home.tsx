@@ -13,7 +13,7 @@ import { AnimatedPage, FadeInSection, StaggeredList, StaggeredItem, AnimatedCard
 import { motion } from "framer-motion";
 
 export default function Home() {
-  const { data: featuredProperties, isLoading } = useProperties({ featured: true, limit: 3 });
+  const { data: featuredProperties, isLoading, error, refetch } = useProperties({ featured: true, limit: 3 });
   const [, navigate] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [comparisonProperties, setComparisonProperties] = useState<number[]>([]);
@@ -252,28 +252,63 @@ export default function Home() {
                 </motion.div>
                 
                 {isLoading ? (
-                  <StaggeredList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
                     {[1, 2, 3].map((i) => (
-                      <StaggeredItem key={i}>
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: i * 0.1 }}
+                      >
                         <PropertyCardSkeleton index={i - 1} />
-                      </StaggeredItem>
+                      </motion.div>
                     ))}
-                  </StaggeredList>
+                  </div>
+                ) : error ? (
+                  <div className="text-center py-12">
+                    <div className="text-slate-500 dark:text-slate-400 text-lg mb-4">
+                      Unable to load featured properties
+                    </div>
+                    <div className="space-y-3">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => refetch()}
+                        className="mr-3"
+                      >
+                        Try Again
+                      </Button>
+                      <Button variant="outline" asChild>
+                        <Link href="/properties">Browse All Properties</Link>
+                      </Button>
+                    </div>
+                  </div>
+                ) : featuredProperties && featuredProperties.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+                    {featuredProperties.map((property, index) => (
+                      <motion.div
+                        key={property.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.1 }}
+                      >
+                        <PropertyCard 
+                          property={property}
+                          onCompareToggle={() => handleCompareToggle(property.id)}
+                          isInComparison={comparisonProperties.includes(property.id)}
+                          canAddToComparison={comparisonProperties.length < 4}
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
                 ) : (
-                  <StaggeredList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {featuredProperties?.map((property) => (
-                      <StaggeredItem key={property.id}>
-                        <AnimatedCard>
-                          <PropertyCard 
-                            property={property}
-                            onCompareToggle={() => handleCompareToggle(property.id)}
-                            isInComparison={comparisonProperties.includes(property.id)}
-                            canAddToComparison={comparisonProperties.length < 4}
-                          />
-                        </AnimatedCard>
-                      </StaggeredItem>
-                    ))}
-                  </StaggeredList>
+                  <div className="text-center py-12">
+                    <div className="text-slate-500 dark:text-slate-400 text-lg mb-4">
+                      No featured properties available at the moment
+                    </div>
+                    <Button variant="outline" asChild>
+                      <Link href="/properties">Browse All Properties</Link>
+                    </Button>
+                  </div>
                 )}
 
                 <motion.div 
