@@ -72,6 +72,45 @@ export const inquiries = pgTable("inquiries", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const chatSessions = pgTable("chat_sessions", {
+  id: serial("id").primaryKey(),
+  sessionId: text("session_id").notNull().unique(),
+  userId: text("user_id"), // Optional user identification
+  userPreferences: jsonb("user_preferences").$type<{
+    budgetMin?: number;
+    budgetMax?: number;
+    preferredAreas?: string[];
+    propertyTypes?: string[];
+    bedrooms?: number;
+    bathrooms?: number;
+    features?: string[];
+    lifestyle?: string[];
+  }>().default({}),
+  conversationContext: jsonb("conversation_context").$type<{
+    lastSearch?: any;
+    propertyViewed?: number[];
+    interests?: string[];
+    stage?: string; // browsing, serious_buyer, viewing_scheduled
+  }>().default({}),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const chatMessages = pgTable("chat_messages", {
+  id: serial("id").primaryKey(),
+  sessionId: text("session_id").references(() => chatSessions.sessionId).notNull(),
+  role: text("role").notNull(), // user, assistant, system
+  content: text("content").notNull(),
+  metadata: jsonb("metadata").$type<{
+    propertyIds?: number[];
+    searchFilters?: any;
+    intent?: string;
+    confidence?: number;
+    suggestions?: string[];
+  }>().default({}),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Schema validation
 export const insertPropertySchema = createInsertSchema(properties).omit({
   id: true,
@@ -98,6 +137,17 @@ export const insertInquirySchema = createInsertSchema(inquiries).omit({
   createdAt: true,
 });
 
+export const insertChatSessionSchema = createInsertSchema(chatSessions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertChatMessageSchema = createInsertSchema(chatMessages).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Types
 export type Property = typeof properties.$inferSelect;
 export type InsertProperty = z.infer<typeof insertPropertySchema>;
@@ -107,6 +157,10 @@ export type Lead = typeof leads.$inferSelect;
 export type InsertLead = z.infer<typeof insertLeadSchema>;
 export type Inquiry = typeof inquiries.$inferSelect;
 export type InsertInquiry = z.infer<typeof insertInquirySchema>;
+export type ChatSession = typeof chatSessions.$inferSelect;
+export type InsertChatSession = z.infer<typeof insertChatSessionSchema>;
+export type ChatMessage = typeof chatMessages.$inferSelect;
+export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;
 
 // Extended types for API responses
 export type PropertyWithAgent = Property & {
