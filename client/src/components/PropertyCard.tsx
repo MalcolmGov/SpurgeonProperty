@@ -283,16 +283,11 @@ export default function PropertyCard({
         {property.features && property.features.length > 0 && (
           <div className="mb-4">
             <div className="flex flex-wrap gap-1">
-              {property.features.slice(0, 3).map((feature, index) => (
+              {property.features.map((feature, index) => (
                 <Badge key={index} variant="outline" className="text-xs">
                   {feature}
                 </Badge>
               ))}
-              {property.features.length > 3 && (
-                <Badge variant="outline" className="text-xs">
-                  +{property.features.length - 3} more
-                </Badge>
-              )}
             </div>
           </div>
         )}

@@ -118,6 +118,12 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
+- **June 13, 2025 - Feature Display Enhancement**: Removed all limitations on property feature tags display. Property cards now show all features added through the admin portal instead of being restricted to 2-3 features. Updated PropertyCard, PropertyComparison, and property-card components.
+
+- **June 13, 2025 - Add Property Dialog Fix**: Enhanced Add Property button reliability with improved state management, forced re-rendering using key props, and better dialog control with console logging for debugging.
+
+- **June 13, 2025 - Database Cleanup**: Successfully removed 49 placeholder properties while preserving 2 authentic user-added listings. Database now contains only real property data.
+
 - **June 13, 2025 - ZIP Upload Enhancement**: Enhanced image upload system with ZIP file support for bulk property image uploads. Server now processes ZIP files containing multiple images using adm-zip library. Added dedicated ZIP upload button with improved file type detection supporting multiple MIME types.
 
 - **June 13, 2025 - Dialog State Management Fix**: Improved PropertyForm dialog reliability by implementing proper controlled component pattern with explicit open/close state management instead of conditional rendering.

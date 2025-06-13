@@ -240,7 +240,7 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
         {/* Features Tags */}
         {property.features && property.features.length > 0 && (
           <div className="flex gap-1 mb-4 flex-wrap">
-            {property.features.slice(0, 2).map((feature, index) => (
+            {property.features.map((feature, index) => (
               <Badge key={index} className="bg-slate-100 text-slate-700 text-xs px-2 py-1 rounded">
                 {feature}
               </Badge>

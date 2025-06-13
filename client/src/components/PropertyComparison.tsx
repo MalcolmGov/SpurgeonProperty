@@ -180,16 +180,11 @@ export default function PropertyComparison({
                           <div>
                             <p className="text-xs font-medium text-gray-600 mb-1">Features:</p>
                             <div className="flex flex-wrap gap-1">
-                              {property.features.slice(0, 3).map((feature, index) => (
+                              {property.features.map((feature, index) => (
                                 <Badge key={index} variant="outline" className="text-xs px-1 py-0">
                                   {feature}
                                 </Badge>
                               ))}
-                              {property.features.length > 3 && (
-                                <Badge variant="outline" className="text-xs px-1 py-0">
-                                  +{property.features.length - 3} more
-                                </Badge>
-                              )}
                             </div>
                           </div>
                         )}
