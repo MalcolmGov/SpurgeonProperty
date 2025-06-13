@@ -115,7 +115,40 @@ export default function PropertyForm({ property, open, onClose }: PropertyFormPr
       }
     },
     onSuccess: () => {
+      // Reset form data for new properties
+      if (!property) {
+        setFormData({
+          title: "",
+          description: "",
+          price: "",
+          address: "",
+          suburb: "",
+          city: "",
+          province: "",
+          postalCode: "",
+          propertyType: "house",
+          bedrooms: "1",
+          bathrooms: "1",
+          area: "",
+          lotSize: "",
+          yearBuilt: "",
+          parking: "",
+          features: [] as string[],
+          images: [] as string[],
+          status: "active",
+          agentId: "unassigned",
+          featured: false
+        });
+      }
+      
+      // Invalidate all property-related queries
       queryClient.invalidateQueries({ queryKey: ["/api/properties"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/properties/featured"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/dashboard/stats"] });
+      
+      // Force a refresh of the properties list
+      queryClient.refetchQueries({ queryKey: ["/api/properties"] });
+      
       toast({
         title: "Success",
         description: property ? "Property updated successfully" : "Property created successfully",

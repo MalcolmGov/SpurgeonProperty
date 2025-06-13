@@ -175,7 +175,9 @@ export class DatabaseStorage implements IStorage {
 
   async createProperty(property: InsertProperty): Promise<Property> {
     try {
+      console.log('Creating property:', property.title);
       const result = await db.insert(properties).values(property).returning();
+      console.log('Property created successfully with ID:', result[0].id);
       return result[0];
     } catch (error) {
       console.error('Error creating property:', error);
