@@ -311,7 +311,11 @@ export default function PropertyForm({ property, open, onClose }: PropertyFormPr
 
   
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={(newOpen) => {
+      if (!newOpen) {
+        onClose();
+      }
+    }}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center justify-between">

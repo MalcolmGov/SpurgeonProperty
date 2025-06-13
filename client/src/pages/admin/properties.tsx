@@ -51,8 +51,10 @@ export default function AdminProperties() {
   });
 
   const handleEdit = (property: PropertyWithAgent) => {
+    console.log("Edit Property clicked:", property.title);
     setEditingProperty(property);
     setShowPropertyForm(true);
+    setFormKey(prev => prev + 1);
   };
 
   const handleDelete = (id: number) => {
