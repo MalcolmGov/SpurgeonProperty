@@ -155,11 +155,22 @@ function AgentForm({ agent, onSuccess }: { agent?: Agent; onSuccess: () => void 
   const createMutation = useMutation({
     mutationFn: async (data: AgentFormData) => {
       const formattedData = {
-        ...data,
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        phone: data.phone || undefined,
+        bio: data.bio || undefined,
         specialties: data.specialties ? data.specialties.split(",").map(s => s.trim()).filter(Boolean) : [],
+        title: data.title || undefined,
+        licenseNumber: data.licenseNumber || undefined,
+        yearsExperience: data.yearsExperience ? parseInt(data.yearsExperience) || 0 : 0,
         languages: data.languages ? data.languages.split(",").map(s => s.trim()).filter(Boolean) : [],
+        education: data.education || undefined,
         certifications: data.certifications ? data.certifications.split(",").map(s => s.trim()).filter(Boolean) : [],
-        yearsExperience: data.yearsExperience ? parseInt(data.yearsExperience) : 0,
+        officeLocation: data.officeLocation || undefined,
+        workingHours: data.workingHours || undefined,
+        linkedinUrl: data.linkedinUrl || undefined,
+        personalWebsite: data.personalWebsite || undefined,
         avatar: uploadedImage || undefined,
       };
       return apiRequest(`/api/admin/agents`, {
@@ -183,16 +194,26 @@ function AgentForm({ agent, onSuccess }: { agent?: Agent; onSuccess: () => void 
 
   const updateMutation = useMutation({
     mutationFn: async (data: AgentFormData) => {
-      const formattedData = {
-        ...data,
+      const formattedData: any = {
+        name: data.name,
+        email: data.email,
+        phone: data.phone || undefined,
+        bio: data.bio || undefined,
         specialties: data.specialties ? data.specialties.split(",").map(s => s.trim()).filter(Boolean) : [],
+        title: data.title || undefined,
+        licenseNumber: data.licenseNumber || undefined,
+        yearsExperience: data.yearsExperience ? parseInt(data.yearsExperience) || 0 : 0,
         languages: data.languages ? data.languages.split(",").map(s => s.trim()).filter(Boolean) : [],
+        education: data.education || undefined,
         certifications: data.certifications ? data.certifications.split(",").map(s => s.trim()).filter(Boolean) : [],
-        yearsExperience: data.yearsExperience ? parseInt(data.yearsExperience) : 0,
+        officeLocation: data.officeLocation || undefined,
+        workingHours: data.workingHours || undefined,
+        linkedinUrl: data.linkedinUrl || undefined,
+        personalWebsite: data.personalWebsite || undefined,
         avatar: uploadedImage || agent?.avatar || undefined,
       };
-      if (!data.password) {
-        delete formattedData.password;
+      if (data.password) {
+        formattedData.password = data.password;
       }
       return apiRequest(`/api/admin/agents/${agent!.id}`, {
         method: "PUT",
