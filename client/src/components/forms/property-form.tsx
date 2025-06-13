@@ -335,8 +335,11 @@ export default function PropertyForm({ property, open, onClose }: PropertyFormPr
 
 
   
+  console.log("PropertyForm render:", { open, property: property?.id || "new" });
+  
   return (
     <Dialog open={open} onOpenChange={(newOpen) => {
+      console.log("Dialog onOpenChange:", { newOpen, currentOpen: open });
       if (!newOpen) {
         onClose();
       }

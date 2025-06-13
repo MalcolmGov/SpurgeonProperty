@@ -1,6 +1,6 @@
 import { useState } from "react";
 import AdminSidebar from "@/components/admin/sidebar";
-import PropertyForm from "@/components/forms/property-form";
+import SimplePropertyForm from "@/components/forms/simple-property-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -20,6 +20,8 @@ export default function AdminProperties() {
   const [statusFilter, setStatusFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [formKey, setFormKey] = useState(0);
+  
+  console.log("AdminProperties render:", { showPropertyForm, editingProperty: editingProperty?.id || "null", formKey });
   
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -336,11 +338,12 @@ export default function AdminProperties() {
       </div>
       
       {/* Property Form Modal */}
-      <PropertyForm
+      <SimplePropertyForm
         key={formKey}
         property={editingProperty}
         open={showPropertyForm}
         onClose={() => {
+          console.log("Closing property form");
           setShowPropertyForm(false);
           setEditingProperty(null);
         }}
