@@ -2,6 +2,97 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile-first responsive design with touch optimization */
+html {
+  /* Enable smooth zooming and touch interactions */
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+body {
+  /* Optimize for touch devices */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Enable hardware acceleration for smooth scrolling */
+  transform: translateZ(0);
+  /* Improve touch responsiveness */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Enhanced touch targets for mobile */
+button, [role="button"], .clickable {
+  min-height: 44px; /* iOS recommended touch target size */
+  min-width: 44px;
+  touch-action: manipulation;
+}
+
+/* Improve scrolling on mobile */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Responsive images and media */
+img, video {
+  max-width: 100%;
+  height: auto;
+  touch-action: manipulation;
+}
+
+/* Mobile-optimized form inputs */
+input, textarea, select {
+  font-size: 16px; /* Prevent zoom on iOS */
+  border-radius: 0; /* Remove iOS styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Pinch-to-zoom support for content areas */
+.zoomable {
+  touch-action: pinch-zoom;
+}
+
+/* Prevent text selection on touch interfaces for UI elements */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Mobile navigation optimizations */
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Responsive breakpoint utilities */
+@media (max-width: 640px) {
+  .mobile-only {
+    display: block;
+  }
+  .desktop-only {
+    display: none;
+  }
+}
+
+@media (min-width: 641px) {
+  .mobile-only {
+    display: none;
+  }
+  .desktop-only {
+    display: block;
+  }
+}
+
 :root {
   --background: 0 0% 100%;
   --foreground: 222.2 84% 4.9%;

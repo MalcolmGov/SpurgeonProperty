@@ -26,8 +26,8 @@ export default function Header() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="mobile-nav fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 border-b border-gray-200 dark:border-gray-700 shadow-sm backdrop-blur-md">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
@@ -95,15 +95,55 @@ export default function Header() {
             </Button>
           </div>
           
-          {/* Mobile Menu */}
+          {/* Mobile Menu - Enhanced for Touch */}
           <div className="flex lg:hidden items-center space-x-2">
-            {/* Hamburger Menu */}
+            {/* Mobile Theme Toggle */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="p-3 min-h-[44px] min-w-[44px] text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 touch-manipulation"
+                >
+                  <Settings className="w-5 h-5" />
+                  <span className="sr-only">Settings</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <DropdownMenuItem 
+                  onClick={() => setTheme("light")}
+                  className="flex items-center gap-3 p-3 hover:bg-slate-50 dark:hover:bg-slate-700 touch-manipulation"
+                >
+                  <Sun className="w-5 h-5" />
+                  <span>Light Mode</span>
+                  {theme === "light" && <span className="ml-auto text-purple-600">✓</span>}
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setTheme("dark")}
+                  className="flex items-center gap-3 p-3 hover:bg-slate-50 dark:hover:bg-slate-700 touch-manipulation"
+                >
+                  <Moon className="w-5 h-5" />
+                  <span>Dark Mode</span>
+                  {theme === "dark" && <span className="ml-auto text-purple-600">✓</span>}
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setTheme("system")}
+                  className="flex items-center gap-3 p-3 hover:bg-slate-50 dark:hover:bg-slate-700 touch-manipulation"
+                >
+                  <div className="w-5 h-5 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full" />
+                  <span>System Mode</span>
+                  {theme === "system" && <span className="ml-auto text-purple-600">✓</span>}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Enhanced Hamburger Menu */}
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="relative p-3 text-slate-700 dark:text-slate-200 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200"
+                  className="relative p-3 min-h-[44px] min-w-[44px] text-slate-700 dark:text-slate-200 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 touch-manipulation no-select"
                 >
                   <div className="flex flex-col items-center justify-center w-6 h-6 space-y-1">
                     <span 
@@ -125,7 +165,7 @@ export default function Header() {
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-700">
+              <SheetContent side="right" className="w-[90vw] max-w-sm bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-700 scroll-container">
                 <div className="flex flex-col h-full">
                   {/* Header */}
                   <div className="flex items-center justify-between py-4 border-b border-slate-200 dark:border-slate-700">
@@ -135,20 +175,20 @@ export default function Header() {
                   </div>
                   
                   {/* Navigation */}
-                  <div className="flex-1 py-6">
+                  <div className="flex-1 py-6 overflow-y-auto scroll-container">
                     <nav className="space-y-2">
                       {navigation.map((item) => (
                         <Link key={item.name} href={item.href}>
                           <button
-                            className={`flex items-center space-x-3 w-full px-4 py-3 text-left rounded-lg transition-all duration-200 ${
+                            className={`flex items-center space-x-3 w-full px-4 py-4 text-left rounded-lg transition-all duration-200 touch-manipulation min-h-[48px] ${
                               isActive(item.href)
                                 ? "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 border-l-4 border-purple-600"
                                 : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-purple-600 dark:hover:text-purple-400"
                             }`}
                             onClick={() => setMobileMenuOpen(false)}
                           >
-                            <item.icon className="w-5 h-5" />
-                            <span className="font-medium">{item.name}</span>
+                            <item.icon className="w-6 h-6" />
+                            <span className="font-medium text-base">{item.name}</span>
                           </button>
                         </Link>
                       ))}
