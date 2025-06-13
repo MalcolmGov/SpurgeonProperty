@@ -65,6 +65,14 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Quick suggestions for user convenience
+  const quickSuggestions = [
+    "Find properties under R2 million",
+    "Show me 3 bedroom houses",
+    "Tell me about Sandton",
+    "Calculate mortgage options"
+  ];
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
