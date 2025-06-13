@@ -45,11 +45,27 @@ const upload = multer({
   storage: storage_multer,
   limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit for ZIP files
   fileFilter: (req, file, cb) => {
-    const allowedImageTypes = /jpeg|jpg|png|gif|webp/;
-    const allowedZipTypes = /zip/;
+    const allowedImageTypes = /\.(jpeg|jpg|png|gif|webp)$/i;
+    const allowedZipTypes = /\.(zip)$/i;
     const extname = path.extname(file.originalname).toLowerCase();
-    const isImage = allowedImageTypes.test(extname) && allowedImageTypes.test(file.mimetype);
-    const isZip = allowedZipTypes.test(extname) && file.mimetype === 'application/zip';
+    
+    // Check for image files
+    const isImage = allowedImageTypes.test(extname) && 
+                   /^image\/(jpeg|jpg|png|gif|webp)$/i.test(file.mimetype);
+    
+    // Check for ZIP files with multiple possible MIME types
+    const isZip = allowedZipTypes.test(extname) && 
+                 (file.mimetype === 'application/zip' || 
+                  file.mimetype === 'application/x-zip-compressed' ||
+                  file.mimetype === 'application/octet-stream');
+    
+    console.log('File filter check:', {
+      filename: file.originalname,
+      mimetype: file.mimetype,
+      extname,
+      isImage,
+      isZip
+    });
     
     if (isImage || isZip) {
       return cb(null, true);
