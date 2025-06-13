@@ -37,7 +37,7 @@ export default function Header() {
           </div>
           
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8">
             {navigation.map((item) => (
               <Link key={item.name} href={item.href}>
                 <button
@@ -96,7 +96,7 @@ export default function Header() {
           </div>
           
           {/* Mobile Menu - Enhanced for Touch */}
-          <div className="flex lg:hidden items-center space-x-2">
+          <div className="flex md:hidden items-center space-x-2">
             {/* Mobile Theme Toggle */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -143,22 +143,22 @@ export default function Header() {
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="relative p-3 min-h-[44px] min-w-[44px] text-slate-700 dark:text-slate-200 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 touch-manipulation no-select"
+                  className="relative p-2 min-h-[48px] min-w-[48px] bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg transition-all duration-200 touch-manipulation"
                 >
-                  <div className="flex flex-col items-center justify-center w-6 h-6 space-y-1">
+                  <div className="flex flex-col items-center justify-center w-6 h-6 space-y-1.5">
                     <span 
-                      className={`block h-0.5 w-6 bg-current transition-all duration-300 ease-out rounded-sm ${
-                        mobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''
+                      className={`block h-0.5 w-5 bg-current transition-all duration-300 ease-out rounded-sm ${
+                        mobileMenuOpen ? 'rotate-45 translate-y-2' : ''
                       }`}
                     />
                     <span 
-                      className={`block h-0.5 w-6 bg-current transition-all duration-300 ease-out rounded-sm ${
+                      className={`block h-0.5 w-5 bg-current transition-all duration-300 ease-out rounded-sm ${
                         mobileMenuOpen ? 'opacity-0' : 'opacity-100'
                       }`}
                     />
                     <span 
-                      className={`block h-0.5 w-6 bg-current transition-all duration-300 ease-out rounded-sm ${
-                        mobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
+                      className={`block h-0.5 w-5 bg-current transition-all duration-300 ease-out rounded-sm ${
+                        mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''
                       }`}
                     />
                   </div>
