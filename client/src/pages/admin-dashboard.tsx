@@ -68,25 +68,25 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="pt-16 min-h-screen bg-gray-100 dark:bg-gray-900">
-      <div className="flex">
-        <AdminSidebar />
-        
-        {/* Main Content */}
-        <div className="flex-1 p-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <AdminSidebar />
+      
+      {/* Main Content */}
+      <div className="lg:ml-64 min-h-screen">
+        <div className="p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8">
           {/* Header */}
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6 lg:mb-8 space-y-4 lg:space-y-0">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
                 Dashboard Overview
               </h1>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600 dark:text-gray-300 mt-1">
                 Welcome back! Here's what's happening with your properties.
               </p>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
               <NotificationPanel />
-              <Button>
+              <Button className="w-full sm:w-auto">
                 <Plus className="mr-2 h-4 w-4" />
                 Add Property
               </Button>
@@ -126,13 +126,13 @@ export default function AdminDashboard() {
           </div>
 
           {/* Charts and Activity */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8 mb-6 lg:mb-8">
             {/* Performance Chart */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Sales Performance</CardTitle>
+            <Card className="w-full">
+              <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between space-y-2 sm:space-y-0">
+                <CardTitle className="text-lg font-semibold">Sales Performance</CardTitle>
                 <Select defaultValue="7days">
-                  <SelectTrigger className="w-32">
+                  <SelectTrigger className="w-full sm:w-32">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -143,30 +143,30 @@ export default function AdminDashboard() {
                 </Select>
               </CardHeader>
               <CardContent>
-                <div className="h-64 bg-gray-50 dark:bg-gray-800 rounded-lg flex items-center justify-center">
-                  <div className="text-gray-400 text-center">
-                    <TrendingUp className="mx-auto h-12 w-12 mb-4" />
-                    <p>Chart visualization would be rendered here</p>
+                <div className="h-48 sm:h-64 bg-gray-50 dark:bg-gray-800 rounded-lg flex items-center justify-center">
+                  <div className="text-gray-400 text-center px-4">
+                    <TrendingUp className="mx-auto h-8 sm:h-12 w-8 sm:w-12 mb-2 sm:mb-4" />
+                    <p className="text-sm sm:text-base">Chart visualization would be rendered here</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Recent Activity */}
-            <Card>
+            <Card className="w-full">
               <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
+                <CardTitle className="text-lg font-semibold">Recent Activity</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4 max-h-64 sm:max-h-80 overflow-y-auto">
                   {recentProperties?.map((property: any) => (
-                    <div key={property.id} className="flex items-start space-x-3">
+                    <div key={property.id} className="flex items-start space-x-3 p-2 sm:p-0">
                       <div className="w-2 h-2 bg-purple-600 rounded-full mt-2 flex-shrink-0"></div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm text-gray-900 dark:text-white">
+                        <p className="text-sm text-gray-900 dark:text-white line-clamp-2">
                           New property listed: <span className="font-medium">{property.title}</span>
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                           {property.createdAt ? new Date(property.createdAt).toLocaleDateString() : 'Recently'}
                         </p>
                       </div>
@@ -174,13 +174,13 @@ export default function AdminDashboard() {
                   ))}
                   
                   {recentLeads?.map((lead: any) => (
-                    <div key={lead.id} className="flex items-start space-x-3">
+                    <div key={lead.id} className="flex items-start space-x-3 p-2 sm:p-0">
                       <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm text-gray-900 dark:text-white">
+                        <p className="text-sm text-gray-900 dark:text-white line-clamp-2">
                           New lead from <span className="font-medium">{lead.name || `${lead.firstName || ''} ${lead.lastName || ''}`.trim()}</span>
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                           {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString() : 'Recently'}
                         </p>
                       </div>
@@ -188,7 +188,7 @@ export default function AdminDashboard() {
                   ))}
                   
                   {(!recentProperties?.length && !recentLeads?.length) && (
-                    <p className="text-gray-500 dark:text-gray-400 text-center py-4">
+                    <p className="text-gray-500 dark:text-gray-400 text-center py-4 text-sm sm:text-base">
                       No recent activity
                     </p>
                   )}
@@ -198,58 +198,58 @@ export default function AdminDashboard() {
           </div>
 
           {/* Recent Properties Table */}
-          <Card className="mt-8">
+          <Card className="w-full">
             <CardHeader>
-              <CardTitle>Recent Properties</CardTitle>
+              <CardTitle className="text-lg font-semibold">Recent Properties</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0 sm:p-6">
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full min-w-[600px]">
                   <thead>
                     <tr className="border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">
+                      <th className="text-left py-3 px-3 sm:px-4 font-medium text-gray-900 dark:text-white text-sm">
                         Property
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">
+                      <th className="text-left py-3 px-3 sm:px-4 font-medium text-gray-900 dark:text-white text-sm">
                         Status
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">
+                      <th className="text-left py-3 px-3 sm:px-4 font-medium text-gray-900 dark:text-white text-sm">
                         Price
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">
+                      <th className="text-left py-3 px-3 sm:px-4 font-medium text-gray-900 dark:text-white text-sm">
                         Views
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     {recentProperties?.map((property: any) => (
-                      <tr key={property.id} className="border-b border-gray-100 dark:border-gray-800">
-                        <td className="py-3 px-4">
-                          <div className="flex items-center">
+                      <tr key={property.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                        <td className="py-3 px-3 sm:px-4">
+                          <div className="flex items-center space-x-3">
                             <img 
                               src={property.images?.[0] || "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=100&h=100&fit=crop"}
                               alt={property.title}
-                              className="w-12 h-12 rounded-lg object-cover mr-3"
+                              className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-cover flex-shrink-0"
                             />
-                            <div>
-                              <div className="font-medium text-gray-900 dark:text-white">
+                            <div className="min-w-0 flex-1">
+                              <div className="font-medium text-gray-900 dark:text-white text-sm line-clamp-1">
                                 {property.title}
                               </div>
-                              <div className="text-sm text-gray-500 dark:text-gray-400">
+                              <div className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
                                 {property.city}, {property.province}
                               </div>
                             </div>
                           </div>
                         </td>
-                        <td className="py-3 px-4">
-                          <Badge className={`status-${property.status}`}>
+                        <td className="py-3 px-3 sm:px-4">
+                          <Badge className={`status-${property.status} text-xs`}>
                             {property.status?.charAt(0).toUpperCase() + property.status?.slice(1)}
                           </Badge>
                         </td>
-                        <td className="py-3 px-4 font-medium text-gray-900 dark:text-white">
+                        <td className="py-3 px-3 sm:px-4 font-medium text-gray-900 dark:text-white text-sm">
                           R{property.price || '0'}
                         </td>
-                        <td className="py-3 px-4 text-gray-500 dark:text-gray-400">
+                        <td className="py-3 px-3 sm:px-4 text-gray-500 dark:text-gray-400 text-sm">
                           {property.views || 0}
                         </td>
                       </tr>
