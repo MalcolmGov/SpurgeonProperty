@@ -57,12 +57,24 @@ header.fixed {
 body {
   margin: 0 !important;
   padding: 0 !important;
+  touch-action: auto; /* Allow all touch gestures including pinch-zoom */
+}
+
+/* Enable pinch-to-zoom on html element */
+html {
+  touch-action: auto; /* Allow all touch gestures including pinch-zoom */
 }
 
 /* Ensure no space above fixed elements */
 .page-container {
   margin-top: 0;
   padding-top: 80px; /* Space for fixed header */
+  touch-action: auto; /* Allow pinch-zoom on main content */
+}
+
+/* Enable pinch-zoom on specific content areas */
+.property-grid, .hero-section, .content-area, main, section {
+  touch-action: auto; /* Allow all gestures including pinch-zoom */
 }
 
 /* Enhanced touch targets for mobile */
@@ -82,7 +94,7 @@ button, [role="button"], .clickable {
 img, video {
   max-width: 100%;
   height: auto;
-  touch-action: manipulation;
+  touch-action: pinch-zoom;
 }
 
 /* Mobile-optimized form inputs */
