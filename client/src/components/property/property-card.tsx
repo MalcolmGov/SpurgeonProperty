@@ -48,11 +48,11 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
       <Link href={`/properties/${property.id}`}>
         <Card className="hover:shadow-lg transition-all duration-300 overflow-hidden touch-manipulation group">
           <div className="flex flex-col sm:flex-row">
-            <div className="relative w-64 h-48 flex-shrink-0">
+            <div className="relative w-full sm:w-64 h-48 flex-shrink-0 overflow-hidden">
               <img
                 src={property.images && property.images.length > 0 ? property.images[0] : "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Im0xNzUgMTQwIDUwIDUwIDI1LTI1IDUwIDUwVjE4MEgxNzVWMTQwWiIgZmlsbD0iI0U1RTdFQiIvPgo8Y2lyY2xlIGN4PSIxODAiIGN5PSIxMjAiIHI9IjEwIiBmaWxsPSIjRTVFN0VCIi8+Cjx0ZXh0IHg9IjE0MCIgeT0iMTYwIiBmaWxsPSIjOUI5QjlCIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiI+UHJvcGVydHkgSW1hZ2U8L3RleHQ+Cjwvc3ZnPgo="}
                 alt={property.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover zoomable touch-manipulation transition-transform duration-300 group-hover:scale-105"
                 onError={(e) => {
                   e.currentTarget.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Im0xNzUgMTQwIDUwIDUwIDI1LTI1IDUwIDUwVjE4MEgxNzVWMTQwWiIgZmlsbD0iI0U1RTdFQiIvPgo8Y2lyY2xlIGN4PSIxODAiIGN5PSIxMjAiIHI9IjEwIiBmaWxsPSIjRTVFN0VCIi8+Cjx0ZXh0IHg9IjE0MCIgeT0iMTYwIiBmaWxsPSIjOUI5QjlCIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiI+UHJvcGVydHkgSW1hZ2U8L3RleHQ+Cjwvc3ZnPgo=";
                 }}
@@ -78,10 +78,10 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
               <Button
                 variant="secondary"
                 size="sm"
-                className="absolute top-3 right-3 w-8 h-8 p-0"
+                className="absolute top-3 right-3 w-10 h-10 p-0 touch-manipulation bg-white/90 backdrop-blur-sm hover:bg-white shadow-md"
                 onClick={toggleFavorite}
               >
-                <Heart className={`w-4 h-4 ${isFavorited ? 'fill-current text-red-500' : ''}`} />
+                <Heart className={`w-5 h-5 ${isFavorited ? 'fill-current text-red-500' : ''}`} />
               </Button>
               <div className="absolute bottom-3 left-3">
                 <span className="bg-purple-primary text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -89,15 +89,15 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
                 </span>
               </div>
             </div>
-            <CardContent className="flex-1 p-6">
-              <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
+            <CardContent className="flex-1 p-4 sm:p-6">
+              <h3 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white mb-2">
                 {property.title}
               </h3>
-              <p className="text-slate-600 dark:text-slate-300 mb-4 flex items-center">
-                <MapPin className="w-4 h-4 text-orange-primary mr-2" />
-                {property.address}, {property.suburb}, {property.city}, {property.province}
+              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 mb-4 flex items-start">
+                <MapPin className="w-4 h-4 text-orange-primary mr-2 mt-0.5 flex-shrink-0" />
+                <span className="line-clamp-2">{property.address}, {property.suburb}, {property.city}, {property.province}</span>
               </p>
-              <div className="flex items-center space-x-6 text-sm text-slate-600 dark:text-slate-400 mb-4">
+              <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 dark:text-slate-400 mb-4">
                 <div className="flex items-center">
                   <div className="w-8 h-8 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mr-2">
                     <Bed className="w-4 h-4 text-blue-600 dark:text-blue-400" />
@@ -137,53 +137,53 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
   }
 
   return (
-    <Card className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
-      <div className="relative">
-        <img
-          src={property.images && property.images.length > 0 ? property.images[0] : "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Im0xNzUgMTQwIDUwIDUwIDI1LTI1IDUwIDUwVjE4MEgxNzVWMTQwWiIgZmlsbD0iI0U1RTdFQiIvPgo8Y2lyY2xlIGN4PSIxODAiIGN5PSIxMjAiIHI9IjEwIiBmaWxsPSIjRTVFN0VCIi8+Cjx0ZXh0IHg9IjE0MCIgeT0iMTYwIiBmaWxsPSIjOUI5QjlCIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiI+UHJvcGVydHkgSW1hZ2U8L3RleHQ+Cjwvc3ZnPgo="}
-          alt={property.title}
-          className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+    <Link href={`/properties/${property.id}`} className="block touch-manipulation">
+      <Card className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group h-full">
+        <div className="relative overflow-hidden">
+          <img
+            src={property.images && property.images.length > 0 ? property.images[0] : "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Im0xNzUgMTQwIDUwIDUwIDI1LTI1IDUwIDUwVjE4MEgxNzVWMTQwWiIgZmlsbD0iI0U1RTdFQiIvPgo8Y2lyY2xlIGN4PSIxODAiIGN5PSIxMjAiIHI9IjEwIiBmaWxsPSIjRTVFN0VCIi8+Cjx0ZXh0IHg9IjE0MCIgeT0iMTYwIiBmaWxsPSIjOUI5QjlCIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiI+UHJvcGVydHkgSW1hZ2U8L3RleHQ+Cjwvc3ZnPgo="}
+            alt={property.title}
+            className="w-full h-48 sm:h-64 object-cover zoomable touch-manipulation group-hover:scale-105 transition-transform duration-300"
           onError={(e) => {
             e.currentTarget.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Im0xNzUgMTQwIDUwIDUwIDI1LTI1IDUwIDUwVjE4MEgxNzVWMTQwWiIgZmlsbD0iI0U1RTdFQiIvPgo8Y2lyY2xlIGN4PSIxODAiIGN5PSIxMjAiIHI9IjEwIiBmaWxsPSIjRTVFN0VCIi8+Cjx0ZXh0IHg9IjE0MCIgeT0iMTYwIiBmaWxsPSIjOUI5QjlCIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiI+UHJvcGVydHkgSW1hZ2U8L3RleHQ+Cjwvc3ZnPgo=";
           }}
         />
         
         {/* Tags */}
-        <div className="absolute top-4 left-4 flex gap-2">
-          {property.featured && (
-            <Badge className="bg-orange-500 text-white px-2 py-1 text-xs rounded">Featured</Badge>
-          )}
-          {property.status === "sold" && (
-            <Badge className="bg-red-500 text-white px-2 py-1 text-xs rounded">Sold</Badge>
-          )}
-          {property.status === "pending" && (
-            <Badge className="bg-yellow-500 text-white px-2 py-1 text-xs rounded">Pending</Badge>
+        <div className="absolute top-3 left-3 flex flex-col gap-2">
+          <div className="flex gap-2">
+            {property.featured && (
+              <Badge className="bg-orange-primary text-white px-2 py-1 text-xs rounded-md">Featured</Badge>
+            )}
+            {property.status === "sold" && (
+              <Badge className="bg-red-500 text-white px-2 py-1 text-xs rounded-md">Sold</Badge>
+            )}
+            {property.status === "pending" && (
+              <Badge className="bg-yellow-500 text-white px-2 py-1 text-xs rounded-md">Pending</Badge>
+            )}
+          </div>
+          {property.propertyType && (
+            <Badge className="bg-blue-600 text-white px-2 py-1 text-xs rounded-md capitalize">
+              {property.propertyType.replace('_', ' ')}
+            </Badge>
           )}
         </div>
         
-        {property.propertyType && (
-          <div className="absolute top-4 left-4 mt-8">
-            <Badge className="bg-blue-600 text-white px-2 py-1 text-xs rounded capitalize">
-              {property.propertyType.replace('_', ' ')}
-            </Badge>
-          </div>
-        )}
-        
         {/* Action buttons */}
-        <div className="absolute top-4 right-4 flex gap-2">
+        <div className="absolute top-3 right-3">
           <Button
             variant="secondary"
             size="sm"
-            className="w-8 h-8 p-0 bg-white/90 hover:bg-white rounded-lg"
+            className="w-10 h-10 p-0 bg-white/90 backdrop-blur-sm hover:bg-white rounded-lg shadow-md touch-manipulation"
             onClick={toggleFavorite}
           >
-            <Heart className={`w-4 h-4 ${isFavorited ? 'fill-current text-red-500' : 'text-slate-600'}`} />
+            <Heart className={`w-5 h-5 ${isFavorited ? 'fill-current text-red-500' : 'text-slate-600'}`} />
           </Button>
         </div>
         
         {/* Price */}
-        <div className="absolute bottom-4 left-4">
-          <span className="bg-purple-600 text-white px-3 py-1 rounded-lg text-sm font-semibold">
+        <div className="absolute bottom-3 left-3">
+          <span className="bg-purple-primary text-white px-3 py-1.5 rounded-lg text-sm font-semibold shadow-md">
             {formatPrice(property.price)}
           </span>
         </div>
@@ -202,7 +202,7 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
         </p>
         
         {/* Property Details */}
-        <div className="flex justify-between text-center mb-4 py-3 border-y border-slate-200 dark:border-slate-600">
+        <div className="flex flex-wrap gap-4 mb-4 py-3 border-y border-slate-200 dark:border-slate-600">
           <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
             <div className="w-8 h-8 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mr-2">
               <Bed className="w-4 h-4 text-blue-600 dark:text-blue-400" />
@@ -267,12 +267,11 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
         )}
         
         {/* View Details Button */}
-        <Link href={`/properties/${property.id}`}>
-          <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
-            View Details
-          </Button>
-        </Link>
+        <Button className="w-full bg-purple-primary hover:bg-purple-700 text-white touch-manipulation">
+          View Details
+        </Button>
       </CardContent>
     </Card>
+    </Link>
   );
 }
