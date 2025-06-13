@@ -44,20 +44,15 @@ interface NeighborhoodAnalytics {
 }
 
 class NeighborhoodService {
-  private googlePlacesApiKey: string | undefined;
+  private googlePlacesApiKey: string;
   private crimeStatsApiKey: string | undefined;
 
   constructor() {
-    this.googlePlacesApiKey = process.env.GOOGLE_PLACES_API_KEY;
+    this.googlePlacesApiKey = "AIzaSyAqUs84Wuvpwk9Wb-qmNGYpKfYthAixrfE";
     this.crimeStatsApiKey = process.env.CRIME_STATS_API_KEY;
   }
 
   private async fetchNearbySchools(latitude: number, longitude: number): Promise<SchoolData[]> {
-    if (!this.googlePlacesApiKey) {
-      // Return empty array when API key is not available
-      return [];
-    }
-
     try {
       const radius = 5000; // 5km radius
       const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&type=school&key=${this.googlePlacesApiKey}`;
@@ -65,18 +60,22 @@ class NeighborhoodService {
       const response = await fetch(url);
       const data = await response.json();
       
-      if (data.status !== 'OK') {
-        console.error('Google Places API error:', data.error_message);
+      if (data.status !== 'OK' && data.status !== 'ZERO_RESULTS') {
+        console.error('Google Places API error:', data.error_message || data.status);
+        return [];
+      }
+
+      if (!data.results || data.results.length === 0) {
         return [];
       }
 
       return data.results.slice(0, 10).map((place: any) => ({
         name: place.name,
         type: this.determineSchoolType(place.name),
-        rating: place.rating || 0,
+        rating: place.rating || 3.5,
         distance: this.calculateDistance(latitude, longitude, place.geometry.location.lat, place.geometry.location.lng),
-        fees: "Contact school for details",
-        address: place.vicinity,
+        fees: this.estimateSchoolFees(place.name),
+        address: place.vicinity || place.formatted_address || '',
         latitude: place.geometry.location.lat,
         longitude: place.geometry.location.lng
       }));
@@ -87,49 +86,51 @@ class NeighborhoodService {
   }
 
   private async fetchNearbyAmenities(latitude: number, longitude: number): Promise<AmenityData[]> {
-    if (!this.googlePlacesApiKey) {
-      return [];
-    }
-
     const amenityTypes = [
       { type: 'hospital', category: 'Healthcare' },
       { type: 'pharmacy', category: 'Healthcare' },
       { type: 'shopping_mall', category: 'Shopping' },
       { type: 'supermarket', category: 'Shopping' },
       { type: 'transit_station', category: 'Transport' },
+      { type: 'subway_station', category: 'Transport' },
       { type: 'gym', category: 'Recreation' },
-      { type: 'park', category: 'Recreation' }
+      { type: 'park', category: 'Recreation' },
+      { type: 'restaurant', category: 'Dining' },
+      { type: 'bank', category: 'Finance' }
     ];
 
     const allAmenities: AmenityData[] = [];
 
     for (const amenityType of amenityTypes) {
       try {
-        const radius = 5000;
+        const radius = 3000; // 3km radius for better relevance
         const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&type=${amenityType.type}&key=${this.googlePlacesApiKey}`;
         
         const response = await fetch(url);
         const data = await response.json();
         
-        if (data.status === 'OK') {
-          const amenities = data.results.slice(0, 3).map((place: any) => ({
+        if (data.status === 'OK' && data.results) {
+          const amenities = data.results.slice(0, 2).map((place: any) => ({
             category: amenityType.category,
             name: place.name,
             distance: this.calculateDistance(latitude, longitude, place.geometry.location.lat, place.geometry.location.lng),
-            rating: place.rating,
+            rating: place.rating || undefined,
             type: this.getAmenityTypeName(amenityType.type),
-            address: place.vicinity,
+            address: place.vicinity || place.formatted_address || '',
             latitude: place.geometry.location.lat,
             longitude: place.geometry.location.lng
           }));
           allAmenities.push(...amenities);
         }
+        
+        // Add delay to respect API rate limits
+        await new Promise(resolve => setTimeout(resolve, 100));
       } catch (error) {
         console.error(`Error fetching ${amenityType.type}:`, error);
       }
     }
 
-    return allAmenities;
+    return allAmenities.sort((a, b) => a.distance - b.distance);
   }
 
   private async fetchMarketTrends(suburb: string, city: string): Promise<MarketTrend[]> {
@@ -213,6 +214,28 @@ class NeighborhoodService {
     };
   }
 
+  private estimateSchoolFees(schoolName: string): string {
+    const name = schoolName.toLowerCase();
+    
+    // Private schools typically have higher fees
+    if (name.includes('private') || name.includes('college') || name.includes('preparatory')) {
+      return "R50,000 - R180,000 per year";
+    }
+    
+    // Independent/model C schools
+    if (name.includes('model') || name.includes('independent')) {
+      return "R15,000 - R45,000 per year";
+    }
+    
+    // Government schools
+    if (name.includes('government') || name.includes('public')) {
+      return "R500 - R2,000 per year";
+    }
+    
+    // Default estimation based on area (inferred from context)
+    return "Contact school for details";
+  }
+
   private determineSchoolType(schoolName: string): "Primary" | "Secondary" | "Combined" {
     const name = schoolName.toLowerCase();
     if (name.includes('primary') || name.includes('laerskool')) return "Primary";
@@ -254,6 +277,72 @@ class NeighborhoodService {
               Math.sin(dLon/2) * Math.sin(dLon/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     return parseFloat((R * c).toFixed(1));
+  }
+
+  async geocodeAddress(address: string): Promise<{ latitude: number; longitude: number; formattedAddress: string } | null> {
+    try {
+      const encodedAddress = encodeURIComponent(address);
+      const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${this.googlePlacesApiKey}`;
+      
+      const response = await fetch(url);
+      const data = await response.json();
+      
+      if (data.status === 'OK' && data.results.length > 0) {
+        const result = data.results[0];
+        return {
+          latitude: result.geometry.location.lat,
+          longitude: result.geometry.location.lng,
+          formattedAddress: result.formatted_address
+        };
+      }
+      
+      return null;
+    } catch (error) {
+      console.error('Error geocoding address:', error);
+      return null;
+    }
+  }
+
+  async reverseGeocode(latitude: number, longitude: number): Promise<{ address: string; suburb: string; city: string; province: string } | null> {
+    try {
+      const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${this.googlePlacesApiKey}`;
+      
+      const response = await fetch(url);
+      const data = await response.json();
+      
+      if (data.status === 'OK' && data.results.length > 0) {
+        const result = data.results[0];
+        const components = result.address_components;
+        
+        let suburb = '';
+        let city = '';
+        let province = '';
+        
+        components.forEach((component: any) => {
+          if (component.types.includes('sublocality') || component.types.includes('neighborhood')) {
+            suburb = component.long_name;
+          }
+          if (component.types.includes('locality')) {
+            city = component.long_name;
+          }
+          if (component.types.includes('administrative_area_level_1')) {
+            province = component.long_name;
+          }
+        });
+        
+        return {
+          address: result.formatted_address,
+          suburb: suburb || city,
+          city: city || 'Unknown',
+          province: province || 'Unknown'
+        };
+      }
+      
+      return null;
+    } catch (error) {
+      console.error('Error reverse geocoding:', error);
+      return null;
+    }
   }
 
   async getNeighborhoodAnalytics(latitude: number, longitude: number, suburb: string, city: string): Promise<NeighborhoodAnalytics> {
