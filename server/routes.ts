@@ -611,6 +611,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin route to get enquiries for specific agent
+  app.get("/api/agent/enquiries/:agentId", requireAdminAuth, async (req, res) => {
+    try {
+      const agentId = parseInt(req.params.agentId);
+      const enquiries = await storage.getAgentEnquiries(agentId);
+      res.json(enquiries);
+    } catch (error) {
+      console.error("Error fetching agent enquiries:", error);
+      res.status(500).json({ message: "Failed to fetch enquiries" });
+    }
+  });
+
   app.put("/api/agent/enquiries/:id/respond", requireAgentAuth, async (req: any, res) => {
     try {
       const id = parseInt(req.params.id);

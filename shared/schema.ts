@@ -68,6 +68,8 @@ export const leads = pgTable("leads", {
   status: text("status").default("new"), // new, contacted, qualified, closed
   priority: text("priority").default("medium"), // low, medium, high
   notes: text("notes"),
+  agentResponse: text("agent_response"),
+  respondedAt: timestamp("responded_at"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
