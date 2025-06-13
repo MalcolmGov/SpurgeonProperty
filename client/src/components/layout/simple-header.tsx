@@ -4,14 +4,15 @@ import { Logo } from "@/components/ui/logo";
 export default function SimpleHeader() {
   return (
     <header style={{ 
-      position: 'fixed',
+      position: 'sticky',
       top: 0,
       left: 0,
       right: 0,
       zIndex: 50,
       backgroundColor: 'white',
       borderBottom: '1px solid #e5e7eb',
-      padding: '16px 24px'
+      padding: '16px 24px',
+      margin: 0
     }}>
       <div style={{ 
         maxWidth: '1200px',

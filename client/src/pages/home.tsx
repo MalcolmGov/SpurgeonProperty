@@ -1,4 +1,4 @@
-import SimpleHeader from "@/components/layout/simple-header";
+
 import Footer from "@/components/layout/footer";
 import PropertySearch from "@/components/property/property-search";
 import PropertyCard from "@/components/property/property-card";
@@ -30,7 +30,7 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div style={{ margin: 0, padding: 0 }}>
       {/* SPURGEON PROPERTY HEADER */}
       <div style={{
         position: 'fixed',
@@ -48,7 +48,8 @@ export default function Home() {
         boxShadow: '0 8px 32px rgba(79, 70, 229, 0.3), 0 4px 16px rgba(0,0,0,0.1)',
         backdropFilter: 'blur(12px)',
         borderImageSource: 'linear-gradient(90deg, #f59e0b, #eab308, #f59e0b)',
-        borderImageSlice: 1
+        borderImageSlice: 1,
+        margin: 0
       }}>
         {/* Logo Section */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -313,6 +314,6 @@ export default function Home() {
 
         <Footer />
       </div>
-    </>
+    </div>
   );
 }
