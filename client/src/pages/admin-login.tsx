@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,6 +11,8 @@ import { Lock, Mail, User, Building2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
+import { useQueryClient } from "@tanstack/react-query";
 
 // Login schema
 const loginSchema = z.object({
@@ -39,6 +41,15 @@ export default function AdminLogin() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
+  const { isAuthenticated, isLoading: authLoading } = useAdminAuth();
+  const queryClient = useQueryClient();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      navigate("/admin/dashboard");
+    }
+  }, [authLoading, isAuthenticated, navigate]);
 
   const loginForm = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
@@ -74,11 +85,18 @@ export default function AdminLogin() {
       const result = await response.json();
 
       if (response.ok) {
+        // Invalidate auth cache to force re-fetch
+        queryClient.invalidateQueries({ queryKey: ["/api/admin/profile"] });
+        
         toast({
           title: "Login successful",
           description: "Welcome to the admin portal",
         });
-        navigate("/admin/dashboard");
+        
+        // Small delay to allow cache invalidation to complete
+        setTimeout(() => {
+          navigate("/admin/dashboard");
+        }, 100);
       } else {
         toast({
           title: "Login failed",
