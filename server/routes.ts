@@ -536,33 +536,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // AI Chat Assistant endpoint
+  // AI Chatbot Assistant endpoint
   app.post("/api/ai/chat", async (req, res) => {
     try {
-      const { message, context, conversationHistory } = req.body;
+      const { message, sessionId, userId } = req.body;
       
       if (!message || typeof message !== 'string') {
         return res.status(400).json({ message: "Invalid message format" });
       }
 
-      const chatResponse = await anthropicService.processChat({
+      const chatResponse = await aiChatbotService.processChat({
         message: message.trim(),
-        context,
-        conversationHistory
+        sessionId,
+        userId
       });
 
       res.json(chatResponse);
     } catch (error) {
-      console.error("Error processing chat:", error);
+      console.error("Error processing AI chat:", error);
       res.status(500).json({ 
         response: "I'm experiencing some technical difficulties right now. Please try again in a moment.",
         intent: "error",
+        sessionId: req.body.sessionId || "fallback",
+        confidence: 0.1,
         suggestions: [
           "Find properties in my budget",
           "Tell me about neighborhoods", 
           "Calculate mortgage options",
           "What should I know about buying?"
         ]
+      });
+    }
+  });
+
+  // Chat session history endpoint
+  app.get("/api/ai/chat/history/:sessionId", async (req, res) => {
+    try {
+      const { sessionId } = req.params;
+      const history = await aiChatbotService.getSessionHistory(sessionId);
+      res.json(history);
+    } catch (error) {
+      console.error('Chat history error:', error);
+      res.status(500).json({ 
+        error: "Failed to fetch chat history",
+        history: []
+      });
+    }
+  });
+
+  // Update user preferences endpoint
+  app.put("/api/ai/chat/preferences/:sessionId", async (req, res) => {
+    try {
+      const { sessionId } = req.params;
+      const preferences = req.body;
+      
+      await aiChatbotService.updateUserPreferences(sessionId, preferences);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Update preferences error:', error);
+      res.status(500).json({ 
+        error: "Failed to update preferences"
       });
     }
   });

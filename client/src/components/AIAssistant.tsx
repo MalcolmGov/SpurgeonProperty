@@ -22,6 +22,15 @@ interface Message {
   timestamp: Date;
   propertyData?: any;
   suggestions?: string[];
+  properties?: any[];
+  intent?: string;
+  confidence?: number;
+}
+
+interface ChatSession {
+  sessionId: string;
+  userPreferences: any;
+  conversationContext: any;
 }
 
 export default function AIAssistant({ onSearchQuery, propertyContext, className }: AIAssistantProps) {
@@ -41,6 +50,16 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
   ]);
   const [inputMessage, setInputMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [sessionId, setSessionId] = useState<string>(() => {
+    // Generate or retrieve session ID
+    const stored = localStorage.getItem('ai-chat-session');
+    if (stored) {
+      return stored;
+    }
+    const newSessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    localStorage.setItem('ai-chat-session', newSessionId);
+    return newSessionId;
+  });
   const { toast } = useToast();
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -76,8 +95,8 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
         },
         body: JSON.stringify({
           message: userMessage.content,
-          context: propertyContext,
-          conversationHistory: messages.slice(-5) // Last 5 messages for context
+          sessionId: sessionId,
+          userId: null // Can be added for user tracking
         }),
       });
 
@@ -92,15 +111,18 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
         type: 'assistant',
         content: result.response,
         timestamp: new Date(),
-        propertyData: result.propertyData,
-        suggestions: result.suggestions
+        properties: result.properties || [],
+        suggestions: result.suggestions || [],
+        intent: result.intent,
+        confidence: result.confidence
       };
 
       setMessages(prev => [...prev, assistantMessage]);
 
-      // If the AI suggests a property search, execute it
-      if (result.searchQuery && onSearchQuery) {
-        onSearchQuery(result.searchQuery, result.filters || {});
+      // If the AI found properties and we have a search handler
+      if (result.properties && result.properties.length > 0 && onSearchQuery) {
+        // Trigger property display with the found properties
+        onSearchQuery(result.response, result.filters || {});
       }
 
     } catch (error) {
