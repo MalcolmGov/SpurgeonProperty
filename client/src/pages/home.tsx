@@ -1,7 +1,7 @@
 
 import Footer from "@/components/layout/footer";
 import PropertySearch from "@/components/property/property-search";
-import PropertyCard from "@/components/property/property-card";
+import PropertyCard from "@/components/PropertyCard";
 import PropertyCardSkeleton from "@/components/property/property-card-skeleton";
 import AIAssistant from "@/components/AIAssistant";
 import { Button } from "@/components/ui/button";
