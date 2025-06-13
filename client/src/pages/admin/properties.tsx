@@ -114,10 +114,8 @@ export default function AdminProperties() {
             </div>
             <Button
               onClick={() => {
-                console.log("Add Property button clicked");
                 setEditingProperty(null);
                 setShowPropertyForm(true);
-                console.log("State should be updated - showPropertyForm should be true");
               }}
               className="bg-purple-primary hover:bg-purple-secondary"
             >

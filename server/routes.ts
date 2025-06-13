@@ -23,6 +23,7 @@ import path from "path";
 import fs from "fs";
 import express from "express";
 import cookieParser from "cookie-parser";
+import AdmZip from "adm-zip";
 
 // Configure multer for file uploads
 const uploadDir = path.join(process.cwd(), 'uploads');
@@ -42,16 +43,18 @@ const storage_multer = multer.diskStorage({
 
 const upload = multer({ 
   storage: storage_multer,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit for ZIP files
   fileFilter: (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif|webp/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
+    const allowedImageTypes = /jpeg|jpg|png|gif|webp/;
+    const allowedZipTypes = /zip/;
+    const extname = path.extname(file.originalname).toLowerCase();
+    const isImage = allowedImageTypes.test(extname) && allowedImageTypes.test(file.mimetype);
+    const isZip = allowedZipTypes.test(extname) && file.mimetype === 'application/zip';
     
-    if (mimetype && extname) {
+    if (isImage || isZip) {
       return cb(null, true);
     } else {
-      cb(new Error('Only image files (JPEG, PNG, GIF, WebP) are allowed'));
+      cb(new Error('Only image files (JPEG, PNG, GIF, WebP) or ZIP files are allowed'));
     }
   }
 });
@@ -126,7 +129,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // File upload endpoint for property images
+  // File upload endpoint for property images (supports ZIP files)
   app.post("/api/upload", upload.array('images', 10), async (req, res) => {
     try {
       const files = req.files as Express.Multer.File[];
@@ -137,12 +140,63 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      const urls = files.map(file => `/uploads/${file.filename}`);
+      const processedUrls: string[] = [];
+      
+      for (const file of files) {
+        const fileExtension = path.extname(file.originalname).toLowerCase();
+        
+        if (fileExtension === '.zip') {
+          // Process ZIP file
+          try {
+            const zip = new AdmZip(file.path);
+            const zipEntries = zip.getEntries();
+            
+            for (const entry of zipEntries) {
+              if (!entry.isDirectory) {
+                const entryExtension = path.extname(entry.entryName).toLowerCase();
+                const allowedImageTypes = /\.(jpeg|jpg|png|gif|webp)$/;
+                
+                if (allowedImageTypes.test(entryExtension)) {
+                  // Extract image from ZIP
+                  const imageBuffer = entry.getData();
+                  const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+                  const filename = `property-${uniqueSuffix}${entryExtension}`;
+                  const imagePath = path.join(uploadDir, filename);
+                  
+                  // Write extracted image to uploads directory
+                  fs.writeFileSync(imagePath, imageBuffer);
+                  processedUrls.push(`/uploads/${filename}`);
+                }
+              }
+            }
+            
+            // Clean up ZIP file
+            fs.unlinkSync(file.path);
+            
+          } catch (zipError) {
+            console.error("ZIP processing error:", zipError);
+            // If ZIP processing fails, clean up and continue
+            if (fs.existsSync(file.path)) {
+              fs.unlinkSync(file.path);
+            }
+          }
+        } else {
+          // Regular image file
+          processedUrls.push(`/uploads/${file.filename}`);
+        }
+      }
+      
+      if (processedUrls.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: "No valid images found in uploaded files"
+        });
+      }
       
       res.json({
         success: true,
-        message: `Successfully uploaded ${files.length} image(s)`,
-        urls: urls
+        message: `Successfully processed ${processedUrls.length} image(s)`,
+        urls: processedUrls
       });
     } catch (error) {
       console.error("Upload error:", error);

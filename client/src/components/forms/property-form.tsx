@@ -213,6 +213,60 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
     }
   };
 
+  const handleZipUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+    if (!file.name.toLowerCase().endsWith('.zip')) {
+      toast({ 
+        title: "Invalid file", 
+        description: "Please select a ZIP file",
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    setIsUploading(true);
+    const uploadFormData = new FormData();
+    uploadFormData.append('images', file);
+
+    try {
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.success && result.urls) {
+          setFormData(prev => ({
+            ...prev,
+            images: [...prev.images, ...result.urls]
+          }));
+          toast({ 
+            title: "ZIP processed successfully", 
+            description: `Extracted ${result.urls.length} images from ZIP file`
+          });
+        }
+      } else {
+        const error = await response.json();
+        throw new Error(error.message || 'ZIP upload failed');
+      }
+    } catch (error) {
+      console.error('ZIP upload error:', error);
+      toast({ 
+        title: "ZIP upload failed", 
+        description: error instanceof Error ? error.message : "Please try again",
+        variant: "destructive" 
+      });
+    } finally {
+      setIsUploading(false);
+      // Reset the input
+      event.target.value = '';
+    }
+  };
+
   const removeImage = (index: number) => {
     setFormData(prev => ({
       ...prev,
@@ -519,10 +573,43 @@ export default function PropertyForm({ property, onClose }: PropertyFormProps) {
                     )}
                   </Button>
                 </div>
+                <div className="relative">
+                  <input
+                    type="file"
+                    accept=".zip"
+                    onChange={handleZipUpload}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    disabled={isUploading}
+                  />
+                  <Button 
+                    type="button" 
+                    variant="outline"
+                    size="sm"
+                    disabled={isUploading}
+                    className="flex items-center gap-2 w-full bg-purple-50 hover:bg-purple-100 border-purple-200"
+                  >
+                    {isUploading ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+                        Processing ZIP...
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="h-4 w-4" />
+                        Upload ZIP Folder
+                      </>
+                    )}
+                  </Button>
+                </div>
               </div>
-              <p className="text-sm text-muted-foreground">
-                You can either enter image URLs or upload files from your computer. Supported formats: JPEG, PNG, GIF, WebP (max 10MB each).
-              </p>
+              <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">Upload Options:</h4>
+                <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+                  <li>• <strong>Individual Images:</strong> Select multiple JPEG, PNG, GIF, or WebP files (max 10MB each)</li>
+                  <li>• <strong>ZIP Folder:</strong> Upload a ZIP file containing multiple images (max 50MB)</li>
+                  <li>• <strong>Image URLs:</strong> Add direct links to images hosted elsewhere</li>
+                </ul>
+              </div>
               {formData.images.length > 0 && (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                   {formData.images.map((image, index) => (
