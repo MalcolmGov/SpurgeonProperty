@@ -118,6 +118,8 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
+- **June 13, 2025 - Comprehensive Homepage Value Propositions Enhancement**: Significantly enhanced homepage with detailed value propositions showcasing SpurgeonProperty's unique advantages. Added dedicated sections for AI-powered smart search, deep market insights, expert agent network, trust indicators, and comprehensive call-to-action. Homepage now effectively communicates platform benefits including R2.5B+ property value transacted, 98% client satisfaction rate, and advanced features like Google Maps integration and 24/7 AI assistant support.
+
 - **June 13, 2025 - Agent Assignment Feature Complete**: Successfully implemented complete agent assignment functionality for properties. Added agent selection dropdown to property form with all available agents, integrated agentId field handling in both create and edit modes, and fixed SelectItem validation issues. Properties can now be assigned to specific agents during creation or editing, with proper null handling for unassigned properties.
 
 - **June 13, 2025 - Google Maps API Integration Complete**: Successfully integrated Google Maps API with real location services for comprehensive neighborhood analytics. Fixed neighborhood analytics display in property detail tabs, added accurate coordinates for Sandton properties, and implemented real-time data fetching for schools, amenities, market trends, and safety ratings. Google Maps services now provide authentic South African location data with proper Rand currency formatting for school fees.
