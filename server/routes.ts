@@ -144,10 +144,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // File upload endpoint for property images (supports ZIP files)
-  app.post("/api/upload", upload.array('images', 10), async (req, res) => {
+  app.post("/api/upload", upload.fields([
+    { name: 'images', maxCount: 10 },
+    { name: 'file', maxCount: 1 }
+  ]), async (req, res) => {
     try {
-      const files = req.files as Express.Multer.File[];
-      if (!files || files.length === 0) {
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      let allFiles: Express.Multer.File[] = [];
+      
+      // Handle both 'images' and 'file' field names
+      if (files && files.images) {
+        allFiles = allFiles.concat(files.images);
+      }
+      if (files && files.file) {
+        allFiles = allFiles.concat(files.file);
+      }
+      
+      if (!allFiles || allFiles.length === 0) {
         return res.status(400).json({ 
           success: false, 
           message: "No files uploaded" 
@@ -156,7 +169,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const processedUrls: string[] = [];
       
-      for (const file of files) {
+      for (const file of allFiles) {
         const fileExtension = path.extname(file.originalname).toLowerCase();
         
         if (fileExtension === '.zip') {
