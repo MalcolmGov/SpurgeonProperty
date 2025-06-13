@@ -73,6 +73,25 @@ export default function PropertyCard({
     setImageError(true);
   };
 
+  const getImageSrc = () => {
+    if (imageError) {
+      return `/api/placeholder/400/300`;
+    }
+    
+    const firstImage = property.images?.[0];
+    if (!firstImage) {
+      return `/api/placeholder/400/300`;
+    }
+    
+    // Ensure the image path starts with /uploads or is a full URL
+    if (firstImage.startsWith('http') || firstImage.startsWith('/uploads')) {
+      return firstImage;
+    }
+    
+    // If it's a relative path, prepend /uploads
+    return `/uploads/${firstImage}`;
+  };
+
   const handleShare = async () => {
     const propertyUrl = `${window.location.origin}/properties/${property.id}`;
     
@@ -116,7 +135,7 @@ export default function PropertyCard({
     }
   };
 
-  const mainImage = property.images?.[0] || `/api/placeholder/400/300`;
+  const mainImage = getImageSrc();
 
   if (variant === "compact") {
     return (
@@ -133,7 +152,7 @@ export default function PropertyCard({
               {/* Image */}
               <div className="relative w-32 h-24 flex-shrink-0">
                 <img
-                  src={imageError ? `/api/placeholder/400/300` : mainImage}
+                  src={mainImage}
                   alt={property.title}
                   onError={handleImageError}
                   className="w-full h-full object-cover rounded-lg"
@@ -196,7 +215,7 @@ export default function PropertyCard({
       <Card className="hover:shadow-xl transition-all duration-300 overflow-hidden">
         <div className="relative">
           <img
-            src={imageError ? `/api/placeholder/400/300` : mainImage}
+            src={mainImage}
             alt={property.title}
             onError={handleImageError}
             className="w-full h-48 object-cover"
