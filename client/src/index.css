@@ -10,7 +10,17 @@ html {
   -ms-text-size-adjust: 100%;
 }
 
-body {
+* {
+  /* Universal reset for all elements */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  /* Remove default browser margins and padding */
+  margin: 0;
+  padding: 0;
   /* Optimize for touch devices */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -18,6 +28,12 @@ body {
   transform: translateZ(0);
   /* Improve touch responsiveness */
   -webkit-tap-highlight-color: transparent;
+}
+
+#root {
+  /* Ensure root element has no spacing */
+  margin: 0;
+  padding: 0;
 }
 
 /* Enhanced touch targets for mobile */

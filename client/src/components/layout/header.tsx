@@ -95,33 +95,18 @@ export default function Header() {
             </Button>
           </div>
           
-          {/* Mobile Menu - Force visibility with debug styles */}
-          <div 
-            className="block md:hidden" 
-            style={{ 
-              position: "relative", 
-              zIndex: 50,
-              backgroundColor: "red", // Debug: red background to ensure visibility
-              padding: "4px",
-              borderRadius: "8px"
-            }}
-          >
+          {/* Mobile Menu */}
+          <div className="block md:hidden">
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
-                <button 
-                  className="relative p-4 bg-white text-black rounded-lg shadow-xl border-4 border-black touch-manipulation min-h-[48px] min-w-[48px] font-bold"
-                  style={{ 
-                    display: "flex !important", 
-                    alignItems: "center", 
-                    justifyContent: "center",
-                    visibility: "visible !important",
-                    opacity: "1 !important",
-                    zIndex: 51
-                  }}
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="p-3 min-h-[48px] min-w-[48px] bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-2 border-slate-300 dark:border-slate-600 hover:bg-purple-50 dark:hover:bg-purple-900 hover:border-purple-300 dark:hover:border-purple-600 rounded-lg shadow-sm touch-manipulation"
                 >
                   <Menu className="w-6 h-6" />
                   <span className="sr-only">Menu</span>
-                </button>
+                </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[90vw] max-w-sm bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-700 scroll-container">
                 <div className="flex flex-col h-full">
