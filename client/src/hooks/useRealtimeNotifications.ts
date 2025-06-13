@@ -45,33 +45,40 @@ export function useRealtimeNotifications() {
         
         // Show toast notification
         if (notification.type === 'NEW_LEAD') {
-          // Request notification permission if needed
-          if (Notification.permission === 'default') {
-            Notification.requestPermission();
-          }
-          
-          // Show browser notification
-          if (Notification.permission === 'granted') {
-            const browserNotification = new Notification('New Lead Received!', {
-              body: notification.message,
-              icon: '/favicon.ico',
-              badge: '/favicon.ico',
-              tag: `lead-${notification.data.id}`,
-              requireInteraction: true,
-              data: notification.data
-            });
+          // Check if Notification API is supported
+          if (typeof window !== 'undefined' && 'Notification' in window) {
+            // Request notification permission if needed
+            if (Notification.permission === 'default') {
+              Notification.requestPermission();
+            }
             
-            browserNotification.onclick = () => {
-              window.focus();
-              // Navigate to leads page
-              window.location.href = '/admin/leads';
-              browserNotification.close();
-            };
-            
-            // Auto close after 10 seconds
-            setTimeout(() => {
-              browserNotification.close();
-            }, 10000);
+            // Show browser notification
+            if (Notification.permission === 'granted') {
+              try {
+                const browserNotification = new Notification('New Lead Received!', {
+                  body: notification.message,
+                  icon: '/favicon.ico',
+                  badge: '/favicon.ico',
+                  tag: `lead-${notification.data.id}`,
+                  requireInteraction: true,
+                  data: notification.data
+                });
+                
+                browserNotification.onclick = () => {
+                  window.focus();
+                  // Navigate to leads page
+                  window.location.href = '/admin/leads';
+                  browserNotification.close();
+                };
+                
+                // Auto close after 10 seconds
+                setTimeout(() => {
+                  browserNotification.close();
+                }, 10000);
+              } catch (error) {
+                console.warn('Browser notification failed:', error);
+              }
+            }
           }
           
           // Show toast
@@ -129,7 +136,7 @@ export function useRealtimeNotifications() {
 
   useEffect(() => {
     // Request notification permission on component mount
-    if (Notification.permission === 'default') {
+    if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'default') {
       Notification.requestPermission();
     }
     
