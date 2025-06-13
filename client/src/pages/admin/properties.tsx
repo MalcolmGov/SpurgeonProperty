@@ -14,17 +14,42 @@ import { Plus, Search, Edit, Eye, Trash, Download } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
 
 export default function AdminProperties() {
-  const [showPropertyForm, setShowPropertyForm] = useState(false);
-  const [editingProperty, setEditingProperty] = useState<PropertyWithAgent | null>(null);
+  const [dialogState, setDialogState] = useState({
+    open: false,
+    property: null as PropertyWithAgent | null,
+    key: 0
+  });
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
-  const [formKey, setFormKey] = useState(0);
-  
-  console.log("AdminProperties render:", { showPropertyForm, editingProperty: editingProperty?.id || "null", formKey });
   
   const queryClient = useQueryClient();
   const { toast } = useToast();
+
+  // Centralized dialog management
+  const openAddDialog = () => {
+    setDialogState(prev => ({
+      open: true,
+      property: null,
+      key: prev.key + 1
+    }));
+  };
+
+  const openEditDialog = (property: PropertyWithAgent) => {
+    setDialogState(prev => ({
+      open: true,
+      property,
+      key: prev.key + 1
+    }));
+  };
+
+  const closeDialog = () => {
+    setDialogState(prev => ({
+      open: false,
+      property: null,
+      key: prev.key
+    }));
+  };
   
   const { data: properties, isLoading } = useProperties({
     search: searchQuery,
@@ -53,10 +78,7 @@ export default function AdminProperties() {
   });
 
   const handleEdit = (property: PropertyWithAgent) => {
-    console.log("Edit Property clicked:", property.title);
-    setEditingProperty(property);
-    setShowPropertyForm(true);
-    setFormKey(prev => prev + 1);
+    openEditDialog(property);
   };
 
   const handleDelete = (id: number) => {
@@ -118,12 +140,7 @@ export default function AdminProperties() {
               </p>
             </div>
             <Button
-              onClick={() => {
-                console.log("Add Property clicked - forcing form open");
-                setEditingProperty(null);
-                setShowPropertyForm(true);
-                setFormKey(prev => prev + 1);
-              }}
+              onClick={openAddDialog}
               className="bg-purple-primary hover:bg-purple-secondary"
             >
               <Plus className="w-4 h-4 mr-2" />
@@ -339,14 +356,10 @@ export default function AdminProperties() {
       
       {/* Property Form Modal */}
       <SimplePropertyForm
-        key={formKey}
-        property={editingProperty}
-        open={showPropertyForm}
-        onClose={() => {
-          console.log("Closing property form");
-          setShowPropertyForm(false);
-          setEditingProperty(null);
-        }}
+        key={dialogState.key}
+        property={dialogState.property}
+        open={dialogState.open}
+        onClose={closeDialog}
       />
     </div>
   );

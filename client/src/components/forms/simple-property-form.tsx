@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
 
 interface SimplePropertyFormProps {
@@ -17,91 +17,104 @@ interface SimplePropertyFormProps {
   onClose: () => void;
 }
 
-export default function SimplePropertyForm({ property, open, onClose }: SimplePropertyFormProps) {
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    price: "",
-    address: "",
-    suburb: "",
-    city: "",
-    province: "Gauteng",
-    postalCode: "",
-    propertyType: "house",
-    bedrooms: "3",
-    bathrooms: "2",
-    area: "",
-    status: "active"
-  });
+const INITIAL_FORM_DATA = {
+  title: "",
+  description: "",
+  price: "",
+  address: "",
+  suburb: "",
+  city: "",
+  province: "Gauteng",
+  postalCode: "",
+  propertyType: "house",
+  bedrooms: "3",
+  bathrooms: "2",
+  area: "",
+  status: "active"
+};
 
+export default function SimplePropertyForm({ property, open, onClose }: SimplePropertyFormProps) {
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+  const [isInitialized, setIsInitialized] = useState(false);
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const formRef = useRef<HTMLFormElement>(null);
+  const prevOpenRef = useRef(open);
+  const prevPropertyRef = useRef(property);
 
-  // Reset form when dialog opens/closes or property changes
+  // Robust form initialization
   useEffect(() => {
-    if (open) {
+    const hasOpenChanged = prevOpenRef.current !== open;
+    const hasPropertyChanged = prevPropertyRef.current?.id !== property?.id;
+    
+    if (open && (hasOpenChanged || hasPropertyChanged || !isInitialized)) {
       if (property) {
-        // Edit mode
+        // Edit mode - populate with property data
         setFormData({
-          title: property.title,
-          description: property.description,
-          price: property.price,
-          address: property.address,
-          suburb: property.suburb,
-          city: property.city,
-          province: property.province,
-          postalCode: property.postalCode,
-          propertyType: property.propertyType,
-          bedrooms: property.bedrooms.toString(),
-          bathrooms: property.bathrooms,
-          area: property.area.toString(),
-          status: property.status
+          title: property.title || "",
+          description: property.description || "",
+          price: property.price || "",
+          address: property.address || "",
+          suburb: property.suburb || "",
+          city: property.city || "",
+          province: property.province || "Gauteng",
+          postalCode: property.postalCode || "",
+          propertyType: property.propertyType || "house",
+          bedrooms: property.bedrooms?.toString() || "3",
+          bathrooms: property.bathrooms || "2",
+          area: property.area?.toString() || "",
+          status: property.status || "active"
         });
       } else {
-        // Add mode - reset form
-        setFormData({
-          title: "",
-          description: "",
-          price: "",
-          address: "",
-          suburb: "",
-          city: "",
-          province: "Gauteng",
-          postalCode: "",
-          propertyType: "house",
-          bedrooms: "3",
-          bathrooms: "2",
-          area: "",
-          status: "active"
-        });
+        // Add mode - reset to initial values
+        setFormData({ ...INITIAL_FORM_DATA });
       }
+      setIsInitialized(true);
     }
-  }, [open, property]);
+    
+    // Update refs
+    prevOpenRef.current = open;
+    prevPropertyRef.current = property;
+  }, [open, property, isInitialized]);
+
+  // Enhanced close handler with state cleanup
+  const handleClose = () => {
+    if (!mutation.isPending) {
+      setFormData({ ...INITIAL_FORM_DATA });
+      setIsInitialized(false);
+      onClose();
+    }
+  };
 
   const mutation = useMutation({
     mutationFn: async (data: typeof formData) => {
+      // Validate required fields
+      if (!data.title.trim() || !data.price.trim() || !data.address.trim() || !data.description.trim()) {
+        throw new Error("Please fill in all required fields");
+      }
+
       const propertyData = {
-        title: data.title,
-        description: data.description,
-        price: data.price,
-        address: data.address,
-        suburb: data.suburb,
-        city: data.city,
+        title: data.title.trim(),
+        description: data.description.trim(),
+        price: data.price.trim(),
+        address: data.address.trim(),
+        suburb: data.suburb.trim(),
+        city: data.city.trim(),
         province: data.province,
-        postalCode: data.postalCode,
+        postalCode: data.postalCode.trim(),
         propertyType: data.propertyType,
-        bedrooms: parseInt(data.bedrooms),
+        bedrooms: parseInt(data.bedrooms) || 3,
         bathrooms: data.bathrooms,
-        area: parseInt(data.area),
+        area: parseInt(data.area) || 0,
         status: data.status,
         features: [],
         images: []
       };
 
       if (property) {
-        await apiRequest("PUT", `/api/properties/${property.id}`, propertyData);
+        return await apiRequest("PUT", `/api/properties/${property.id}`, propertyData);
       } else {
-        await apiRequest("POST", "/api/properties", propertyData);
+        return await apiRequest("POST", "/api/properties", propertyData);
       }
     },
     onSuccess: () => {
@@ -110,25 +123,30 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
         title: "Success",
         description: property ? "Property updated successfully" : "Property created successfully",
       });
-      onClose();
+      handleClose();
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error("Property form error:", error);
+      const errorMessage = error.message || "Failed to save property. Please try again.";
       toast({
         title: "Error",
-        description: "Failed to save property. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.title || !formData.price || !formData.address) {
+    // Prevent double submission
+    if (mutation.isPending) return;
+    
+    // Client-side validation
+    if (!formData.title?.trim() || !formData.price?.trim() || !formData.address?.trim() || !formData.description?.trim()) {
       toast({
         title: "Validation Error",
-        description: "Please fill in all required fields",
+        description: "Please fill in all required fields (Title, Price, Address, Description)",
         variant: "destructive",
       });
       return;
@@ -144,15 +162,17 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
     }));
   };
 
-  console.log("SimplePropertyForm render:", { open, property: property?.id || "new" });
+  // Don't render if not initialized to prevent flash of empty content
+  if (!open || !isInitialized) {
+    return null;
+  }
 
   return (
     <Dialog 
       open={open} 
       onOpenChange={(newOpen) => {
-        console.log("SimplePropertyForm dialog change:", { newOpen });
-        if (!newOpen) {
-          onClose();
+        if (!newOpen && !mutation.isPending) {
+          handleClose();
         }
       }}
     >
@@ -160,7 +180,12 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle>{property ? "Edit Property" : "Add New Property"}</DialogTitle>
-            <Button variant="ghost" size="sm" onClick={onClose}>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleClose}
+              disabled={mutation.isPending}
+            >
               <X className="w-4 h-4" />
             </Button>
           </div>
