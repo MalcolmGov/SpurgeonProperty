@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Edit, Trash2, Mail, Phone, User, Building, Calendar, CheckCircle, Clock, AlertCircle } from "lucide-react";
 import AdminSidebar from "@/components/admin/sidebar";
@@ -341,6 +341,13 @@ export default function AdminAgents() {
       });
     },
   });
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      window.location.href = '/admin/login';
+    }
+  }, [authLoading, isAuthenticated]);
 
   if (authLoading) {
     return (
