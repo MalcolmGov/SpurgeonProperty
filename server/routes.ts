@@ -16,6 +16,7 @@ import { openaiService, type PropertyDetails } from "./openai-service";
 import { anthropicService } from "./anthropic-service";
 import { aiChatbotService } from "./ai-chatbot-service";
 import { adminAuthService, requireAdminAuth, redirectIfAuthenticated } from "./admin-auth";
+import { agentAuthService, requireAgentAuth } from "./agent-auth";
 import { extractSpurgeonProperties } from "./spurgeon-extractor";
 import { importSampleProperties } from "./sample-properties";
 import { z } from "zod";
