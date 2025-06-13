@@ -173,10 +173,7 @@ function AgentForm({ agent, onSuccess }: { agent?: Agent; onSuccess: () => void 
         personalWebsite: data.personalWebsite || undefined,
         avatar: uploadedImage || undefined,
       };
-      return apiRequest(`/api/admin/agents`, {
-        method: "POST",
-        body: JSON.stringify(formattedData),
-      });
+      return apiRequest("POST", `/api/admin/agents`, formattedData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/agents"] });
@@ -215,10 +212,7 @@ function AgentForm({ agent, onSuccess }: { agent?: Agent; onSuccess: () => void 
       if (data.password) {
         formattedData.password = data.password;
       }
-      return apiRequest(`/api/admin/agents/${agent!.id}`, {
-        method: "PUT",
-        body: JSON.stringify(formattedData),
-      });
+      return apiRequest("PUT", `/api/admin/agents/${agent!.id}`, formattedData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/agents"] });
