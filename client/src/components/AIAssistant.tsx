@@ -209,10 +209,41 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
                 >
                   <p className="whitespace-pre-wrap">{message.content}</p>
                   
-                  {message.propertyData && (
-                    <div className="mt-2 p-2 bg-white/10 rounded border">
-                      <p className="text-xs font-medium">Property Match:</p>
-                      <p className="text-xs">{message.propertyData.title}</p>
+                  {message.properties && message.properties.length > 0 && (
+                    <div className="mt-3 space-y-2">
+                      <p className="text-xs font-medium text-blue-600">
+                        Found {message.properties.length} property matches:
+                      </p>
+                      {message.properties.slice(0, 3).map((property: any, index: number) => (
+                        <div key={index} className="p-2 bg-white/90 dark:bg-gray-800/90 rounded border text-gray-900 dark:text-gray-100">
+                          <div className="flex justify-between items-start mb-1">
+                            <p className="text-xs font-medium truncate flex-1">
+                              {property.title}
+                            </p>
+                            <Badge variant="outline" className="ml-2 text-xs">
+                              {property.price ? `R${parseInt(property.price).toLocaleString()}` : 'Contact for price'}
+                            </Badge>
+                          </div>
+                          <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
+                            {property.bedrooms} bed, {property.bathrooms} bath • {property.suburb}, {property.city}
+                          </p>
+                          <div className="flex gap-1 flex-wrap">
+                            <Badge variant="secondary" className="text-xs">
+                              {property.propertyType}
+                            </Badge>
+                            {property.area && (
+                              <Badge variant="outline" className="text-xs">
+                                {property.area}m²
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                      {message.properties.length > 3 && (
+                        <p className="text-xs text-gray-500 italic">
+                          +{message.properties.length - 3} more properties found
+                        </p>
+                      )}
                     </div>
                   )}
                   
