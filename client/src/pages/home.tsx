@@ -293,6 +293,117 @@ export default function Home() {
             </section>
           </FadeInSection>
 
+          {/* Value Propositions Section */}
+          <FadeInSection>
+            <section className="py-20 bg-gradient-to-br from-purple-50 to-orange-50 dark:from-slate-800 dark:to-slate-900">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  viewport={{ once: true }}
+                  className="text-center mb-16"
+                >
+                  <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">
+                    Why Choose SpurgeonProperty?
+                  </h2>
+                  <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
+                    Your trusted partner in South African real estate with proven results and cutting-edge technology
+                  </p>
+                </motion.div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                  {/* AI-Powered Smart Search */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
+                    viewport={{ once: true }}
+                    className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                  >
+                    <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-orange-500 rounded-lg flex items-center justify-center mb-4">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-3">AI-Powered Smart Search</h3>
+                    <p className="text-slate-600 dark:text-slate-300 mb-4">
+                      Our advanced AI assistant understands your preferences and helps you find the perfect property with intelligent recommendations and instant answers.
+                    </p>
+                    <div className="text-sm text-purple-600 dark:text-purple-400 font-medium">
+                      GPT-4o Technology • 24/7 Available
+                    </div>
+                  </motion.div>
+
+                  {/* Deep Market Insights */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    viewport={{ once: true }}
+                    className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                  >
+                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-lg flex items-center justify-center mb-4">
+                      <TrendingUp className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-3">Deep Market Insights</h3>
+                    <p className="text-slate-600 dark:text-slate-300 mb-4">
+                      Access comprehensive neighborhood analytics, school ratings, amenities, safety data, and market trends powered by Google Maps integration.
+                    </p>
+                    <div className="text-sm text-blue-600 dark:text-blue-400 font-medium">
+                      Google Maps API • Real-time Data
+                    </div>
+                  </motion.div>
+
+                  {/* Expert Agent Network */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    viewport={{ once: true }}
+                    className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                  >
+                    <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center mb-4">
+                      <Users className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-3">Expert Agent Network</h3>
+                    <p className="text-slate-600 dark:text-slate-300 mb-4">
+                      Connect with our carefully vetted network of professional agents who specialize in South African markets and provide personalized service.
+                    </p>
+                    <div className="text-sm text-orange-600 dark:text-orange-400 font-medium">
+                      150+ Verified Agents • Local Expertise
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Trust Indicators */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  viewport={{ once: true }}
+                  className="bg-gradient-to-r from-purple-600 to-orange-600 rounded-2xl p-8 text-white text-center"
+                >
+                  <h3 className="text-2xl md:text-3xl font-bold mb-6">Trusted by Thousands</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                      <div className="text-3xl md:text-4xl font-bold mb-2">R2.5B+</div>
+                      <div className="text-purple-100">Property Value Transacted</div>
+                    </div>
+                    <div>
+                      <div className="text-3xl md:text-4xl font-bold mb-2">98%</div>
+                      <div className="text-purple-100">Client Satisfaction Rate</div>
+                    </div>
+                    <div>
+                      <div className="text-3xl md:text-4xl font-bold mb-2">500+</div>
+                      <div className="text-purple-100">Properties Sold This Year</div>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </section>
+          </FadeInSection>
+
           {/* AI Assistant Section */}
           <FadeInSection>
             <section className="py-20 bg-slate-50 dark:bg-slate-800">
