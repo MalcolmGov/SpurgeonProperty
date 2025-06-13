@@ -118,6 +118,8 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
+- **June 13, 2025 - Agent Assignment Feature Complete**: Successfully implemented complete agent assignment functionality for properties. Added agent selection dropdown to property form with all available agents, integrated agentId field handling in both create and edit modes, and fixed SelectItem validation issues. Properties can now be assigned to specific agents during creation or editing, with proper null handling for unassigned properties.
+
 - **June 13, 2025 - Google Maps API Integration Complete**: Successfully integrated Google Maps API with real location services for comprehensive neighborhood analytics. Fixed neighborhood analytics display in property detail tabs, added accurate coordinates for Sandton properties, and implemented real-time data fetching for schools, amenities, market trends, and safety ratings. Google Maps services now provide authentic South African location data with proper Rand currency formatting for school fees.
 
 - **June 13, 2025 - Comprehensive AI Personalized Assistant Implementation**: Successfully implemented full-featured AI chatbot with OpenAI GPT-4o integration. Added complete database schema for chat sessions, messages, and user preferences with conversation persistence. Integrated real-time property search functionality within chat interface, displaying found properties with South African Rand formatting. AI assistant now provides personalized recommendations, remembers user preferences, handles budget inquiries, and offers neighborhood insights with natural language processing.
