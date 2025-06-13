@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
+import { useEffect } from "react";
 
 export default function AdminDashboard() {
   // All hooks must be called at the top level, before any early returns
@@ -35,6 +36,13 @@ export default function AdminDashboard() {
 
 
 
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      window.location.href = '/admin/login';
+    }
+  }, [authLoading, isAuthenticated]);
+
   // Early returns after all hooks are called
   if (authLoading) {
     return (
@@ -45,7 +53,7 @@ export default function AdminDashboard() {
   }
 
   if (!isAuthenticated) {
-    return null; // useAdminAuth will redirect to login
+    return null;
   }
 
   return (
