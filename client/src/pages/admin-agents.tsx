@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Mail, Phone, User, Building, Calendar, CheckCircle, Clock, AlertCircle } from "lucide-react";
+import { Plus, Edit, Trash2, Mail, Phone, User, Building, Calendar, CheckCircle, Clock, AlertCircle, Upload, Camera, Globe, Award, MapPin, Languages } from "lucide-react";
 import AdminSidebar from "@/components/admin/sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,8 +10,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -24,6 +24,17 @@ const agentFormSchema = z.object({
   phone: z.string().optional(),
   bio: z.string().optional(),
   specialties: z.string().optional(),
+  // Enhanced professional details
+  title: z.string().optional(),
+  licenseNumber: z.string().optional(),
+  yearsExperience: z.string().optional(),
+  languages: z.string().optional(),
+  education: z.string().optional(),
+  certifications: z.string().optional(),
+  officeLocation: z.string().optional(),
+  workingHours: z.string().optional(),
+  linkedinUrl: z.string().optional(),
+  personalWebsite: z.string().optional(),
 });
 
 type AgentFormData = z.infer<typeof agentFormSchema>;
@@ -33,10 +44,25 @@ interface Agent {
   name: string;
   email: string;
   phone?: string;
+  avatar?: string;
   bio?: string;
   specialties?: string[];
+  // Enhanced professional details
+  title?: string;
+  licenseNumber?: string;
+  yearsExperience?: number;
+  languages?: string[];
+  education?: string;
+  certifications?: string[];
+  officeLocation?: string;
+  workingHours?: string;
+  linkedinUrl?: string;
+  personalWebsite?: string;
+  // Performance metrics
   rating?: string;
   totalSales?: number;
+  totalListings?: number;
+  averageResponseTime?: number;
   isActive: boolean;
   lastLogin?: Date;
   createdAt?: Date;
@@ -61,6 +87,9 @@ interface Lead {
 function AgentForm({ agent, onSuccess }: { agent?: Agent; onSuccess: () => void }) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const form = useForm<AgentFormData>({
     resolver: zodResolver(agentFormSchema),
@@ -71,14 +100,67 @@ function AgentForm({ agent, onSuccess }: { agent?: Agent; onSuccess: () => void 
       phone: agent?.phone || "",
       bio: agent?.bio || "",
       specialties: agent?.specialties?.join(", ") || "",
+      title: agent?.title || "",
+      licenseNumber: agent?.licenseNumber || "",
+      yearsExperience: agent?.yearsExperience?.toString() || "",
+      languages: agent?.languages?.join(", ") || "",
+      education: agent?.education || "",
+      certifications: agent?.certifications?.join(", ") || "",
+      officeLocation: agent?.officeLocation || "",
+      workingHours: agent?.workingHours || "",
+      linkedinUrl: agent?.linkedinUrl || "",
+      personalWebsite: agent?.personalWebsite || "",
     },
   });
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid file type",
+        description: "Please select an image file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error('Upload failed');
+
+      const data = await response.json();
+      setUploadedImage(data.url);
+      toast({ title: "Photo uploaded successfully" });
+    } catch (error) {
+      toast({
+        title: "Upload failed",
+        description: "Please try again",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const createMutation = useMutation({
     mutationFn: async (data: AgentFormData) => {
       const formattedData = {
         ...data,
         specialties: data.specialties ? data.specialties.split(",").map(s => s.trim()).filter(Boolean) : [],
+        languages: data.languages ? data.languages.split(",").map(s => s.trim()).filter(Boolean) : [],
+        certifications: data.certifications ? data.certifications.split(",").map(s => s.trim()).filter(Boolean) : [],
+        yearsExperience: data.yearsExperience ? parseInt(data.yearsExperience) : 0,
+        avatar: uploadedImage || undefined,
       };
       return apiRequest(`/api/admin/agents`, {
         method: "POST",
@@ -104,6 +186,10 @@ function AgentForm({ agent, onSuccess }: { agent?: Agent; onSuccess: () => void 
       const formattedData = {
         ...data,
         specialties: data.specialties ? data.specialties.split(",").map(s => s.trim()).filter(Boolean) : [],
+        languages: data.languages ? data.languages.split(",").map(s => s.trim()).filter(Boolean) : [],
+        certifications: data.certifications ? data.certifications.split(",").map(s => s.trim()).filter(Boolean) : [],
+        yearsExperience: data.yearsExperience ? parseInt(data.yearsExperience) : 0,
+        avatar: uploadedImage || agent?.avatar || undefined,
       };
       if (!data.password) {
         delete formattedData.password;

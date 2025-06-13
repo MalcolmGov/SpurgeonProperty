@@ -37,11 +37,26 @@ export const agents = pgTable("agents", {
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   phone: text("phone"),
-  avatar: text("avatar"),
+  avatar: text("avatar"), // URL to uploaded photo
   bio: text("bio"),
   specialties: jsonb("specialties").$type<string[]>().default([]),
+  // Enhanced professional details
+  title: text("title"), // Job title (e.g., "Senior Property Consultant")
+  licenseNumber: text("license_number"), // Real estate license number
+  yearsExperience: integer("years_experience").default(0),
+  languages: jsonb("languages").$type<string[]>().default([]), // Languages spoken
+  education: text("education"), // Educational background
+  certifications: jsonb("certifications").$type<string[]>().default([]), // Professional certifications
+  officeLocation: text("office_location"), // Office/branch location
+  workingHours: text("working_hours"), // Working hours (e.g., "Mon-Fri 9AM-6PM")
+  linkedinUrl: text("linkedin_url"), // LinkedIn profile
+  personalWebsite: text("personal_website"), // Personal website
+  // Performance metrics
   rating: decimal("rating", { precision: 3, scale: 2 }).default("0"),
   totalSales: integer("total_sales").default(0),
+  totalListings: integer("total_listings").default(0),
+  averageResponseTime: integer("avg_response_time_hours").default(24), // in hours
+  // Status and authentication
   password: text("password").notNull(),
   isActive: boolean("is_active").default(true),
   lastLogin: timestamp("last_login"),
@@ -158,6 +173,18 @@ export const agentRegistrationSchema = z.object({
   password: z.string().min(6),
   bio: z.string().optional(),
   specialties: z.array(z.string()).default([]),
+  // Enhanced professional details
+  title: z.string().optional(),
+  licenseNumber: z.string().optional(),
+  yearsExperience: z.number().min(0).default(0),
+  languages: z.array(z.string()).default([]),
+  education: z.string().optional(),
+  certifications: z.array(z.string()).default([]),
+  officeLocation: z.string().optional(),
+  workingHours: z.string().optional(),
+  linkedinUrl: z.string().url().optional().or(z.literal("")),
+  personalWebsite: z.string().url().optional().or(z.literal("")),
+  avatar: z.string().optional(), // Will be set during photo upload
 });
 
 export const insertLeadSchema = createInsertSchema(leads).omit({
