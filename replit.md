@@ -118,9 +118,11 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
-- **June 13, 2025 - Feature Display Enhancement**: Removed all limitations on property feature tags display. Property cards now show all features added through the admin portal instead of being restricted to 2-3 features. Updated PropertyCard, PropertyComparison, and property-card components.
+- **June 13, 2025 - Import Feature Removal**: Removed import properties button and functionality from admin dashboard per user request. Cleaned up related code including mutations, handlers, and unused imports. Database cleaned to maintain only authentic user-added properties.
 
-- **June 13, 2025 - Add Property Dialog Fix**: Enhanced Add Property button reliability with improved state management, forced re-rendering using key props, and better dialog control with console logging for debugging.
+- **June 13, 2025 - SimplePropertyForm Implementation**: Created simplified property form to replace complex PropertyForm. Added comprehensive debugging, streamlined dialog state management, and improved form reset logic for reliable Add Property functionality.
+
+- **June 13, 2025 - Feature Display Enhancement**: Removed all limitations on property feature tags display. Property cards now show all features added through the admin portal instead of being restricted to 2-3 features. Updated PropertyCard, PropertyComparison, and property-card components.
 
 - **June 13, 2025 - Database Cleanup**: Successfully removed 49 placeholder properties while preserving 2 authentic user-added listings. Database now contains only real property data.
 
