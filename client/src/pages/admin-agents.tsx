@@ -223,102 +223,361 @@ function AgentForm({ agent, onSuccess }: { agent?: Agent; onSuccess: () => void 
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Agent name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <Tabs defaultValue="basic" className="w-full">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="basic">Basic Info</TabsTrigger>
+            <TabsTrigger value="professional">Professional</TabsTrigger>
+            <TabsTrigger value="contact">Contact & Social</TabsTrigger>
+            <TabsTrigger value="photo">Photo</TabsTrigger>
+          </TabsList>
 
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder="agent@example.com" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <TabsContent value="basic" className="space-y-4 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <User className="h-4 w-4" />
+                      Full Name *
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Agent full name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{agent ? "New Password (leave blank to keep current)" : "Password"}</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="Password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Mail className="h-4 w-4" />
+                      Email Address *
+                    </FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="agent@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-        <FormField
-          control={form.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Phone</FormLabel>
-              <FormControl>
-                <Input placeholder="Phone number" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{agent ? "New Password (leave blank to keep current)" : "Password *"}</FormLabel>
+                    <FormControl>
+                      <Input type="password" placeholder="Secure password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-        <FormField
-          control={form.control}
-          name="specialties"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Specialties (comma-separated)</FormLabel>
-              <FormControl>
-                <Input placeholder="e.g., Residential, Commercial, Luxury" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Phone className="h-4 w-4" />
+                      Phone Number
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="+27 12 345 6789" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
-        <FormField
-          control={form.control}
-          name="bio"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bio</FormLabel>
-              <FormControl>
-                <Textarea placeholder="Agent biography" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={form.control}
+              name="bio"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Professional Bio</FormLabel>
+                  <FormControl>
+                    <Textarea 
+                      placeholder="Tell us about the agent's experience and approach to real estate..." 
+                      className="min-h-[100px]"
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <Button
-          type="submit"
-          disabled={createMutation.isPending || updateMutation.isPending}
-          className="w-full"
-        >
-          {createMutation.isPending || updateMutation.isPending
-            ? "Saving..."
-            : agent
-            ? "Update Agent"
-            : "Create Agent"}
-        </Button>
+            <FormField
+              control={form.control}
+              name="specialties"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Property Specialties (comma-separated)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Residential, Commercial, Luxury Homes, Industrial" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </TabsContent>
+
+          <TabsContent value="professional" className="space-y-4 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Award className="h-4 w-4" />
+                      Job Title
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Senior Property Consultant" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="licenseNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Real Estate License Number</FormLabel>
+                    <FormControl>
+                      <Input placeholder="FFC123456789" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="yearsExperience"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Years of Experience</FormLabel>
+                    <FormControl>
+                      <Input type="number" placeholder="5" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="officeLocation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4" />
+                      Office Location
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Sandton, Johannesburg" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="languages"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="flex items-center gap-2">
+                    <Languages className="h-4 w-4" />
+                    Languages (comma-separated)
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="English, Afrikaans, Zulu, Xhosa" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="education"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Education Background</FormLabel>
+                  <FormControl>
+                    <Textarea 
+                      placeholder="Degree in Business Administration from University of Witwatersrand..."
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="certifications"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Professional Certifications (comma-separated)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Estate Agency Affairs Board Certified, Property Valuations Certificate" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="workingHours"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="flex items-center gap-2">
+                    <Clock className="h-4 w-4" />
+                    Working Hours
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="Monday - Friday: 8AM - 6PM, Saturday: 9AM - 4PM" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </TabsContent>
+
+          <TabsContent value="contact" className="space-y-4 mt-6">
+            <div className="grid grid-cols-1 gap-4">
+              <FormField
+                control={form.control}
+                name="linkedinUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Globe className="h-4 w-4" />
+                      LinkedIn Profile URL
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="https://linkedin.com/in/agent-name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="personalWebsite"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Globe className="h-4 w-4" />
+                      Personal Website
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="https://agent-website.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="photo" className="space-y-4 mt-6">
+            <div className="space-y-4">
+              <div className="text-center">
+                <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8">
+                  {(uploadedImage || agent?.avatar) ? (
+                    <div className="space-y-4">
+                      <img 
+                        src={uploadedImage || agent?.avatar} 
+                        alt="Agent photo" 
+                        className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-purple-200"
+                      />
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Agent photo uploaded successfully
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <Camera className="mx-auto h-12 w-12 text-gray-400" />
+                      <div>
+                        <p className="text-lg font-medium">Upload Agent Photo</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          Professional headshot recommended (JPG, PNG)
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                  
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={isUploading}
+                    className="mt-4"
+                  >
+                    {isUploading ? (
+                      <>
+                        <Clock className="mr-2 h-4 w-4 animate-spin" />
+                        Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="mr-2 h-4 w-4" />
+                        {uploadedImage || agent?.avatar ? 'Change Photo' : 'Upload Photo'}
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        <div className="flex justify-end gap-2 pt-6 border-t">
+          <Button 
+            type="submit" 
+            disabled={createMutation.isPending || updateMutation.isPending}
+            className="bg-purple-600 hover:bg-purple-700 text-white"
+          >
+            {createMutation.isPending || updateMutation.isPending ? (
+              <>
+                <Clock className="mr-2 h-4 w-4 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              agent ? "Update Agent" : "Create Agent"
+            )}
+          </Button>
+        </div>
       </form>
     </Form>
   );
@@ -397,16 +656,38 @@ function AgentEnquiries({ agentId }: { agentId: number }) {
 }
 
 export default function AdminAgents() {
-  const { isLoading: authLoading, isAuthenticated } = useAdminAuth();
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [showEnquiries, setShowEnquiries] = useState<number | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
+  // Simple authentication check using direct API call
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/admin/profile', {
+          credentials: 'include'
+        });
+        if (response.ok) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+          window.location.href = '/admin/login';
+        }
+      } catch (error) {
+        setIsAuthenticated(false);
+        window.location.href = '/admin/login';
+      }
+    };
+    
+    checkAuth();
+  }, []);
+
   const { data: agents = [], isLoading } = useQuery<Agent[]>({
     queryKey: ["/api/admin/agents"],
-    enabled: isAuthenticated,
+    enabled: isAuthenticated === true,
   });
 
   const deleteMutation = useMutation({
@@ -428,23 +709,13 @@ export default function AdminAgents() {
     },
   });
 
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      window.location.href = '/admin/login';
-    }
-  }, [authLoading, isAuthenticated]);
-
-  if (authLoading) {
+  // Show loading while checking authentication
+  if (isAuthenticated === null) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div>
       </div>
     );
-  }
-
-  if (!isAuthenticated) {
-    return null;
   }
 
   const handleFormSuccess = () => {
