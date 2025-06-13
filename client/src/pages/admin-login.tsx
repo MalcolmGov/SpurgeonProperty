@@ -41,15 +41,19 @@ export default function AdminLogin() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
-  const { isAuthenticated, isLoading: authLoading } = useAdminAuth();
   const queryClient = useQueryClient();
 
-  // Redirect if already authenticated
-  useEffect(() => {
-    if (!authLoading && isAuthenticated) {
-      navigate("/admin/dashboard");
-    }
-  }, [authLoading, isAuthenticated, navigate]);
+  // Show loading screen if we're processing authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-2 text-muted-foreground">Processing login...</p>
+        </div>
+      </div>
+    );
+  }
 
   const loginForm = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
@@ -93,10 +97,10 @@ export default function AdminLogin() {
           description: "Welcome to the admin portal",
         });
         
-        // Small delay to allow cache invalidation to complete
+        // Use window.location.href for a full page reload and redirect
         setTimeout(() => {
-          navigate("/admin/dashboard");
-        }, 100);
+          window.location.href = "/admin/dashboard";
+        }, 200);
       } else {
         toast({
           title: "Login failed",
