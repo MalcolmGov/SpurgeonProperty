@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { motion } from "framer-motion";
 import { 
   Bed, 
   Bath, 
@@ -128,8 +129,15 @@ export default function PropertyCard({
 
   if (variant === "compact") {
     return (
-      <Card className="hover:shadow-lg transition-shadow duration-300">
-        <CardContent className="p-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        whileHover={{ y: -2 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        <Card className="hover:shadow-lg transition-shadow duration-300">
+          <CardContent className="p-4">
           <div className="flex gap-4">
             {/* Image */}
             <div className="relative w-32 h-24 flex-shrink-0">
@@ -200,13 +208,21 @@ export default function PropertyCard({
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </motion.div>
     );
   }
 
   return (
-    <Card className="hover:shadow-xl transition-all duration-300 overflow-hidden">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      whileHover={{ y: -4, transition: { duration: 0.2 } }}
+      whileTap={{ scale: 0.98 }}
+    >
+      <Card className="hover:shadow-xl transition-all duration-300 overflow-hidden">
       <div className="relative">
         <img
           src={imageError ? `/api/placeholder/400/300` : mainImage}
