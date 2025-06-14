@@ -16,34 +16,22 @@ export function Logo({ className, showText = true, variant = "default" }: LogoPr
         <span 
           className={cn(
             variant === "compact" ? "text-lg" : "text-xl",
-            "font-bold tracking-tight leading-tight",
+            "font-bold tracking-tight leading-tight logo-gradient-text",
             variant === "white" 
               ? "text-white drop-shadow-sm" 
-              : ""
+              : "text-purple-600"
           )}
-          style={variant !== "white" ? {
-            background: "linear-gradient(135deg, #7c3aed 0%, #8b5cf6 50%, #a855f7 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text"
-          } : {}}
         >
           SPURGEON
         </span>
         <span 
           className={cn(
             variant === "compact" ? "text-xs" : "text-sm",
-            "font-semibold -mt-1 tracking-wide",
+            "font-semibold -mt-1 tracking-wide logo-gradient-text-secondary",
             variant === "white" 
               ? "text-white/90 drop-shadow-sm" 
-              : ""
+              : "text-purple-700"
           )}
-          style={variant !== "white" ? {
-            background: "linear-gradient(135deg, #9333ea 0%, #7c3aed 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text"
-          } : {}}
         >
           Property
         </span>
