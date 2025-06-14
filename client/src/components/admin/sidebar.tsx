@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Home, BarChart3, Building, Users, UserCheck, Settings, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Logo } from "@/components/ui/logo";
 
 export default function AdminSidebar() {
   const [location] = useLocation();
@@ -22,9 +23,7 @@ export default function AdminSidebar() {
     <div className="h-full flex flex-col">
       <div className="p-6">
         <Link href="/" className="flex items-center space-x-3 mb-8">
-          <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-500 rounded-lg flex items-center justify-center">
-            <Home className="w-5 h-5 text-white" />
-          </div>
+          <Logo variant="compact" showText={false} />
           <div>
             <span className="text-lg font-bold text-slate-800 dark:text-white block">SpurgeonProperty</span>
             <span className="text-xs text-slate-600 dark:text-slate-400">Admin Portal</span>

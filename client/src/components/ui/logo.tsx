@@ -7,79 +7,44 @@ interface LogoProps {
 }
 
 export function Logo({ className, showText = true, variant = "default" }: LogoProps) {
-  const iconSize = variant === "compact" ? "h-8 w-8" : "h-10 w-10";
-  const textColor = variant === "white" ? "text-white" : "text-gray-900 dark:text-white";
+  const logoSize = variant === "compact" ? "h-8" : "h-12";
   
   return (
     <div className={cn("flex items-center space-x-3", className)}>
-      {/* Modern Property Icon */}
-      <div className={cn("relative", iconSize)}>
-        <svg
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full"
-        >
-          {/* Gradient Definitions */}
-          <defs>
-            <linearGradient id="buildingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#8B5CF6" />
-              <stop offset="100%" stopColor="#6366F1" />
-            </linearGradient>
-            <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#F59E0B" />
-              <stop offset="100%" stopColor="#EF4444" />
-            </linearGradient>
-          </defs>
-          
-          {/* Main Building */}
-          <path
-            d="M8 35V18L20 8L32 18V35H8Z"
-            fill="url(#buildingGradient)"
-            stroke="white"
-            strokeWidth="1.5"
-          />
-          
-          {/* Roof accent */}
-          <path
-            d="M6 20L20 6L34 20L32 18L20 8L8 18L6 20Z"
-            fill="url(#accentGradient)"
-          />
-          
-          {/* Windows */}
-          <rect x="12" y="15" width="3" height="4" fill="white" opacity="0.9" rx="0.5" />
-          <rect x="17" y="15" width="3" height="4" fill="white" opacity="0.9" rx="0.5" />
-          <rect x="22" y="15" width="3" height="4" fill="white" opacity="0.9" rx="0.5" />
-          
-          <rect x="12" y="22" width="3" height="4" fill="white" opacity="0.9" rx="0.5" />
-          <rect x="17" y="22" width="3" height="4" fill="white" opacity="0.9" rx="0.5" />
-          <rect x="22" y="22" width="3" height="4" fill="white" opacity="0.9" rx="0.5" />
-          
-          <rect x="12" y="29" width="3" height="4" fill="white" opacity="0.9" rx="0.5" />
-          <rect x="22" y="29" width="3" height="4" fill="white" opacity="0.9" rx="0.5" />
-          
-          {/* Door */}
-          <rect x="17" y="29" width="3" height="6" fill="white" opacity="0.95" rx="1.5" />
-          <circle cx="19.5" cy="32" r="0.3" fill="url(#accentGradient)" />
-          
-          {/* Decorative elements */}
-          <circle cx="20" cy="12" r="1.5" fill="url(#accentGradient)" />
-          <rect x="27" y="25" width="2" height="10" fill="url(#accentGradient)" opacity="0.8" rx="1" />
-        </svg>
+      {/* SpurgeonProperty Logo */}
+      <div className={cn("relative flex items-center", logoSize)}>
+        <img
+          src="/attached_assets/image_1749870704531.png"
+          alt="SpurgeonProperty Logo"
+          className={cn(
+            "object-contain brightness-110 contrast-110 saturate-110",
+            logoSize,
+            variant === "white" && "filter brightness-0 invert"
+          )}
+          style={{
+            filter: variant === "white" 
+              ? "brightness(0) invert(1) contrast(1.2) saturate(1.1)" 
+              : "contrast(1.15) saturate(1.1) brightness(1.05) drop-shadow(0 1px 2px rgba(0,0,0,0.1))"
+          }}
+        />
       </div>
       
-      {/* Company Text */}
-      {showText && (
+      {/* Enhanced Text Display for smaller screens */}
+      {showText && variant !== "compact" && (
         <div className="flex flex-col">
           <span className={cn(
-            "text-xl font-bold tracking-tight",
-            variant === "white" ? "logo-spurgeon-gradient-white" : "logo-spurgeon-gradient"
+            "text-xl font-bold tracking-tight leading-tight",
+            variant === "white" 
+              ? "text-white drop-shadow-sm" 
+              : "bg-gradient-to-r from-blue-700 via-blue-800 to-purple-700 bg-clip-text text-transparent dark:from-blue-400 dark:via-blue-500 dark:to-purple-500"
           )}>
-            Spurgeon
+            SPURGEON
           </span>
           <span className={cn(
-            "text-sm font-medium -mt-1",
-            variant === "white" ? "logo-property-gradient-white" : "logo-property-gradient"
+            "text-sm font-semibold -mt-1 tracking-wide",
+            variant === "white" 
+              ? "text-white/90 drop-shadow-sm" 
+              : "bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent dark:from-purple-400 dark:to-blue-400"
           )}>
             Property
           </span>
