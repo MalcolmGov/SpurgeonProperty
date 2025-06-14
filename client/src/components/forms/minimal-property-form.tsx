@@ -612,21 +612,23 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
           {/* Property Status */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Property Status</h3>
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id="featured"
-                checked={formData.featured}
-                onChange={(e) => setFormData(prev => ({ ...prev, featured: e.target.checked }))}
-                className="rounded"
-              />
-              <label htmlFor="featured" className="text-sm font-medium">
-                Mark as Featured Property
-              </label>
+            <div className="p-4 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700">
+              <div className="flex items-center space-x-3">
+                <input
+                  type="checkbox"
+                  id="featured"
+                  checked={formData.featured}
+                  onChange={(e) => setFormData(prev => ({ ...prev, featured: e.target.checked }))}
+                  className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <label htmlFor="featured" className="text-sm font-medium text-gray-900 dark:text-white">
+                  Mark as Featured Property
+                </label>
+              </div>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 ml-8">
+                Featured properties will be highlighted and appear at the top of search results
+              </p>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Featured properties will be highlighted and appear at the top of search results
-            </p>
           </div>
 
           {/* Property Features */}
