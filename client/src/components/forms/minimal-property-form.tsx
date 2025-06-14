@@ -772,7 +772,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
                             ×
                           </button>
                         </div>
-                      );
+                      )
                     })}
                   </div>
                 </div>
