@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import logoImage from "@assets/image_1749870704531.png";
 
 interface LogoProps {
   className?: string;
@@ -7,23 +8,24 @@ interface LogoProps {
 }
 
 export function Logo({ className, showText = true, variant = "default" }: LogoProps) {
-  const logoHeight = variant === "compact" ? "h-8" : "h-10";
+  const logoHeight = variant === "compact" ? "h-8" : "h-12";
   
   return (
     <div className={cn("flex items-center", className)}>
       {/* SpurgeonProperty Logo - Complete Logo Image */}
       <img
-        src="/attached_assets/image_1749870704531.png"
+        src={logoImage}
         alt="SpurgeonProperty"
         className={cn(
-          "object-contain",
+          "object-contain w-auto",
           logoHeight,
           variant === "white" && "brightness-0 invert"
         )}
         style={{
           filter: variant === "white" 
             ? "brightness(0) invert(1) contrast(1.2) saturate(1.1)" 
-            : "contrast(1.15) saturate(1.1) brightness(1.1) drop-shadow(0 1px 3px rgba(0,0,0,0.1))"
+            : "contrast(1.2) saturate(1.15) brightness(1.1) drop-shadow(0 2px 4px rgba(0,0,0,0.1))",
+          maxWidth: "200px"
         }}
       />
     </div>
