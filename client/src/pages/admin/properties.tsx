@@ -14,10 +14,8 @@ import { Plus, Search, Edit, Eye, Trash, Download } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
 
 export default function AdminProperties() {
-  // Separate state management for more reliable dialog control
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingProperty, setEditingProperty] = useState<PropertyWithAgent | null>(null);
-  const [dialogKey, setDialogKey] = useState(0);
+  // Simple dialog state
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
@@ -25,25 +23,14 @@ export default function AdminProperties() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  // Simple dialog management
+  // Dialog handlers
   const openAddDialog = () => {
     console.log("Add Property button clicked");
-    setIsDialogOpen(true);
+    setIsAddDialogOpen(true);
   };
 
-  const openEditDialog = (property: PropertyWithAgent) => {
-    setEditingProperty(property);
-    setDialogKey(prev => prev + 1);
-    setTimeout(() => {
-      setIsDialogOpen(true);
-    }, 50);
-  };
-
-  const closeDialog = () => {
-    setIsDialogOpen(false);
-    setTimeout(() => {
-      setEditingProperty(null);
-    }, 200); // Delay to allow dialog close animation
+  const closeAddDialog = () => {
+    setIsAddDialogOpen(false);
   };
   
   const { data: properties, isLoading } = useProperties({
@@ -73,7 +60,11 @@ export default function AdminProperties() {
   });
 
   const handleEdit = (property: PropertyWithAgent) => {
-    openEditDialog(property);
+    // For now, we'll just show a toast - edit functionality can be added later
+    toast({
+      title: "Edit Feature",
+      description: "Edit functionality will be implemented next",
+    });
   };
 
   const handleDelete = (id: number) => {
@@ -351,8 +342,8 @@ export default function AdminProperties() {
       
       {/* Property Form Modal */}
       <BasicPropertyForm
-        open={isDialogOpen}
-        onClose={closeDialog}
+        open={isAddDialogOpen}
+        onClose={closeAddDialog}
       />
     </div>
   );
