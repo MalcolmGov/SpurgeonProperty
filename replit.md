@@ -2,7 +2,7 @@
 
 ## Overview
 
-SpurgeonProperty is a modern real estate platform built for the South African property market. The application provides comprehensive property listing, search, and management capabilities with AI-powered features for property description generation and intelligent search assistance.
+SpurgeonProperty is a modern real estate platform built for the South African property market. The application provides comprehensive property listing, search, and management capabilities with AI-powered features for property description generation and intelligent search assistance. The platform features restricted admin access, video upload capabilities, and a complete agent management system with only authenticated team members.
 
 ## System Architecture
 
@@ -52,8 +52,13 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ### External Data Sources
 - **Spurgeon Property Scraper**: Web scraping system to import real property listings
-- **Neighborhood Analytics**: Integration points for local market data and amenities
+- **Neighborhood Analytics**: Google Maps Places API integration for schools, amenities, and market data
 - **Property Valuation**: Foundation for automated property value estimation
+
+### Security Features
+- **Admin Access Control**: Whitelist-based authentication restricted to 4 authorized email addresses
+- **Session Management**: Secure admin sessions with bcrypt password hashing
+- **Agent Management**: Clean database with only authenticated team members
 
 ## Data Flow
 
@@ -195,6 +200,30 @@ The platform follows a full-stack TypeScript architecture with the following lay
 - **June 13, 2025 - Currency Localization Complete**: Successfully localized all currency displays to South African Rand (ZAR) with proper formatting for 50 authentic properties.
 
 - **June 13, 2025 - Mobile Navigation Enhancement**: Improved hamburger menu with slide-out panel, theme settings integration, and proper active state highlighting.
+
+## Current System Status (June 14, 2025)
+
+### Active Team Members
+- **Reshma Kila** (ID: 7) - Real Estate Agent, Cape Town - reshma.kila@evogroup.co.za
+- **Veruschkia Barnard** (ID: 8) - Senior Real Estate Agent, Johannesburg - veruschkiabarnard@rocketmail.com  
+- **Spurgeon Peter** (ID: 9) - Managing Director, Cape Town - Peter@spurgeonproperty.com
+
+### Authorized Admin Access
+- peter@spurgeonproperty.com
+- veruschkia@spurgeonproperty.com
+- reshma.kila@evogroup.co.za
+- malcolmgov24@gmail.com
+
+### Production Features
+- Complete video upload system (MP4, AVI, MOV, WMV, FLV, WebM, MKV up to 100MB)
+- Google Maps neighborhood analytics with authentic SA location data
+- Modern property type badges with gradient styling and icons
+- Additional Information field for flexible property descriptions
+- Secure admin portal with whitelist authentication
+- Clean agent database with only team members
+- Working property management with image and video galleries
+- AI chatbot integration for property search assistance
+- Mobile-responsive design with touch optimizations
 
 ## User Preferences
 
