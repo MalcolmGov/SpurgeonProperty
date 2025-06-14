@@ -26,11 +26,11 @@ export default function AdminAIToolsPage() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
       <AdminSidebar />
       
-      <main className="flex-1 overflow-auto">
-        <div className="p-6">
+      <main className="lg:ml-64 min-h-screen">
+        <div className="p-4 lg:p-6 pt-20 lg:pt-6">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-900 mb-2">AI Tools</h1>
             <p className="text-gray-600">

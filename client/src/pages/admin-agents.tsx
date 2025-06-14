@@ -750,10 +750,10 @@ export default function AdminAgents() {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <AdminSidebar />
       
-      <div className="flex-1 p-8">
+      <div className="lg:ml-64 p-4 lg:p-8 pt-20 lg:pt-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-8">
             <div>
