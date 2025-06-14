@@ -13,22 +13,38 @@ export function Logo({ className, showText = true, variant = "default" }: LogoPr
     <div className={cn("flex items-center space-x-2", className)}>
       {/* SpurgeonProperty Logo - Styled Text Version */}
       <div className="flex flex-col">
-        <span className={cn(
-          variant === "compact" ? "text-lg" : "text-xl",
-          "font-bold tracking-tight leading-tight",
-          variant === "white" 
-            ? "text-white drop-shadow-sm" 
-            : "bg-gradient-to-r from-purple-700 via-purple-800 to-purple-900 bg-clip-text text-transparent dark:from-purple-400 dark:via-purple-500 dark:to-purple-600"
-        )}>
+        <span 
+          className={cn(
+            variant === "compact" ? "text-lg" : "text-xl",
+            "font-bold tracking-tight leading-tight",
+            variant === "white" 
+              ? "text-white drop-shadow-sm" 
+              : ""
+          )}
+          style={variant !== "white" ? {
+            background: "linear-gradient(135deg, #7c3aed 0%, #8b5cf6 50%, #a855f7 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text"
+          } : {}}
+        >
           SPURGEON
         </span>
-        <span className={cn(
-          variant === "compact" ? "text-xs" : "text-sm",
-          "font-semibold -mt-1 tracking-wide",
-          variant === "white" 
-            ? "text-white/90 drop-shadow-sm" 
-            : "bg-gradient-to-r from-purple-600 to-purple-700 bg-clip-text text-transparent dark:from-purple-400 dark:to-purple-500"
-        )}>
+        <span 
+          className={cn(
+            variant === "compact" ? "text-xs" : "text-sm",
+            "font-semibold -mt-1 tracking-wide",
+            variant === "white" 
+              ? "text-white/90 drop-shadow-sm" 
+              : ""
+          )}
+          style={variant !== "white" ? {
+            background: "linear-gradient(135deg, #9333ea 0%, #7c3aed 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text"
+          } : {}}
+        >
           Property
         </span>
       </div>
