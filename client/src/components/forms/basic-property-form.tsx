@@ -293,6 +293,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
                     <SelectItem value="villa">Villa</SelectItem>
                     <SelectItem value="estate">Estate</SelectItem>
                     <SelectItem value="farm">Farm</SelectItem>
+                    <SelectItem value="land">Land</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

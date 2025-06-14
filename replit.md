@@ -118,6 +118,8 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
+- **June 14, 2025 - Land Property Type Addition**: Added "Land" as a new property type option across all property forms (minimal-property-form and basic-property-form) to provide comprehensive property type coverage for vacant land listings alongside existing options like House, Apartment, Townhouse, Villa, Estate, and Farm.
+
 - **June 14, 2025 - Complete ZIP Upload and Image Preview System**: Successfully resolved all ZIP upload issues and implemented comprehensive image preview system. Fixed syntax errors in form component, enhanced regular image previews to show actual thumbnails instead of filenames, and added robust debugging for ZIP-extracted images. ZIP uploads now work flawlessly with proper image extraction, preview display, and database integration. Both individual file uploads and bulk ZIP uploads display proper image thumbnails with error handling fallbacks. The property image management system is now fully functional and production-ready.
 
 - **June 14, 2025 - ZIP Upload Complete Fix**: Resolved ZIP file upload and image display issues. Fixed API endpoint, form field names, and most importantly the image combination logic in form submission. ZIP-extracted images now properly combine with regular uploads and save to database. Property galleries now display actual uploaded images instead of placeholder boxes. ZIP uploads fully functional with automatic extraction, preview, and property integration.
