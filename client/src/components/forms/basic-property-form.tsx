@@ -45,6 +45,8 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
   const [newFeature, setNewFeature] = useState("");
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const zipInputRef = useRef<HTMLInputElement>(null);
@@ -66,6 +68,30 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
     "Walk-in Closet", "Home Office", "Entertainment Area", "Servant Quarters",
     "Borehole", "Solar Panels", "Generator"
   ];
+
+  // Validation function
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.title.trim()) {
+      newErrors.title = "Property title is required";
+    }
+    if (!formData.description.trim()) {
+      newErrors.description = "Property description is required";
+    }
+    if (!formData.price.trim()) {
+      newErrors.price = "Sale price is required";
+    }
+    if (!formData.address.trim()) {
+      newErrors.address = "Street address is required";
+    }
+    if (!formData.suburb.trim()) {
+      newErrors.suburb = "Suburb is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const mutation = useMutation({
     mutationFn: async (data: typeof formData) => {
@@ -166,10 +192,10 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.title || !formData.price || !formData.address || !formData.description || !formData.area) {
+    if (!validateForm()) {
       toast({
         title: "Validation Error",
-        description: "Please fill in all required fields (Title, Price, Address, Description, Area)",
+        description: "Please fill in all required fields highlighted in red",
         variant: "destructive",
       });
       return;
@@ -271,14 +297,18 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
             <h3 className="text-lg font-semibold">Basic Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="title">Property Title *</Label>
+                <Label htmlFor="title" className={errors.title ? "text-red-500" : ""}>
+                  Property Title *
+                </Label>
                 <Input
                   id="title"
                   value={formData.title}
                   onChange={(e) => handleChange("title", e.target.value)}
                   placeholder="Modern Family Home"
+                  className={errors.title ? "border-red-500 focus:border-red-500" : ""}
                   required
                 />
+                {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
               </div>
               <div>
                 <Label htmlFor="propertyType">Property Type</Label>
@@ -300,15 +330,19 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
             </div>
 
             <div>
-              <Label htmlFor="description">Description *</Label>
+              <Label htmlFor="description" className={errors.description ? "text-red-500" : ""}>
+                Description *
+              </Label>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => handleChange("description", e.target.value)}
                 placeholder="Describe the property in detail..."
                 rows={4}
+                className={errors.description ? "border-red-500 focus:border-red-500" : ""}
                 required
               />
+              {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
             </div>
           </div>
 
@@ -317,15 +351,19 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
             <h3 className="text-lg font-semibold">Financial Details</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <Label htmlFor="price">Sale Price (ZAR) *</Label>
+                <Label htmlFor="price" className={errors.price ? "text-red-500" : ""}>
+                  Sale Price (ZAR) *
+                </Label>
                 <Input
                   id="price"
                   type="number"
                   value={formData.price}
                   onChange={(e) => handleChange("price", e.target.value)}
                   placeholder="850000"
+                  className={errors.price ? "border-red-500 focus:border-red-500" : ""}
                   required
                 />
+                {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price}</p>}
               </div>
               <div>
                 <Label htmlFor="monthlyRates">Monthly Rates (ZAR)</Label>
@@ -355,24 +393,32 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
             <h3 className="text-lg font-semibold">Location</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="address">Street Address *</Label>
+                <Label htmlFor="address" className={errors.address ? "text-red-500" : ""}>
+                  Street Address *
+                </Label>
                 <Input
                   id="address"
                   value={formData.address}
                   onChange={(e) => handleChange("address", e.target.value)}
                   placeholder="123 Main Street"
+                  className={errors.address ? "border-red-500 focus:border-red-500" : ""}
                   required
                 />
+                {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
               </div>
               <div>
-                <Label htmlFor="suburb">Suburb *</Label>
+                <Label htmlFor="suburb" className={errors.suburb ? "text-red-500" : ""}>
+                  Suburb *
+                </Label>
                 <Input
                   id="suburb"
                   value={formData.suburb}
                   onChange={(e) => handleChange("suburb", e.target.value)}
                   placeholder="Sandton"
+                  className={errors.suburb ? "border-red-500 focus:border-red-500" : ""}
                   required
                 />
+                {errors.suburb && <p className="text-red-500 text-sm mt-1">{errors.suburb}</p>}
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
