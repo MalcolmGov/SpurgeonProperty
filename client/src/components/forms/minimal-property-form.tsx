@@ -38,6 +38,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const zipInputRef = useRef<HTMLInputElement>(null);
@@ -124,6 +125,30 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
     "Walk-in Closet", "Home Office", "Entertainment Area", "Servant Quarters",
     "Borehole", "Solar Panels", "Generator"
   ];
+
+  // Validation function
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.title.trim()) {
+      newErrors.title = "Property title is required";
+    }
+    if (!formData.description.trim()) {
+      newErrors.description = "Property description is required";
+    }
+    if (!formData.price.trim()) {
+      newErrors.price = "Sale price is required";
+    }
+    if (!formData.address.trim()) {
+      newErrors.address = "Street address is required";
+    }
+    if (!formData.suburb.trim()) {
+      newErrors.suburb = "Suburb is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const mutation = useMutation({
     mutationFn: async (data: typeof formData) => {
@@ -232,10 +257,10 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.title || !formData.price || !formData.address || !formData.description || !formData.area) {
+    if (!validateForm()) {
       toast({
         title: "Validation Error",
-        description: "Please fill in all required fields",
+        description: "Please fill in all required fields highlighted in red",
         variant: "destructive",
       });
       return;
@@ -343,15 +368,18 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
             <h3 className="text-lg font-semibold">Basic Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Property Title *</label>
+                <label className={`block text-sm font-medium mb-1 ${errors.title ? "text-red-500" : ""}`}>
+                  Property Title *
+                </label>
                 <input
                   type="text"
                   value={formData.title}
                   onChange={(e) => handleChange("title", e.target.value)}
                   placeholder="Modern Family Home"
-                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                  className={`w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 ${errors.title ? "border-red-500 focus:border-red-500" : ""}`}
                   required
                 />
+                {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Property Type</label>
@@ -372,15 +400,18 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Description *</label>
+              <label className={`block text-sm font-medium mb-1 ${errors.description ? "text-red-500" : ""}`}>
+                Description *
+              </label>
               <textarea
                 value={formData.description}
                 onChange={(e) => handleChange("description", e.target.value)}
                 placeholder="Describe the property in detail..."
                 rows={3}
-                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                className={`w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 ${errors.description ? "border-red-500 focus:border-red-500" : ""}`}
                 required
               />
+              {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
             </div>
           </div>
 
@@ -389,15 +420,18 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
             <h3 className="text-lg font-semibold">Financial Details</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Sale Price (ZAR) *</label>
+                <label className={`block text-sm font-medium mb-1 ${errors.price ? "text-red-500" : ""}`}>
+                  Sale Price (ZAR) *
+                </label>
                 <input
                   type="number"
                   value={formData.price}
                   onChange={(e) => handleChange("price", e.target.value)}
                   placeholder="850000"
-                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                  className={`w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 ${errors.price ? "border-red-500 focus:border-red-500" : ""}`}
                   required
                 />
+                {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Monthly Rates (ZAR)</label>
@@ -427,26 +461,32 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
             <h3 className="text-lg font-semibold">Location</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Street Address *</label>
+                <label className={`block text-sm font-medium mb-1 ${errors.address ? "text-red-500" : ""}`}>
+                  Street Address *
+                </label>
                 <input
                   type="text"
                   value={formData.address}
                   onChange={(e) => handleChange("address", e.target.value)}
                   placeholder="123 Main Street"
-                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                  className={`w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 ${errors.address ? "border-red-500 focus:border-red-500" : ""}`}
                   required
                 />
+                {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Suburb *</label>
+                <label className={`block text-sm font-medium mb-1 ${errors.suburb ? "text-red-500" : ""}`}>
+                  Suburb *
+                </label>
                 <input
                   type="text"
                   value={formData.suburb}
                   onChange={(e) => handleChange("suburb", e.target.value)}
                   placeholder="Sandton"
-                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                  className={`w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 ${errors.suburb ? "border-red-500 focus:border-red-500" : ""}`}
                   required
                 />
+                {errors.suburb && <p className="text-red-500 text-sm mt-1">{errors.suburb}</p>}
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

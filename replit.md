@@ -118,6 +118,8 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
+- **June 14, 2025 - Required Field Validation Enhancement**: Implemented comprehensive validation error highlighting system for property forms. Required fields (Title, Description, Price, Address, Suburb) now display red borders and labels when missing, with specific error messages below each field. Form submission validation prevents incomplete submissions and displays clear toast notification directing users to highlighted missing fields. Applied consistently across all property forms for optimal user experience.
+
 - **June 14, 2025 - Land Property Type Addition**: Added "Land" as a new property type option across all property forms (minimal-property-form and basic-property-form) to provide comprehensive property type coverage for vacant land listings alongside existing options like House, Apartment, Townhouse, Villa, Estate, and Farm.
 
 - **June 14, 2025 - Complete ZIP Upload and Image Preview System**: Successfully resolved all ZIP upload issues and implemented comprehensive image preview system. Fixed syntax errors in form component, enhanced regular image previews to show actual thumbnails instead of filenames, and added robust debugging for ZIP-extracted images. ZIP uploads now work flawlessly with proper image extraction, preview display, and database integration. Both individual file uploads and bulk ZIP uploads display proper image thumbnails with error handling fallbacks. The property image management system is now fully functional and production-ready.
