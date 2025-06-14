@@ -18,7 +18,14 @@ import {
   Eye,
   Check,
   Copy,
-  Phone
+  Phone,
+  Home,
+  Building,
+  Building2,
+  Castle,
+  Trees,
+  Landmark,
+  Warehouse
 } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
 
@@ -136,7 +143,55 @@ export default function PropertyCard({
     }
   };
 
+  const getPropertyTypeConfig = (type: string) => {
+    const configs = {
+      house: { 
+        icon: Home, 
+        gradient: "from-blue-500 to-blue-600", 
+        label: "House" 
+      },
+      apartment: { 
+        icon: Building, 
+        gradient: "from-purple-500 to-purple-600", 
+        label: "Apartment" 
+      },
+      townhouse: { 
+        icon: Building2, 
+        gradient: "from-green-500 to-green-600", 
+        label: "Townhouse" 
+      },
+      villa: { 
+        icon: Castle, 
+        gradient: "from-yellow-500 to-orange-500", 
+        label: "Villa" 
+      },
+      estate: { 
+        icon: Landmark, 
+        gradient: "from-indigo-500 to-purple-600", 
+        label: "Estate" 
+      },
+      farm: { 
+        icon: Trees, 
+        gradient: "from-green-600 to-emerald-600", 
+        label: "Farm" 
+      },
+      land: { 
+        icon: Square, 
+        gradient: "from-amber-500 to-yellow-600", 
+        label: "Land" 
+      },
+      commercial: { 
+        icon: Warehouse, 
+        gradient: "from-slate-600 to-slate-700", 
+        label: "Commercial" 
+      }
+    };
+    
+    return configs[type as keyof typeof configs] || configs.house;
+  };
+
   const mainImage = getImageSrc();
+  const propertyConfig = getPropertyTypeConfig(property.propertyType);
 
   if (variant === "compact") {
     return (
@@ -161,6 +216,14 @@ export default function PropertyCard({
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
+                {/* Modern Property Type Badge for Compact */}
+                <div className="absolute top-1 right-1">
+                  <div className={`flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r ${propertyConfig.gradient} text-white text-xs font-medium shadow-lg backdrop-blur-sm`}>
+                    <propertyConfig.icon className="h-3 w-3" />
+                    <span>{propertyConfig.label}</span>
+                  </div>
+                </div>
+
                 {property.featured && (
                   <Badge className="absolute top-1 left-1 text-xs bg-gradient-to-r from-orange-500 to-amber-500 text-white border-0 shadow-md">
                     ⭐ Featured
@@ -245,6 +308,13 @@ export default function PropertyCard({
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </div>
           
+          {/* Property Type Badge */}
+          <div className="absolute bottom-4 right-4">
+            <Badge className="bg-gradient-to-r from-slate-700 to-slate-800 text-white border-0 shadow-lg text-xs font-semibold px-2 py-1 rounded-lg capitalize">
+              {property.propertyType}
+            </Badge>
+          </div>
+
           {/* Premium Featured Badge */}
           {property.featured && (
             <div className="absolute top-4 left-4">
