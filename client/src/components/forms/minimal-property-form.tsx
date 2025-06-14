@@ -163,13 +163,20 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
 
   const mutation = useMutation({
     mutationFn: async (data: typeof formData) => {
-      // First upload regular images if any
+      // Upload images and videos if any
       let regularUploadedImages: string[] = [];
-      if (selectedImages.length > 0) {
+      let uploadedVideoFiles: string[] = [];
+      
+      if (selectedImages.length > 0 || selectedVideos.length > 0) {
         setIsUploading(true);
         const formData = new FormData();
+        
         selectedImages.forEach((file) => {
           formData.append('images', file);
+        });
+        
+        selectedVideos.forEach((file) => {
+          formData.append('images', file); // Use same field name as backend expects
         });
 
         try {
@@ -178,9 +185,10 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
             body: formData,
           });
           const uploadResult = await uploadResponse.json();
-          regularUploadedImages = uploadResult.urls || [];
+          regularUploadedImages = uploadResult.imageUrls || uploadResult.urls || [];
+          uploadedVideoFiles = uploadResult.videoUrls || [];
         } catch (error) {
-          console.error('Image upload failed:', error);
+          console.error('File upload failed:', error);
         } finally {
           setIsUploading(false);
         }
@@ -188,6 +196,9 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
 
       // Combine all images: ZIP-extracted images + regular uploaded images
       const allImages = [...uploadedImages, ...regularUploadedImages];
+      
+      // Combine all videos: existing videos + newly uploaded videos
+      const allVideos = [...uploadedVideos, ...uploadedVideoFiles];
 
       // Format lot size with unit
       const formattedLotSize = data.lotSize.trim() 
@@ -216,7 +227,8 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         agentId: data.agentId ? parseInt(data.agentId) : null,
         featured: data.featured,
         features: features,
-        images: allImages
+        images: allImages,
+        videos: allVideos
       };
 
       // Use PUT for updates, POST for new properties
@@ -259,7 +271,9 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       });
       setFeatures([]);
       setSelectedImages([]);
+      setSelectedVideos([]);
       setUploadedImages([]);
+      setUploadedVideos([]);
       onClose();
     },
     onError: (error: any) => {
@@ -315,6 +329,12 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
     setSelectedImages(prev => [...prev, ...imageFiles]);
   };
 
+  const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const videoFiles = files.filter(file => file.type.startsWith('video/'));
+    setSelectedVideos(prev => [...prev, ...videoFiles]);
+  };
+
   const handleZipUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !file.name.toLowerCase().endsWith('.zip')) {
@@ -362,6 +382,10 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
 
   const removeImage = (index: number) => {
     setSelectedImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const removeVideo = (index: number) => {
+    setSelectedVideos(prev => prev.filter((_, i) => i !== index));
   };
 
   if (!open) return null;
@@ -900,9 +924,86 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
               
               {isUploading && (
                 <div className="text-center py-4">
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Uploading images...</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Uploading files...</div>
                 </div>
               )}
+            </div>
+
+            {/* Video Upload Section */}
+            <div>
+              <label className="block text-sm font-medium mb-2">Property Videos</label>
+              <div className="space-y-4">
+                <div>
+                  <input
+                    type="file"
+                    multiple
+                    accept="video/*"
+                    onChange={handleVideoUpload}
+                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Select MP4, AVI, MOV, WMV, FLV, WebM, or MKV files (max 100MB each)
+                  </p>
+                </div>
+
+                {/* Selected Videos Preview */}
+                {selectedVideos.length > 0 && (
+                  <div>
+                    <p className="text-sm font-medium mb-2">Selected Videos ({selectedVideos.length})</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {selectedVideos.map((video, index) => (
+                        <div key={index} className="relative border rounded-lg p-4 bg-gray-50 dark:bg-gray-700">
+                          <div className="space-y-2">
+                            <div className="font-medium text-sm truncate">{video.name}</div>
+                            <div className="text-xs text-gray-600 dark:text-gray-400">
+                              Size: {(video.size / (1024 * 1024)).toFixed(1)} MB
+                            </div>
+                            <video
+                              src={URL.createObjectURL(video)}
+                              className="w-full h-32 object-cover rounded"
+                              controls
+                              preload="metadata"
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeVideo(index)}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Existing Videos (for edit mode) */}
+                {uploadedVideos.length > 0 && (
+                  <div>
+                    <p className="text-sm font-medium mb-2">Current Videos ({uploadedVideos.length})</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {uploadedVideos.map((videoUrl, index) => (
+                        <div key={index} className="relative border rounded-lg overflow-hidden">
+                          <video
+                            src={videoUrl}
+                            className="w-full h-32 object-cover"
+                            controls
+                            preload="metadata"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setUploadedVideos(prev => prev.filter((_, i) => i !== index))}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
