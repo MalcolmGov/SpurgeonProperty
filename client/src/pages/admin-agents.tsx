@@ -707,9 +707,7 @@ export default function AdminAgents() {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: number) => {
-      return apiRequest(`/api/admin/agents/${id}`, {
-        method: "DELETE",
-      });
+      return apiRequest(`/api/admin/agents/${id}`, "DELETE");
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/agents"] });
