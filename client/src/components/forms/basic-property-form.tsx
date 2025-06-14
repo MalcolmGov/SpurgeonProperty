@@ -518,14 +518,30 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
                 />
               </div>
               <div>
-                <Label htmlFor="lotSize">Lot Size (m²)</Label>
-                <Input
-                  id="lotSize"
-                  type="number"
-                  value={formData.lotSize}
-                  onChange={(e) => handleChange("lotSize", e.target.value)}
-                  placeholder="500"
-                />
+                <Label htmlFor="lotSize">
+                  Lot Size {formData.propertyType === "land" ? "(acres or m²)" : "(m²)"}
+                </Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="lotSize"
+                    type="number"
+                    value={formData.lotSize}
+                    onChange={(e) => handleChange("lotSize", e.target.value)}
+                    placeholder="500"
+                    className="flex-1"
+                  />
+                  {formData.propertyType === "land" && (
+                    <Select value={formData.lotSizeUnit} onValueChange={(value) => handleChange("lotSizeUnit", value)}>
+                      <SelectTrigger className="w-20">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="sqm">m²</SelectItem>
+                        <SelectItem value="acres">acres</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                </div>
               </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">

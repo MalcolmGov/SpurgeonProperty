@@ -26,6 +26,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
     bathrooms: "2",
     area: "",
     lotSize: "",
+    lotSizeUnit: "sqm",
     parkingSpaces: "1",
     yearBuilt: "",
     status: "active",
@@ -71,6 +72,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         bathrooms: property.bathrooms?.toString() || "2",
         area: property.area?.toString() || "",
         lotSize: property.lotSize?.toString() || "",
+        lotSizeUnit: "sqm",
         parkingSpaces: property.parkingSpaces?.toString() || "1",
         yearBuilt: property.yearBuilt?.toString() || "",
         status: property.status || "active",
@@ -105,6 +107,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         bathrooms: "2",
         area: "",
         lotSize: "",
+        lotSizeUnit: "sqm",
         parkingSpaces: "1",
         yearBuilt: "",
         status: "active",
@@ -178,6 +181,11 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       // Combine all images: ZIP-extracted images + regular uploaded images
       const allImages = [...uploadedImages, ...regularUploadedImages];
 
+      // Format lot size with unit
+      const formattedLotSize = data.lotSize.trim() 
+        ? `${data.lotSize.trim()} ${data.lotSizeUnit}`
+        : null;
+
       const propertyData = {
         title: data.title.trim(),
         description: data.description.trim(),
@@ -193,7 +201,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         bedrooms: parseInt(data.bedrooms) || 3,
         bathrooms: data.bathrooms,
         area: parseInt(data.area) || 0,
-        lotSize: data.lotSize.trim() || null,
+        lotSize: formattedLotSize,
         parkingSpaces: parseInt(data.parkingSpaces) || 0,
         yearBuilt: parseInt(data.yearBuilt) || null,
         status: data.status,
