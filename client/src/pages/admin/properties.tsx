@@ -14,11 +14,10 @@ import { Plus, Search, Edit, Eye, Trash, Download } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
 
 export default function AdminProperties() {
-  const [dialogState, setDialogState] = useState({
-    open: false,
-    property: null as PropertyWithAgent | null,
-    key: 0
-  });
+  // Separate state management for more reliable dialog control
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingProperty, setEditingProperty] = useState<PropertyWithAgent | null>(null);
+  const [dialogKey, setDialogKey] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
@@ -26,29 +25,31 @@ export default function AdminProperties() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  // Centralized dialog management
+  // Enhanced dialog management with forced re-renders
   const openAddDialog = () => {
-    setDialogState(prev => ({
-      open: true,
-      property: null,
-      key: prev.key + 1
-    }));
+    console.log("Add Property button clicked");
+    setEditingProperty(null);
+    setDialogKey(prev => prev + 1);
+    // Use setTimeout to ensure state is properly set before opening
+    setTimeout(() => {
+      console.log("Opening add property dialog");
+      setIsDialogOpen(true);
+    }, 50);
   };
 
   const openEditDialog = (property: PropertyWithAgent) => {
-    setDialogState(prev => ({
-      open: true,
-      property,
-      key: prev.key + 1
-    }));
+    setEditingProperty(property);
+    setDialogKey(prev => prev + 1);
+    setTimeout(() => {
+      setIsDialogOpen(true);
+    }, 50);
   };
 
   const closeDialog = () => {
-    setDialogState(prev => ({
-      open: false,
-      property: null,
-      key: prev.key
-    }));
+    setIsDialogOpen(false);
+    setTimeout(() => {
+      setEditingProperty(null);
+    }, 200); // Delay to allow dialog close animation
   };
   
   const { data: properties, isLoading } = useProperties({
@@ -356,9 +357,9 @@ export default function AdminProperties() {
       
       {/* Property Form Modal */}
       <SimplePropertyForm
-        key={dialogState.key}
-        property={dialogState.property}
-        open={dialogState.open}
+        key={dialogKey}
+        property={editingProperty}
+        open={isDialogOpen}
         onClose={closeDialog}
       />
     </div>
