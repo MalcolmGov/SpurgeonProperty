@@ -118,7 +118,7 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
-- **June 14, 2025 - Property Type Tags on Cards**: Added property type badges to all property card images for better visual identification. Property types (House, Land, Commercial, etc.) now display as small dark badges on property images - positioned in bottom-right corner for default cards and top-right corner for compact cards. Badges use capitalized text with gradient styling and shadow effects for clear visibility.
+- **June 14, 2025 - Modern Property Type Tags Enhancement**: Completely redesigned property type badges with vibrant visual styling for enhanced user experience. Each property type now features unique color gradients, relevant icons, and modern pill-shaped design with backdrop blur effects. Color schemes include blue for houses, purple for apartments, green for townhouses, yellow-orange for villas, and more. Enhanced with shadows, white borders, and proper iconography using Lucide React icons for immediate visual recognition.
 
 - **June 14, 2025 - Commercial Property Type Addition Complete**: Added "Commercial" as a new property type option across all property forms and components for comprehensive coverage of commercial real estate listings. Updated basic-property-form, minimal-property-form, simple-property-form, MortgageCalculator components, and admin dashboard property search dropdown to include commercial property type alongside existing residential and land options. Admin users can now create, search, and filter commercial properties throughout the platform.
 

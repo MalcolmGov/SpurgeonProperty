@@ -308,11 +308,12 @@ export default function PropertyCard({
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </div>
           
-          {/* Property Type Badge */}
+          {/* Modern Property Type Badge */}
           <div className="absolute bottom-4 right-4">
-            <Badge className="bg-gradient-to-r from-slate-700 to-slate-800 text-white border-0 shadow-lg text-xs font-semibold px-2 py-1 rounded-lg capitalize">
-              {property.propertyType}
-            </Badge>
+            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r ${propertyConfig.gradient} text-white text-sm font-medium shadow-lg backdrop-blur-sm border border-white/20`}>
+              <propertyConfig.icon className="h-4 w-4" />
+              <span>{propertyConfig.label}</span>
+            </div>
           </div>
 
           {/* Premium Featured Badge */}
