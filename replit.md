@@ -118,7 +118,7 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
-- **June 14, 2025 - Core Team Agents Added**: Successfully added three key team members as agents in the system: Reshma Kila (reshma.kila@evogroup.co.za, Cape Town), Veruschkia Barnard (veruschkiabarnard@rocketmail.com, Johannesburg), and Spurgeon Peter (Peter@spurgeonproperty.com, Managing Director, Cape Town). All agents are active and available for property assignments through the admin portal.
+- **June 14, 2025 - Agent Database Cleanup Complete**: Removed all placeholder agents and established clean agent system with only three authentic team members: Reshma Kila (Real Estate Agent, Cape Town), Veruschkia Barnard (Senior Real Estate Agent, Johannesburg), and Spurgeon Peter (Managing Director, Cape Town). Fixed agent deletion functionality and completed database cleanup via direct SQL operations.
 
 - **June 14, 2025 - Admin Access Restriction Implementation**: Implemented strict email-based access control for admin portal limiting registration and login to only four authorized email addresses: peter@spurgeonproperty.com, veruschkia@spurgeonproperty.com, reshma.kila@evogroup.co.za, and malcolmgov24@gmail.com. Updated AdminAuthService with case-insensitive email validation to prevent unauthorized access. Admin portal now completely secured with whitelist-based authentication system.
 
