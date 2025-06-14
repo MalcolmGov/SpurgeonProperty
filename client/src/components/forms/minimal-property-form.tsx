@@ -140,6 +140,7 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
       });
       setFeatures([]);
       setSelectedImages([]);
+      setUploadedImages([]);
       onClose();
     },
     onError: (error: any) => {
@@ -218,19 +219,13 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
       const result = await response.json();
       
       if (result.success && result.urls) {
-        // Convert file objects to match the uploaded images from ZIP
-        const zipImages = result.urls.map((url: string, index: number) => ({
-          name: `zip-image-${index + 1}.jpg`,
-          url: url
-        }));
+        // Store the uploaded image URLs
+        setUploadedImages(prev => [...prev, ...result.urls]);
         
         toast({
           title: "Success",
           description: `Extracted ${result.urls.length} images from ZIP file`,
         });
-        
-        // Add extracted images to selected images for display
-        // Note: These are already uploaded, so we handle them differently
       } else {
         throw new Error(result.message || 'ZIP upload failed');
       }
