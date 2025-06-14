@@ -29,7 +29,8 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
     parkingSpaces: "1",
     yearBuilt: "",
     status: "active",
-    agentId: ""
+    agentId: "",
+    featured: false
   });
 
   const [features, setFeatures] = useState<string[]>([]);
@@ -72,7 +73,8 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         parkingSpaces: property.parkingSpaces?.toString() || "1",
         yearBuilt: property.yearBuilt?.toString() || "",
         status: property.status || "active",
-        agentId: property.agentId?.toString() || ""
+        agentId: property.agentId?.toString() || "",
+        featured: property.featured || false
       });
       
       // Set existing features
@@ -105,7 +107,8 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         parkingSpaces: "1",
         yearBuilt: "",
         status: "active",
-        agentId: ""
+        agentId: "",
+        featured: false
       });
       setFeatures([]);
       setSelectedImages([]);
@@ -208,7 +211,8 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         parkingSpaces: "1",
         yearBuilt: "",
         status: "active",
-        agentId: ""
+        agentId: "",
+        featured: false
       });
       setFeatures([]);
       setSelectedImages([]);
