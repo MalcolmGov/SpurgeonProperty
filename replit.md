@@ -118,6 +118,8 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
+- **June 14, 2025 - Agent Details Removed from Property Cards**: Removed agent information display from main property cards per user request. Agent details (name, phone, avatar, contact buttons) now only appear on individual property detail pages. Property cards focus on essential property information for cleaner presentation.
+
 - **June 14, 2025 - SpurgeonProperty Logo Implementation**: Created professional text-based SpurgeonProperty logo with gradient styling matching the platform's purple branding theme. Implemented responsive design with compact and standard variants, white version for dark backgrounds, and consistent application across navigation and admin portal. Logo displays "SPURGEON" and "Property" in stacked format with smooth gradient effects and proper typography scaling.
 
 - **June 13, 2025 - Admin Mobile Layout Optimization**: Fixed comprehensive mobile responsiveness issues in admin portal including responsive sidebar with mobile hamburger menu, proper margin adjustments for mobile content, optimized dashboard layout with flexible grid systems, mobile-friendly tables with horizontal scrolling, and touch-optimized navigation. Admin portal now works seamlessly across all device sizes with fixed mobile menu button and proper content spacing.

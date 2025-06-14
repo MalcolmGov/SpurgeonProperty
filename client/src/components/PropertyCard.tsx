@@ -213,17 +213,7 @@ export default function PropertyCard({
                   </div>
                 </div>
 
-                {/* Compact Agent Info */}
-                {property.agent && (
-                  <div className="flex items-center gap-2 pt-1">
-                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-orange-400 to-amber-500 flex items-center justify-center text-white text-xs font-bold">
-                      {property.agent.name.charAt(0)}
-                    </div>
-                    <span className="text-xs font-medium text-slate-600 dark:text-slate-400 truncate">
-                      {property.agent.name}
-                    </span>
-                  </div>
-                )}
+
               </div>
             </div>
           </CardContent>
@@ -366,36 +356,7 @@ export default function PropertyCard({
             </div>
           </div>
 
-          {/* Premium Agent Info */}
-          {property.agent && (
-            <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 rounded-xl border border-orange-200 dark:border-orange-800">
-              <div className="relative">
-                {property.agent.avatar ? (
-                  <img
-                    src={property.agent.avatar}
-                    alt={property.agent.name}
-                    className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-md"
-                  />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-amber-500 flex items-center justify-center border-2 border-white shadow-md">
-                    <span className="text-white font-bold text-sm">
-                      {property.agent.name.charAt(0)}
-                    </span>
-                  </div>
-                )}
-                <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{property.agent.name}</p>
-                {property.agent.phone && (
-                  <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">{property.agent.phone}</p>
-                )}
-              </div>
-              <div className="text-orange-500">
-                <Phone className="h-4 w-4" />
-              </div>
-            </div>
-          )}
+
 
           {/* Premium Features */}
           {property.features && property.features.length > 0 && (
