@@ -614,14 +614,34 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
             <h3 className="text-lg font-semibold">Property Status</h3>
             <div className="p-4 border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700">
               <div className="flex items-center space-x-3">
-                <input
-                  type="checkbox"
-                  id="featured"
-                  checked={formData.featured}
-                  onChange={(e) => setFormData(prev => ({ ...prev, featured: e.target.checked }))}
-                  className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                />
-                <label htmlFor="featured" className="text-sm font-medium text-gray-900 dark:text-white">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    id="featured"
+                    checked={formData.featured}
+                    onChange={(e) => setFormData(prev => ({ ...prev, featured: e.target.checked }))}
+                    className="sr-only"
+                  />
+                  <div 
+                    onClick={() => setFormData(prev => ({ ...prev, featured: !prev.featured }))}
+                    className={`w-5 h-5 border-2 rounded cursor-pointer flex items-center justify-center transition-colors ${
+                      formData.featured 
+                        ? 'bg-blue-600 border-blue-600' 
+                        : 'bg-white border-gray-300 hover:border-blue-400'
+                    }`}
+                  >
+                    {formData.featured && (
+                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+                <label 
+                  htmlFor="featured" 
+                  className="text-sm font-medium text-gray-900 dark:text-white cursor-pointer"
+                  onClick={() => setFormData(prev => ({ ...prev, featured: !prev.featured }))}
+                >
                   Mark as Featured Property
                 </label>
               </div>
