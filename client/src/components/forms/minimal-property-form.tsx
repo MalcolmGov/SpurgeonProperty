@@ -193,7 +193,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         bedrooms: parseInt(data.bedrooms) || 3,
         bathrooms: data.bathrooms,
         area: parseInt(data.area) || 0,
-        lotSize: parseInt(data.lotSize) || null,
+        lotSize: data.lotSize.trim() || null,
         parkingSpaces: parseInt(data.parkingSpaces) || 0,
         yearBuilt: parseInt(data.yearBuilt) || null,
         status: data.status,

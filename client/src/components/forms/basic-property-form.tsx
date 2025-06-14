@@ -34,6 +34,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
     bathrooms: "2",
     area: "",
     lotSize: "",
+    lotSizeUnit: "sqm",
     parkingSpaces: "1",
     yearBuilt: "",
     status: "active",
@@ -118,6 +119,11 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
         }
       }
 
+      // Format lot size with unit
+      const formattedLotSize = data.lotSize.trim() 
+        ? `${data.lotSize.trim()} ${data.lotSizeUnit}`
+        : null;
+
       const propertyData = {
         title: data.title.trim(),
         description: data.description.trim(),
@@ -133,7 +139,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
         bedrooms: parseInt(data.bedrooms) || 3,
         bathrooms: data.bathrooms,
         area: parseInt(data.area) || 0,
-        lotSize: parseInt(data.lotSize) || null,
+        lotSize: formattedLotSize,
         parkingSpaces: parseInt(data.parkingSpaces) || 0,
         yearBuilt: parseInt(data.yearBuilt) || null,
         status: data.status,
@@ -169,6 +175,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
         bathrooms: "2",
         area: "",
         lotSize: "",
+        lotSizeUnit: "sqm",
         parkingSpaces: "1",
         yearBuilt: "",
         status: "active",
