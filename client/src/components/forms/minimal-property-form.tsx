@@ -13,6 +13,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    additionalInfo: "",
     price: "",
     monthlyRates: "",
     monthlyLevies: "",
@@ -62,6 +63,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       setFormData({
         title: property.title || "",
         description: property.description || "",
+        additionalInfo: property.additionalInfo || "",
         price: property.price || "",
         monthlyRates: property.monthlyRates || "",
         monthlyLevies: property.monthlyLevies || "",
@@ -102,6 +104,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       setFormData({
         title: "",
         description: "",
+        additionalInfo: "",
         price: "",
         monthlyRates: "",
         monthlyLevies: "",
@@ -208,6 +211,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       const propertyData = {
         title: data.title.trim(),
         description: data.description.trim(),
+        additionalInfo: data.additionalInfo.trim(),
         price: data.price.trim(),
         monthlyRates: data.monthlyRates.trim(),
         monthlyLevies: data.monthlyLevies.trim(),
@@ -249,6 +253,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       setFormData({
         title: "",
         description: "",
+        additionalInfo: "",
         price: "",
         monthlyRates: "",
         monthlyLevies: "",

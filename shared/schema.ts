@@ -7,6 +7,7 @@ export const properties = pgTable("properties", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description").notNull(),
+  additionalInfo: text("additional_info"),
   price: text("price").notNull(),
   address: text("address").notNull(),
   suburb: text("suburb").notNull(),
