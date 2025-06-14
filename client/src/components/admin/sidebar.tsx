@@ -22,12 +22,9 @@ export default function AdminSidebar() {
   const SidebarContent = ({ onNavigate }: { onNavigate?: () => void }) => (
     <div className="h-full flex flex-col">
       <div className="p-6">
-        <Link href="/" className="flex items-center space-x-3 mb-8">
-          <Logo variant="compact" showText={false} />
-          <div>
-            <span className="text-lg font-bold text-slate-800 dark:text-white block">SpurgeonProperty</span>
-            <span className="text-xs text-slate-600 dark:text-slate-400">Admin Portal</span>
-          </div>
+        <Link href="/" className="flex flex-col items-start mb-8">
+          <Logo variant="default" showText={false} className="mb-2" />
+          <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">Admin Portal</span>
         </Link>
         
         <nav className="space-y-2">
