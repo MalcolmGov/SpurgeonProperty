@@ -1,6 +1,6 @@
 import { useState } from "react";
 import AdminSidebar from "@/components/admin/sidebar";
-import SimplePropertyForm from "@/components/forms/simple-property-form";
+import BasicPropertyForm from "@/components/forms/basic-property-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -25,16 +25,10 @@ export default function AdminProperties() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  // Enhanced dialog management with forced re-renders
+  // Simple dialog management
   const openAddDialog = () => {
     console.log("Add Property button clicked");
-    setEditingProperty(null);
-    setDialogKey(prev => prev + 1);
-    // Use setTimeout to ensure state is properly set before opening
-    setTimeout(() => {
-      console.log("Opening add property dialog");
-      setIsDialogOpen(true);
-    }, 50);
+    setIsDialogOpen(true);
   };
 
   const openEditDialog = (property: PropertyWithAgent) => {
@@ -356,9 +350,7 @@ export default function AdminProperties() {
       </div>
       
       {/* Property Form Modal */}
-      <SimplePropertyForm
-        key={dialogKey}
-        property={editingProperty}
+      <BasicPropertyForm
         open={isDialogOpen}
         onClose={closeDialog}
       />

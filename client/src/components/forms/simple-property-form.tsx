@@ -49,12 +49,9 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
     enabled: open, // Only fetch when dialog is open
   });
 
-  // Robust form initialization
+  // Simplified form initialization
   useEffect(() => {
-    const hasOpenChanged = prevOpenRef.current !== open;
-    const hasPropertyChanged = prevPropertyRef.current?.id !== property?.id;
-    
-    if (open && (hasOpenChanged || hasPropertyChanged || !isInitialized)) {
+    if (open) {
       if (property) {
         // Edit mode - populate with property data
         setFormData({
@@ -79,11 +76,7 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
       }
       setIsInitialized(true);
     }
-    
-    // Update refs
-    prevOpenRef.current = open;
-    prevPropertyRef.current = property;
-  }, [open, property, isInitialized]);
+  }, [open, property]);
 
   // Enhanced close handler with state cleanup
   const handleClose = () => {
@@ -171,8 +164,8 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
     }));
   };
 
-  // Don't render if not initialized to prevent flash of empty content
-  if (!open || !isInitialized) {
+  // Always render when open is true, but show loading state if not initialized
+  if (!open) {
     return null;
   }
 
