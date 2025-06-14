@@ -26,17 +26,17 @@ export class AdminAuthService {
 
   // Check if email is authorized for admin access
   isAuthorizedEmail(email: string): boolean {
-    const authorizedDomains = ['spurgeonproperty.com'];
-    const authorizedEmails = ['Malcolmgov24@gmail.com'];
+    const authorizedEmails = [
+      'peter@spurgeonproperty.com',
+      'veruschkia@spurgeonproperty.com', 
+      'reshma.kila@evogroup.co.za',
+      'malcolmgov24@gmail.com'
+    ];
     
-    // Check specific authorized emails
-    if (authorizedEmails.includes(email)) {
-      return true;
-    }
-    
-    // Check authorized domains
-    const emailDomain = email.split('@')[1]?.toLowerCase();
-    return authorizedDomains.some(domain => emailDomain === domain.toLowerCase());
+    // Case-insensitive email comparison
+    return authorizedEmails.some(authorizedEmail => 
+      authorizedEmail.toLowerCase() === email.toLowerCase()
+    );
   }
 
   // Register new admin user

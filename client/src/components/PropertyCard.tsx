@@ -379,12 +379,7 @@ export default function PropertyCard({
             </div>
           </div>
 
-          {/* Property Type Badge */}
-          <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
-            <Badge className="bg-white/90 text-slate-700 border-0 shadow-lg backdrop-blur-sm px-3 py-1 rounded-lg">
-              {property.propertyType}
-            </Badge>
-          </div>
+
         </div>
 
         <CardContent className="p-6 space-y-4">

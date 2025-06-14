@@ -320,7 +320,7 @@ export default function AdminProperties() {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => window.open(`/property/${property.id}`, '_blank')}
+                                onClick={() => window.open(`/properties/${property.id}`, '_blank')}
                               >
                                 <Eye className="w-4 h-4" />
                               </Button>
