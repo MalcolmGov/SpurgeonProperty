@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -6,9 +6,10 @@ import { useToast } from "@/hooks/use-toast";
 interface MinimalPropertyFormProps {
   open: boolean;
   onClose: () => void;
+  property?: any; // Property to edit (undefined for new property)
 }
 
-export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFormProps) {
+export default function MinimalPropertyForm({ open, onClose, property }: MinimalPropertyFormProps) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -48,6 +49,69 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
     queryKey: ["/api/admin/agents"],
     enabled: open,
   });
+
+  // Populate form when editing existing property
+  useEffect(() => {
+    if (property && open) {
+      setFormData({
+        title: property.title || "",
+        description: property.description || "",
+        price: property.price || "",
+        monthlyRates: property.monthlyRates || "",
+        monthlyLevies: property.monthlyLevies || "",
+        address: property.address || "",
+        suburb: property.suburb || "",
+        city: property.city || "Johannesburg",
+        province: property.province || "Gauteng",
+        postalCode: property.postalCode || "",
+        propertyType: property.propertyType || "house",
+        bedrooms: property.bedrooms?.toString() || "3",
+        bathrooms: property.bathrooms?.toString() || "2",
+        area: property.area?.toString() || "",
+        lotSize: property.lotSize?.toString() || "",
+        parkingSpaces: property.parkingSpaces?.toString() || "1",
+        yearBuilt: property.yearBuilt?.toString() || "",
+        status: property.status || "active",
+        agentId: property.agentId?.toString() || ""
+      });
+      
+      // Set existing features
+      if (property.features && Array.isArray(property.features)) {
+        setFeatures(property.features);
+      }
+      
+      // Set existing images
+      if (property.images && Array.isArray(property.images)) {
+        setUploadedImages(property.images);
+      }
+    } else if (open && !property) {
+      // Reset form for new property
+      setFormData({
+        title: "",
+        description: "",
+        price: "",
+        monthlyRates: "",
+        monthlyLevies: "",
+        address: "",
+        suburb: "",
+        city: "Johannesburg",
+        province: "Gauteng",
+        postalCode: "",
+        propertyType: "house",
+        bedrooms: "3",
+        bathrooms: "2",
+        area: "",
+        lotSize: "",
+        parkingSpaces: "1",
+        yearBuilt: "",
+        status: "active",
+        agentId: ""
+      });
+      setFeatures([]);
+      setSelectedImages([]);
+      setUploadedImages([]);
+    }
+  }, [property, open]);
 
   // Common property features
   const COMMON_FEATURES = [
@@ -110,13 +174,18 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
         images: allImages
       };
 
-      return await apiRequest("POST", "/api/properties", propertyData);
+      // Use PUT for updates, POST for new properties
+      if (property) {
+        return await apiRequest("PUT", `/api/properties/${property.id}`, propertyData);
+      } else {
+        return await apiRequest("POST", "/api/properties", propertyData);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/properties"] });
       toast({
         title: "Success",
-        description: "Property created successfully",
+        description: property ? "Property updated successfully" : "Property created successfully",
       });
       
       // Reset form
@@ -698,7 +767,7 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
               disabled={mutation.isPending || isUploading}
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
             >
-              {mutation.isPending ? "Creating..." : "Create Property"}
+{mutation.isPending ? (property ? "Updating..." : "Creating...") : (property ? "Update Property" : "Create Property")}
             </button>
           </div>
         </form>
