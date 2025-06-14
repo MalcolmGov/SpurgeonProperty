@@ -118,6 +118,8 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
+- **June 14, 2025 - Video Upload Functionality Complete**: Added comprehensive video upload capability to property management system. Updated database schema with videos field, enhanced multer configuration to accept video files (MP4, AVI, MOV, WMV, FLV, WebM, MKV) up to 100MB, and integrated video upload into all property forms (basic, minimal, simple). Added video tab to property detail pages with HTML5 video player supporting multiple formats. Property listings can now include both images and videos for comprehensive media presentation.
+
 - **June 14, 2025 - Google Maps Neighborhood Analytics Fix**: Resolved neighborhood section displaying "Location coordinates needed" by adding accurate latitude and longitude coordinates to all 20 properties in the database. Google Maps Places API now successfully fetches real South African location data including nearby schools with ZAR fee estimates, healthcare facilities, shopping centers, transport stations, market trends, and safety ratings. All properties now have working neighborhood analytics with authentic data from Cape Town, Johannesburg, Sandton, and other SA locations.
 
 - **June 14, 2025 - Modern Property Type Tags Enhancement**: Completely redesigned property type badges with vibrant visual styling for enhanced user experience. Each property type now features unique color gradients, relevant icons, and modern pill-shaped design with backdrop blur effects. Color schemes include blue for houses, purple for apartments, green for townhouses, yellow-orange for villas, and more. Enhanced with shadows, white borders, and proper iconography using Lucide React icons for immediate visual recognition.

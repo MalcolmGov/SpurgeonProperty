@@ -92,6 +92,11 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       if (property.images && Array.isArray(property.images)) {
         setUploadedImages(property.images);
       }
+      
+      // Set existing videos
+      if (property.videos && Array.isArray(property.videos)) {
+        setUploadedVideos(property.videos);
+      }
     } else if (open && !property) {
       // Reset form for new property
       setFormData({

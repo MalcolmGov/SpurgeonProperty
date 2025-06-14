@@ -248,6 +248,14 @@ export default function PropertyDetail() {
               >
                 Neighborhood
               </TabsTrigger>
+              {property.videos && property.videos.length > 0 && (
+                <TabsTrigger 
+                  value="videos"
+                  className="data-[state=active]:border-b-2 data-[state=active]:border-purple-primary rounded-none bg-transparent"
+                >
+                  Videos
+                </TabsTrigger>
+              )}
             </TabsList>
             
             <div className="p-6">
@@ -335,6 +343,47 @@ export default function PropertyDetail() {
                     </h3>
                     <p className="text-slate-600 dark:text-slate-400">
                       Location coordinates needed for neighborhood analytics.
+                    </p>
+                  </div>
+                )}
+              </TabsContent>
+              
+              <TabsContent value="videos">
+                {property.videos && property.videos.length > 0 ? (
+                  <div className="space-y-6">
+                    <h3 className="text-xl font-semibold text-slate-800 dark:text-white">
+                      Property Videos
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {property.videos.map((video, index) => (
+                        <div key={index} className="space-y-2">
+                          <video 
+                            controls 
+                            className="w-full rounded-lg border border-slate-200 dark:border-slate-700"
+                            preload="metadata"
+                          >
+                            <source src={video} type="video/mp4" />
+                            <source src={video} type="video/webm" />
+                            <source src={video} type="video/quicktime" />
+                            Your browser does not support the video tag.
+                          </video>
+                          <p className="text-sm text-slate-600 dark:text-slate-400">
+                            Video {index + 1}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-2xl">🎥</span>
+                    </div>
+                    <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2">
+                      No Videos Available
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      No property videos have been uploaded yet.
                     </p>
                   </div>
                 )}
