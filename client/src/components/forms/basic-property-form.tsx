@@ -21,6 +21,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    additionalInfo: "",
     price: "",
     monthlyRates: "",
     monthlyLevies: "",
@@ -137,6 +138,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
       const propertyData = {
         title: data.title.trim(),
         description: data.description.trim(),
+        additionalInfo: data.additionalInfo.trim(),
         price: data.price.trim(),
         monthlyRates: data.monthlyRates.trim(),
         monthlyLevies: data.monthlyLevies.trim(),
@@ -173,6 +175,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
       setFormData({
         title: "",
         description: "",
+        additionalInfo: "",
         price: "",
         monthlyRates: "",
         monthlyLevies: "",
@@ -373,6 +376,17 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
                 required
               />
               {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
+            </div>
+            
+            <div>
+              <Label htmlFor="additionalInfo">Additional Information</Label>
+              <Textarea
+                id="additionalInfo"
+                value={formData.additionalInfo}
+                onChange={(e) => handleChange("additionalInfo", e.target.value)}
+                placeholder="Any additional details, special features, or notes about the property..."
+                rows={3}
+              />
             </div>
           </div>
 

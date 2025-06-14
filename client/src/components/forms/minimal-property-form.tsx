@@ -460,6 +460,17 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
               />
               {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
             </div>
+            
+            <div>
+              <label className="block text-sm font-medium mb-1">Additional Information</label>
+              <textarea
+                value={formData.additionalInfo}
+                onChange={(e) => handleChange("additionalInfo", e.target.value)}
+                placeholder="Any additional details, special features, or notes about the property..."
+                rows={3}
+                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+              />
+            </div>
           </div>
 
           {/* Financial Information */}
