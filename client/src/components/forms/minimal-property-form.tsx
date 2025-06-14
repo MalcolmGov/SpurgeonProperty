@@ -173,6 +173,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         yearBuilt: parseInt(data.yearBuilt) || null,
         status: data.status,
         agentId: data.agentId ? parseInt(data.agentId) : null,
+        featured: data.featured,
         features: features,
         images: allImages
       };
@@ -243,7 +244,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
     mutation.mutate(formData);
   };
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -606,6 +607,26 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
                 ))}
               </select>
             </div>
+          </div>
+
+          {/* Property Status */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Property Status</h3>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="featured"
+                checked={formData.featured}
+                onChange={(e) => setFormData(prev => ({ ...prev, featured: e.target.checked }))}
+                className="rounded"
+              />
+              <label htmlFor="featured" className="text-sm font-medium">
+                Mark as Featured Property
+              </label>
+            </div>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Featured properties will be highlighted and appear at the top of search results
+            </p>
           </div>
 
           {/* Property Features */}
