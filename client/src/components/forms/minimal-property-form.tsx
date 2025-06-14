@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import React, { useState, useRef } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
@@ -31,11 +31,57 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
     agentId: ""
   });
 
+  const [features, setFeatures] = useState<string[]>([]);
+  const [newFeature, setNewFeature] = useState("");
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const zipInputRef = useRef<HTMLInputElement>(null);
+
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
+  // Fetch agents for selection
+  const { data: agents = [] } = useQuery({
+    queryKey: ["/api/admin/agents"],
+    enabled: open,
+  });
+
+  // Common property features
+  const COMMON_FEATURES = [
+    "Swimming Pool", "Garden", "Garage", "Built-in Wardrobes", "Alarm System",
+    "Air Conditioning", "Fireplace", "Study Room", "Guest Toilet", "Balcony",
+    "Patio", "Security Complex", "Pet Friendly", "Furnished", "Kitchen Island",
+    "Walk-in Closet", "Home Office", "Entertainment Area", "Servant Quarters",
+    "Borehole", "Solar Panels", "Generator"
+  ];
+
   const mutation = useMutation({
     mutationFn: async (data: typeof formData) => {
+      // First upload images if any
+      let uploadedImages: string[] = [];
+      if (selectedImages.length > 0) {
+        setIsUploading(true);
+        const formData = new FormData();
+        selectedImages.forEach((file) => {
+          formData.append('images', file);
+        });
+
+        try {
+          const uploadResponse = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData,
+          });
+          const uploadResult = await uploadResponse.json();
+          uploadedImages = uploadResult.filenames || [];
+        } catch (error) {
+          console.error('Image upload failed:', error);
+        } finally {
+          setIsUploading(false);
+        }
+      }
+
       const propertyData = {
         title: data.title.trim(),
         description: data.description.trim(),
@@ -56,8 +102,8 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
         yearBuilt: parseInt(data.yearBuilt) || null,
         status: data.status,
         agentId: data.agentId ? parseInt(data.agentId) : null,
-        features: [],
-        images: []
+        features: features,
+        images: uploadedImages
       };
 
       return await apiRequest("POST", "/api/properties", propertyData);
@@ -91,6 +137,8 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
         status: "active",
         agentId: ""
       });
+      setFeatures([]);
+      setSelectedImages([]);
       onClose();
     },
     onError: (error: any) => {
@@ -119,6 +167,76 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
 
   const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  // Feature handlers
+  const addFeature = (feature: string) => {
+    if (feature && !features.includes(feature)) {
+      setFeatures(prev => [...prev, feature]);
+    }
+  };
+
+  const removeFeature = (feature: string) => {
+    setFeatures(prev => prev.filter(f => f !== feature));
+  };
+
+  const addCustomFeature = () => {
+    if (newFeature.trim() && !features.includes(newFeature.trim())) {
+      setFeatures(prev => [...prev, newFeature.trim()]);
+      setNewFeature("");
+    }
+  };
+
+  // Image handlers
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const imageFiles = files.filter(file => file.type.startsWith('image/'));
+    setSelectedImages(prev => [...prev, ...imageFiles]);
+  };
+
+  const handleZipUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !file.name.toLowerCase().endsWith('.zip')) {
+      toast({
+        title: "Invalid File",
+        description: "Please select a ZIP file containing images",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('zipFile', file);
+
+    try {
+      const response = await fetch('/api/upload/zip', {
+        method: 'POST',
+        body: formData,
+      });
+      const result = await response.json();
+      
+      if (result.success) {
+        toast({
+          title: "Success",
+          description: `Extracted ${result.count} images from ZIP file`,
+        });
+      } else {
+        throw new Error(result.message || 'ZIP upload failed');
+      }
+    } catch (error: any) {
+      toast({
+        title: "Upload Error",
+        description: error.message || "Failed to process ZIP file",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setSelectedImages(prev => prev.filter((_, i) => i !== index));
   };
 
   if (!open) return null;
@@ -389,6 +507,163 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
             </div>
           </div>
 
+          {/* Agent Assignment */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Agent Assignment</h3>
+            <div>
+              <label className="block text-sm font-medium mb-1">Assign to Agent</label>
+              <select
+                value={formData.agentId}
+                onChange={(e) => handleChange("agentId", e.target.value)}
+                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+              >
+                <option value="">No Agent Assigned</option>
+                {Array.isArray(agents) && agents.map((agent: any) => (
+                  <option key={agent.id} value={agent.id.toString()}>
+                    {agent.name} - {agent.email}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Property Features */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Property Features</h3>
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                {COMMON_FEATURES.map((feature) => (
+                  <div key={feature} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id={feature}
+                      checked={features.includes(feature)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          addFeature(feature);
+                        } else {
+                          removeFeature(feature);
+                        }
+                      }}
+                      className="rounded"
+                    />
+                    <label htmlFor={feature} className="text-sm">
+                      {feature}
+                    </label>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newFeature}
+                  onChange={(e) => setNewFeature(e.target.value)}
+                  placeholder="Add custom feature"
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomFeature())}
+                  className="flex-1 p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                />
+                <button
+                  type="button"
+                  onClick={addCustomFeature}
+                  className="px-3 py-2 bg-gray-200 dark:bg-gray-600 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500"
+                >
+                  Add
+                </button>
+              </div>
+              
+              {features.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {features.map((feature) => (
+                    <span
+                      key={feature}
+                      className="inline-flex items-center px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-md text-sm"
+                    >
+                      {feature}
+                      <button
+                        type="button"
+                        onClick={() => removeFeature(feature)}
+                        className="ml-1 text-blue-600 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-100"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Image Upload */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Property Images</h3>
+            <div className="space-y-3">
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
+                >
+                  📁 Select Images
+                </button>
+                <button
+                  type="button"
+                  onClick={() => zipInputRef.current?.click()}
+                  disabled={isUploading}
+                  className="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50"
+                >
+                  📦 Upload ZIP
+                </button>
+              </div>
+              
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleImageSelect}
+                className="hidden"
+              />
+              <input
+                ref={zipInputRef}
+                type="file"
+                accept=".zip"
+                onChange={handleZipUpload}
+                className="hidden"
+              />
+              
+              {selectedImages.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {selectedImages.length} image(s) selected
+                  </p>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    {selectedImages.map((file, index) => (
+                      <div key={index} className="relative">
+                        <div className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-xs p-2 text-center">
+                          {file.name}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {isUploading && (
+                <div className="text-center py-4">
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Uploading images...</div>
+                </div>
+              )}
+            </div>
+          </div>
+
           <div className="flex justify-end space-x-2 pt-4 border-t">
             <button
               type="button"
@@ -399,7 +674,7 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
             </button>
             <button
               type="submit"
-              disabled={mutation.isPending}
+              disabled={mutation.isPending || isUploading}
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
             >
               {mutation.isPending ? "Creating..." : "Create Property"}
