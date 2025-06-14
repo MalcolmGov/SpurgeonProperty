@@ -242,6 +242,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         bathrooms: "2",
         area: "",
         lotSize: "",
+        lotSizeUnit: "sqm",
         parkingSpaces: "1",
         yearBuilt: "",
         status: "active",
@@ -585,14 +586,28 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Lot Size (m²)</label>
-                <input
-                  type="number"
-                  value={formData.lotSize}
-                  onChange={(e) => handleChange("lotSize", e.target.value)}
-                  placeholder="500"
-                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-                />
+                <label className="block text-sm font-medium mb-1">
+                  Lot Size {formData.propertyType === "land" ? "" : "(m²)"}
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    value={formData.lotSize}
+                    onChange={(e) => handleChange("lotSize", e.target.value)}
+                    placeholder={formData.propertyType === "land" ? "2.5" : "500"}
+                    className="flex-1 p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  {formData.propertyType === "land" && (
+                    <select
+                      value={formData.lotSizeUnit}
+                      onChange={(e) => handleChange("lotSizeUnit", e.target.value)}
+                      className="w-20 p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                    >
+                      <option value="sqm">m²</option>
+                      <option value="acres">acres</option>
+                    </select>
+                  )}
+                </div>
               </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
