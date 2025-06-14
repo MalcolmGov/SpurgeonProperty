@@ -204,6 +204,7 @@ export default function MortgageCalculator({ propertyPrice }: MortgageCalculator
                         <SelectItem value="apartment">Apartment</SelectItem>
                         <SelectItem value="townhouse">Townhouse</SelectItem>
                         <SelectItem value="vacant_land">Vacant Land</SelectItem>
+                        <SelectItem value="commercial">Commercial</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

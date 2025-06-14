@@ -404,6 +404,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
                   <option value="estate">Estate</option>
                   <option value="farm">Farm</option>
                   <option value="land">Land</option>
+                  <option value="commercial">Commercial</option>
                 </select>
               </div>
             </div>

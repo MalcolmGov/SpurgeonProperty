@@ -118,6 +118,8 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
+- **June 14, 2025 - Commercial Property Type Addition**: Added "Commercial" as a new property type option across all property forms and components for comprehensive coverage of commercial real estate listings. Updated basic-property-form, minimal-property-form, simple-property-form, and MortgageCalculator components to include commercial property type alongside existing residential and land options.
+
 - **June 14, 2025 - Acre Selection Enhancement Complete**: Successfully implemented acre selection functionality across all property forms (basic, minimal, and simple). Land properties now feature dynamic lot size unit selector with square meters and acres options. Enhanced form validation, lot size formatting with proper unit display, and consistent user experience across all property creation interfaces. Land listings can now properly specify acreage measurements for rural and large property types.
 
 - **June 14, 2025 - Required Field Validation Enhancement**: Implemented comprehensive validation error highlighting system for property forms. Required fields (Title, Description, Price, Address, Suburb) now display red borders and labels when missing, with specific error messages below each field. Form submission validation prevents incomplete submissions and displays clear toast notification directing users to highlighted missing fields. Applied consistently across all property forms for optimal user experience.

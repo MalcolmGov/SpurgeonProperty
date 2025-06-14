@@ -310,6 +310,7 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
                   <SelectItem value="townhouse">Townhouse</SelectItem>
                   <SelectItem value="villa">Villa</SelectItem>
                   <SelectItem value="land">Land</SelectItem>
+                  <SelectItem value="commercial">Commercial</SelectItem>
                 </SelectContent>
               </Select>
             </div>
