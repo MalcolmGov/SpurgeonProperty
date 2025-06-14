@@ -60,8 +60,8 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
 
   const mutation = useMutation({
     mutationFn: async (data: typeof formData) => {
-      // First upload images if any
-      let uploadedImages: string[] = [];
+      // First upload regular images if any
+      let regularUploadedImages: string[] = [];
       if (selectedImages.length > 0) {
         setIsUploading(true);
         const formData = new FormData();
@@ -75,13 +75,16 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
             body: formData,
           });
           const uploadResult = await uploadResponse.json();
-          uploadedImages = uploadResult.filenames || [];
+          regularUploadedImages = uploadResult.urls || [];
         } catch (error) {
           console.error('Image upload failed:', error);
         } finally {
           setIsUploading(false);
         }
       }
+
+      // Combine all images: ZIP-extracted images + regular uploaded images
+      const allImages = [...uploadedImages, ...regularUploadedImages];
 
       const propertyData = {
         title: data.title.trim(),
@@ -104,7 +107,7 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
         status: data.status,
         agentId: data.agentId ? parseInt(data.agentId) : null,
         features: features,
-        images: uploadedImages
+        images: allImages
       };
 
       return await apiRequest("POST", "/api/properties", propertyData);

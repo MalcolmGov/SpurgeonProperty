@@ -118,7 +118,7 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
-- **June 14, 2025 - ZIP Upload Fix and Form Enhancement**: Fixed ZIP file upload functionality by correcting API endpoint from `/api/upload/zip` to `/api/upload`, updated form field name to match server expectations, added proper state management for ZIP-extracted images, enhanced image display to show both selected files and uploaded ZIP images with visual distinction, and improved form reset logic. ZIP uploads now work reliably with automatic image extraction and preview.
+- **June 14, 2025 - ZIP Upload Complete Fix**: Resolved ZIP file upload and image display issues. Fixed API endpoint, form field names, and most importantly the image combination logic in form submission. ZIP-extracted images now properly combine with regular uploads and save to database. Property galleries now display actual uploaded images instead of placeholder boxes. ZIP uploads fully functional with automatic extraction, preview, and property integration.
 
 - **June 14, 2025 - Floor Area Field Made Optional**: Removed mandatory requirement from Floor Area field per user request. Field no longer shows red asterisk and allows flexible property entry without restrictions.
 
