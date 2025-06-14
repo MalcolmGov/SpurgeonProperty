@@ -37,7 +37,8 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
     parkingSpaces: "1",
     yearBuilt: "",
     status: "active",
-    agentId: ""
+    agentId: "",
+    featured: false
   });
 
   const [features, setFeatures] = useState<string[]>([]);
@@ -111,6 +112,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
         yearBuilt: parseInt(data.yearBuilt) || null,
         status: data.status,
         agentId: data.agentId ? parseInt(data.agentId) : null,
+        featured: data.featured,
         features: features,
         images: uploadedImages
       };
@@ -144,7 +146,8 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
         parkingSpaces: "1",
         yearBuilt: "",
         status: "active",
-        agentId: ""
+        agentId: "",
+        featured: false
       });
       setFeatures([]);
       setSelectedImages([]);
@@ -175,7 +178,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
     mutation.mutate(formData);
   };
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -535,6 +538,24 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
                 </SelectContent>
               </Select>
             </div>
+          </div>
+
+          {/* Property Status */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Property Status</h3>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="featured"
+                checked={formData.featured}
+                onCheckedChange={(checked) => handleChange("featured", checked === true)}
+              />
+              <Label htmlFor="featured" className="text-sm font-medium">
+                Mark as Featured Property
+              </Label>
+            </div>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Featured properties will be highlighted and appear at the top of search results
+            </p>
           </div>
 
           {/* Property Features */}
