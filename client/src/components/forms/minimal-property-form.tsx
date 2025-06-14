@@ -34,6 +34,7 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
   const [features, setFeatures] = useState<string[]>([]);
   const [newFeature, setNewFeature] = useState("");
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -207,20 +208,29 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
 
     setIsUploading(true);
     const formData = new FormData();
-    formData.append('zipFile', file);
+    formData.append('file', file);
 
     try {
-      const response = await fetch('/api/upload/zip', {
+      const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       });
       const result = await response.json();
       
-      if (result.success) {
+      if (result.success && result.urls) {
+        // Convert file objects to match the uploaded images from ZIP
+        const zipImages = result.urls.map((url: string, index: number) => ({
+          name: `zip-image-${index + 1}.jpg`,
+          url: url
+        }));
+        
         toast({
           title: "Success",
-          description: `Extracted ${result.count} images from ZIP file`,
+          description: `Extracted ${result.urls.length} images from ZIP file`,
         });
+        
+        // Add extracted images to selected images for display
+        // Note: These are already uploaded, so we handle them differently
       } else {
         throw new Error(result.message || 'ZIP upload failed');
       }
@@ -443,14 +453,13 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Floor Area (m²) *</label>
+                <label className="block text-sm font-medium mb-1">Floor Area (m²)</label>
                 <input
                   type="number"
                   value={formData.area}
                   onChange={(e) => handleChange("area", e.target.value)}
                   placeholder="150"
                   className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-                  required
                 />
               </div>
               <div>
