@@ -24,6 +24,7 @@ export const properties = pgTable("properties", {
   parking: text("parking"),
   features: jsonb("features").$type<string[]>().default([]),
   images: jsonb("images").$type<string[]>().default([]),
+  videos: jsonb("videos").$type<string[]>().default([]),
   status: text("status").notNull().default("active"), // active, pending, sold, rented
   agentId: integer("agent_id"),
   featured: boolean("featured").default(false),

@@ -47,9 +47,10 @@ const storage_multer = multer.diskStorage({
 
 const upload = multer({ 
   storage: storage_multer,
-  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit for ZIP files
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB limit for video files
   fileFilter: (req, file, cb) => {
     const allowedImageTypes = /\.(jpeg|jpg|png|gif|webp)$/i;
+    const allowedVideoTypes = /\.(mp4|avi|mov|wmv|flv|webm|mkv)$/i;
     const allowedZipTypes = /\.(zip)$/i;
     const extname = path.extname(file.originalname).toLowerCase();
     
@@ -57,18 +58,20 @@ const upload = multer({
     const isImage = allowedImageTypes.test(extname) && 
                    /^image\/(jpeg|jpg|png|gif|webp)$/i.test(file.mimetype);
     
+    // Check for video files
+    const isVideo = allowedVideoTypes.test(extname) && 
+                   /^video\/(mp4|avi|quicktime|x-msvideo|x-flv|webm|x-matroska)$/i.test(file.mimetype);
+    
     // Check for ZIP files with multiple possible MIME types
     const isZip = allowedZipTypes.test(extname) && 
                  (file.mimetype === 'application/zip' || 
                   file.mimetype === 'application/x-zip-compressed' ||
                   file.mimetype === 'application/octet-stream');
     
-
-    
-    if (isImage || isZip) {
+    if (isImage || isVideo || isZip) {
       return cb(null, true);
     } else {
-      cb(new Error('Only image files (JPEG, PNG, GIF, WebP) or ZIP files are allowed'));
+      cb(new Error('Only image files (JPEG, PNG, GIF, WebP), video files (MP4, AVI, MOV, WMV, FLV, WebM, MKV) or ZIP files are allowed'));
     }
   }
 });
@@ -207,8 +210,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
               fs.unlinkSync(file.path);
             }
           }
-        } else {
+        } else if (file.mimetype.startsWith('image/')) {
           // Regular image file
+          processedUrls.push(`/uploads/${file.filename}`);
+        } else if (file.mimetype.startsWith('video/')) {
+          // Video file - handle separately
           processedUrls.push(`/uploads/${file.filename}`);
         }
       }
@@ -220,10 +226,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
+      // Separate images and videos
+      const imageUrls = processedUrls.filter(url => {
+        const ext = path.extname(url).toLowerCase();
+        return /\.(jpeg|jpg|png|gif|webp)$/i.test(ext);
+      });
+      
+      const videoUrls = processedUrls.filter(url => {
+        const ext = path.extname(url).toLowerCase();
+        return /\.(mp4|avi|mov|wmv|flv|webm|mkv)$/i.test(ext);
+      });
+
       res.json({
         success: true,
-        message: `Successfully processed ${processedUrls.length} image(s)`,
-        urls: processedUrls
+        message: `Successfully processed ${imageUrls.length} image(s) and ${videoUrls.length} video(s)`,
+        imageUrls,
+        videoUrls,
+        urls: processedUrls // Keep backward compatibility
       });
     } catch (error) {
       console.error("Upload error:", error);
