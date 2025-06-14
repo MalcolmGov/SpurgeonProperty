@@ -269,6 +269,17 @@ export default function PropertyDetail() {
                   </p>
                 </div>
                 
+                {property.additionalInfo && (
+                  <div>
+                    <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-4">
+                      Additional Information
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-300 mb-6">
+                      {property.additionalInfo}
+                    </p>
+                  </div>
+                )}
+                
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
                     <h4 className="font-semibold text-slate-800 dark:text-white mb-3">Property Details</h4>
