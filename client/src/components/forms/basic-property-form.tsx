@@ -98,13 +98,20 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
 
   const mutation = useMutation({
     mutationFn: async (data: typeof formData) => {
-      // First upload images if any
+      // Upload images and videos if any
       let uploadedImages: string[] = [];
-      if (selectedImages.length > 0) {
+      let uploadedVideos: string[] = [];
+      
+      if (selectedImages.length > 0 || selectedVideos.length > 0) {
         setIsUploading(true);
         const formData = new FormData();
+        
         selectedImages.forEach((file) => {
           formData.append('images', file);
+        });
+        
+        selectedVideos.forEach((file) => {
+          formData.append('images', file); // Use same field name as backend expects
         });
 
         try {
@@ -113,9 +120,10 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
             body: formData,
           });
           const uploadResult = await uploadResponse.json();
-          uploadedImages = uploadResult.filenames || [];
+          uploadedImages = uploadResult.imageUrls || uploadResult.filenames || [];
+          uploadedVideos = uploadResult.videoUrls || [];
         } catch (error) {
-          console.error('Image upload failed:', error);
+          console.error('File upload failed:', error);
         } finally {
           setIsUploading(false);
         }
@@ -148,7 +156,8 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
         agentId: data.agentId ? parseInt(data.agentId) : null,
         featured: data.featured,
         features: features,
-        images: uploadedImages
+        images: uploadedImages,
+        videos: uploadedVideos
       };
 
       return await apiRequest("POST", "/api/properties", propertyData);
@@ -186,6 +195,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
       });
       setFeatures([]);
       setSelectedImages([]);
+      setSelectedVideos([]);
       onClose();
     },
     onError: (error: any) => {
@@ -284,8 +294,18 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
     }
   };
 
+  const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const videoFiles = files.filter(file => file.type.startsWith('video/'));
+    setSelectedVideos(prev => [...prev, ...videoFiles]);
+  };
+
   const removeImage = (index: number) => {
     setSelectedImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const removeVideo = (index: number) => {
+    setSelectedVideos(prev => prev.filter((_, i) => i !== index));
   };
 
   return (
@@ -760,6 +780,62 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
               {isUploading && (
                 <div className="text-center py-4">
                   <div className="text-sm text-muted-foreground">Uploading images...</div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Video Upload */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Property Videos</h3>
+            <div className="space-y-3">
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => videoInputRef.current?.click()}
+                  className="flex items-center gap-2"
+                >
+                  <Upload className="w-4 h-4" />
+                  Select Videos
+                </Button>
+              </div>
+              
+              <input
+                ref={videoInputRef}
+                type="file"
+                multiple
+                accept="video/*"
+                onChange={handleVideoUpload}
+                className="hidden"
+              />
+              
+              {selectedVideos.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">
+                    {selectedVideos.length} video(s) selected
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {selectedVideos.map((file, index) => (
+                      <div key={index} className="relative">
+                        <div className="aspect-video bg-muted rounded-lg flex flex-col items-center justify-center text-xs p-2">
+                          <span className="font-medium">{file.name}</span>
+                          <span className="text-muted-foreground">
+                            {(file.size / 1024 / 1024).toFixed(1)} MB
+                          </span>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+                          onClick={() => removeVideo(index)}
+                        >
+                          <X className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
