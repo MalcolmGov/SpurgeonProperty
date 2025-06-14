@@ -313,7 +313,7 @@ export default function AdminLeads() {
                             )}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">
-                            {new Date(lead.createdAt).toLocaleDateString()}
+                            {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString() : 'N/A'}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <div className="flex items-center space-x-2">
