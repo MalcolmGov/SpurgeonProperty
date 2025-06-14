@@ -10,28 +10,43 @@ export function Logo({ className, showText = true, variant = "default" }: LogoPr
   const logoHeight = variant === "compact" ? "h-8" : "h-10";
   
   return (
-    <div className={cn("flex items-center space-x-2", className)}>
+    <div className={cn("flex items-center space-x-3", className)}>
+      {/* Colorful accent icon */}
+      <div className="w-2 h-8 bg-gradient-to-b from-orange-400 to-yellow-500 rounded-full shadow-lg"></div>
+      
       {/* SpurgeonProperty Logo - Styled Text Version */}
       <div className="flex flex-col">
         <span 
           className={cn(
             variant === "compact" ? "text-lg" : "text-xl",
-            "font-bold tracking-tight leading-tight logo-gradient-text",
+            "font-bold tracking-tight leading-tight",
             variant === "white" 
-              ? "text-white drop-shadow-sm" 
-              : "text-purple-600"
+              ? "text-white drop-shadow-lg" 
+              : "text-white"
           )}
+          style={{
+            textShadow: variant === "white" 
+              ? "0 2px 4px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.3)"
+              : "0 3px 6px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.2)",
+            fontWeight: "800"
+          }}
         >
           SPURGEON
         </span>
         <span 
           className={cn(
             variant === "compact" ? "text-xs" : "text-sm",
-            "font-semibold -mt-1 tracking-wide logo-gradient-text-secondary",
+            "font-semibold -mt-1 tracking-wide",
             variant === "white" 
-              ? "text-white/90 drop-shadow-sm" 
-              : "text-purple-700"
+              ? "text-orange-200 drop-shadow-md" 
+              : "text-orange-200"
           )}
+          style={{
+            textShadow: variant === "white"
+              ? "0 2px 4px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.2)"
+              : "0 2px 4px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.15)",
+            fontWeight: "600"
+          }}
         >
           Property
         </span>
