@@ -190,7 +190,12 @@ export default function AdminProperties() {
                       <SelectItem value="all">All Types</SelectItem>
                       <SelectItem value="house">House</SelectItem>
                       <SelectItem value="apartment">Apartment</SelectItem>
-                      <SelectItem value="condo">Condo</SelectItem>
+                      <SelectItem value="townhouse">Townhouse</SelectItem>
+                      <SelectItem value="villa">Villa</SelectItem>
+                      <SelectItem value="estate">Estate</SelectItem>
+                      <SelectItem value="farm">Farm</SelectItem>
+                      <SelectItem value="land">Land</SelectItem>
+                      <SelectItem value="commercial">Commercial</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
