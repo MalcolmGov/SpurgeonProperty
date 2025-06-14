@@ -1,6 +1,6 @@
 import { useState } from "react";
 import AdminSidebar from "@/components/admin/sidebar";
-import WorkingPropertyForm from "@/components/forms/working-property-form";
+import MinimalPropertyForm from "@/components/forms/minimal-property-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -341,7 +341,7 @@ export default function AdminProperties() {
       </div>
       
       {/* Property Form Modal */}
-      <WorkingPropertyForm
+      <MinimalPropertyForm
         open={isAddDialogOpen}
         onClose={closeAddDialog}
       />
