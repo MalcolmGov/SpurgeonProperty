@@ -118,6 +118,10 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
+- **June 14, 2025 - ZIP Upload Fix and Form Enhancement**: Fixed ZIP file upload functionality by correcting API endpoint from `/api/upload/zip` to `/api/upload`, updated form field name to match server expectations, added proper state management for ZIP-extracted images, enhanced image display to show both selected files and uploaded ZIP images with visual distinction, and improved form reset logic. ZIP uploads now work reliably with automatic image extraction and preview.
+
+- **June 14, 2025 - Floor Area Field Made Optional**: Removed mandatory requirement from Floor Area field per user request. Field no longer shows red asterisk and allows flexible property entry without restrictions.
+
 - **June 14, 2025 - Comprehensive Property Form Implementation**: Created comprehensive property form with all essential real estate fields including financial details (sale price, monthly rates, monthly levies in ZAR), complete location data, property specifications, agent assignment dropdown, extensive feature selection system with 22 common South African features plus custom feature input, and robust image upload system supporting both individual files and ZIP bulk uploads. Form organized into logical sections with proper validation and currency formatting.
 
 - **June 14, 2025 - Add Property Button Reliability Fix**: Implemented simplified dialog state management system to resolve persistent add property button issues. Replaced complex state management with straightforward open/close pattern, removed unnecessary timeouts and property editing state for add functionality, and created dedicated BasicPropertyForm component with reliable form submission handling.

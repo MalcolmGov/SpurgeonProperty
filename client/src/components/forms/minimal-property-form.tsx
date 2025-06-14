@@ -636,20 +636,34 @@ export default function MinimalPropertyForm({ open, onClose }: MinimalPropertyFo
                 className="hidden"
               />
               
-              {selectedImages.length > 0 && (
+              {(selectedImages.length > 0 || uploadedImages.length > 0) && (
                 <div className="space-y-2">
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {selectedImages.length} image(s) selected
+                    {selectedImages.length} image(s) selected, {uploadedImages.length} uploaded from ZIP
                   </p>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                     {selectedImages.map((file, index) => (
-                      <div key={index} className="relative">
+                      <div key={`file-${index}`} className="relative">
                         <div className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-xs p-2 text-center">
                           {file.name}
                         </div>
                         <button
                           type="button"
                           onClick={() => removeImage(index)}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                    {uploadedImages.map((url, index) => (
+                      <div key={`zip-${index}`} className="relative">
+                        <div className="aspect-square bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center text-xs p-2 text-center">
+                          ZIP Image {index + 1}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setUploadedImages(prev => prev.filter((_, i) => i !== index))}
                           className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
                         >
                           ×
