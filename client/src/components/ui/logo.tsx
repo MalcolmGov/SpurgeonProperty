@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import logoImage from "@assets/image_1749870704531.png";
 
 interface LogoProps {
   className?: string;
@@ -8,26 +7,31 @@ interface LogoProps {
 }
 
 export function Logo({ className, showText = true, variant = "default" }: LogoProps) {
-  const logoHeight = variant === "compact" ? "h-8" : "h-12";
+  const logoHeight = variant === "compact" ? "h-8" : "h-10";
   
   return (
-    <div className={cn("flex items-center", className)}>
-      {/* SpurgeonProperty Logo - Complete Logo Image */}
-      <img
-        src={logoImage}
-        alt="SpurgeonProperty"
-        className={cn(
-          "object-contain w-auto",
-          logoHeight,
-          variant === "white" && "brightness-0 invert"
-        )}
-        style={{
-          filter: variant === "white" 
-            ? "brightness(0) invert(1) contrast(1.2) saturate(1.1)" 
-            : "contrast(1.2) saturate(1.15) brightness(1.1) drop-shadow(0 2px 4px rgba(0,0,0,0.1))",
-          maxWidth: "200px"
-        }}
-      />
+    <div className={cn("flex items-center space-x-2", className)}>
+      {/* SpurgeonProperty Logo - Styled Text Version */}
+      <div className="flex flex-col">
+        <span className={cn(
+          variant === "compact" ? "text-lg" : "text-xl",
+          "font-bold tracking-tight leading-tight",
+          variant === "white" 
+            ? "text-white drop-shadow-sm" 
+            : "bg-gradient-to-r from-purple-700 via-purple-800 to-purple-900 bg-clip-text text-transparent dark:from-purple-400 dark:via-purple-500 dark:to-purple-600"
+        )}>
+          SPURGEON
+        </span>
+        <span className={cn(
+          variant === "compact" ? "text-xs" : "text-sm",
+          "font-semibold -mt-1 tracking-wide",
+          variant === "white" 
+            ? "text-white/90 drop-shadow-sm" 
+            : "bg-gradient-to-r from-purple-600 to-purple-700 bg-clip-text text-transparent dark:from-purple-400 dark:to-purple-500"
+        )}>
+          Property
+        </span>
+      </div>
     </div>
   );
 }
