@@ -292,6 +292,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       
       if (result.success && result.urls) {
         // Store the uploaded image URLs
+        console.log('ZIP extracted URLs:', result.urls);
         setUploadedImages(prev => [...prev, ...result.urls]);
         
         toast({
@@ -716,8 +717,21 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                     {selectedImages.map((file, index) => (
                       <div key={`file-${index}`} className="relative">
-                        <div className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-xs p-2 text-center">
-                          {file.name}
+                        <div className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
+                          <img 
+                            src={URL.createObjectURL(file)} 
+                            alt={file.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              // Fallback if image fails to load
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                              const parent = target.parentElement;
+                              if (parent) {
+                                parent.innerHTML = `<div class="w-full h-full flex items-center justify-center text-xs p-2 text-center">${file.name}</div>`;
+                              }
+                            }}
+                          />
                         </div>
                         <button
                           type="button"
@@ -728,20 +742,38 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
                         </button>
                       </div>
                     ))}
-                    {uploadedImages.map((url, index) => (
-                      <div key={`zip-${index}`} className="relative">
-                        <div className="aspect-square bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center text-xs p-2 text-center">
-                          ZIP Image {index + 1}
+                    {uploadedImages.map((url, index) => {
+                      console.log(`Rendering ZIP image ${index + 1}:`, url);
+                      return (
+                        <div key={`zip-${index}`} className="relative">
+                          <div className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
+                            <img 
+                              src={url} 
+                              alt={`ZIP Image ${index + 1}`}
+                              className="w-full h-full object-cover"
+                              onLoad={() => console.log(`ZIP image ${index + 1} loaded successfully:`, url)}
+                              onError={(e) => {
+                                console.error(`ZIP image ${index + 1} failed to load:`, url);
+                                // Fallback if image fails to load
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = 'none';
+                                const parent = target.parentElement;
+                                if (parent) {
+                                  parent.innerHTML = `<div class="w-full h-full flex items-center justify-center text-xs">ZIP Image ${index + 1}</div>`;
+                                }
+                              }}
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setUploadedImages(prev => prev.filter((_, i) => i !== index))}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
+                          >
+                            ×
+                          </button>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => setUploadedImages(prev => prev.filter((_, i) => i !== index))}
-                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
-                        >
-                          ×
-                        </button>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               )}
