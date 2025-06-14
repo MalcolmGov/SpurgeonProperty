@@ -52,7 +52,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
   const { toast } = useToast();
 
   // Fetch agents for selection
-  const { data: agents = [] } = useQuery({
+  const { data: agents = [] } = useQuery<any[]>({
     queryKey: ["/api/admin/agents"],
     enabled: open,
   });
@@ -527,7 +527,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="">No Agent Assigned</SelectItem>
-                  {agents.map((agent: any) => (
+                  {(agents as any[]).map((agent: any) => (
                     <SelectItem key={agent.id} value={agent.id.toString()}>
                       {agent.name} - {agent.email}
                     </SelectItem>

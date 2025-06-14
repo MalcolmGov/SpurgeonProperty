@@ -250,7 +250,7 @@ export default function AdminLeads() {
                                   {lead.property.title}
                                 </div>
                                 <div className="text-sm text-slate-500 dark:text-slate-400">
-                                  {lead.property.city}, {lead.property.state}
+                                  {lead.property.city}, {lead.property.province}
                                 </div>
                               </div>
                             ) : (
@@ -261,11 +261,11 @@ export default function AdminLeads() {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <Select
-                              value={lead.status}
+                              value={lead.status || ""}
                               onValueChange={(value) => handleStatusChange(lead.id, value)}
                             >
                               <SelectTrigger className="w-32">
-                                <Badge className={`capitalize ${getStatusColor(lead.status)}`}>
+                                <Badge className={`capitalize ${getStatusColor(lead.status || "")}`}>
                                   {lead.status}
                                 </Badge>
                               </SelectTrigger>
