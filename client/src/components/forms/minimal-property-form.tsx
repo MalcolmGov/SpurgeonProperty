@@ -322,7 +322,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
     <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-white dark:bg-gray-800 border-b p-4 flex items-center justify-between">
-          <h2 className="text-xl font-semibold">Add New Property</h2>
+          <h2 className="text-xl font-semibold">{property ? "Edit Property" : "Add New Property"}</h2>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700 text-2xl"

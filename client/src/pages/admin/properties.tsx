@@ -14,8 +14,10 @@ import { Plus, Search, Edit, Eye, Trash, Download } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
 
 export default function AdminProperties() {
-  // Simple dialog state
+  // Dialog state
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [editingProperty, setEditingProperty] = useState<PropertyWithAgent | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
@@ -25,7 +27,7 @@ export default function AdminProperties() {
 
   // Dialog handlers
   const openAddDialog = () => {
-    console.log("Add Property button clicked");
+    setEditingProperty(null);
     setIsAddDialogOpen(true);
   };
 
@@ -59,12 +61,18 @@ export default function AdminProperties() {
     },
   });
 
+  const openEditDialog = (property: PropertyWithAgent) => {
+    setEditingProperty(property);
+    setIsEditDialogOpen(true);
+  };
+
+  const closeEditDialog = () => {
+    setIsEditDialogOpen(false);
+    setEditingProperty(null);
+  };
+
   const handleEdit = (property: PropertyWithAgent) => {
-    // For now, we'll just show a toast - edit functionality can be added later
-    toast({
-      title: "Edit Feature",
-      description: "Edit functionality will be implemented next",
-    });
+    openEditDialog(property);
   };
 
   const handleDelete = (id: number) => {
@@ -340,10 +348,17 @@ export default function AdminProperties() {
         </div>
       </div>
       
-      {/* Property Form Modal */}
+      {/* Add Property Form Modal */}
       <MinimalPropertyForm
         open={isAddDialogOpen}
         onClose={closeAddDialog}
+      />
+      
+      {/* Edit Property Form Modal */}
+      <MinimalPropertyForm
+        open={isEditDialogOpen}
+        onClose={closeEditDialog}
+        property={editingProperty}
       />
     </div>
   );
