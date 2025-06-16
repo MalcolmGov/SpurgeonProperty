@@ -316,6 +316,18 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
               </Select>
             </div>
             <div>
+              <Label htmlFor="listingType">Listing Type</Label>
+              <Select value={formData.listingType} onValueChange={(value) => handleInputChange("listingType", value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select listing type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="sale">For Sale</SelectItem>
+                  <SelectItem value="rent">For Rent</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
               <Label htmlFor="bedrooms">Bedrooms</Label>
               <Select value={formData.bedrooms} onValueChange={(value) => handleInputChange("bedrooms", value)}>
                 <SelectTrigger>
