@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/contexts/theme-context";
 import Home from "@/pages/home";
 import About from "@/pages/about";
 import Properties from "@/pages/properties";
+import Rentals from "@/pages/rentals";
 import PropertyDetail from "@/pages/property-detail";
 import MapPage from "@/pages/map";
 import SellProperty from "@/pages/sell-property";
@@ -39,6 +40,7 @@ function Router() {
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/properties/:id" component={PropertyDetail} />
       <Route path="/properties" component={Properties} />
+      <Route path="/rentals" component={Rentals} />
       <Route path="/about" component={About} />
       <Route path="/sell-property" component={SellProperty} />
       <Route path="/map" component={MapPage} />
