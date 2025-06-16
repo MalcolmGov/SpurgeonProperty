@@ -13,12 +13,12 @@ export function Logo({ className, showText = true, variant = "default" }: LogoPr
     <div className={cn("flex items-center", className)}>
       {/* Authentic Spurgeon Property Logo */}
       <img 
-        src="/spurgeon-logo.png" 
+        src="/spurgeon-property-logo.png" 
         alt="Spurgeon Property" 
         className={cn(
           logoHeight,
           "object-contain",
-          variant === "compact" ? "max-w-[120px]" : "max-w-[150px]"
+          variant === "compact" ? "max-w-[140px]" : "max-w-[180px]"
         )}
         style={{
           filter: variant === "white" ? "brightness(0) invert(1)" : "none"
