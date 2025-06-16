@@ -227,11 +227,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 1.4 }}
               className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900/80 to-transparent p-8"
             >
-              <StaggeredList className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <StaggeredItem>
-                  <div className="text-3xl md:text-4xl font-bold text-white">500+</div>
-                  <div className="text-gray-300">Properties Listed</div>
-                </StaggeredItem>
+              <StaggeredList className="max-w-7xl mx-auto grid grid-cols-2 gap-8 text-center">
                 <StaggeredItem>
                   <div className="text-3xl md:text-4xl font-bold text-white">200+</div>
                   <div className="text-gray-300">Happy Clients</div>
@@ -239,10 +235,6 @@ export default function Home() {
                 <StaggeredItem>
                   <div className="text-3xl md:text-4xl font-bold text-white">50+</div>
                   <div className="text-gray-300">Areas Covered</div>
-                </StaggeredItem>
-                <StaggeredItem>
-                  <div className="text-3xl md:text-4xl font-bold text-white">150+</div>
-                  <div className="text-gray-300">Expert Agents</div>
                 </StaggeredItem>
               </StaggeredList>
             </motion.div>
