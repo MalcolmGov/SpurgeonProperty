@@ -439,7 +439,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 const host = req.get('host') || 'localhost:5000';
                 propertyImage = `${req.protocol}://${host}${propertyImage}`;
               }
-              console.log('Property image URL for email:', propertyImage);
+
             }
             if (property.agentId) {
               const agent = await storage.getAgent(property.agentId);
@@ -456,13 +456,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Send email notifications
       try {
-        console.log('Email notification data:', {
-          propertyId: validatedData.propertyId,
-          propertyTitle,
-          propertyImage,
-          hasImage: !!propertyImage
-        });
-        
         await emailService.sendLeadNotification({
           type: 'NEW_LEAD',
           leadName: validatedData.name,
