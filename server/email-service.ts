@@ -160,6 +160,10 @@ class EmailNotificationService {
             <span class="label">Email:</span>
             <span class="value">${notification.leadEmail}</span>
           </div>
+          <div class="field">
+            <span class="label">Property ID:</span>
+            <span class="value">#${notification.propertyId || 'N/A'}</span>
+          </div>
           ${notification.leadPhone ? `
           <div class="field">
             <span class="label">Phone:</span>
@@ -170,12 +174,6 @@ class EmailNotificationService {
           <div class="field">
             <span class="label">Property:</span>
             <span class="value">${notification.propertyTitle}</span>
-          </div>
-          ` : ''}
-          ${notification.propertyId ? `
-          <div class="field">
-            <span class="label">Property ID:</span>
-            <span class="value">#${notification.propertyId}</span>
           </div>
           ` : ''}
           ${notification.source ? `
