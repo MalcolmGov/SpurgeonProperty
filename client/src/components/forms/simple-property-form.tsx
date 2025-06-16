@@ -27,6 +27,7 @@ const INITIAL_FORM_DATA = {
   province: "Gauteng",
   postalCode: "",
   propertyType: "house",
+  listingType: "sale",
   bedrooms: "3",
   bathrooms: "2",
   area: "",

@@ -31,6 +31,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
     province: "Gauteng",
     postalCode: "",
     propertyType: "house",
+    listingType: "sale",
     bedrooms: "3",
     bathrooms: "2",
     area: "",
@@ -185,6 +186,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
         province: "Gauteng",
         postalCode: "",
         propertyType: "house",
+        listingType: "sale",
         bedrooms: "3",
         bathrooms: "2",
         area: "",
@@ -327,7 +329,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
           {/* Basic Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Basic Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <Label htmlFor="title" className={errors.title ? "text-red-500" : ""}>
                   Property Title *
@@ -357,6 +359,18 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
                     <SelectItem value="farm">Farm</SelectItem>
                     <SelectItem value="land">Land</SelectItem>
                     <SelectItem value="commercial">Commercial</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="listingType">Listing Type</Label>
+                <Select value={formData.listingType} onValueChange={(value) => handleChange("listingType", value)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sale">For Sale</SelectItem>
+                    <SelectItem value="rent">For Rent</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
