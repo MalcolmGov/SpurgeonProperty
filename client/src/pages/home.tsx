@@ -75,6 +75,9 @@ export default function Home() {
                 <Link href="/about" className="text-white hover:text-orange-300 px-3 py-2 text-sm font-medium transition-colors">
                   About
                 </Link>
+                <Link href="/rentals" className="text-white hover:text-orange-300 px-3 py-2 text-sm font-medium transition-colors">
+                  Rentals
+                </Link>
                 <Link href="/sell-property" className="text-white hover:text-orange-300 px-3 py-2 text-sm font-medium transition-colors">
                   Sell Property
                 </Link>
@@ -133,11 +136,16 @@ export default function Home() {
                   </Link>
                 </motion.div>
                 <motion.div variants={{ open: { opacity: 1, x: 0 }, closed: { opacity: 0, x: -20 } }} transition={{ delay: 0.3 }}>
+                  <Link href="/rentals" className="text-white hover:text-orange-300 block px-3 py-2 text-base font-medium">
+                    Rentals
+                  </Link>
+                </motion.div>
+                <motion.div variants={{ open: { opacity: 1, x: 0 }, closed: { opacity: 0, x: -20 } }} transition={{ delay: 0.4 }}>
                   <Link href="/sell-property" className="text-white hover:text-orange-300 block px-3 py-2 text-base font-medium">
                     Sell Property
                   </Link>
                 </motion.div>
-                <motion.div variants={{ open: { opacity: 1, x: 0 }, closed: { opacity: 0, x: -20 } }} transition={{ delay: 0.4 }}>
+                <motion.div variants={{ open: { opacity: 1, x: 0 }, closed: { opacity: 0, x: -20 } }} transition={{ delay: 0.5 }}>
                   <Link href="/admin/login" className="bg-orange-500 hover:bg-orange-600 text-white block px-3 py-2 rounded-lg text-base font-medium mt-2">
                     Admin
                   </Link>
