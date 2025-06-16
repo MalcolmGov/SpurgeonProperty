@@ -31,7 +31,7 @@ export function Logo({ className, showText = true, variant = "default" }: LogoPr
             fontWeight: "800"
           }}
         >
-          SPURGEON
+          Spurgeon
         </span>
         <span 
           className={cn(

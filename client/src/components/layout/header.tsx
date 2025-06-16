@@ -50,6 +50,17 @@ export default function Header() {
               </Link>
             ))}
             
+            {/* Start Application Button */}
+            <Button
+              onClick={() => {
+                // Placeholder for redirect URL - will be provided by user
+                window.open('#', '_blank');
+              }}
+              className="bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+            >
+              Start Application
+            </Button>
+
             {/* Settings Menu with Theme Options */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
