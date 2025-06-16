@@ -153,6 +153,9 @@ class EmailNotificationService {
           <h2>🏠 Spurgeon Property - New ${notification.type.replace('_', ' ')}</h2>
           <p>Received: ${timestamp}</p>
         </div>
+        ${notification.propertyImage ? `
+        <img src="${notification.propertyImage}" alt="Property Image" class="property-image" style="border-radius: 0; margin: 0;">
+        ` : ''}
         <div class="content">
           <div class="field">
             <span class="label">Name:</span>
@@ -176,12 +179,6 @@ class EmailNotificationService {
           <div class="field">
             <span class="label">Property:</span>
             <span class="value">${notification.propertyTitle}</span>
-          </div>
-          ` : ''}
-          ${notification.propertyImage ? `
-          <div class="field">
-            <span class="label">Property Image:</span><br>
-            <img src="${notification.propertyImage}" alt="Property Image" class="property-image">
           </div>
           ` : ''}
           ${notification.source ? `
