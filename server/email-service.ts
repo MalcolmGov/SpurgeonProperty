@@ -4,18 +4,19 @@ interface EmailNotification {
   type: 'NEW_LEAD' | 'APPLICATION_SUBMITTED' | 'PROPERTY_INQUIRY';
   leadName: string;
   leadEmail: string;
-  leadPhone?: string;
-  propertyTitle?: string;
-  message?: string;
-  source?: string;
-  agentName?: string;
-  agentEmail?: string;
-  propertyId?: number;
+  leadPhone?: string | null;
+  propertyTitle?: string | null;
+  message?: string | null;
+  source?: string | null;
+  agentName?: string | null;
+  agentEmail?: string | null;
+  propertyId?: number | null;
 }
 
 class EmailNotificationService {
   private transporter: nodemailer.Transporter | null = null;
   private ownerEmail = 'peter@spurgeonproperty.com';
+  private testEmail = 'malcolmgov24@gmail.com';
 
   constructor() {
     this.initializeTransporter();
@@ -45,9 +46,11 @@ class EmailNotificationService {
       const subject = this.getEmailSubject(notification);
       const htmlContent = this.generateEmailContent(notification);
       
-      // Recipients: Owner + Assigned Agent (if available)
-      const recipients = [this.ownerEmail];
-      if (notification.agentEmail && notification.agentEmail !== this.ownerEmail) {
+      // Recipients: Owner + Test Email + Assigned Agent (if available)
+      const recipients = [this.ownerEmail, this.testEmail];
+      if (notification.agentEmail && 
+          notification.agentEmail !== this.ownerEmail && 
+          notification.agentEmail !== this.testEmail) {
         recipients.push(notification.agentEmail);
       }
 
@@ -74,8 +77,21 @@ class EmailNotificationService {
 
   private personalizeEmailContent(htmlContent: string, recipient: string, notification: EmailNotification): string {
     const isOwner = recipient === this.ownerEmail;
-    const greeting = isOwner ? 'Hi Peter,' : `Hi ${notification.agentName || 'Agent'},`;
-    const role = isOwner ? 'Owner' : 'Assigned Agent';
+    const isTestUser = recipient === this.testEmail;
+    
+    let greeting: string;
+    let role: string;
+    
+    if (isOwner) {
+      greeting = 'Hi Peter,';
+      role = 'Owner';
+    } else if (isTestUser) {
+      greeting = 'Hi Malcolm,';
+      role = 'Admin/Test User';
+    } else {
+      greeting = `Hi ${notification.agentName || 'Agent'},`;
+      role = 'Assigned Agent';
+    }
     
     // Add personalized greeting
     return htmlContent.replace(

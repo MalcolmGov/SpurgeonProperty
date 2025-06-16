@@ -420,6 +420,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const validatedData = insertLeadSchema.parse(req.body);
       const lead = await storage.createLead(validatedData);
       
+      // Get property and agent details for email notifications
+      let propertyTitle: string | undefined;
+      let agentName: string | undefined;
+      let agentEmail: string | undefined;
+      
+      if (validatedData.propertyId) {
+        try {
+          const property = await storage.getProperty(validatedData.propertyId);
+          if (property) {
+            propertyTitle = property.title;
+            if (property.agentId) {
+              const agent = await storage.getAgent(property.agentId);
+              if (agent) {
+                agentName = agent.name;
+                agentEmail = agent.email;
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching property/agent details:', error);
+        }
+      }
+      
+      // Send email notifications
+      try {
+        await emailService.sendLeadNotification({
+          type: 'NEW_LEAD',
+          leadName: validatedData.name,
+          leadEmail: validatedData.email,
+          leadPhone: validatedData.phone || undefined,
+          propertyTitle,
+          message: validatedData.message || undefined,
+          source: validatedData.source || undefined,
+          agentName,
+          agentEmail,
+          propertyId: validatedData.propertyId || undefined
+        });
+      } catch (emailError) {
+        console.error('Failed to send email notification:', emailError);
+        // Don't fail the lead creation if email fails
+      }
+      
       // Broadcast to all connected admin clients via WebSocket
       const wss = ((req.app as any).httpServer as any).wss;
       if (wss) {
@@ -489,6 +531,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Invalid inquiry data", errors: error.errors });
       }
       res.status(500).json({ message: "Failed to create inquiry" });
+    }
+  });
+
+  // Email test endpoint
+  app.post("/api/admin/test-email", requireAdminAuth, async (req, res) => {
+    try {
+      const testNotification = {
+        type: 'NEW_LEAD' as const,
+        leadName: 'Test Lead',
+        leadEmail: 'test@example.com',
+        leadPhone: '+27 12 345 6789',
+        propertyTitle: 'Test Property',
+        message: 'This is a test email notification from the Spurgeon Property system.',
+        source: 'Admin Test',
+        agentName: 'Test Agent',
+        agentEmail: 'agent@example.com'
+      };
+
+      const success = await emailService.sendLeadNotification(testNotification);
+      
+      if (success) {
+        res.json({ message: 'Test email sent successfully' });
+      } else {
+        res.status(500).json({ message: 'Email service not configured or failed to send' });
+      }
+    } catch (error) {
+      console.error('Test email error:', error);
+      res.status(500).json({ message: 'Failed to send test email' });
     }
   });
 
