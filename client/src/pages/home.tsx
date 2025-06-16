@@ -80,8 +80,7 @@ export default function Home() {
                 </Link>
                 <button
                   onClick={() => {
-                    // Placeholder for redirect URL - will be provided by user
-                    window.open('#', '_blank');
+                    window.open('https://online.mortgagemax.co.za/mfactory-braiden-elijah', '_blank');
                   }}
                   className="bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md whitespace-nowrap"
                 >

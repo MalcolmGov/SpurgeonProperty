@@ -53,8 +53,7 @@ export default function Header() {
             {/* Start Application Button */}
             <Button
               onClick={() => {
-                // Placeholder for redirect URL - will be provided by user
-                window.open('#', '_blank');
+                window.open('https://online.mortgagemax.co.za/mfactory-braiden-elijah', '_blank');
               }}
               size="sm"
               className="bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 text-white font-medium px-3 py-1.5 text-sm rounded-md transition-all duration-200 shadow-sm hover:shadow-md whitespace-nowrap"
@@ -203,8 +202,7 @@ export default function Header() {
                     {/* Start Application Button for Mobile */}
                     <Button
                       onClick={() => {
-                        // Placeholder for redirect URL - will be provided by user
-                        window.open('#', '_blank');
+                        window.open('https://online.mortgagemax.co.za/mfactory-braiden-elijah', '_blank');
                         setMobileMenuOpen(false);
                       }}
                       className="w-full mb-4 bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 text-white font-medium py-3 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
