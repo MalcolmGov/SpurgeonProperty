@@ -172,6 +172,12 @@ class EmailNotificationService {
             <span class="value">${notification.propertyTitle}</span>
           </div>
           ` : ''}
+          ${notification.propertyId ? `
+          <div class="field">
+            <span class="label">Property ID:</span>
+            <span class="value">#${notification.propertyId}</span>
+          </div>
+          ` : ''}
           ${notification.source ? `
           <div class="field">
             <span class="label">Source:</span>
