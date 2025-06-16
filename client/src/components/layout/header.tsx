@@ -37,7 +37,7 @@ export default function Header() {
           </div>
           
           {/* Desktop Navigation - Hidden on mobile */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-4">
             {navigation.map((item) => (
               <Link key={item.name} href={item.href}>
                 <button
@@ -56,7 +56,8 @@ export default function Header() {
                 // Placeholder for redirect URL - will be provided by user
                 window.open('#', '_blank');
               }}
-              className="bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+              size="sm"
+              className="bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 text-white font-medium px-3 py-1.5 text-sm rounded-md transition-all duration-200 shadow-sm hover:shadow-md whitespace-nowrap"
             >
               Start Application
             </Button>
