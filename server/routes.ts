@@ -92,6 +92,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const {
         search,
         propertyType,
+        listingType,
         minPrice,
         maxPrice,
         bedrooms,
@@ -106,6 +107,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const filters = {
         search: search as string,
         propertyType: propertyType as string,
+        listingType: listingType as string,
         minPrice: minPrice ? parseInt(minPrice as string) : undefined,
         maxPrice: maxPrice ? parseInt(maxPrice as string) : undefined,
         bedrooms: bedrooms ? parseInt(bedrooms as string) : undefined,

@@ -188,7 +188,6 @@ export default function Rentals() {
               <PropertyCard
                 key={property.id}
                 property={property}
-                agent={property.agent}
               />
             ))}
           </div>

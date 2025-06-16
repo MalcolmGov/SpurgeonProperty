@@ -75,6 +75,7 @@ export class DatabaseStorage implements IStorage {
   async getProperties(filters?: {
     search?: string;
     propertyType?: string;
+    listingType?: string;
     minPrice?: number;
     maxPrice?: number;
     bedrooms?: number;
@@ -100,6 +101,10 @@ export class DatabaseStorage implements IStorage {
 
       if (filters?.propertyType) {
         whereConditions.push(eq(properties.propertyType, filters.propertyType));
+      }
+
+      if (filters?.listingType) {
+        whereConditions.push(eq(properties.listingType, filters.listingType));
       }
 
       if (filters?.bedrooms) {
