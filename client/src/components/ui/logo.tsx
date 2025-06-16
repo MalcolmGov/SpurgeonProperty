@@ -7,19 +7,19 @@ interface LogoProps {
 }
 
 export function Logo({ className, showText = true, variant = "default" }: LogoProps) {
-  const logoHeight = variant === "compact" ? "h-8" : "h-10";
+  const logoHeight = variant === "compact" ? "h-6" : "h-8";
   
   return (
     <div className={cn("flex items-center", className)}>
       {/* Authentic Spurgeon Property Logo */}
-      <div className="bg-white rounded-md px-2 py-1 shadow-sm">
+      <div className="bg-white rounded px-1 py-0.5 shadow-sm">
         <img 
           src="/spurgeon-property-logo.png" 
           alt="Spurgeon Property" 
           className={cn(
             logoHeight,
             "object-contain",
-            variant === "compact" ? "max-w-[140px]" : "max-w-[180px]"
+            variant === "compact" ? "max-w-[100px]" : "max-w-[120px]"
           )}
         />
       </div>
