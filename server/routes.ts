@@ -440,11 +440,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 const replitDomain = process.env.REPLIT_DOMAINS?.split(',')[0];
                 if (replitDomain) {
                   propertyImage = `https://${replitDomain}${propertyImage}`;
-                  console.log('Using Replit domain for email image:', propertyImage);
                 } else {
                   // Fallback to request host
                   propertyImage = `${req.protocol}://${req.get('host')}${propertyImage}`;
-                  console.log('Using fallback domain for email image:', propertyImage);
                 }
               }
 
