@@ -23,13 +23,13 @@ class EmailNotificationService {
   }
 
   private initializeTransporter() {
-    // Simple Gmail SMTP configuration
-    // User will need to provide Gmail credentials
+    // Gmail SMTP configuration for Spurgeon Property notifications
+    // Uses dedicated notifications Gmail account
     if (process.env.GMAIL_USER && process.env.GMAIL_PASSWORD) {
       this.transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: process.env.GMAIL_USER,
+          user: process.env.GMAIL_USER, // notificationsspurgeonproperty@gmail.com
           pass: process.env.GMAIL_PASSWORD // App-specific password
         }
       });
