@@ -8,7 +8,7 @@ import { Search, Filter, ChevronDown } from "lucide-react";
 
 export default function PropertySearch() {
   const [, setLocation] = useLocation();
-  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(true);
   const [searchData, setSearchData] = useState({
     search: "",
     propertyType: "",
@@ -68,7 +68,7 @@ export default function PropertySearch() {
             </Button>
           </div>
 
-          {/* Basic Search Row */}
+          {/* Main Search Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Search Input */}
             <div className="space-y-2">
@@ -148,75 +148,73 @@ export default function PropertySearch() {
             </div>
           </div>
 
-          {/* Advanced Options */}
-          {showAdvanced && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-gray-200">
-              {/* Bedrooms */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Bedrooms</label>
-                <Select value={searchData.bedrooms} onValueChange={(value) => handleInputChange("bedrooms", value)}>
-                  <SelectTrigger className="bg-gray-50 border-gray-200 focus:border-purple-500">
-                    <SelectValue placeholder="Any" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="any">Any</SelectItem>
-                    <SelectItem value="1">1+</SelectItem>
-                    <SelectItem value="2">2+</SelectItem>
-                    <SelectItem value="3">3+</SelectItem>
-                    <SelectItem value="4">4+</SelectItem>
-                    <SelectItem value="5">5+</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Bathrooms */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Bathrooms</label>
-                <Select value={searchData.bathrooms} onValueChange={(value) => handleInputChange("bathrooms", value)}>
-                  <SelectTrigger className="bg-gray-50 border-gray-200 focus:border-purple-500">
-                    <SelectValue placeholder="Any" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="any">Any</SelectItem>
-                    <SelectItem value="1">1+</SelectItem>
-                    <SelectItem value="2">2+</SelectItem>
-                    <SelectItem value="3">3+</SelectItem>
-                    <SelectItem value="4">4+</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Sort By */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Sort By</label>
-                <Select value={searchData.sortBy} onValueChange={(value) => handleInputChange("sortBy", value)}>
-                  <SelectTrigger className="bg-gray-50 border-gray-200 focus:border-purple-500">
-                    <SelectValue placeholder="Date Listed" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="date-listed">Date Listed</SelectItem>
-                    <SelectItem value="price">Price</SelectItem>
-                    <SelectItem value="bedrooms">Bedrooms</SelectItem>
-                    <SelectItem value="size">Property Size</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Order */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Order</label>
-                <Select value={searchData.sortOrder} onValueChange={(value) => handleInputChange("sortOrder", value)}>
-                  <SelectTrigger className="bg-gray-50 border-gray-200 focus:border-purple-500">
-                    <SelectValue placeholder="High to Low" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="high-to-low">High to Low</SelectItem>
-                    <SelectItem value="low-to-high">Low to High</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+          {/* Advanced Options - Always Visible */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {/* Bedrooms */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Bedrooms</label>
+              <Select value={searchData.bedrooms} onValueChange={(value) => handleInputChange("bedrooms", value)}>
+                <SelectTrigger className="bg-gray-50 border-gray-200 focus:border-purple-500">
+                  <SelectValue placeholder="Any" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="any">Any</SelectItem>
+                  <SelectItem value="1">1+</SelectItem>
+                  <SelectItem value="2">2+</SelectItem>
+                  <SelectItem value="3">3+</SelectItem>
+                  <SelectItem value="4">4+</SelectItem>
+                  <SelectItem value="5">5+</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-          )}
+
+            {/* Bathrooms */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Bathrooms</label>
+              <Select value={searchData.bathrooms} onValueChange={(value) => handleInputChange("bathrooms", value)}>
+                <SelectTrigger className="bg-gray-50 border-gray-200 focus:border-purple-500">
+                  <SelectValue placeholder="Any" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="any">Any</SelectItem>
+                  <SelectItem value="1">1+</SelectItem>
+                  <SelectItem value="2">2+</SelectItem>
+                  <SelectItem value="3">3+</SelectItem>
+                  <SelectItem value="4">4+</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Sort By */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Sort By</label>
+              <Select value={searchData.sortBy} onValueChange={(value) => handleInputChange("sortBy", value)}>
+                <SelectTrigger className="bg-gray-50 border-gray-200 focus:border-purple-500">
+                  <SelectValue placeholder="Date Listed" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="date-listed">Date Listed</SelectItem>
+                  <SelectItem value="price">Price</SelectItem>
+                  <SelectItem value="bedrooms">Bedrooms</SelectItem>
+                  <SelectItem value="size">Property Size</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Order */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Order</label>
+              <Select value={searchData.sortOrder} onValueChange={(value) => handleInputChange("sortOrder", value)}>
+                <SelectTrigger className="bg-gray-50 border-gray-200 focus:border-purple-500">
+                  <SelectValue placeholder="High to Low" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="high-to-low">High to Low</SelectItem>
+                  <SelectItem value="low-to-high">Low to High</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
 
           {/* Search Button */}
           <Button 
