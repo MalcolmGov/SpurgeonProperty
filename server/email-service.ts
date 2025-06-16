@@ -11,6 +11,7 @@ interface EmailNotification {
   agentName?: string | null;
   agentEmail?: string | null;
   propertyId?: number | null;
+  propertyImage?: string | null;
 }
 
 class EmailNotificationService {
@@ -142,6 +143,7 @@ class EmailNotificationService {
         .field { margin: 10px 0; }
         .label { font-weight: bold; color: #8B5CF6; }
         .value { margin-left: 10px; }
+        .property-image { width: 100%; max-width: 400px; height: 250px; object-fit: cover; border-radius: 8px; margin: 15px 0; }
         .footer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
       </style>
     </head>
@@ -174,6 +176,12 @@ class EmailNotificationService {
           <div class="field">
             <span class="label">Property:</span>
             <span class="value">${notification.propertyTitle}</span>
+          </div>
+          ` : ''}
+          ${notification.propertyImage ? `
+          <div class="field">
+            <span class="label">Property Image:</span><br>
+            <img src="${notification.propertyImage}" alt="Property Image" class="property-image">
           </div>
           ` : ''}
           ${notification.source ? `

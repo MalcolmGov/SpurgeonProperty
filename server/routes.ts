@@ -424,12 +424,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let propertyTitle: string | undefined;
       let agentName: string | undefined;
       let agentEmail: string | undefined;
+      let propertyImage: string | undefined;
       
       if (validatedData.propertyId) {
         try {
           const property = await storage.getProperty(validatedData.propertyId);
           if (property) {
             propertyTitle = property.title;
+            // Get the first image from the property's images array
+            if (property.images && property.images.length > 0) {
+              propertyImage = property.images[0];
+              // Ensure full URL for email display
+              if (propertyImage && !propertyImage.startsWith('http')) {
+                propertyImage = `${req.protocol}://${req.get('host')}${propertyImage}`;
+              }
+            }
             if (property.agentId) {
               const agent = await storage.getAgent(property.agentId);
               if (agent) {
@@ -455,7 +464,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           source: validatedData.source || undefined,
           agentName,
           agentEmail,
-          propertyId: validatedData.propertyId || undefined
+          propertyId: validatedData.propertyId || undefined,
+          propertyImage
         });
       } catch (emailError) {
         console.error('Failed to send email notification:', emailError);
