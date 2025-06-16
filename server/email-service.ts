@@ -154,8 +154,8 @@ class EmailNotificationService {
           <p>Received: ${timestamp}</p>
         </div>
         ${notification.propertyImage ? `
-        <img src="${notification.propertyImage}" alt="Property Image" class="property-image" style="border-radius: 0; margin: 0;">
-        ` : ''}
+        <img src="${notification.propertyImage}" alt="Property Image" class="property-image" style="border-radius: 0; margin: 0; display: block; width: 100%; max-width: 600px;">
+        ` : `<!-- No property image available: ${notification.propertyId} -->`}
         <div class="content">
           <div class="field">
             <span class="label">Name:</span>
