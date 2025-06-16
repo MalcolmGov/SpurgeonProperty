@@ -1,8 +1,8 @@
-# South African Property Platform - SpurgeonProperty
+# South African Property Platform - Spurgeon Property
 
 ## Overview
 
-SpurgeonProperty is a modern real estate platform built for the South African property market. The application provides comprehensive property listing, search, and management capabilities with AI-powered features for property description generation and intelligent search assistance. The platform features restricted admin access, video upload capabilities, and a complete agent management system with only authenticated team members.
+Spurgeon Property is a modern real estate platform built for the South African property market. The application provides comprehensive property listing, search, and management capabilities with AI-powered features for property description generation and intelligent search assistance. The platform features restricted admin access, video upload capabilities, and a complete agent management system with only authenticated team members.
 
 ## System Architecture
 
@@ -123,7 +123,9 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
-- **June 14, 2025 - System Integrity Verification Complete**: Completed comprehensive end-to-end testing of entire SpurgeonProperty platform with all critical issues resolved. Updated 21 properties with valid agent assignments and coordinates, cleaned up lead references to valid agents/properties, verified admin whitelist authentication blocking unauthorized access, confirmed neighborhood analytics working with authentic South African data, and validated AI chatbot fallback systems. Platform now fully production-ready with clean data integrity.
+- **June 14, 2025 - Official Branding Update**: Updated application branding to match the official Spurgeon Property website (www.spurgeonproperty.com). Changed logo from "SPURGEON" to "Spurgeon" for proper case, updated all references throughout the platform including page titles, meta descriptions, component text, and admin portal. Added "Start Application" button to main navigation (desktop and mobile) with placeholder URL pending user configuration. Branding now accurately reflects the official Spurgeon Property identity.
+
+- **June 14, 2025 - System Integrity Verification Complete**: Completed comprehensive end-to-end testing of entire Spurgeon Property platform with all critical issues resolved. Updated 21 properties with valid agent assignments and coordinates, cleaned up lead references to valid agents/properties, verified admin whitelist authentication blocking unauthorized access, confirmed neighborhood analytics working with authentic South African data, and validated AI chatbot fallback systems. Platform now fully production-ready with clean data integrity.
 
 - **June 14, 2025 - Agent Database Cleanup Complete**: Removed all placeholder agents and established clean agent system with only three authentic team members: Reshma Kila (Real Estate Agent, Cape Town), Veruschkia Barnard (Senior Real Estate Agent, Johannesburg), and Spurgeon Peter (Managing Director, Cape Town). Fixed agent deletion functionality and completed database cleanup via direct SQL operations.
 

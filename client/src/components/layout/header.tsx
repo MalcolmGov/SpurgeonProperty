@@ -199,6 +199,18 @@ export default function Header() {
 
                   {/* Footer Actions */}
                   <div className="border-t border-slate-200 dark:border-slate-700 pt-6 pb-4 mt-4">
+                    {/* Start Application Button for Mobile */}
+                    <Button
+                      onClick={() => {
+                        // Placeholder for redirect URL - will be provided by user
+                        window.open('#', '_blank');
+                        setMobileMenuOpen(false);
+                      }}
+                      className="w-full mb-4 bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 text-white font-medium py-3 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+                    >
+                      Start Application
+                    </Button>
+                    
                     <Button 
                       className="w-full mb-4 bg-purple-600 hover:bg-purple-700 text-white shadow-lg"
                       onClick={() => setMobileMenuOpen(false)}
@@ -208,7 +220,7 @@ export default function Header() {
                     
                     <div className="text-center">
                       <p className="text-xs text-slate-500 dark:text-slate-400">
-                        SpurgeonProperty © 2024
+                        Spurgeon Property © 2024
                       </p>
                     </div>
                   </div>
