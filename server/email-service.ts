@@ -25,14 +25,20 @@ class EmailNotificationService {
   private initializeTransporter() {
     // Gmail SMTP configuration for Spurgeon Property notifications
     // Uses dedicated notifications Gmail account
-    if (process.env.GMAIL_USER && process.env.GMAIL_PASSWORD) {
+    const gmailUser = process.env.GMAIL_USER || 'notificationsspurgeonproperty@gmail.com';
+    const gmailPassword = process.env.GMAIL_PASSWORD || 'uqgv ryzf assq ckqi';
+    
+    if (gmailUser && gmailPassword) {
       this.transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: process.env.GMAIL_USER, // notificationsspurgeonproperty@gmail.com
-          pass: process.env.GMAIL_PASSWORD // App-specific password
+          user: gmailUser,
+          pass: gmailPassword
         }
       });
+      console.log('Email service initialized with Gmail credentials');
+    } else {
+      console.log('Gmail credentials not found - email service disabled');
     }
   }
 
