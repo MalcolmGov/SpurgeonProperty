@@ -21,6 +21,7 @@ import { adminAuthService, requireAdminAuth, redirectIfAuthenticated } from "./a
 import { agentAuthService, requireAgentAuth } from "./agent-auth";
 import { extractSpurgeonProperties } from "./spurgeon-extractor";
 import { importSampleProperties } from "./sample-properties";
+import { emailService } from "./email-service";
 import { z } from "zod";
 import multer from "multer";
 import path from "path";
