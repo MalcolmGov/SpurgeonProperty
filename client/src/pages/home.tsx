@@ -65,7 +65,7 @@ export default function Home() {
               </div>
 
               {/* Desktop Navigation */}
-              <nav className="hidden md:flex items-center space-x-8">
+              <nav className="hidden md:flex items-center space-x-6">
                 <Link href="/" className="text-white hover:text-orange-300 px-3 py-2 text-sm font-medium transition-colors">
                   Home
                 </Link>
@@ -78,6 +78,15 @@ export default function Home() {
                 <Link href="/sell-property" className="text-white hover:text-orange-300 px-3 py-2 text-sm font-medium transition-colors">
                   Sell Property
                 </Link>
+                <button
+                  onClick={() => {
+                    // Placeholder for redirect URL - will be provided by user
+                    window.open('#', '_blank');
+                  }}
+                  className="bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md whitespace-nowrap"
+                >
+                  Start Application
+                </button>
                 <Link href="/admin/login" className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                   Admin
                 </Link>
