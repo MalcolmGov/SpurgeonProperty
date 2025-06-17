@@ -39,92 +39,33 @@ export default function Properties() {
   const [isSearching, setIsSearching] = useState(false);
   const itemsPerPage = 12;
 
-  const { data: allProperties = [], isLoading } = useQuery<PropertyWithAgent[]>({
-    queryKey: ["/api/properties"],
-  });
+  // Build query parameters for API call
+  const buildQueryParams = () => {
+    const params = new URLSearchParams();
+    
+    if (searchFilters.search) params.append('search', searchFilters.search);
+    if (searchFilters.propertyType !== "all") params.append('propertyType', searchFilters.propertyType.toLowerCase());
+    if (searchFilters.minPrice > 0) params.append('minPrice', searchFilters.minPrice.toString());
+    if (searchFilters.maxPrice < 20000000) params.append('maxPrice', searchFilters.maxPrice.toString());
+    if (searchFilters.bedrooms !== "any") params.append('bedrooms', searchFilters.bedrooms);
+    if (searchFilters.bathrooms !== "any") params.append('bathrooms', searchFilters.bathrooms);
+    if (searchFilters.city) params.append('city', searchFilters.city);
+    if (searchFilters.province !== "all") params.append('province', searchFilters.province.toLowerCase().replace(/\s+/g, '-'));
+    if (searchFilters.status !== "all") params.append('status', searchFilters.status);
+    if (searchFilters.featured) params.append('featured', 'true');
+    
+    return params.toString();
+  };
 
-  // Filter properties based on search criteria
-  const filteredProperties = allProperties.filter(property => {
-    // Search query
-    if (searchFilters.search && !property.title.toLowerCase().includes(searchFilters.search.toLowerCase()) &&
-        !property.address.toLowerCase().includes(searchFilters.search.toLowerCase()) &&
-        !property.suburb.toLowerCase().includes(searchFilters.search.toLowerCase()) &&
-        !property.city.toLowerCase().includes(searchFilters.search.toLowerCase())) {
-      return false;
-    }
-
-    // Property type
-    if (searchFilters.propertyType !== "all" && 
-        property.propertyType.toLowerCase() !== searchFilters.propertyType) {
-      return false;
-    }
-
-    // Price range
-    const price = parseFloat(property.price.replace(/[^\d.]/g, ''));
-    if (price < searchFilters.minPrice || price > searchFilters.maxPrice) {
-      return false;
-    }
-
-    // Bedrooms
-    if (searchFilters.bedrooms !== "any" && 
-        property.bedrooms < parseInt(searchFilters.bedrooms)) {
-      return false;
-    }
-
-    // Bathrooms
-    if (searchFilters.bathrooms !== "any" && 
-        parseFloat(property.bathrooms) < parseInt(searchFilters.bathrooms)) {
-      return false;
-    }
-
-    // Area
-    if (property.area < searchFilters.minArea || property.area > searchFilters.maxArea) {
-      return false;
-    }
-
-    // Province
-    if (searchFilters.province !== "all" && 
-        property.province.toLowerCase().replace(/\s+/g, '-') !== searchFilters.province) {
-      return false;
-    }
-
-    // City
-    if (searchFilters.city && 
-        !property.city.toLowerCase().includes(searchFilters.city.toLowerCase())) {
-      return false;
-    }
-
-    // Suburb
-    if (searchFilters.suburb && 
-        !property.suburb.toLowerCase().includes(searchFilters.suburb.toLowerCase())) {
-      return false;
-    }
-
-    // Year built
-    if (property.yearBuilt && 
-        (property.yearBuilt < searchFilters.yearBuilt[0] || property.yearBuilt > searchFilters.yearBuilt[1])) {
-      return false;
-    }
-
-    // Features
-    if (searchFilters.features.length > 0 && property.features) {
-      const hasAllFeatures = searchFilters.features.every(feature =>
-        property.features?.some(pf => pf.toLowerCase().includes(feature.toLowerCase()))
-      );
-      if (!hasAllFeatures) return false;
-    }
-
-    // Status
-    if (searchFilters.status !== "all" && property.status !== searchFilters.status) {
-      return false;
-    }
-
-    // Featured
-    if (searchFilters.featured && !property.featured) {
-      return false;
-    }
-
-    return true;
+  const { data: filteredProperties = [], isLoading } = useQuery<PropertyWithAgent[]>({
+    queryKey: ["/api/properties", searchFilters],
+    queryFn: async () => {
+      const queryString = buildQueryParams();
+      const url = queryString ? `/api/properties?${queryString}` : '/api/properties';
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Failed to fetch properties');
+      return response.json();
+    },
   });
 
   // Sort properties
@@ -209,7 +150,7 @@ export default function Properties() {
             Advanced Property Search
           </h1>
           <p className="text-slate-600 dark:text-slate-300 mb-6">
-            {isLoading ? 'Loading properties...' : `Found ${sortedProperties.length} of ${allProperties.length} properties`}
+            {isLoading ? 'Loading properties...' : `Found ${sortedProperties.length} properties`}
           </p>
         </div>
 
