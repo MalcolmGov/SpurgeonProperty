@@ -18,7 +18,6 @@ import {
   Clock,
   CheckCircle
 } from "lucide-react";
-import houseBackgroundSvg from "@assets/house-background.svg";
 
 export default function About() {
   const features = [
@@ -90,10 +89,10 @@ export default function About() {
       <section className="relative bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 py-24 overflow-hidden">
         <div className="absolute inset-0 bg-black/30"></div>
         {/* Background House Image */}
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 opacity-30">
           <img 
-            src={houseBackgroundSvg} 
-            alt="Modern house illustration" 
+            src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+            alt="Modern luxury house with beautiful architecture" 
             className="w-full h-full object-cover object-center"
           />
         </div>
