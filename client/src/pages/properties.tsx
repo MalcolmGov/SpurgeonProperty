@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import PropertyCard from "@/components/PropertyCard";
@@ -13,6 +14,8 @@ import { Search, Grid, List, ChevronLeft, ChevronRight, GitCompare } from "lucid
 import type { PropertyWithAgent } from "@shared/schema";
 
 export default function Properties() {
+  const [location] = useLocation();
+  
   const [searchFilters, setSearchFilters] = useState({
     search: "",
     propertyType: "all",
@@ -32,6 +35,24 @@ export default function Properties() {
     sortBy: "createdAt",
     sortOrder: "desc" as 'asc' | 'desc'
   });
+
+  // Apply URL parameters on page load
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.split('?')[1] || '');
+    const newFilters = { ...searchFilters };
+    
+    if (urlParams.get('search')) newFilters.search = urlParams.get('search') || "";
+    if (urlParams.get('propertyType')) newFilters.propertyType = urlParams.get('propertyType') || "all";
+    if (urlParams.get('province')) newFilters.province = urlParams.get('province') || "all";
+    if (urlParams.get('minPrice')) newFilters.minPrice = parseInt(urlParams.get('minPrice') || "0");
+    if (urlParams.get('maxPrice')) newFilters.maxPrice = parseInt(urlParams.get('maxPrice') || "20000000");
+    if (urlParams.get('bedrooms')) newFilters.bedrooms = urlParams.get('bedrooms') || "any";
+    if (urlParams.get('bathrooms')) newFilters.bathrooms = urlParams.get('bathrooms') || "any";
+    if (urlParams.get('sortBy')) newFilters.sortBy = urlParams.get('sortBy') || "createdAt";
+    if (urlParams.get('sortOrder')) newFilters.sortOrder = urlParams.get('sortOrder') as 'asc' | 'desc' || "desc";
+    
+    setSearchFilters(newFilters);
+  }, [location]);
   
   const [comparisonProperties, setComparisonProperties] = useState<number[]>([]);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
