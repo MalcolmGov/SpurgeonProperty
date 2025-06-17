@@ -78,10 +78,12 @@ export default function AdvancedPropertySearch({
   }, [filters.features]);
 
   const handleFilterChange = (key: keyof PropertySearchFilters, value: any) => {
-    onFiltersChange({
+    const newFilters = {
       ...filters,
       [key]: value
-    });
+    };
+    console.log('Filter changed:', key, value, 'New filters:', newFilters);
+    onFiltersChange(newFilters);
   };
 
   const handleFeatureToggle = (feature: string) => {

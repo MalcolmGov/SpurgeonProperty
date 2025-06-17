@@ -97,6 +97,7 @@ export default function Properties() {
   const totalPages = Math.ceil(sortedProperties.length / itemsPerPage);
 
   const handleFilterChange = (newFilters: typeof searchFilters) => {
+    console.log('Properties page: Filter change received:', newFilters);
     setSearchFilters(newFilters);
     setCurrentPage(1);
   };
