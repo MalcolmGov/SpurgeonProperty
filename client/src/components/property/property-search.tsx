@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
-import { Search, Filter, ChevronDown } from "lucide-react";
+import { Search } from "lucide-react";
 
 export default function PropertySearch() {
   const [, setLocation] = useLocation();
-  const [showAdvanced, setShowAdvanced] = useState(true);
+
   const [searchData, setSearchData] = useState({
     search: "",
     propertyType: "",
@@ -55,17 +55,7 @@ export default function PropertySearch() {
               <Search className="w-5 h-5 text-gray-600" />
               <h3 className="text-lg font-semibold text-gray-900">Property Search</h3>
             </div>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setShowAdvanced(!showAdvanced)}
-              className="flex items-center space-x-2 text-gray-600 hover:text-purple-600"
-            >
-              <Filter className="w-4 h-4" />
-              <span>Advanced</span>
-              <ChevronDown className={`w-4 h-4 transition-transform ${showAdvanced ? 'rotate-180' : ''}`} />
-            </Button>
+
           </div>
 
           {/* Main Search Row */}
