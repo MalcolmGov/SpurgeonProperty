@@ -4,6 +4,7 @@ import type { PropertyWithAgent } from "@shared/schema";
 interface UsePropertiesOptions {
   search?: string;
   propertyType?: string;
+  listingType?: string;
   minPrice?: number;
   maxPrice?: number;
   bedrooms?: number;
@@ -20,6 +21,7 @@ export function useProperties(options: UsePropertiesOptions = {}) {
   
   if (options.search) queryParams.set("search", options.search);
   if (options.propertyType) queryParams.set("propertyType", options.propertyType);
+  if (options.listingType) queryParams.set("listingType", options.listingType);
   if (options.minPrice !== undefined) queryParams.set("minPrice", options.minPrice.toString());
   if (options.maxPrice !== undefined) queryParams.set("maxPrice", options.maxPrice.toString());
   if (options.bedrooms !== undefined) queryParams.set("bedrooms", options.bedrooms.toString());

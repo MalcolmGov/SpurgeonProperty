@@ -21,6 +21,7 @@ export default function AdminProperties() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
+  const [listingTypeFilter, setListingTypeFilter] = useState("");
   
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -145,7 +146,7 @@ export default function AdminProperties() {
           {/* Filters and Search */}
           <Card className="mb-8">
             <CardContent className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     Search Properties
@@ -196,6 +197,21 @@ export default function AdminProperties() {
                       <SelectItem value="farm">Farm</SelectItem>
                       <SelectItem value="land">Land</SelectItem>
                       <SelectItem value="commercial">Commercial</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                    Listing Type
+                  </label>
+                  <Select value={listingTypeFilter} onValueChange={setListingTypeFilter}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="All Listings" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Listings</SelectItem>
+                      <SelectItem value="sale">For Sale</SelectItem>
+                      <SelectItem value="rent">For Rent</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
