@@ -227,33 +227,33 @@ export default function PropertyDetail() {
         </div>
         
         {/* Property Details Tabs */}
-        <Card>
+        <Card className="shadow-lg">
           <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="w-full justify-start border-b border-slate-200 dark:border-slate-700 bg-transparent h-auto p-0 rounded-none">
+            <TabsList className="w-full h-auto p-1 bg-slate-100 dark:bg-slate-800 rounded-lg">
               <TabsTrigger 
                 value="overview" 
-                className="data-[state=active]:border-b-2 data-[state=active]:border-purple-primary rounded-none bg-transparent"
+                className="flex-1 h-12 text-base font-semibold rounded-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-purple-700 data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200"
               >
-                Overview
+                📊 Overview
               </TabsTrigger>
               <TabsTrigger 
                 value="features"
-                className="data-[state=active]:border-b-2 data-[state=active]:border-purple-primary rounded-none bg-transparent"
+                className="flex-1 h-12 text-base font-semibold rounded-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200"
               >
-                Features
+                ⭐ Features
               </TabsTrigger>
               <TabsTrigger 
                 value="neighborhood"
-                className="data-[state=active]:border-b-2 data-[state=active]:border-purple-primary rounded-none bg-transparent"
+                className="flex-1 h-12 text-base font-semibold rounded-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-green-600 data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200"
               >
-                Neighborhood
+                🏘️ Neighborhood
               </TabsTrigger>
               {property.videos && property.videos.length > 0 && (
                 <TabsTrigger 
                   value="videos"
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-purple-primary rounded-none bg-transparent"
+                  className="flex-1 h-12 text-base font-semibold rounded-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200"
                 >
-                  Videos
+                  🎥 Videos
                 </TabsTrigger>
               )}
             </TabsList>
