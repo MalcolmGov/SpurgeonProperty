@@ -157,11 +157,19 @@ export default function Home() {
 
         <div className="page-container min-h-screen bg-slate-50 dark:bg-slate-900">
           {/* Hero Section */}
-          <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-            {/* Modern gradient background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/10 to-slate-900/30"></div>
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-black/40 z-10"></div>
+          <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+            {/* Luxury Villa Background Image */}
+            <div className="absolute inset-0">
+              <img 
+                src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
+                alt="Modern luxury villa with stunning architecture" 
+                className="w-full h-full object-cover object-center"
+              />
+            </div>
+            {/* Enhanced gradient overlay to complement purple/orange theme */}
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-900/60 via-slate-900/40 to-purple-800/50 z-10"></div>
+            {/* Additional overlay for text readability */}
+            <div className="absolute inset-0 bg-black/30 z-15"></div>
             
             <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
               <FadeInSection>
