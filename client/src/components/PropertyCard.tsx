@@ -86,18 +86,19 @@ export default function PropertyCard({
       return `/api/placeholder/400/300`;
     }
     
-    const firstImage = property.images?.[0];
-    if (!firstImage) {
+    // Prioritize featured image if available
+    const imageToUse = property.featuredImage || property.images?.[0];
+    if (!imageToUse) {
       return `/api/placeholder/400/300`;
     }
     
     // Ensure the image path starts with /uploads or is a full URL
-    if (firstImage.startsWith('http') || firstImage.startsWith('/uploads')) {
-      return firstImage;
+    if (imageToUse.startsWith('http') || imageToUse.startsWith('/uploads')) {
+      return imageToUse;
     }
     
     // If it's a relative path, prepend /uploads
-    return `/uploads/${firstImage}`;
+    return `/uploads/${imageToUse}`;
   };
 
   const handleShare = async () => {

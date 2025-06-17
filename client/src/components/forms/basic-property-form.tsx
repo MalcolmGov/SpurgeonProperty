@@ -137,6 +137,11 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
         ? `${data.lotSize.trim()} ${data.lotSizeUnit}`
         : null;
 
+      // Determine featured image from uploaded images
+      const featuredImageUrl = featuredImageIndex !== null && uploadedImages[featuredImageIndex] 
+        ? uploadedImages[featuredImageIndex] 
+        : null;
+
       const propertyData = {
         title: data.title.trim(),
         description: data.description.trim(),
@@ -162,6 +167,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
         featured: data.featured,
         features: features,
         images: uploadedImages,
+        featuredImage: featuredImageUrl,
         videos: uploadedVideos
       };
 
@@ -203,6 +209,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
       setFeatures([]);
       setSelectedImages([]);
       setSelectedVideos([]);
+      setFeaturedImageIndex(null);
       onClose();
     },
     onError: (error: any) => {

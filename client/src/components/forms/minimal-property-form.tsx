@@ -42,6 +42,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
   const [selectedVideos, setSelectedVideos] = useState<File[]>([]);
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [uploadedVideos, setUploadedVideos] = useState<string[]>([]);
+  const [featuredImageIndex, setFeaturedImageIndex] = useState<number | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   
