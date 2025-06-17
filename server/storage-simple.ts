@@ -145,7 +145,11 @@ export class DatabaseStorage implements IStorage {
         query = query.offset(filters.offset);
       }
 
+      console.log('Storage query executing with conditions:', whereConditions.length);
+      console.log('Query limit:', filters?.limit, 'offset:', filters?.offset);
+      
       const results = await query;
+      console.log(`Storage returned ${results.length} results`);
 
       return results.map(row => ({
         ...row.property,

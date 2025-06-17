@@ -119,9 +119,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         offset: parseInt(offset as string)
       };
 
+      console.log('Properties API filters:', filters);
       const properties = await storage.getProperties(filters);
+      console.log(`Properties API returned ${properties.length} results for listingType: ${filters.listingType}`);
       res.json(properties);
     } catch (error) {
+      console.error('Properties API error:', error);
       res.status(500).json({ message: "Failed to fetch properties" });
     }
   });
