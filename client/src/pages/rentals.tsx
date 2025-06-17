@@ -26,6 +26,27 @@ export default function Rentals() {
       bedrooms,
       city
     }],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      params.set('listingType', 'rent');
+      
+      if (searchTerm) params.set('search', searchTerm);
+      if (propertyType) params.set('propertyType', propertyType);
+      if (minPrice) params.set('minPrice', minPrice);
+      if (maxPrice) params.set('maxPrice', maxPrice);
+      if (bedrooms) params.set('bedrooms', bedrooms);
+      if (city) params.set('city', city);
+      
+      const url = `/api/properties?${params.toString()}`;
+      console.log('Rentals page API call URL:', url);
+      
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Failed to fetch rentals');
+      
+      const data = await response.json();
+      console.log('Rentals page API response:', data);
+      return data;
+    },
     refetchOnWindowFocus: false,
   });
 
