@@ -26,7 +26,12 @@ function Router() {
 
   // Scroll to top whenever route changes
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Use setTimeout to ensure DOM is updated before scrolling
+    setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }, 0);
   }, [location]);
 
   return (
@@ -53,7 +58,11 @@ function Router() {
 function App() {
   // Ensure page starts at top on initial load
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Immediate scroll reset
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    
     // Prevent browser scroll restoration
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';

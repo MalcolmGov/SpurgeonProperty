@@ -50,6 +50,18 @@ html, body {
   padding: 0;
 }
 
+/* Ensure scroll position resets on navigation */
+.page-container {
+  scroll-margin-top: 0;
+  scroll-snap-align: start;
+}
+
+/* Override any scroll restoration behavior */
+html.no-scroll-restoration {
+  scroll-behavior: auto !important;
+}
+}
+
 /* Mobile scrolling optimizations */
 @media (max-width: 768px) {
   body {
