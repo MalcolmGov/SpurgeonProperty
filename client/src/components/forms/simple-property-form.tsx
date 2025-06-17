@@ -105,6 +105,7 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
         province: data.province,
         postalCode: data.postalCode.trim(),
         propertyType: data.propertyType,
+        listingType: data.listingType,
         bedrooms: parseInt(data.bedrooms) || 3,
         bathrooms: data.bathrooms,
         area: parseInt(data.area) || 0,
