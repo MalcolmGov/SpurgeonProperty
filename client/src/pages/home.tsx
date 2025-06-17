@@ -210,8 +210,13 @@ export default function Home() {
                     </Button>
                   </motion.div>
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button variant="outline" size="lg" className="border-2 border-white text-slate-800 bg-white hover:bg-slate-100 hover:text-slate-900 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300">
-                      <Link href="/sell-property">Sell Your Property</Link>
+                    <Button variant="outline" size="lg" className="border-2 border-white text-slate-800 bg-white hover:bg-slate-100 hover:text-slate-900 px-6 py-4 text-lg font-semibold rounded-xl transition-all duration-300">
+                      <Link href="/sell-property">Sell Property</Link>
+                    </Button>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button variant="outline" size="lg" className="border-2 border-white text-slate-800 bg-white hover:bg-slate-100 hover:text-slate-900 px-6 py-4 text-lg font-semibold rounded-xl transition-all duration-300">
+                      <Link href="/rentals">Rent Property</Link>
                     </Button>
                   </motion.div>
                 </motion.div>
