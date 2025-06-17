@@ -16,7 +16,8 @@ import {
   FileText,
   Award,
   Clock,
-  CheckCircle
+  CheckCircle,
+  ArrowLeft
 } from "lucide-react";
 
 export default function About() {
@@ -85,6 +86,20 @@ export default function About() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+      {/* Back to Main Site Button */}
+      <div className="fixed top-4 left-4 z-50">
+        <Link href="/">
+          <Button
+            variant="outline"
+            size="sm"
+            className="bg-white/90 backdrop-blur-sm hover:bg-white border-purple-200 text-purple-600 hover:text-purple-700 font-medium shadow-lg"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Main Site
+          </Button>
+        </Link>
+      </div>
+
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 py-24 overflow-hidden">
         <div className="absolute inset-0 bg-black/30"></div>
