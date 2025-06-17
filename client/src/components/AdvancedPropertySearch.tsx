@@ -8,8 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Search, Filter, ChevronDown, X, MapPin, Home } from "lucide-react";
+import { Search, X, MapPin, Home } from "lucide-react";
 
 interface PropertySearchFilters {
   search: string;
@@ -71,7 +70,7 @@ export default function AdvancedPropertySearch({
   onReset,
   isSearching = false
 }: AdvancedPropertySearchProps) {
-  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
+
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>(filters.features);
 
   useEffect(() => {
@@ -138,15 +137,6 @@ export default function AdvancedPropertySearch({
                 Clear
               </Button>
             )}
-            <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen}>
-              <CollapsibleTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Filter className="h-4 w-4 mr-1" />
-                  Advanced
-                  <ChevronDown className={`h-4 w-4 ml-1 transition-transform ${isAdvancedOpen ? 'rotate-180' : ''}`} />
-                </Button>
-              </CollapsibleTrigger>
-            </Collapsible>
           </div>
         </div>
       </CardHeader>
@@ -288,9 +278,8 @@ export default function AdvancedPropertySearch({
         </div>
 
         {/* Advanced Filters */}
-        <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen}>
-          <CollapsibleContent className="space-y-6">
-            <Separator />
+        <Separator />
+        <div className="space-y-6">
             
             {/* Location Details */}
             <div>
@@ -426,8 +415,7 @@ export default function AdvancedPropertySearch({
                 </div>
               </div>
             </div>
-          </CollapsibleContent>
-        </Collapsible>
+        </div>
 
         {/* Search Button */}
         <div className="flex gap-2 pt-4 border-t">
