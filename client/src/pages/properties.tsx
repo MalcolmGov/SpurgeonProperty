@@ -57,8 +57,8 @@ export default function Properties() {
     return params.toString();
   };
 
-  const { data: filteredProperties = [], isLoading, refetch } = useQuery<PropertyWithAgent[]>({
-    queryKey: ["/api/properties", JSON.stringify(searchFilters)],
+  const { data: filteredProperties = [], isLoading } = useQuery<PropertyWithAgent[]>({
+    queryKey: ["/api/properties", searchFilters.search, searchFilters.propertyType, searchFilters.minPrice, searchFilters.maxPrice, searchFilters.bedrooms, searchFilters.bathrooms, searchFilters.city, searchFilters.province, searchFilters.status, searchFilters.featured],
     queryFn: async () => {
       const queryString = buildQueryParams();
       const url = queryString ? `/api/properties?${queryString}` : '/api/properties';
