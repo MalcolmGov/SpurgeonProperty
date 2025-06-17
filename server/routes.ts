@@ -106,14 +106,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const filters = {
         search: search as string,
-        propertyType: propertyType as string,
-        listingType: listingType as string,
+        propertyType: (propertyType && propertyType !== "all") ? propertyType as string : undefined,
+        listingType: (listingType && listingType !== "all") ? listingType as string : undefined,
         minPrice: minPrice ? parseInt(minPrice as string) : undefined,
         maxPrice: maxPrice ? parseInt(maxPrice as string) : undefined,
         bedrooms: bedrooms ? parseInt(bedrooms as string) : undefined,
         bathrooms: bathrooms ? parseFloat(bathrooms as string) : undefined,
-        city: city as string,
-        status: status as string,
+        city: (city && city !== "all") ? city as string : undefined,
+        status: (status && status !== "all") ? status as string : undefined,
         featured: featured === "true" ? true : featured === "false" ? false : undefined,
         limit: parseInt(limit as string),
         offset: parseInt(offset as string)
