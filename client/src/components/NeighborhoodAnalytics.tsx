@@ -265,28 +265,38 @@ export function NeighborhoodAnalytics({ latitude, longitude, suburb, city }: Nei
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2">
-            <GraduationCap className="h-5 w-5" />
+            <GraduationCap className="h-5 w-5 text-blue-600" />
             Nearby Schools
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <div className="grid gap-4">
             {analytics.schools.slice(0, 5).map((school, index) => (
-              <div key={index} className="border-l-4 border-purple-200 dark:border-purple-800 pl-4">
-                <div className="flex items-center justify-between mb-1">
-                  <h4 className="font-medium text-sm">{school.name}</h4>
-                  <div className="flex items-center gap-1">
-                    <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm">{school.rating.toFixed(1)}</span>
+              <div key={index} className="p-4 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-slate-800 dark:text-white text-base">{school.name}</h4>
+                    <div className="flex items-center gap-3 mt-1">
+                      <Badge variant="outline" className="text-xs bg-white dark:bg-slate-800">
+                        {school.type}
+                      </Badge>
+                      <span className="text-sm text-slate-600 dark:text-slate-400">
+                        {school.distance.toFixed(1)}km away
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 bg-yellow-100 dark:bg-yellow-900/30 px-2 py-1 rounded-full">
+                    <Star className="h-3 w-3 fill-yellow-500 text-yellow-500" />
+                    <span className="text-sm font-medium text-yellow-700 dark:text-yellow-300">{school.rating.toFixed(1)}</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
-                  <Badge variant="outline" className="text-xs">
-                    {school.type}
-                  </Badge>
-                  <span>{school.distance.toFixed(1)}km away</span>
-                  {school.fees && <span>{school.fees}</span>}
-                </div>
+                {school.fees && (
+                  <div className="mt-2 pt-2 border-t border-blue-200 dark:border-blue-700">
+                    <span className="text-sm font-medium text-green-700 dark:text-green-300">
+                      {school.fees}
+                    </span>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -297,34 +307,36 @@ export function NeighborhoodAnalytics({ latitude, longitude, suburb, city }: Nei
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2">
-            <ShoppingCart className="h-5 w-5" />
+            <ShoppingCart className="h-5 w-5 text-green-600" />
             Local Amenities
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
+          <div className="grid gap-3">
             {analytics.amenities.slice(0, 8).map((amenity, index) => (
-              <div key={index} className="flex items-center gap-3">
-                <div className="flex-shrink-0">
-                  {getAmenityIcon(amenity.type)}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium truncate">{amenity.name}</p>
-                    <span className="text-xs text-gray-500 ml-2">
-                      {amenity.distance.toFixed(1)}km
-                    </span>
+              <div key={index} className="p-3 rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800">
+                <div className="flex items-center gap-3">
+                  <div className="flex-shrink-0 p-2 bg-white dark:bg-slate-800 rounded-full border border-green-200 dark:border-green-700">
+                    {getAmenityIcon(amenity.type)}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="text-xs">
-                      {amenity.category}
-                    </Badge>
-                    {amenity.rating && (
-                      <div className="flex items-center gap-1">
-                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        <span className="text-xs">{amenity.rating.toFixed(1)}</span>
-                      </div>
-                    )}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-1">
+                      <h4 className="font-semibold text-slate-800 dark:text-white text-sm truncate">{amenity.name}</h4>
+                      <span className="text-xs text-slate-600 dark:text-slate-400 ml-2">
+                        {amenity.distance.toFixed(1)}km
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="text-xs bg-white dark:bg-slate-800">
+                        {amenity.category}
+                      </Badge>
+                      {amenity.rating && (
+                        <div className="flex items-center gap-1 bg-yellow-100 dark:bg-yellow-900/30 px-2 py-0.5 rounded-full">
+                          <Star className="h-3 w-3 fill-yellow-500 text-yellow-500" />
+                          <span className="text-xs font-medium text-yellow-700 dark:text-yellow-300">{amenity.rating.toFixed(1)}</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
