@@ -425,6 +425,68 @@ export default function Home() {
                       150+ Verified Agents • Local Expertise
                     </div>
                   </motion.div>
+
+                  {/* Comprehensive Property Tools */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    viewport={{ once: true }}
+                    className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                  >
+                    <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg flex items-center justify-center mb-4">
+                      <Building className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-3">Comprehensive Property Tools</h3>
+                    <p className="text-slate-600 dark:text-slate-300 mb-4">
+                      Access advanced mortgage calculators, affordability analysis, and property comparison tools to make informed investment decisions.
+                    </p>
+                    <div className="text-sm text-green-600 dark:text-green-400 font-medium">
+                      Financial Planning • Investment Analysis
+                    </div>
+                  </motion.div>
+
+                  {/* Premium Support */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                    viewport={{ once: true }}
+                    className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                  >
+                    <div className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
+                      <Award className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-3">Premium Support</h3>
+                    <p className="text-slate-600 dark:text-slate-300 mb-4">
+                      Enjoy white-glove service with dedicated support, instant email notifications, and priority access to new listings and market opportunities.
+                    </p>
+                    <div className="text-sm text-indigo-600 dark:text-indigo-400 font-medium">
+                      24/7 Support • Priority Access
+                    </div>
+                  </motion.div>
+
+                  {/* Secure & Verified */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.6 }}
+                    viewport={{ once: true }}
+                    className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                  >
+                    <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-3">Secure & Verified</h3>
+                    <p className="text-slate-600 dark:text-slate-300 mb-4">
+                      All properties and agents are thoroughly verified. Enjoy secure transactions with encrypted data protection and compliance with South African regulations.
+                    </p>
+                    <div className="text-sm text-red-600 dark:text-red-400 font-medium">
+                      SSL Encrypted • POPIA Compliant
+                    </div>
+                  </motion.div>
                 </div>
 
                 {/* Trust Indicators */}
