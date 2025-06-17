@@ -105,7 +105,7 @@ const formatCurrency = (amount: number) => {
 };
 
 export function NeighborhoodAnalytics({ latitude, longitude, suburb, city }: NeighborhoodAnalyticsProps) {
-  const [showDetails, setShowDetails] = useState(false);
+  const [showDetails, setShowDetails] = useState(true);
 
   const { data: analytics, isLoading, error } = useQuery<NeighborhoodData>({
     queryKey: ['/api/neighborhood/analytics', latitude, longitude, suburb, city],
