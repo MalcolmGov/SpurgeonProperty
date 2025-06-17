@@ -159,18 +159,24 @@ export default function MortgageCalculator({ propertyPrice }: MortgageCalculator
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="calculator" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="calculator" className="flex items-center gap-2">
-                <Calculator className="w-4 h-4" />
-                Calculator
+            <TabsList className="grid w-full grid-cols-3 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg mb-6">
+              <TabsTrigger 
+                value="calculator" 
+                className="flex items-center gap-2 h-12 rounded-md text-sm font-medium transition-all duration-200 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-slate-200 dark:hover:bg-slate-700"
+              >
+                📊 Calculator
               </TabsTrigger>
-              <TabsTrigger value="affordability" className="flex items-center gap-2">
-                <PieChart className="w-4 h-4" />
-                Affordability
+              <TabsTrigger 
+                value="affordability" 
+                className="flex items-center gap-2 h-12 rounded-md text-sm font-medium transition-all duration-200 data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-green-600 data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-slate-200 dark:hover:bg-slate-700"
+              >
+                💰 Affordability
               </TabsTrigger>
-              <TabsTrigger value="costs" className="flex items-center gap-2">
-                <Banknote className="w-4 h-4" />
-                Total Costs
+              <TabsTrigger 
+                value="costs" 
+                className="flex items-center gap-2 h-12 rounded-md text-sm font-medium transition-all duration-200 data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-slate-200 dark:hover:bg-slate-700"
+              >
+                💳 Total Costs
               </TabsTrigger>
             </TabsList>
 
