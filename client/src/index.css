@@ -60,7 +60,6 @@ html, body {
 html.no-scroll-restoration {
   scroll-behavior: auto !important;
 }
-}
 
 /* Mobile scrolling optimizations */
 @media (max-width: 768px) {
@@ -111,7 +110,7 @@ html {
 /* Ensure no space above fixed elements */
 .page-container {
   margin-top: 0;
-  padding-top: 80px; /* Space for fixed header */
+  padding-top: 0; /* Remove default padding - sections handle their own spacing */
   touch-action: auto; /* Allow pinch-zoom on main content */
 }
 

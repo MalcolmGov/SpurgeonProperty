@@ -157,7 +157,7 @@ export default function Home() {
 
         <div className="page-container min-h-screen bg-slate-50 dark:bg-slate-900">
           {/* Hero Section */}
-          <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
+          <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-40 sm:pt-36 md:pt-24">
             {/* Responsive Background Images */}
             <div className="absolute inset-0">
               {/* Desktop Background - High quality villa image */}
