@@ -65,6 +65,7 @@ export default function SimplePropertyForm({ property, open, onClose }: SimplePr
           province: property.province || "Gauteng",
           postalCode: property.postalCode || "",
           propertyType: property.propertyType || "house",
+          listingType: property.listingType || "sale",
           bedrooms: property.bedrooms?.toString() || "3",
           bathrooms: property.bathrooms || "2",
           area: property.area?.toString() || "",

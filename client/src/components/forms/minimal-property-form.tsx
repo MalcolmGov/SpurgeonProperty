@@ -116,6 +116,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         province: "Gauteng",
         postalCode: "",
         propertyType: "house",
+        listingType: "sale",
         bedrooms: "3",
         bathrooms: "2",
         area: "",
@@ -266,6 +267,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         province: "Gauteng",
         postalCode: "",
         propertyType: "house",
+        listingType: "sale",
         bedrooms: "3",
         bathrooms: "2",
         area: "",
@@ -415,7 +417,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
           {/* Basic Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Basic Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className={`block text-sm font-medium mb-1 ${errors.title ? "text-red-500" : ""}`}>
                   Property Title *
@@ -445,6 +447,17 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
                   <option value="farm">Farm</option>
                   <option value="land">Land</option>
                   <option value="commercial">Commercial</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Listing Type</label>
+                <select
+                  value={formData.listingType}
+                  onChange={(e) => handleChange("listingType", e.target.value)}
+                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                >
+                  <option value="sale">For Sale</option>
+                  <option value="rent">For Rent</option>
                 </select>
               </div>
             </div>
