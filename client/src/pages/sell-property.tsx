@@ -11,8 +11,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { CheckCircle, Home, TrendingUp, Users, Clock, Phone, Mail, MapPin } from "lucide-react";
+import { CheckCircle, Home, TrendingUp, Users, Clock, Phone, Mail, MapPin, ArrowLeft } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
+import { Link } from "wouter";
 
 const sellPropertySchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -141,6 +142,18 @@ ${data.message}`,
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-20">
       <div className="max-w-6xl mx-auto px-4 py-12">
+        {/* Back to Main Site Button */}
+        <div className="mb-6">
+          <Link href="/">
+            <Button 
+              variant="outline" 
+              className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-purple-200 dark:border-purple-700 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Main Site
+            </Button>
+          </Link>
+        </div>
         {/* Hero Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
