@@ -40,6 +40,7 @@ export default function AdminProperties() {
     search: searchQuery,
     status: statusFilter || undefined,
     propertyType: typeFilter || undefined,
+    listingType: listingTypeFilter || undefined,
   });
 
   const deletePropertyMutation = useMutation({
