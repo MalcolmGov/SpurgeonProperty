@@ -79,9 +79,7 @@ export default function Navigation() {
               {theme === "dark" ? "🌞" : "🌙"}
             </Button>
 
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-              Sign In
-            </Button>
+
           </div>
 
           {/* Mobile Navigation */}
@@ -112,9 +110,7 @@ export default function Navigation() {
                   >
                     {theme === "dark" ? "🌞" : "🌙"} Theme
                   </Button>
-                  <Button className="w-full bg-primary hover:bg-primary/90">
-                    Sign In
-                  </Button>
+
                 </div>
               </SheetContent>
             </Sheet>
