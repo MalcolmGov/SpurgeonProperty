@@ -229,6 +229,11 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       console.log('New uploaded videos:', uploadedVideoFiles);
       console.log('Final video list for property:', allVideos);
 
+      // Determine featured image from all images
+      const featuredImageUrl = featuredImageIndex !== null && allImages[featuredImageIndex] 
+        ? allImages[featuredImageIndex] 
+        : null;
+
       // Format lot size with unit
       const formattedLotSize = data.lotSize.trim() 
         ? `${data.lotSize.trim()} ${data.lotSizeUnit}`
@@ -259,6 +264,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         featured: data.featured,
         features: features,
         images: allImages,
+        featuredImage: featuredImageUrl,
         videos: allVideos
       };
 
@@ -309,6 +315,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       setSelectedVideos([]);
       setUploadedImages([]);
       setUploadedVideos([]);
+      setFeaturedImageIndex(null);
       onClose();
     },
     onError: (error: any) => {
@@ -417,6 +424,13 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
 
   const removeImage = (index: number) => {
     setSelectedImages(prev => prev.filter((_, i) => i !== index));
+    
+    // Update featured image index if necessary
+    if (featuredImageIndex === index) {
+      setFeaturedImageIndex(null);
+    } else if (featuredImageIndex !== null && featuredImageIndex > index) {
+      setFeaturedImageIndex(featuredImageIndex - 1);
+    }
   };
 
   const removeVideo = (index: number) => {
@@ -911,13 +925,25 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
               />
               
               {(selectedImages.length > 0 || uploadedImages.length > 0) && (
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {selectedImages.length} image(s) selected, {uploadedImages.length} uploaded from ZIP
-                  </p>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      {selectedImages.length} image(s) selected, {uploadedImages.length} uploaded from ZIP
+                    </p>
+                    {featuredImageIndex !== null && (
+                      <p className="text-sm text-blue-600 font-medium">
+                        Image {featuredImageIndex + 1} set as featured
+                      </p>
+                    )}
+                  </div>
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {selectedImages.map((file, index) => (
-                      <div key={`file-${index}`} className="relative">
+                      <div key={`file-${index}`} className={`relative rounded-lg border-2 transition-all ${
+                        featuredImageIndex === index 
+                          ? 'border-blue-500 bg-blue-50 dark:bg-blue-950' 
+                          : 'border-gray-200 dark:border-gray-700'
+                      }`}>
                         <div className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
                           <img 
                             src={URL.createObjectURL(file)} 
@@ -934,19 +960,44 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
                             }}
                           />
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => removeImage(index)}
-                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
-                        >
-                          ×
-                        </button>
+                        
+                        {/* Featured Image Badge */}
+                        {featuredImageIndex === index && (
+                          <div className="absolute -top-2 -left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                            Featured
+                          </div>
+                        )}
+                        
+                        {/* Action Buttons */}
+                        <div className="absolute -top-2 -right-2 flex gap-1">
+                          <button
+                            type="button"
+                            onClick={() => setFeaturedImageIndex(index)}
+                            className="h-6 w-6 rounded-full p-0 bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center"
+                            title="Set as Featured Image"
+                          >
+                            ⭐
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => removeImage(index)}
+                            className="h-6 w-6 rounded-full p-0 bg-red-500 hover:bg-red-600 text-white flex items-center justify-center"
+                            title="Remove Image"
+                          >
+                            ×
+                          </button>
+                        </div>
                       </div>
                     ))}
                     {uploadedImages.map((url, index) => {
+                      const adjustedIndex = selectedImages.length + index; // Adjust index for ZIP images
                       console.log(`Rendering ZIP image ${index + 1}:`, url);
                       return (
-                        <div key={`zip-${index}`} className="relative">
+                        <div key={`zip-${index}`} className={`relative rounded-lg border-2 transition-all ${
+                          featuredImageIndex === adjustedIndex 
+                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-950' 
+                            : 'border-gray-200 dark:border-gray-700'
+                        }`}>
                           <div className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
                             <img 
                               src={url} 
@@ -965,17 +1016,45 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
                               }}
                             />
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => setUploadedImages(prev => prev.filter((_, i) => i !== index))}
-                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
-                          >
-                            ×
-                          </button>
+                          
+                          {/* Featured Image Badge */}
+                          {featuredImageIndex === adjustedIndex && (
+                            <div className="absolute -top-2 -left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                              Featured
+                            </div>
+                          )}
+                          
+                          {/* Action Buttons */}
+                          <div className="absolute -top-2 -right-2 flex gap-1">
+                            <button
+                              type="button"
+                              onClick={() => setFeaturedImageIndex(adjustedIndex)}
+                              className="h-6 w-6 rounded-full p-0 bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center"
+                              title="Set as Featured Image"
+                            >
+                              ⭐
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setUploadedImages(prev => prev.filter((_, i) => i !== index))}
+                              className="h-6 w-6 rounded-full p-0 bg-red-500 hover:bg-red-600 text-white flex items-center justify-center"
+                              title="Remove Image"
+                            >
+                              ×
+                            </button>
+                          </div>
                         </div>
                       )
                     })}
                   </div>
+                  
+                  {(selectedImages.length > 0 || uploadedImages.length > 0) && featuredImageIndex === null && (
+                    <div className="bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+                      <p className="text-sm text-yellow-800 dark:text-yellow-200 flex items-center gap-2">
+                        ⚠️ Please select a featured image by clicking the star icon on one of your uploaded images.
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
               
