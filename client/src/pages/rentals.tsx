@@ -3,9 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Search, Filter, MapPin, Bed, Bath, Home } from "lucide-react";
+import { Search, Filter, MapPin, Bed, Bath, Home, ArrowLeft } from "lucide-react";
 import PropertyCard from "@/components/PropertyCard";
 import { PropertyWithAgent } from "@shared/schema";
+import { Link } from "wouter";
 
 export default function Rentals() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -44,6 +45,19 @@ export default function Rentals() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-orange-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back to Main Site Button */}
+        <div className="mb-6">
+          <Link href="/">
+            <Button 
+              variant="outline"
+              className="flex items-center gap-2 hover:bg-purple-50 dark:hover:bg-slate-700 border-purple-200 dark:border-slate-600"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Main Site
+            </Button>
+          </Link>
+        </div>
+
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
