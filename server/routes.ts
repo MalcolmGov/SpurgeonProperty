@@ -299,10 +299,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/properties", async (req, res) => {
     try {
+      console.log('Creating property with data:', JSON.stringify(req.body, null, 2));
+      console.log('Images in request:', req.body.images);
+      
       const validatedData = insertPropertySchema.parse(req.body);
+      console.log('Validated data images:', validatedData.images);
+      
       const property = await storage.createProperty(validatedData);
+      console.log('Created property with images:', property.images);
+      
       res.status(201).json(property);
     } catch (error) {
+      console.error('Property creation error:', error);
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid property data", errors: error.errors });
       }

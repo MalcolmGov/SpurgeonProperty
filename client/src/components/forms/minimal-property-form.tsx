@@ -190,11 +190,26 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
             method: 'POST',
             body: formData,
           });
+          
+          if (!uploadResponse.ok) {
+            throw new Error(`Upload failed: ${uploadResponse.statusText}`);
+          }
+          
           const uploadResult = await uploadResponse.json();
+          console.log('Upload result:', uploadResult);
+          
           regularUploadedImages = uploadResult.imageUrls || uploadResult.urls || [];
           uploadedVideoFiles = uploadResult.videoUrls || [];
+          
+          console.log('Processed images:', regularUploadedImages);
+          console.log('Processed videos:', uploadedVideoFiles);
         } catch (error) {
           console.error('File upload failed:', error);
+          toast({
+            title: "Upload Error",
+            description: "Failed to upload files. Please try again.",
+            variant: "destructive",
+          });
         } finally {
           setIsUploading(false);
         }
@@ -205,6 +220,9 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       
       // Combine all videos: existing videos + newly uploaded videos
       const allVideos = [...uploadedVideos, ...uploadedVideoFiles];
+
+      console.log('Final image list for property:', allImages);
+      console.log('Final video list for property:', allVideos);
 
       // Format lot size with unit
       const formattedLotSize = data.lotSize.trim() 
@@ -238,6 +256,8 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         images: allImages,
         videos: allVideos
       };
+
+      console.log('Property data being sent:', propertyData);
 
       // Use PUT for updates, POST for new properties
       if (property) {
