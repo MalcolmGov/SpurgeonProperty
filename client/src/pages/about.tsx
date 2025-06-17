@@ -18,6 +18,7 @@ import {
   Clock,
   CheckCircle
 } from "lucide-react";
+import houseBackgroundSvg from "@assets/house-background.svg";
 
 export default function About() {
   const features = [
@@ -88,6 +89,14 @@ export default function About() {
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 py-24 overflow-hidden">
         <div className="absolute inset-0 bg-black/30"></div>
+        {/* Background House Image */}
+        <div className="absolute inset-0 opacity-20">
+          <img 
+            src={houseBackgroundSvg} 
+            alt="Modern house illustration" 
+            className="w-full h-full object-cover object-center"
+          />
+        </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
             About Spurgeon Property
