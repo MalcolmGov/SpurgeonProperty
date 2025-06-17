@@ -215,13 +215,17 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         }
       }
 
-      // Combine all images: ZIP-extracted images + regular uploaded images
+      // Combine all images: existing images + newly uploaded images
       const allImages = [...uploadedImages, ...regularUploadedImages];
       
       // Combine all videos: existing videos + newly uploaded videos
       const allVideos = [...uploadedVideos, ...uploadedVideoFiles];
 
+      console.log('Existing uploaded images:', uploadedImages);
+      console.log('New uploaded images:', regularUploadedImages);
       console.log('Final image list for property:', allImages);
+      console.log('Existing uploaded videos:', uploadedVideos);
+      console.log('New uploaded videos:', uploadedVideoFiles);
       console.log('Final video list for property:', allVideos);
 
       // Format lot size with unit
