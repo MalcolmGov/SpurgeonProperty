@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { X, Upload, FileArchive, Plus, Trash2 } from "lucide-react";
+import { X, Upload, FileArchive, Plus, Trash2, Star, AlertTriangle } from "lucide-react";
 
 interface BasicPropertyFormProps {
   open: boolean;
@@ -48,6 +48,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
   const [newFeature, setNewFeature] = useState("");
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedVideos, setSelectedVideos] = useState<File[]>([]);
+  const [featuredImageIndex, setFeaturedImageIndex] = useState<number | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -308,6 +309,13 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
 
   const removeImage = (index: number) => {
     setSelectedImages(prev => prev.filter((_, i) => i !== index));
+    
+    // Update featured image index if necessary
+    if (featuredImageIndex === index) {
+      setFeaturedImageIndex(null);
+    } else if (featuredImageIndex !== null && featuredImageIndex > index) {
+      setFeaturedImageIndex(featuredImageIndex - 1);
+    }
   };
 
   const removeVideo = (index: number) => {
@@ -781,28 +789,71 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
               />
               
               {selectedImages.length > 0 && (
-                <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground">
-                    {selectedImages.length} image(s) selected
-                  </p>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">
+                      {selectedImages.length} image(s) selected
+                    </p>
+                    {featuredImageIndex !== null && (
+                      <p className="text-sm text-blue-600 font-medium">
+                        Image {featuredImageIndex + 1} set as featured
+                      </p>
+                    )}
+                  </div>
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {selectedImages.map((file, index) => (
-                      <div key={index} className="relative">
-                        <div className="aspect-square bg-muted rounded-lg flex items-center justify-center text-xs">
+                      <div key={index} className={`relative rounded-lg border-2 transition-all ${
+                        featuredImageIndex === index 
+                          ? 'border-blue-500 bg-blue-50 dark:bg-blue-950' 
+                          : 'border-gray-200 dark:border-gray-700'
+                      }`}>
+                        <div className="aspect-square bg-muted rounded-lg flex items-center justify-center text-xs p-2 text-center">
                           {file.name}
                         </div>
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          size="sm"
-                          className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
-                          onClick={() => removeImage(index)}
-                        >
-                          <X className="w-3 h-3" />
-                        </Button>
+                        
+                        {/* Featured Image Badge */}
+                        {featuredImageIndex === index && (
+                          <div className="absolute -top-2 -left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                            Featured
+                          </div>
+                        )}
+                        
+                        {/* Action Buttons */}
+                        <div className="absolute -top-2 -right-2 flex gap-1">
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            size="sm"
+                            className="h-6 w-6 rounded-full p-0 bg-blue-500 hover:bg-blue-600 text-white"
+                            onClick={() => setFeaturedImageIndex(index)}
+                            title="Set as Featured Image"
+                          >
+                            <Star className="w-3 h-3" />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="sm"
+                            className="h-6 w-6 rounded-full p-0"
+                            onClick={() => removeImage(index)}
+                            title="Remove Image"
+                          >
+                            <X className="w-3 h-3" />
+                          </Button>
+                        </div>
                       </div>
                     ))}
                   </div>
+                  
+                  {selectedImages.length > 0 && featuredImageIndex === null && (
+                    <div className="bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+                      <p className="text-sm text-yellow-800 dark:text-yellow-200 flex items-center gap-2">
+                        <AlertTriangle className="w-4 h-4" />
+                        Please select a featured image by clicking the star icon on one of your uploaded images.
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
               
