@@ -57,15 +57,17 @@ export default function Properties() {
     return params.toString();
   };
 
-  const { data: filteredProperties = [], isLoading } = useQuery<PropertyWithAgent[]>({
-    queryKey: ["/api/properties", searchFilters],
+  const { data: filteredProperties = [], isLoading, refetch } = useQuery<PropertyWithAgent[]>({
+    queryKey: ["/api/properties", JSON.stringify(searchFilters)],
     queryFn: async () => {
       const queryString = buildQueryParams();
       const url = queryString ? `/api/properties?${queryString}` : '/api/properties';
+      console.log('Frontend making API call:', url);
       const response = await fetch(url);
       if (!response.ok) throw new Error('Failed to fetch properties');
       return response.json();
     },
+    refetchOnWindowFocus: false,
   });
 
   // Sort properties
@@ -93,6 +95,11 @@ export default function Properties() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedProperties = sortedProperties.slice(startIndex, startIndex + itemsPerPage);
   const totalPages = Math.ceil(sortedProperties.length / itemsPerPage);
+
+  const handleFilterChange = (newFilters: typeof searchFilters) => {
+    setSearchFilters(newFilters);
+    setCurrentPage(1);
+  };
 
   const handleSearch = () => {
     setIsSearching(true);
@@ -176,7 +183,7 @@ export default function Properties() {
             {/* Advanced Search Component */}
             <AdvancedPropertySearch
               filters={searchFilters}
-              onFiltersChange={setSearchFilters}
+              onFiltersChange={handleFilterChange}
               onSearch={handleSearch}
               onReset={handleResetFilters}
               isSearching={isSearching}
