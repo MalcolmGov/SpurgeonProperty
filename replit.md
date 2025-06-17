@@ -123,6 +123,8 @@ The platform follows a full-stack TypeScript architecture with the following lay
 
 ## Recent Changes
 
+- **June 17, 2025 - Image Upload System Complete Fix**: Resolved critical "MulterError: Unexpected field" issues in image upload system by switching from restrictive field-based multer configuration to flexible any() configuration. Fixed image persistence during property updates - existing images are now properly preserved when editing properties without losing uploaded media. Enhanced upload endpoint with comprehensive error handling and debugging. Property image replacement and updates now work seamlessly.
+
 - **June 17, 2025 - Database Connection Fix and Rentals Page Navigation Enhancement**: Fixed critical database connection issues by switching from WebSocket-based to HTTP-based Neon connection, resolving app startup failures. Successfully connected uploaded images to properties by fixing image-property linking process. Added "Back to Main Site" navigation button to rentals page with purple branding and arrow icon for improved user experience.
 
 - **June 16, 2025 - Homepage Statistics Update and Advanced Search Implementation**: Removed "500+ Properties Listed" and "150+ Expert Agents" statistics from homepage hero section per user request, maintaining only "200+ Happy Clients" and "50+ Areas Covered" in clean 2-column layout. Implemented comprehensive property search component with advanced view displayed by default, featuring horizontal layout with search input, property type selector, province dropdown, price range inputs, bedrooms/bathrooms selectors, and sort options. Search interface includes all South African provinces and complete property type coverage for optimal user experience.
