@@ -321,15 +321,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/properties/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
+      console.log(`Updating property ${id} with data:`, JSON.stringify(req.body, null, 2));
+      console.log(`Images being updated for property ${id}:`, req.body.images);
+      
       const validatedData = insertPropertySchema.partial().parse(req.body);
+      console.log(`Validated update data for property ${id}:`, validatedData.images);
+      
       const property = await storage.updateProperty(id, validatedData);
       
       if (!property) {
         return res.status(404).json({ message: "Property not found" });
       }
       
+      console.log(`Updated property ${id} with images:`, property.images);
       res.json(property);
     } catch (error) {
+      console.error(`Property ${req.params.id} update error:`, error);
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid property data", errors: error.errors });
       }
