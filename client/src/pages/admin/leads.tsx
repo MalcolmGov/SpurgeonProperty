@@ -5,17 +5,29 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { useLeads } from "@/hooks/use-leads";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Phone, Mail, Edit, Calendar } from "lucide-react";
+import { Search, Phone, Mail, Edit, Calendar, X } from "lucide-react";
 import type { LeadWithProperty } from "@shared/schema";
 
 export default function AdminLeads() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("");
+  const [editingLead, setEditingLead] = useState<LeadWithProperty | null>(null);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+    status: "",
+    priority: ""
+  });
   
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -55,6 +67,40 @@ export default function AdminLeads() {
     updateLeadMutation.mutate({
       id: leadId,
       data: { priority: newPriority }
+    });
+  };
+
+  const handleEditLead = (lead: LeadWithProperty) => {
+    setEditingLead(lead);
+    setEditForm({
+      name: lead.name || "",
+      email: lead.email || "",
+      phone: lead.phone || "",
+      message: lead.message || "",
+      status: lead.status || "",
+      priority: lead.priority || ""
+    });
+  };
+
+  const handleSaveEdit = () => {
+    if (!editingLead) return;
+    
+    updateLeadMutation.mutate({
+      id: editingLead.id,
+      data: editForm
+    });
+    setEditingLead(null);
+  };
+
+  const handleCloseEdit = () => {
+    setEditingLead(null);
+    setEditForm({
+      name: "",
+      email: "",
+      phone: "",
+      message: "",
+      status: "",
+      priority: ""
     });
   };
 
@@ -317,11 +363,16 @@ export default function AdminLeads() {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <div className="flex items-center space-x-2">
-                              <Button variant="ghost" size="sm">
-                                <Edit className="w-4 h-4" />
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => handleEditLead(lead)}
+                                className="hover:bg-purple-100 dark:hover:bg-purple-900/20"
+                              >
+                                <Edit className="w-4 h-4 text-purple-600" />
                               </Button>
                               <Button variant="ghost" size="sm">
-                                <Calendar className="w-4 h-4" />
+                                <Calendar className="w-4 h-4 text-slate-500" />
                               </Button>
                             </div>
                           </td>
@@ -343,6 +394,110 @@ export default function AdminLeads() {
           </Card>
         </div>
       </div>
+
+      {/* Edit Lead Dialog */}
+      {editingLead && (
+        <Dialog open={true} onOpenChange={handleCloseEdit}>
+          <DialogContent className="max-w-lg">
+            <DialogHeader>
+              <div className="flex items-center justify-between">
+                <DialogTitle>Edit Lead</DialogTitle>
+                <Button variant="ghost" size="sm" onClick={handleCloseEdit}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+            </DialogHeader>
+            
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="edit-name">Full Name</Label>
+                  <Input
+                    id="edit-name"
+                    value={editForm.name}
+                    onChange={(e) => setEditForm(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="Enter full name"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="edit-email">Email</Label>
+                  <Input
+                    id="edit-email"
+                    type="email"
+                    value={editForm.email}
+                    onChange={(e) => setEditForm(prev => ({ ...prev, email: e.target.value }))}
+                    placeholder="Enter email address"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="edit-phone">Phone Number</Label>
+                <Input
+                  id="edit-phone"
+                  value={editForm.phone}
+                  onChange={(e) => setEditForm(prev => ({ ...prev, phone: e.target.value }))}
+                  placeholder="Enter phone number"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="edit-status">Status</Label>
+                  <Select value={editForm.status} onValueChange={(value) => setEditForm(prev => ({ ...prev, status: value }))}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="new">New</SelectItem>
+                      <SelectItem value="contacted">Contacted</SelectItem>
+                      <SelectItem value="qualified">Qualified</SelectItem>
+                      <SelectItem value="closed">Closed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="edit-priority">Priority</Label>
+                  <Select value={editForm.priority} onValueChange={(value) => setEditForm(prev => ({ ...prev, priority: value }))}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select priority" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="high">High</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="low">Low</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="edit-message">Message</Label>
+                <Textarea
+                  id="edit-message"
+                  value={editForm.message}
+                  onChange={(e) => setEditForm(prev => ({ ...prev, message: e.target.value }))}
+                  placeholder="Lead message or notes"
+                  rows={4}
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4 border-t">
+                <Button variant="outline" onClick={handleCloseEdit} className="flex-1">
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={handleSaveEdit} 
+                  className="flex-1 bg-purple-600 hover:bg-purple-700"
+                  disabled={updateLeadMutation.isPending}
+                >
+                  {updateLeadMutation.isPending ? "Saving..." : "Save Changes"}
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }
