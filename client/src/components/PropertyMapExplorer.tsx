@@ -24,12 +24,7 @@ L.Icon.Default.mergeOptions({
 
 // Custom property marker icons
 const createPropertyIcon = (price: string, propertyType: string) => {
-  const color = propertyType === 'house' ? '#22c55e' : 
-               propertyType === 'apartment' ? '#3b82f6' :
-               propertyType === 'townhouse' ? '#f59e0b' :
-               propertyType === 'flat' ? '#8b5cf6' :
-               propertyType === 'cluster_home' ? '#ef4444' :
-               propertyType === 'farm' ? '#84cc16' : '#6b7280';
+  const color = '#8b5cf6'; // Purple color for all property types
 
   const formatPrice = (priceStr: string) => {
     if (!priceStr) return 'POA';

@@ -70,7 +70,7 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
                   )}
                 </div>
                 {property.propertyType && (
-                  <Badge className="bg-blue-600 text-white capitalize">
+                  <Badge className="bg-purple-600 text-white capitalize">
                     {property.propertyType.replace('_', ' ')}
                   </Badge>
                 )}
@@ -163,7 +163,7 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
             )}
           </div>
           {property.propertyType && (
-            <Badge className="bg-blue-600 text-white px-2 py-1 text-xs rounded-md capitalize">
+            <Badge className="bg-purple-600 text-white px-2 py-1 text-xs rounded-md capitalize">
               {property.propertyType.replace('_', ' ')}
             </Badge>
           )}

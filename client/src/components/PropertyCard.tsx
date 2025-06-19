@@ -148,7 +148,7 @@ export default function PropertyCard({
     const configs = {
       house: { 
         icon: Home, 
-        gradient: "from-blue-500 to-blue-600", 
+        gradient: "from-purple-500 to-purple-600", 
         label: "House" 
       },
       apartment: { 
@@ -158,32 +158,32 @@ export default function PropertyCard({
       },
       townhouse: { 
         icon: Building2, 
-        gradient: "from-green-500 to-green-600", 
+        gradient: "from-purple-500 to-purple-600", 
         label: "Townhouse" 
       },
       villa: { 
         icon: Castle, 
-        gradient: "from-yellow-500 to-orange-500", 
+        gradient: "from-purple-500 to-purple-600", 
         label: "Villa" 
       },
       estate: { 
         icon: Landmark, 
-        gradient: "from-indigo-500 to-purple-600", 
+        gradient: "from-purple-500 to-purple-600", 
         label: "Estate" 
       },
       farm: { 
         icon: Trees, 
-        gradient: "from-green-600 to-emerald-600", 
+        gradient: "from-purple-500 to-purple-600", 
         label: "Farm" 
       },
       land: { 
         icon: Square, 
-        gradient: "from-amber-500 to-yellow-600", 
+        gradient: "from-purple-500 to-purple-600", 
         label: "Land" 
       },
       commercial: { 
         icon: Warehouse, 
-        gradient: "from-slate-600 to-slate-700", 
+        gradient: "from-purple-500 to-purple-600", 
         label: "Commercial" 
       }
     };
