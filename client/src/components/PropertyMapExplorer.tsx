@@ -227,7 +227,7 @@ export default function PropertyMapExplorer() {
                     <SelectValue placeholder="All types" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All types</SelectItem>
+                    <SelectItem value="all">All types</SelectItem>
                     <SelectItem value="house">House</SelectItem>
                     <SelectItem value="apartment">Apartment</SelectItem>
                     <SelectItem value="townhouse">Townhouse</SelectItem>
@@ -246,7 +246,7 @@ export default function PropertyMapExplorer() {
                     <SelectValue placeholder="Any" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Any</SelectItem>
+                    <SelectItem value="any">Any</SelectItem>
                     <SelectItem value="1">1+</SelectItem>
                     <SelectItem value="2">2+</SelectItem>
                     <SelectItem value="3">3+</SelectItem>

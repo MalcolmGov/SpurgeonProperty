@@ -77,8 +77,8 @@ export default function AdminLeads() {
       lead.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       lead.property?.title?.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesStatus = !statusFilter || lead.status === statusFilter;
-    const matchesPriority = !priorityFilter || lead.priority === priorityFilter;
+    const matchesStatus = !statusFilter || statusFilter === "all" || lead.status === statusFilter;
+    const matchesPriority = !priorityFilter || priorityFilter === "all" || lead.priority === priorityFilter;
     
     return matchesSearch && matchesStatus && matchesPriority;
   }) : [];
@@ -231,7 +231,7 @@ export default function AdminLeads() {
                       <SelectValue placeholder="All Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Status</SelectItem>
+                      <SelectItem value="all">All Status</SelectItem>
                       <SelectItem value="new">New</SelectItem>
                       <SelectItem value="contacted">Contacted</SelectItem>
                       <SelectItem value="qualified">Qualified</SelectItem>
@@ -247,7 +247,7 @@ export default function AdminLeads() {
                       <SelectValue placeholder="All Priority" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Priority</SelectItem>
+                      <SelectItem value="all">All Priority</SelectItem>
                       <SelectItem value="high">High</SelectItem>
                       <SelectItem value="medium">Medium</SelectItem>
                       <SelectItem value="low">Low</SelectItem>

@@ -526,7 +526,7 @@ export default function WorkingPropertyForm({ open, onClose }: WorkingPropertyFo
                   <SelectValue placeholder="Select an agent (optional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">No Agent Assigned</SelectItem>
+                  <SelectItem value="none">No Agent Assigned</SelectItem>
                   {Array.isArray(agents) && agents.map((agent: any) => (
                     <SelectItem key={agent.id} value={agent.id.toString()}>
                       {agent.name} - {agent.email}

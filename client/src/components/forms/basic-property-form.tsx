@@ -666,7 +666,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
                   <SelectValue placeholder="Select an agent (optional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">No Agent Assigned</SelectItem>
+                  <SelectItem value="none">No Agent Assigned</SelectItem>
                   {(agents as any[]).map((agent: any) => (
                     <SelectItem key={agent.id} value={agent.id.toString()}>
                       {agent.name} - {agent.email}
