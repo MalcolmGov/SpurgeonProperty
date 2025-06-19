@@ -146,7 +146,10 @@ function AgentForm({ agent, onSuccess }: { agent?: Agent; onSuccess: () => void 
       if (!response.ok) throw new Error('Upload failed');
 
       const data = await response.json();
-      setUploadedImage(data.url);
+      console.log('Upload response:', data);
+      const imageUrl = data.urls?.[0] || data.url;
+      console.log('Setting uploaded image to:', imageUrl);
+      setUploadedImage(imageUrl);
       toast({ title: "Photo uploaded successfully" });
     } catch (error) {
       toast({
@@ -219,6 +222,9 @@ function AgentForm({ agent, onSuccess }: { agent?: Agent; onSuccess: () => void 
       if (data.password && data.password.trim()) {
         formattedData.password = data.password;
       }
+      console.log('Current uploadedImage state:', uploadedImage);
+      console.log('Current agent avatar:', agent?.avatar);
+      console.log('Final avatar value:', formattedData.avatar);
       console.log('Formatted data being sent:', formattedData);
       return apiRequest("PUT", `/api/admin/agents/${agent!.id}`, formattedData);
     },
