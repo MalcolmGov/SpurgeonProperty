@@ -71,7 +71,7 @@ export default function AdminLeads() {
   });
 
   // Filter leads
-  const filteredLeads = leads.filter((lead: Lead) => {
+  const filteredLeads = Array.isArray(leads) ? leads.filter((lead: Lead) => {
     const matchesSearch = !searchQuery || 
       lead.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       lead.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -81,7 +81,7 @@ export default function AdminLeads() {
     const matchesPriority = !priorityFilter || lead.priority === priorityFilter;
     
     return matchesSearch && matchesStatus && matchesPriority;
-  });
+  }) : [];
 
   // Mutations
   const updateLeadMutation = useMutation({
@@ -274,7 +274,7 @@ export default function AdminLeads() {
                   </tr>
                 </thead>
                 <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
-                  {filteredLeads.map((lead: Lead) => (
+                  {Array.isArray(filteredLeads) && filteredLeads.map((lead: Lead) => (
                     <tr key={lead.id} className="hover:bg-slate-50 dark:hover:bg-slate-700">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div>
@@ -326,7 +326,7 @@ export default function AdminLeads() {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="unassigned">Unassigned</SelectItem>
-                            {agents.map((agent: Agent) => (
+                            {Array.isArray(agents) && agents.map((agent: Agent) => (
                               <SelectItem key={agent.id} value={agent.id.toString()}>
                                 {agent.name}
                               </SelectItem>
@@ -351,7 +351,7 @@ export default function AdminLeads() {
 
           {/* Mobile Card View - Hidden on desktop */}
           <div className="lg:hidden space-y-4">
-            {filteredLeads.length > 0 ? (
+            {Array.isArray(filteredLeads) && filteredLeads.length > 0 ? (
               filteredLeads.map((lead: Lead) => (
                 <Card key={lead.id} className="bg-white dark:bg-slate-800">
                   <CardContent className="p-4 space-y-4">
@@ -455,7 +455,7 @@ export default function AdminLeads() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="unassigned">Unassigned</SelectItem>
-                          {agents.map((agent: Agent) => (
+                          {Array.isArray(agents) && agents.map((agent: Agent) => (
                             <SelectItem key={agent.id} value={agent.id.toString()}>
                               {agent.name}
                             </SelectItem>
@@ -576,7 +576,7 @@ export default function AdminLeads() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="unassigned">Unassigned</SelectItem>
-                    {agents.map((agent: Agent) => (
+                    {Array.isArray(agents) && agents.map((agent: Agent) => (
                       <SelectItem key={agent.id} value={agent.id.toString()}>
                         {agent.name}
                       </SelectItem>
