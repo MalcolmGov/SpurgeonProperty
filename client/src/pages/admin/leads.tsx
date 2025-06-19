@@ -89,12 +89,12 @@ export default function AdminLeads() {
       message: lead.message || "",
       status: lead.status || "",
       priority: lead.priority || "",
-      agentId: lead.agentId?.toString() || ""
+      agentId: lead.agentId?.toString() || "unassigned"
     });
   };
 
   const handleAssignAgent = (leadId: number, agentId: string) => {
-    const agentIdValue = agentId === "" ? null : parseInt(agentId);
+    const agentIdValue = agentId === "unassigned" ? null : parseInt(agentId);
     updateLeadMutation.mutate({
       id: leadId,
       data: { agentId: agentIdValue }
@@ -107,7 +107,7 @@ export default function AdminLeads() {
     const { agentId, ...formDataWithoutAgentId } = editForm;
     const updateData = {
       ...formDataWithoutAgentId,
-      agentId: agentId === "" ? null : parseInt(agentId)
+      agentId: agentId === "unassigned" ? null : parseInt(agentId)
     };
     
     updateLeadMutation.mutate({
@@ -126,7 +126,7 @@ export default function AdminLeads() {
       message: "",
       status: "",
       priority: "",
-      agentId: ""
+      agentId: "unassigned"
     });
   };
 
@@ -405,14 +405,14 @@ export default function AdminLeads() {
                                 )}
                               </div>
                               <Select
-                                value={lead.agentId?.toString() || ""}
+                                value={lead.agentId?.toString() || "unassigned"}
                                 onValueChange={(value) => handleAssignAgent(lead.id, value)}
                               >
                                 <SelectTrigger className="w-32 h-8">
                                   <SelectValue placeholder="Assign" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="">Unassigned</SelectItem>
+                                  <SelectItem value="unassigned">Unassigned</SelectItem>
                                   {agents.map((agent) => (
                                     <SelectItem key={agent.id} value={agent.id.toString()}>
                                       {agent.name}
@@ -540,7 +540,7 @@ export default function AdminLeads() {
                       <SelectValue placeholder="Select agent" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Unassigned</SelectItem>
+                      <SelectItem value="unassigned">Unassigned</SelectItem>
                       {agents.map((agent) => (
                         <SelectItem key={agent.id} value={agent.id.toString()}>
                           {agent.name}
