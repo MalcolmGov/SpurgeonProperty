@@ -193,7 +193,7 @@ export default function AdminLeads() {
       <div className="flex">
         <AdminSidebar />
         
-        <div className="flex-1 lg:ml-64 p-4 lg:p-8">
+        <div className="flex-1 lg:ml-64 p-2 sm:p-4 lg:p-8">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
@@ -259,18 +259,7 @@ export default function AdminLeads() {
               </div>
             </CardContent>
           </Card>
-          
-          {/* Leads Table */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                All Leads
-                <span className="text-sm font-normal text-slate-600 dark:text-slate-400">
-                  Showing {filteredLeads?.length || 0} leads
-                </span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
+
               {isLoading ? (
                 <div className="p-6">
                   <div className="space-y-4">
@@ -286,33 +275,35 @@ export default function AdminLeads() {
                   </div>
                 </div>
               ) : filteredLeads && filteredLeads.length > 0 ? (
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-slate-50 dark:bg-slate-800">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                          Contact
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                          Property
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                          Status
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                          Priority
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                          Agent
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                          Date
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                          Actions
-                        </th>
-                      </tr>
-                    </thead>
+                <>
+                  {/* Desktop Table View */}
+                  <div className="hidden lg:block overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="bg-slate-50 dark:bg-slate-800">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            Contact
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            Property
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            Status
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            Priority
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            Agent
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            Date
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
                     <tbody className="bg-white dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-700">
                       {filteredLeads.map((lead) => (
                         <tr key={lead.id} className="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
@@ -445,6 +436,141 @@ export default function AdminLeads() {
                     </tbody>
                   </table>
                 </div>
+
+                  {/* Mobile Card View */}
+                  <div className="lg:hidden space-y-4">
+                  {filteredLeads.map((lead) => (
+                    <Card key={lead.id} className="p-4 space-y-4 bg-white dark:bg-slate-800">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-slate-900 dark:text-white text-lg">
+                            {lead.name}
+                          </h3>
+                          <div className="flex items-center text-sm text-slate-600 dark:text-slate-400 mt-1">
+                            <Mail className="w-3 h-3 mr-1" />
+                            {lead.email}
+                          </div>
+                          {lead.phone && (
+                            <div className="flex items-center text-sm text-slate-600 dark:text-slate-400 mt-1">
+                              <Phone className="w-3 h-3 mr-1" />
+                              {lead.phone}
+                            </div>
+                          )}
+                        </div>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => handleEditLead(lead)}
+                          className="hover:bg-purple-100 dark:hover:bg-purple-900/20"
+                        >
+                          <Edit className="w-4 h-4 text-purple-600" />
+                        </Button>
+                      </div>
+
+                      {lead.property && (
+                        <div className="bg-slate-50 dark:bg-slate-700 rounded-lg p-3">
+                          <div className="font-medium text-slate-900 dark:text-white text-sm">
+                            {lead.property.title}
+                          </div>
+                          <div className="text-sm text-slate-600 dark:text-slate-400">
+                            {lead.property.city}, {lead.property.province}
+                          </div>
+                        </div>
+                      )}
+
+                      {lead.message && (
+                        <div className="bg-slate-50 dark:bg-slate-700 rounded-lg p-3">
+                          <div className="text-sm text-slate-700 dark:text-slate-300">
+                            "{lead.message}"
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="flex flex-wrap gap-3 items-center">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-xs text-slate-500 dark:text-slate-400">Status:</span>
+                          <Select
+                            value={lead.status || "new"}
+                            onValueChange={(value) => handleStatusChange(lead.id, value)}
+                          >
+                            <SelectTrigger className="w-24 h-8">
+                              <Badge className={`capitalize text-xs ${getStatusColor(lead.status || "")}`}>
+                                {lead.status}
+                              </Badge>
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="new">New</SelectItem>
+                              <SelectItem value="contacted">Contacted</SelectItem>
+                              <SelectItem value="qualified">Qualified</SelectItem>
+                              <SelectItem value="closed">Closed</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="flex items-center space-x-2">
+                          <span className="text-xs text-slate-500 dark:text-slate-400">Priority:</span>
+                          <Select
+                            value={lead.priority || "medium"}
+                            onValueChange={(value) => handlePriorityChange(lead.id, value)}
+                          >
+                            <SelectTrigger className="w-20 h-8">
+                              <Badge className={`capitalize text-xs ${getPriorityColor(lead.priority || "medium")}`}>
+                                {lead.priority || "medium"}
+                              </Badge>
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="high">High</SelectItem>
+                              <SelectItem value="medium">Medium</SelectItem>
+                              <SelectItem value="low">Low</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-600">
+                        <div className="flex items-center">
+                          {lead.agent ? (
+                            <div className="flex items-center">
+                              <img
+                                src={lead.agent.avatar || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40"}
+                                alt={lead.agent.name}
+                                className="w-6 h-6 rounded-full object-cover"
+                              />
+                              <span className="ml-2 text-sm text-slate-900 dark:text-white">
+                                {lead.agent.name}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-sm text-slate-500 dark:text-slate-400">
+                              Unassigned
+                            </span>
+                          )}
+                        </div>
+                        <Select
+                          value={lead.agentId?.toString() || "unassigned"}
+                          onValueChange={(value) => handleAssignAgent(lead.id, value)}
+                        >
+                          <SelectTrigger className="w-28 h-8">
+                            <SelectValue placeholder="Assign" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="unassigned">Unassigned</SelectItem>
+                            {agents.map((agent) => (
+                              <SelectItem key={agent.id} value={agent.id.toString()}>
+                                {agent.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="text-xs text-slate-500 dark:text-slate-400">
+                        {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString() : 'N/A'}
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+                </>
               ) : (
                 <div className="text-center py-12">
                   <div className="text-slate-400 dark:text-slate-600">
