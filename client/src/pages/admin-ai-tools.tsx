@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import AIPropertyDescriptionGenerator from "@/components/AIPropertyDescriptionGenerator";
-import AdminSidebar from "@/components/AdminSidebar";
+import AdminSidebar from "@/components/admin/sidebar";
 import { Sparkles, Building2, TrendingUp, Users } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
 

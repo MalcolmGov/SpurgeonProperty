@@ -33,8 +33,8 @@ export default function AdminSidebar() {
             
             return (
               <Link key={item.name} href={item.href}>
-                <button
-                  className={`flex items-center space-x-3 w-full px-4 py-3 rounded-lg transition-colors touch-manipulation min-h-[48px] ${
+                <div
+                  className={`flex items-center space-x-3 w-full px-4 py-3 rounded-lg transition-colors cursor-pointer touch-manipulation min-h-[48px] ${
                     active
                       ? "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400"
                       : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
@@ -43,7 +43,7 @@ export default function AdminSidebar() {
                 >
                   <item.icon className="w-5 h-5 flex-shrink-0" />
                   <span className="font-medium">{item.name}</span>
-                </button>
+                </div>
               </Link>
             );
           })}
@@ -52,13 +52,13 @@ export default function AdminSidebar() {
         {/* Back to Main Site */}
         <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-700">
           <Link href="/">
-            <button 
-              className="flex items-center space-x-3 w-full px-4 py-3 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg transition-colors touch-manipulation min-h-[48px]"
+            <div 
+              className="flex items-center space-x-3 w-full px-4 py-3 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg transition-colors cursor-pointer touch-manipulation min-h-[48px]"
               onClick={onNavigate}
             >
               <Home className="w-5 h-5 flex-shrink-0" />
               <span className="font-medium">Back to Site</span>
-            </button>
+            </div>
           </Link>
         </div>
       </div>

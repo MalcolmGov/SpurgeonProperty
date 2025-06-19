@@ -562,13 +562,13 @@ export class DatabaseStorage implements IStorage {
     limit?: number;
     offset?: number;
   }): Promise<LeadWithProperty[]> {
+    // Optimized query - select only needed columns and use ID-based ordering for better performance
     let query = `
       SELECT 
-        l.*,
+        l.id, l.name, l.email, l.phone, l.message, l.inquiry_type, 
+        l.status, l.priority, l.property_id, l.agent_id, l.created_at,
         p.title as property_title,
-        p.address as property_address,
-        p.price as property_price,
-        a.name as agent_name
+        a.name as agent_name, a.avatar as agent_avatar
       FROM leads l
       LEFT JOIN properties p ON l.property_id = p.id
       LEFT JOIN agents a ON l.agent_id = a.id
@@ -596,14 +596,19 @@ export class DatabaseStorage implements IStorage {
       paramIndex++;
     }
 
-    query += ` ORDER BY l.created_at DESC LIMIT $${paramIndex}`;
+    // Use ID-based ordering for better performance with indexes
+    query += ` ORDER BY l.id DESC LIMIT $${paramIndex}`;
     params.push(filters?.limit || 20);
     paramIndex++;
 
     query += ` OFFSET $${paramIndex}`;
     params.push(filters?.offset || 0);
 
+    console.log('Optimized leads query executing');
+    const startTime = Date.now();
     const result = await pool.query(query, params);
+    const queryTime = Date.now() - startTime;
+    console.log(`Leads query completed in ${queryTime}ms, returned ${result.rows.length} results`);
     
     return result.rows.map(row => ({
       id: row.id,
@@ -620,12 +625,13 @@ export class DatabaseStorage implements IStorage {
       property: row.property_title ? {
         id: row.property_id,
         title: row.property_title,
-        address: row.property_address,
-        price: row.property_price
+        address: row.property_address || '',
+        price: row.property_price || 0
       } : undefined,
       agent: row.agent_name ? {
         id: row.agent_id,
-        name: row.agent_name
+        name: row.agent_name,
+        avatar: row.agent_avatar
       } : undefined
     }));
   }
