@@ -40,7 +40,6 @@ function Router() {
       <Route path="/admin/ai-tools" component={AdminAITools} />
       <Route path="/admin/properties" component={AdminProperties} />
       <Route path="/admin/leads" component={AdminLeads} />
-      <Route path="/admin/leads-test" component={() => import("@/pages/admin/leads-minimal").then(m => m.default)} />
       <Route path="/admin/agents" component={AdminAgents} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
       <Route path="/admin" component={AdminDashboard} />
