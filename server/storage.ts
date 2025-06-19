@@ -562,76 +562,75 @@ export class DatabaseStorage implements IStorage {
     limit?: number;
     offset?: number;
   }): Promise<LeadWithProperty[]> {
-    // Optimized query - select only needed columns and use ID-based ordering for better performance
-    let query = `
-      SELECT 
-        l.id, l.name, l.email, l.phone, l.message, l.inquiry_type, 
-        l.status, l.priority, l.property_id, l.agent_id, l.created_at,
-        p.title as property_title,
-        a.name as agent_name, a.avatar as agent_avatar
-      FROM leads l
-      LEFT JOIN properties p ON l.property_id = p.id
-      LEFT JOIN agents a ON l.agent_id = a.id
-      WHERE 1=1
-    `;
-    
-    const params: any[] = [];
-    let paramIndex = 1;
-
-    if (filters?.status) {
-      query += ` AND l.status = $${paramIndex}`;
-      params.push(filters.status);
-      paramIndex++;
-    }
-
-    if (filters?.agentId) {
-      query += ` AND l.agent_id = $${paramIndex}`;
-      params.push(filters.agentId);
-      paramIndex++;
-    }
-
-    if (filters?.propertyId) {
-      query += ` AND l.property_id = $${paramIndex}`;
-      params.push(filters.propertyId);
-      paramIndex++;
-    }
-
-    // Use ID-based ordering for better performance with indexes
-    query += ` ORDER BY l.id DESC LIMIT $${paramIndex}`;
-    params.push(filters?.limit || 20);
-    paramIndex++;
-
-    query += ` OFFSET $${paramIndex}`;
-    params.push(filters?.offset || 0);
-
-    console.log('Optimized leads query executing');
+    console.log('Drizzle leads query executing with filters:', filters);
     const startTime = Date.now();
-    const result = await pool.query(query, params);
-    const queryTime = Date.now() - startTime;
-    console.log(`Leads query completed in ${queryTime}ms, returned ${result.rows.length} results`);
     
-    return result.rows.map(row => ({
+    // Build conditions array for better performance
+    const conditions = [];
+    
+    if (filters?.status) {
+      conditions.push(eq(leads.status, filters.status));
+    }
+    
+    if (filters?.agentId) {
+      conditions.push(eq(leads.agentId, filters.agentId));
+    }
+    
+    if (filters?.propertyId) {
+      conditions.push(eq(leads.propertyId, filters.propertyId));
+    }
+    
+    // Use Drizzle ORM for optimized query with proper joins
+    const result = await db
+      .select({
+        id: leads.id,
+        name: leads.name,
+        email: leads.email,
+        phone: leads.phone,
+        message: leads.message,
+        inquiryType: leads.inquiryType,
+        status: leads.status,
+        priority: leads.priority,
+        propertyId: leads.propertyId,
+        agentId: leads.agentId,
+        createdAt: leads.createdAt,
+        propertyTitle: properties.title,
+        agentName: agents.name,
+        agentAvatar: agents.avatar
+      })
+      .from(leads)
+      .leftJoin(properties, eq(leads.propertyId, properties.id))
+      .leftJoin(agents, eq(leads.agentId, agents.id))
+      .where(conditions.length > 0 ? and(...conditions) : undefined)
+      .orderBy(desc(leads.id))
+      .limit(filters?.limit || 20)
+      .offset(filters?.offset || 0);
+    
+    const queryTime = Date.now() - startTime;
+    console.log(`Drizzle leads query completed in ${queryTime}ms, returned ${result.length} results`);
+    
+    return result.map(row => ({
       id: row.id,
       name: row.name,
       email: row.email,
       phone: row.phone,
       message: row.message,
-      inquiryType: row.inquiry_type,
+      inquiryType: row.inquiryType,
       status: row.status,
       priority: row.priority,
-      propertyId: row.property_id,
-      agentId: row.agent_id,
-      createdAt: row.created_at,
-      property: row.property_title ? {
-        id: row.property_id,
-        title: row.property_title,
-        address: row.property_address || '',
-        price: row.property_price || 0
+      propertyId: row.propertyId,
+      agentId: row.agentId,
+      createdAt: row.createdAt,
+      property: row.propertyTitle ? {
+        id: row.propertyId!,
+        title: row.propertyTitle,
+        address: '',
+        price: 0
       } : undefined,
-      agent: row.agent_name ? {
-        id: row.agent_id,
-        name: row.agent_name,
-        avatar: row.agent_avatar
+      agent: row.agentName ? {
+        id: row.agentId!,
+        name: row.agentName,
+        avatar: row.agentAvatar
       } : undefined
     }));
   }

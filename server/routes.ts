@@ -392,22 +392,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Leads routes
+  // Leads routes - optimized for performance
   app.get("/api/leads", async (req, res) => {
     try {
-      const { status, agentId, propertyId, limit = "50", offset = "0" } = req.query;
+      const { status, agentId, propertyId, limit = "20", offset = "0" } = req.query;
       
       const filters = {
         status: status as string,
         agentId: agentId ? parseInt(agentId as string) : undefined,
         propertyId: propertyId ? parseInt(propertyId as string) : undefined,
-        limit: parseInt(limit as string),
+        limit: Math.min(parseInt(limit as string), 50), // Cap at 50 for performance
         offset: parseInt(offset as string)
       };
 
+      console.log('Leads API request with filters:', filters);
+      const startTime = Date.now();
       const leads = await storage.getLeads(filters);
+      const totalTime = Date.now() - startTime;
+      console.log(`Leads API completed in ${totalTime}ms, returned ${leads.length} results`);
+      
       res.json(leads);
     } catch (error) {
+      console.error('Leads API error:', error);
       res.status(500).json({ message: "Failed to fetch leads" });
     }
   });
