@@ -16,7 +16,7 @@ import SellProperty from "@/pages/sell-property";
 import SimpleAdminLogin from "@/pages/simple-admin-login";
 import AdminDashboard from "@/pages/admin-dashboard";
 import AdminProperties from "@/pages/admin/properties";
-import AdminLeads from "@/pages/admin/leads";
+import AdminLeads from "@/pages/admin/leads-mobile";
 import AdminAgents from "@/pages/admin-agents";
 import AdminAITools from "@/pages/admin-ai-tools";
 import NotFound from "@/pages/not-found";
