@@ -182,20 +182,23 @@ export default function PropertyDetail() {
                 {/* Contact Buttons */}
                 <div className="space-y-3">
                   <Button 
-                    className="w-full bg-purple-primary hover:bg-purple-secondary text-white"
+                    className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-lg"
                     onClick={() => setShowContactForm(true)}
                   >
                     <Calendar className="w-4 h-4 mr-2" />
                     Schedule Viewing
                   </Button>
                   <Button 
-                    className="w-full bg-orange-primary hover:bg-orange-secondary text-white"
+                    className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg"
                     onClick={() => setShowContactForm(true)}
                   >
                     <Phone className="w-4 h-4 mr-2" />
                     Contact Agent
                   </Button>
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full border-purple-300 text-purple-700 hover:bg-purple-50 dark:border-purple-600 dark:text-purple-300 dark:hover:bg-purple-900/20"
+                  >
                     Virtual Tour
                   </Button>
                 </div>
@@ -403,6 +406,36 @@ export default function PropertyDetail() {
           </Tabs>
         </Card>
         
+        {/* Contact Agent Section */}
+        <Card className="mt-8 shadow-lg border-2 border-purple-200 dark:border-purple-800">
+          <CardContent className="p-6">
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-3">
+                Interested in This Property?
+              </h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-6">
+                Get in touch with our agent for more information, schedule a viewing, or submit an inquiry.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+                <Button 
+                  className="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-lg h-12"
+                  onClick={() => setShowContactForm(true)}
+                >
+                  <Calendar className="w-5 h-5 mr-2" />
+                  Schedule Viewing
+                </Button>
+                <Button 
+                  className="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg h-12"
+                  onClick={() => setShowContactForm(true)}
+                >
+                  <Phone className="w-5 h-5 mr-2" />
+                  Contact Agent
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Mortgage Calculator */}
         <div className="mt-8">
           <MortgageCalculator propertyPrice={parseInt(property.price)} />
