@@ -175,9 +175,9 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
   };
 
   return (
-    <div className={cn("flex flex-col w-full max-w-full h-[600px] sm:h-[700px] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden", className)}>
+    <div className={cn("flex flex-col w-full max-w-full h-[380px] sm:h-[420px] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden", className)}>
       {/* Chatbot Header */}
-      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 text-white p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 text-white p-2 sm:p-3 flex items-center gap-2">
         <div className="relative">
           <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
             <Bot className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
@@ -195,8 +195,8 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
       
       {/* Chat Messages Area */}
       <div className="flex-1 overflow-hidden bg-gray-50 dark:bg-gray-800/50">
-        <ScrollArea className="h-full p-2 sm:p-4">
-          <div className="space-y-4 sm:space-y-6">
+        <ScrollArea className="h-full p-2 sm:p-3">
+          <div className="space-y-2 sm:space-y-3">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -316,7 +316,7 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
         </ScrollArea>
         
         {/* Chat Input Area */}
-        <div className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-3 sm:p-4">
+        <div className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-2 sm:p-3">
           <div className="flex gap-2 sm:gap-3 items-end">
             <div className="flex-1 relative min-w-0">
               <Input
