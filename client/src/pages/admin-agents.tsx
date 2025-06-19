@@ -17,10 +17,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { apiRequest } from "@/lib/queryClient";
 
-const agentFormSchema = z.object({
+// Create schema dynamically based on whether we're editing or creating
+const createAgentFormSchema = (isEditing: boolean) => z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: isEditing 
+    ? z.string().optional().refine((val) => !val || val.length >= 6, {
+        message: "Password must be at least 6 characters if provided"
+      })
+    : z.string().min(6, "Password must be at least 6 characters"),
   phone: z.string().optional(),
   bio: z.string().optional(),
   specialties: z.string().optional(),
@@ -36,6 +41,8 @@ const agentFormSchema = z.object({
   linkedinUrl: z.string().optional(),
   personalWebsite: z.string().optional(),
 });
+
+const agentFormSchema = createAgentFormSchema(false);
 
 type AgentFormData = z.infer<typeof agentFormSchema>;
 
@@ -92,7 +99,7 @@ function AgentForm({ agent, onSuccess }: { agent?: Agent; onSuccess: () => void 
   const [isUploading, setIsUploading] = useState(false);
 
   const form = useForm<AgentFormData>({
-    resolver: zodResolver(agentFormSchema),
+    resolver: zodResolver(createAgentFormSchema(!!agent)),
     defaultValues: {
       name: agent?.name || "",
       email: agent?.email || "",
@@ -205,13 +212,14 @@ function AgentForm({ agent, onSuccess }: { agent?: Agent; onSuccess: () => void 
         certifications: data.certifications ? data.certifications.split(",").map(s => s.trim()).filter(Boolean) : [],
         officeLocation: data.officeLocation || undefined,
         workingHours: data.workingHours || undefined,
-        linkedinUrl: data.linkedinUrl || undefined,
-        personalWebsite: data.personalWebsite || undefined,
+        linkedinUrl: data.linkedinUrl || "",
+        personalWebsite: data.personalWebsite || "",
         avatar: uploadedImage || agent?.avatar || undefined,
       };
-      if (data.password) {
+      if (data.password && data.password.trim()) {
         formattedData.password = data.password;
       }
+      console.log('Formatted data being sent:', formattedData);
       return apiRequest("PUT", `/api/admin/agents/${agent!.id}`, formattedData);
     },
     onSuccess: () => {
@@ -220,18 +228,26 @@ function AgentForm({ agent, onSuccess }: { agent?: Agent; onSuccess: () => void 
       onSuccess();
     },
     onError: (error: any) => {
+      console.error('Update agent error:', error);
+      console.error('Error details:', error.response?.data || error.message);
       toast({
         title: "Error updating agent",
-        description: error.message,
+        description: error.response?.data?.message || error.message || "Failed to update agent",
         variant: "destructive",
       });
     },
   });
 
   const onSubmit = (data: AgentFormData) => {
+    console.log('Form submitted with data:', data);
+    console.log('Form errors:', form.formState.errors);
+    console.log('Is form valid:', form.formState.isValid);
+    
     if (agent) {
+      console.log('Updating agent with ID:', agent.id);
       updateMutation.mutate(data);
     } else {
+      console.log('Creating new agent');
       createMutation.mutate(data);
     }
   };

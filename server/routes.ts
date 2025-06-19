@@ -654,17 +654,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/admin/agents/:id", requireAdminAuth, async (req, res) => {
     try {
       const id = parseInt(req.params.id);
+      console.log('Updating agent ID:', id);
+      console.log('Request body:', req.body);
+      
       const validatedData = agentRegistrationSchema.partial().parse(req.body);
+      console.log('Validated data:', validatedData);
       
       const agent = await agentAuthService.updateAgent(id, validatedData);
       if (!agent) {
         return res.status(404).json({ message: "Agent not found" });
       }
       
+      console.log('Agent updated successfully:', agent);
       res.json(agent);
     } catch (error) {
       console.error("Error updating agent:", error);
       if (error instanceof z.ZodError) {
+        console.error("Validation errors:", error.errors);
         return res.status(400).json({ message: "Invalid agent data", errors: error.errors });
       }
       res.status(500).json({ message: "Failed to update agent" });
