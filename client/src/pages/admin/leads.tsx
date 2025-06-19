@@ -33,9 +33,12 @@ export default function AdminLeads() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   
-  const { data: leads, isLoading } = useLeads({
+  const { data: leads = [], isLoading, error } = useLeads({
     status: statusFilter || undefined,
   });
+
+  // Debug logging
+  console.log('Leads page render:', { leads, isLoading, error });
 
   // Fetch agents for assignment
   const { data: agents = [], isLoading: agentsLoading } = useQuery<Agent[]>({
@@ -161,11 +164,29 @@ export default function AdminLeads() {
       return (
         lead.name.toLowerCase().includes(query) ||
         lead.email.toLowerCase().includes(query) ||
-        lead.property?.title.toLowerCase().includes(query)
+        (lead.property?.title || '').toLowerCase().includes(query)
       );
     }
     return true;
-  });
+  }) || [];
+
+  // Early return with error state
+  if (error) {
+    console.error('Leads page error:', error);
+    return (
+      <div className="min-h-screen bg-slate-100 dark:bg-slate-900">
+        <div className="flex">
+          <AdminSidebar />
+          <div className="flex-1 lg:ml-64 p-4 lg:p-8">
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+              <h2 className="font-bold">Error Loading Leads</h2>
+              <p>{error.message || 'Failed to load leads data'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-slate-900">
