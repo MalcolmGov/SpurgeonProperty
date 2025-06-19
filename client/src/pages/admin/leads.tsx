@@ -9,11 +9,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useLeads } from "@/hooks/use-leads";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Search, Phone, Mail, Edit, Calendar, X } from "lucide-react";
-import type { LeadWithProperty } from "@shared/schema";
+import { Search, Phone, Mail, Edit, Calendar, X, UserPlus, UserMinus } from "lucide-react";
+import type { LeadWithProperty, Agent } from "@shared/schema";
 
 export default function AdminLeads() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -26,7 +26,8 @@ export default function AdminLeads() {
     phone: "",
     message: "",
     status: "",
-    priority: ""
+    priority: "",
+    agentId: ""
   });
   
   const queryClient = useQueryClient();
@@ -34,6 +35,12 @@ export default function AdminLeads() {
   
   const { data: leads, isLoading } = useLeads({
     status: statusFilter || undefined,
+  });
+
+  // Fetch agents for assignment
+  const { data: agents = [], isLoading: agentsLoading } = useQuery<Agent[]>({
+    queryKey: ["/api/agents"],
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const updateLeadMutation = useMutation({
@@ -78,16 +85,31 @@ export default function AdminLeads() {
       phone: lead.phone || "",
       message: lead.message || "",
       status: lead.status || "",
-      priority: lead.priority || ""
+      priority: lead.priority || "",
+      agentId: lead.agentId?.toString() || ""
+    });
+  };
+
+  const handleAssignAgent = (leadId: number, agentId: string) => {
+    const agentIdValue = agentId === "" ? null : parseInt(agentId);
+    updateLeadMutation.mutate({
+      id: leadId,
+      data: { agentId: agentIdValue }
     });
   };
 
   const handleSaveEdit = () => {
     if (!editingLead) return;
     
+    const { agentId, ...formDataWithoutAgentId } = editForm;
+    const updateData = {
+      ...formDataWithoutAgentId,
+      agentId: agentId === "" ? null : parseInt(agentId)
+    };
+    
     updateLeadMutation.mutate({
       id: editingLead.id,
-      data: editForm
+      data: updateData
     });
     setEditingLead(null);
   };
@@ -100,7 +122,8 @@ export default function AdminLeads() {
       phone: "",
       message: "",
       status: "",
-      priority: ""
+      priority: "",
+      agentId: ""
     });
   };
 
@@ -341,22 +364,42 @@ export default function AdminLeads() {
                             </Select>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            {lead.agent ? (
+                            <div className="flex items-center justify-between">
                               <div className="flex items-center">
-                                <img
-                                  src={lead.agent.avatar || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40"}
-                                  alt={lead.agent.name}
-                                  className="w-6 h-6 rounded-full object-cover"
-                                />
-                                <div className="ml-2 text-sm text-slate-900 dark:text-white">
-                                  {lead.agent.name}
-                                </div>
+                                {lead.agent ? (
+                                  <>
+                                    <img
+                                      src={lead.agent.avatar || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40"}
+                                      alt={lead.agent.name}
+                                      className="w-6 h-6 rounded-full object-cover"
+                                    />
+                                    <div className="ml-2 text-sm text-slate-900 dark:text-white">
+                                      {lead.agent.name}
+                                    </div>
+                                  </>
+                                ) : (
+                                  <span className="text-sm text-slate-500 dark:text-slate-400">
+                                    Unassigned
+                                  </span>
+                                )}
                               </div>
-                            ) : (
-                              <span className="text-sm text-slate-500 dark:text-slate-400">
-                                Unassigned
-                              </span>
-                            )}
+                              <Select
+                                value={lead.agentId?.toString() || ""}
+                                onValueChange={(value) => handleAssignAgent(lead.id, value)}
+                              >
+                                <SelectTrigger className="w-32 h-8">
+                                  <SelectValue placeholder="Assign" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="">Unassigned</SelectItem>
+                                  {agents.map((agent) => (
+                                    <SelectItem key={agent.id} value={agent.id.toString()}>
+                                      {agent.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">
                             {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString() : 'N/A'}
@@ -441,7 +484,7 @@ export default function AdminLeads() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 <div>
                   <Label htmlFor="edit-status">Status</Label>
                   <Select value={editForm.status} onValueChange={(value) => setEditForm(prev => ({ ...prev, status: value }))}>
@@ -466,6 +509,22 @@ export default function AdminLeads() {
                       <SelectItem value="high">High</SelectItem>
                       <SelectItem value="medium">Medium</SelectItem>
                       <SelectItem value="low">Low</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="edit-agent">Assigned Agent</Label>
+                  <Select value={editForm.agentId} onValueChange={(value) => setEditForm(prev => ({ ...prev, agentId: value }))}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select agent" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">Unassigned</SelectItem>
+                      {agents.map((agent) => (
+                        <SelectItem key={agent.id} value={agent.id.toString()}>
+                          {agent.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
