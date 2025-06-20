@@ -94,9 +94,10 @@ npm start
 - Set HSTS headers for security
 
 ### Domain Configuration
-- Primary domain: spurgeonproperty.com
-- Redirect www.spurgeonproperty.com to primary
+- Primary domain: www.spurgeonproperty.co.za
+- Redirect spurgeonproperty.co.za to www subdomain
 - Configure DNS A records properly
+- See DNS_CONFIGURATION.md for detailed setup instructions
 
 ### Database Configuration
 - Use connection pooling for performance

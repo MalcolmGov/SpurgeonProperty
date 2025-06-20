@@ -3,7 +3,7 @@ import { properties } from '../shared/schema';
 
 export async function generateSitemap(): Promise<string> {
   const baseUrl = process.env.NODE_ENV === 'production' 
-    ? 'https://spurgeonproperty.com' 
+    ? 'https://www.spurgeonproperty.co.za' 
     : 'http://localhost:5000';
 
   // Static pages

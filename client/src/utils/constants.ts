@@ -5,7 +5,7 @@ export const APP_CONFIG = {
   description: 'Premium South African Real Estate Platform',
   version: '1.0.0',
   domain: process.env.NODE_ENV === 'production' 
-    ? 'https://spurgeonproperty.com' 
+    ? 'https://www.spurgeonproperty.co.za' 
     : 'http://localhost:5000',
   supportEmail: 'peter@spurgeonproperty.com',
   phone: '+27 (0) 21 XXX XXXX'

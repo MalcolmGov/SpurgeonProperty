@@ -33,7 +33,12 @@ app.use(helmet({
 // CORS configuration
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://spurgeonproperty.com', 'https://www.spurgeonproperty.com']
+    ? [
+        'https://spurgeonproperty.co.za', 
+        'https://www.spurgeonproperty.co.za',
+        'https://spurgeonproperty.com', 
+        'https://www.spurgeonproperty.com'
+      ]
     : true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
