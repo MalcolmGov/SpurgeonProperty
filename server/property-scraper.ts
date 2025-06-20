@@ -301,7 +301,7 @@ class PropertyScraper {
           bathrooms: prop.bathrooms.toString(),
           area: prop.area,
           lotSize: prop.area.toString(),
-          yearBuilt: 2020.toString(),
+          yearBuilt: (2020).toString(),
           parkingSpaces: 2,
           features: prop.features,
           images: prop.images,
