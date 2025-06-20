@@ -30,6 +30,9 @@ app.use(helmet({
   },
 }));
 
+// Trust proxy for production deployment
+app.set('trust proxy', 1);
+
 // CORS configuration
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
@@ -45,23 +48,25 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with']
 }));
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.',
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+// Rate limiting (disabled in development to prevent issues)
+if (process.env.NODE_ENV === 'production') {
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: 'Too many requests from this IP, please try again later.',
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
 
-const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 50, // More restrictive for API routes
-  message: { error: 'API rate limit exceeded' },
-});
+  const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 50, // More restrictive for API routes
+    message: { error: 'API rate limit exceeded' },
+  });
 
-app.use(limiter);
-app.use('/api/', apiLimiter);
+  app.use(limiter);
+  app.use('/api/', apiLimiter);
+}
 
 // Compression middleware
 app.use(compression());
