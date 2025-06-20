@@ -9,6 +9,7 @@ import compression from "compression";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { testDatabaseConnection } from "./database.js";
+import { performanceMonitor } from "./performance";
 
 const app = express();
 
@@ -80,6 +81,10 @@ app.use((req, res, next) => {
 
   res.on("finish", () => {
     const duration = Date.now() - start;
+    
+    // Log performance metrics
+    performanceMonitor.logRequest(req, res, duration);
+    
     if (path.startsWith("/api")) {
       let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
       if (capturedJsonResponse) {
@@ -107,12 +112,45 @@ async function startServer() {
     // Share the server instance with the app for WebSocket access
     (app as any).httpServer = server;
 
-    app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    // Global error handler with detailed logging
+    app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
       const status = err.status || err.statusCode || 500;
       const message = err.message || "Internal Server Error";
       
-      console.error('Server error:', err);
-      res.status(status).json({ message });
+      // Log error details for monitoring
+      console.error(`[ERROR] ${new Date().toISOString()} - ${req.method} ${req.path}`, {
+        status,
+        message,
+        stack: err.stack,
+        body: req.body,
+        query: req.query,
+        headers: req.headers,
+        ip: req.ip
+      });
+      
+      // Send appropriate response based on environment
+      if (process.env.NODE_ENV === 'production') {
+        res.status(status).json({ 
+          error: status >= 500 ? 'Internal Server Error' : message,
+          timestamp: new Date().toISOString()
+        });
+      } else {
+        res.status(status).json({ 
+          error: message,
+          stack: err.stack,
+          timestamp: new Date().toISOString()
+        });
+      }
+    });
+
+    // Health check endpoint
+    app.get('/health', (_req, res) => {
+      res.json({
+        status: 'ok',
+        timestamp: new Date().toISOString(),
+        version: process.env.npm_package_version || '1.0.0',
+        environment: process.env.NODE_ENV || 'development'
+      });
     });
 
     // Setup vite in development or serve static files in production
