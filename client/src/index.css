@@ -306,7 +306,7 @@ input, textarea, select {
 
 /* Enhanced logo color adjustment for purple and orange */
 .logo-color-enhanced {
-  filter: hue-rotate(45deg) saturate(1.4) brightness(1.05) contrast(1.15);
+  filter: sepia(0.6) hue-rotate(280deg) saturate(2) brightness(1.1);
 }
 
 .logo-spurgeon-gradient-white {

@@ -23,8 +23,8 @@ export function Logo({ className, showText = true, variant = "default" }: LogoPr
             "logo-color-enhanced"
           )}
           style={{
-            filter: 'hue-rotate(60deg) saturate(1.4) brightness(1.1) contrast(1.2)',
-            // Enhanced color mapping for purple and orange
+            filter: 'sepia(0.6) hue-rotate(280deg) saturate(2) brightness(1.1)',
+            // Use sepia + hue-rotate for better green to orange conversion
             mixBlendMode: 'normal'
           }}
         />
