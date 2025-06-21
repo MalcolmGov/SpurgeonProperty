@@ -102,10 +102,6 @@ export default function Header() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            
-            <Button className="bg-purple-600 hover:bg-purple-700 text-white">
-              Sign In
-            </Button>
           </div>
           
           {/* Mobile Menu */}
@@ -210,13 +206,6 @@ export default function Header() {
                       className="w-full mb-4 bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-600 hover:to-purple-700 text-white font-medium py-3 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
                     >
                       Start Application
-                    </Button>
-                    
-                    <Button 
-                      className="w-full mb-4 bg-purple-600 hover:bg-purple-700 text-white shadow-lg"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Sign In
                     </Button>
                     
                     <div className="text-center">
