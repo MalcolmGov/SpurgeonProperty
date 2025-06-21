@@ -11,19 +11,22 @@ export function Logo({ className, showText = true, variant = "default" }: LogoPr
   
   return (
     <div className={cn("flex items-center", className)}>
-      {/* Purple-styled Spurgeon Property Logo */}
-      <div className="bg-purple-600 rounded px-3 py-2 shadow-sm">
-        <div className="flex items-center gap-2">
-          <div className="bg-white rounded px-2 py-1">
-            <span className="text-purple-600 font-bold text-lg">SP</span>
-          </div>
-          {showText && (
-            <div className="flex flex-col leading-tight">
-              <span className="text-white font-bold text-sm tracking-wide">SPURGEON</span>
-              <span className="text-white/90 font-medium text-xs">Property</span>
-            </div>
+      {/* Spurgeon Property Logo with Purple Filter */}
+      <div className="bg-white rounded px-2 py-1 shadow-sm">
+        <img 
+          src="/spurgeon-property-logo.png" 
+          alt="Spurgeon Property" 
+          className={cn(
+            logoHeight,
+            "object-contain",
+            variant === "compact" ? "max-w-[140px]" : "max-w-[180px]",
+            // CSS filter to change blue to purple
+            "filter brightness-110 hue-rotate-45 saturate-125"
           )}
-        </div>
+          style={{
+            filter: 'hue-rotate(45deg) saturate(1.25) brightness(1.1)'
+          }}
+        />
       </div>
     </div>
   );
