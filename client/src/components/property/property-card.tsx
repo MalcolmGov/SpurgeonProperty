@@ -57,6 +57,24 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
                   e.currentTarget.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Im0xNzUgMTQwIDUwIDUwIDI1LTI1IDUwIDUwVjE4MEgxNzVWMTQwWiIgZmlsbD0iI0U1RTdFQiIvPgo8Y2lyY2xlIGN4PSIxODAiIGN5PSIxMjAiIHI9IjEwIiBmaWxsPSIjRTVFN0VCIi8+Cjx0ZXh0IHg9IjE0MCIgeT0iMTYwIiBmaWxsPSIjOUI5QjlCIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiI+UHJvcGVydHkgSW1hZ2U8L3RleHQ+Cjwvc3ZnPgo=";
                 }}
               />
+              
+              {/* SOLD Overlay for List View */}
+              {property.status === "sold" && (
+                <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
+                  <div className="bg-red-600 text-white px-6 py-3 rounded-xl shadow-2xl transform -rotate-12 border-4 border-white">
+                    <span className="text-2xl font-black tracking-wider">SOLD</span>
+                  </div>
+                </div>
+              )}
+              
+              {/* RENTED Overlay for List View */}
+              {property.status === "rented" && (
+                <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
+                  <div className="bg-green-600 text-white px-4 py-3 rounded-xl shadow-2xl transform -rotate-12 border-4 border-white">
+                    <span className="text-xl font-black tracking-wider">RENTED</span>
+                  </div>
+                </div>
+              )}
               <div className="absolute top-3 left-3 flex flex-col gap-2">
                 <div className="flex gap-2">
                   {property.featured && (
@@ -148,6 +166,24 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
             e.currentTarget.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Im0xNzUgMTQwIDUwIDUwIDI1LTI1IDUwIDUwVjE4MEgxNzVWMTQwWiIgZmlsbD0iI0U1RTdFQiIvPgo8Y2lyY2xlIGN4PSIxODAiIGN5PSIxMjAiIHI9IjEwIiBmaWxsPSIjRTVFN0VCIi8+Cjx0ZXh0IHg9IjE0MCIgeT0iMTYwIiBmaWxsPSIjOUI5QjlCIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiI+UHJvcGVydHkgSW1hZ2U8L3RleHQ+Cjwvc3ZnPgo=";
           }}
         />
+        
+        {/* SOLD Overlay for Grid View */}
+        {property.status === "sold" && (
+          <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
+            <div className="bg-red-600 text-white px-8 py-4 rounded-xl shadow-2xl transform -rotate-12 border-4 border-white">
+              <span className="text-3xl font-black tracking-wider">SOLD</span>
+            </div>
+          </div>
+        )}
+        
+        {/* RENTED Overlay for Grid View */}
+        {property.status === "rented" && (
+          <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
+            <div className="bg-green-600 text-white px-6 py-4 rounded-xl shadow-2xl transform -rotate-12 border-4 border-white">
+              <span className="text-2xl font-black tracking-wider">RENTED</span>
+            </div>
+          </div>
+        )}
         
         {/* Tags */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">

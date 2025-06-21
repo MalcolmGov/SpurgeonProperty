@@ -390,6 +390,20 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
                   </SelectContent>
                 </Select>
               </div>
+              <div>
+                <Label htmlFor="status">Property Status</Label>
+                <Select value={formData.status} onValueChange={(value) => handleChange("status", value)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="sold">Sold</SelectItem>
+                    <SelectItem value="rented">Rented</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <div>

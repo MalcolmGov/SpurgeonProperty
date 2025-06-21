@@ -217,6 +217,24 @@ export default function PropertyCard({
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
+                {/* SOLD Overlay for Compact */}
+                {property.status === "sold" && (
+                  <div className="absolute inset-0 bg-black/70 flex items-center justify-center rounded-xl">
+                    <div className="bg-red-600 text-white px-3 py-1 rounded-lg shadow-lg transform -rotate-12 border-2 border-white">
+                      <span className="text-sm font-black tracking-wide">SOLD</span>
+                    </div>
+                  </div>
+                )}
+                
+                {/* RENTED Overlay for Compact */}
+                {property.status === "rented" && (
+                  <div className="absolute inset-0 bg-black/70 flex items-center justify-center rounded-xl">
+                    <div className="bg-green-600 text-white px-2 py-1 rounded-lg shadow-lg transform -rotate-12 border-2 border-white">
+                      <span className="text-xs font-black tracking-wide">RENTED</span>
+                    </div>
+                  </div>
+                )}
+                
                 {/* Modern Property Type Badge for Compact */}
                 <div className="absolute top-1 right-1">
                   <div className={`flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r ${propertyConfig.gradient} text-white text-xs font-medium shadow-lg backdrop-blur-sm`}>
@@ -307,6 +325,24 @@ export default function PropertyCard({
             />
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            
+            {/* SOLD Overlay */}
+            {property.status === "sold" && (
+              <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                <div className="bg-red-600 text-white px-8 py-4 rounded-xl shadow-2xl transform -rotate-12 border-4 border-white">
+                  <span className="text-3xl font-black tracking-wider">SOLD</span>
+                </div>
+              </div>
+            )}
+            
+            {/* RENTED Overlay */}
+            {property.status === "rented" && (
+              <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                <div className="bg-green-600 text-white px-6 py-4 rounded-xl shadow-2xl transform -rotate-12 border-4 border-white">
+                  <span className="text-2xl font-black tracking-wider">RENTED</span>
+                </div>
+              </div>
+            )}
           </div>
           
           {/* Modern Property Type Badge */}
