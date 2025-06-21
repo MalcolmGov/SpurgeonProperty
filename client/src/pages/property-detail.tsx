@@ -25,7 +25,8 @@ import {
   Share2,
   Car,
   Star,
-  Check
+  Check,
+  MessageCircle
 } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
 
@@ -195,6 +196,20 @@ export default function PropertyDetail() {
                     <Phone className="w-4 h-4 mr-2" />
                     Contact Agent
                   </Button>
+                  {property.agent?.phone && (
+                    <Button 
+                      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg"
+                      onClick={() => {
+                        const message = `Hi ${property.agent?.name}, I'm interested in the property "${property.title}" (ID: ${property.id}). Could you please provide more information?`;
+                        const phoneNumber = property.agent?.phone?.replace(/[^\d]/g, '');
+                        const whatsappUrl = `https://wa.me/27${phoneNumber?.startsWith('0') ? phoneNumber.slice(1) : phoneNumber}?text=${encodeURIComponent(message)}`;
+                        window.open(whatsappUrl, '_blank');
+                      }}
+                    >
+                      <MessageCircle className="w-4 h-4 mr-2" />
+                      WhatsApp Agent
+                    </Button>
+                  )}
                   <Button 
                     variant="outline" 
                     className="w-full border-purple-300 text-purple-700 hover:bg-purple-50 dark:border-purple-600 dark:text-purple-300 dark:hover:bg-purple-900/20"
@@ -416,7 +431,7 @@ export default function PropertyDetail() {
               <p className="text-slate-600 dark:text-slate-400 mb-6">
                 Get in touch with our agent for more information, schedule a viewing, or submit an inquiry.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-2xl mx-auto">
                 <Button 
                   className="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-lg h-12"
                   onClick={() => setShowContactForm(true)}
@@ -431,6 +446,20 @@ export default function PropertyDetail() {
                   <Phone className="w-5 h-5 mr-2" />
                   Contact Agent
                 </Button>
+                {property.agent?.phone && (
+                  <Button 
+                    className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg h-12"
+                    onClick={() => {
+                      const message = `Hi ${property.agent?.name}, I'm interested in the property "${property.title}" (ID: ${property.id}). Could you please provide more information?`;
+                      const phoneNumber = property.agent?.phone?.replace(/[^\d]/g, '');
+                      const whatsappUrl = `https://wa.me/27${phoneNumber?.startsWith('0') ? phoneNumber.slice(1) : phoneNumber}?text=${encodeURIComponent(message)}`;
+                      window.open(whatsappUrl, '_blank');
+                    }}
+                  >
+                    <MessageCircle className="w-5 h-5 mr-2" />
+                    WhatsApp
+                  </Button>
+                )}
               </div>
             </div>
           </CardContent>

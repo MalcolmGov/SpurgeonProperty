@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { insertLeadSchema } from "@shared/schema";
@@ -15,6 +15,69 @@ interface ContactFormProps {
   propertyId?: number;
   agentId?: number | null;
   onClose: () => void;
+}
+
+interface WhatsAppButtonProps {
+  propertyId?: number;
+  agentId?: number | null;
+  formData: any;
+  onClose: () => void;
+}
+
+function WhatsAppButton({ propertyId, agentId, formData, onClose }: WhatsAppButtonProps) {
+  const { data: property } = useQuery({
+    queryKey: [`/api/properties/${propertyId}`],
+    enabled: !!propertyId,
+  });
+
+  const { data: agent } = useQuery({
+    queryKey: [`/api/agents/${agentId}`],
+    enabled: !!agentId,
+  });
+
+  const handleWhatsAppClick = () => {
+    const targetAgent = agent || property?.agent;
+    if (!targetAgent?.phone) return;
+
+    const inquiryTypeMap: Record<string, string> = {
+      viewing_request: "schedule a viewing",
+      info_request: "get more information",
+      price_negotiation: "discuss pricing",
+      financing_help: "get financing assistance",
+      offer_submission: "submit an offer",
+      general_inquiry: "make a general inquiry"
+    };
+
+    const inquiryText = inquiryTypeMap[formData.inquiryType] || "inquire about the property";
+    const timeText = formData.preferredContactTime !== "anytime" 
+      ? ` I prefer to be contacted in the ${formData.preferredContactTime}.`
+      : "";
+
+    const message = `Hi ${targetAgent.name}, I'm ${formData.name} and I'd like to ${inquiryText}${propertyId ? ` for property ID ${propertyId}` : ""}.${timeText} ${formData.message || ""} You can reach me at ${formData.email}${formData.phone ? ` or ${formData.phone}` : ""}.`;
+
+    const phoneNumber = targetAgent.phone.replace(/[^\d]/g, '');
+    const whatsappUrl = `https://wa.me/27${phoneNumber.startsWith('0') ? phoneNumber.slice(1) : phoneNumber}?text=${encodeURIComponent(message)}`;
+    
+    window.open(whatsappUrl, '_blank');
+    onClose();
+  };
+
+  const targetAgent = agent || property?.agent;
+
+  if (!targetAgent?.phone) {
+    return null;
+  }
+
+  return (
+    <Button
+      type="button"
+      onClick={handleWhatsAppClick}
+      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg"
+    >
+      <MessageCircle className="w-4 h-4 mr-2" />
+      WhatsApp {targetAgent.name}
+    </Button>
+  );
 }
 
 export default function ContactForm({ propertyId, agentId, onClose }: ContactFormProps) {
@@ -223,32 +286,46 @@ export default function ContactForm({ propertyId, agentId, onClose }: ContactFor
           </div>
           
           {/* Action Buttons */}
-          <div className="flex gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClose}
-              className="flex-1"
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              className="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-lg"
-              disabled={createLeadMutation.isPending}
-            >
-              {createLeadMutation.isPending ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Submitting...
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <Send className="w-4 h-4" />
-                  Send Message
-                </div>
-              )}
-            </Button>
+          <div className="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+            <div className="flex gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onClose}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-lg"
+                disabled={createLeadMutation.isPending}
+              >
+                {createLeadMutation.isPending ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Submitting...
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <Send className="w-4 h-4" />
+                    Send Message
+                  </div>
+                )}
+              </Button>
+            </div>
+            
+            <div className="text-center">
+              <div className="text-sm text-slate-500 dark:text-slate-400 mb-2">
+                Or get instant response via WhatsApp
+              </div>
+              <WhatsAppButton 
+                propertyId={propertyId}
+                agentId={agentId}
+                formData={formData}
+                onClose={onClose}
+              />
+            </div>
           </div>
         </form>
       </DialogContent>
