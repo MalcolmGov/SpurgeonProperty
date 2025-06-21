@@ -156,8 +156,10 @@ ${data.message}`,
         </div>
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Sell Your Property with Confidence
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent">
+              Sell Your Property with Confidence
+            </span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Get expert guidance, professional marketing, and maximum value for your South African property. Our experienced agents make selling easy and profitable.
