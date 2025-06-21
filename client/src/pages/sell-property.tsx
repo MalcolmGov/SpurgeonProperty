@@ -157,7 +157,7 @@ ${data.message}`,
         {/* Hero Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
               Sell Your Property with Confidence
             </span>
           </h1>

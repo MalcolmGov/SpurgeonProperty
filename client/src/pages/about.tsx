@@ -113,7 +113,7 @@ export default function About() {
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
               About Spurgeon Property
             </span>
           </h1>

@@ -213,7 +213,7 @@ export default function Home() {
                   transition={{ duration: 0.8, delay: 0.2 }}
                   className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
                 >
-                  <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
                     Your Gateway to Premium Properties
                   </span>
                 </motion.h1>
@@ -292,8 +292,10 @@ export default function Home() {
                   viewport={{ once: true }}
                   className="text-center mb-16"
                 >
-                  <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">
-                    {searchFilters.search ? `Search Results for "${searchFilters.search}"` : "Featured Properties"}
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                    <span className="bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
+                      {searchFilters.search ? `Search Results for "${searchFilters.search}"` : "Featured Properties"}
+                    </span>
                   </h2>
                   <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
                     {searchFilters.search ? `Found ${featuredProperties?.length || 0} properties matching your search` : "Discover handpicked properties that offer exceptional value and prime locations"}
@@ -388,8 +390,10 @@ export default function Home() {
                   viewport={{ once: true }}
                   className="text-center mb-16"
                 >
-                  <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">
-                    Why Choose Spurgeon Property?
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                    <span className="bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
+                      Why Choose Spurgeon Property?
+                    </span>
                   </h2>
                   <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
                     Your trusted partner in South African real estate with proven results and cutting-edge technology
