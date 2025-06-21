@@ -70,7 +70,7 @@ export default function PropertySearch() {
                   placeholder="Search by title, address, or keywords..."
                   value={searchData.search}
                   onChange={(e) => handleInputChange("search", e.target.value)}
-                  className="pl-10 bg-gray-50 border-gray-200 focus:border-purple-500 focus:ring-purple-500"
+                  className="pl-10 bg-gray-50 border-gray-200 focus:border-purple-500 focus:ring-purple-500 text-gray-900 placeholder:text-gray-500"
                 />
               </div>
             </div>
@@ -126,14 +126,14 @@ export default function PropertySearch() {
                 placeholder="Min price"
                 value={searchData.minPrice}
                 onChange={(e) => handleInputChange("minPrice", e.target.value)}
-                className="bg-gray-50 border-gray-200 focus:border-purple-500 focus:ring-purple-500"
+                className="bg-gray-50 border-gray-200 focus:border-purple-500 focus:ring-purple-500 text-gray-900 placeholder:text-gray-500"
               />
               <Input
                 type="number"
                 placeholder="20000000"
                 value={searchData.maxPrice}
                 onChange={(e) => handleInputChange("maxPrice", e.target.value)}
-                className="bg-gray-50 border-gray-200 focus:border-purple-500 focus:ring-purple-500"
+                className="bg-gray-50 border-gray-200 focus:border-purple-500 focus:ring-purple-500 text-gray-900 placeholder:text-gray-500"
               />
             </div>
           </div>
