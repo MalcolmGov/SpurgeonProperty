@@ -64,7 +64,8 @@ export default function PropertySearch({ onSearchChange }: PropertySearchProps) 
         maxPrice: newData.maxPrice ? parseInt(newData.maxPrice) : undefined,
         bedrooms: (newData.bedrooms && newData.bedrooms !== "any") ? parseInt(newData.bedrooms) : undefined,
         bathrooms: (newData.bathrooms && newData.bathrooms !== "any") ? parseFloat(newData.bathrooms) : undefined,
-        featured: true,
+        // When searching, show all properties (not just featured)
+        featured: newData.search ? undefined : true,
         limit: 6
       };
       onSearchChange(filters);

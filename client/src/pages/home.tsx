@@ -22,7 +22,7 @@ export default function Home() {
     bedrooms: "",
     bathrooms: "",
     featured: true,
-    limit: 3
+    limit: 6
   });
   
   const { data: featuredProperties, isLoading, error, refetch } = useProperties(searchFilters);
