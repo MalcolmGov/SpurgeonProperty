@@ -184,17 +184,11 @@ export default function Home() {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
-                  className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
+                  className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
                 >
-                  Your Gateway to
-                  <motion.span 
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.6, delay: 0.6 }}
-                    className="block bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent"
-                  >
-                    Premium Properties
-                  </motion.span>
+                  <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent">
+                    Your Gateway to Premium Properties
+                  </span>
                 </motion.h1>
                 <motion.p 
                   initial={{ opacity: 0, y: 20 }}
