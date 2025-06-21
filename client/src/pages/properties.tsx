@@ -175,8 +175,10 @@ export default function Properties() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Search Header */}
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">
-            Advanced Property Search
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent">
+              Advanced Property Search
+            </span>
           </h1>
           <p className="text-slate-600 dark:text-slate-300 mb-6">
             {isLoading ? 'Loading properties...' : `Found ${sortedProperties.length} properties`}
