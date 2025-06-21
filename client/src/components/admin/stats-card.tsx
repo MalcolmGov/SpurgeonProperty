@@ -13,46 +13,90 @@ export default function StatsCard({ title, value, change, icon: Icon, trend }: S
   const getTrendColor = () => {
     switch (trend) {
       case "up":
-        return "text-green-500";
+        return "text-emerald-500";
       case "down":
         return "text-red-500";
       default:
-        return "text-slate-500";
+        return "text-slate-400";
     }
   };
 
-  const getIconBgColor = () => {
+  const getCardStyle = () => {
     switch (title.toLowerCase()) {
-      case "total properties":
-        return "bg-purple-100 dark:bg-purple-900/20 text-purple-primary";
-      case "active leads":
-        return "bg-orange-100 dark:bg-orange-900/20 text-orange-primary";
-      case "this month":
-        return "bg-green-100 dark:bg-green-900/20 text-green-500";
-      case "conversion rate":
-        return "bg-blue-100 dark:bg-blue-900/20 text-blue-500";
+      case "active properties":
+        return {
+          gradient: "bg-gradient-to-br from-purple-500 via-purple-600 to-indigo-700",
+          iconBg: "bg-white/20 backdrop-blur-sm",
+          iconColor: "text-white",
+          textColor: "text-white",
+          valueColor: "text-white",
+          changeColor: "text-purple-100"
+        };
+      case "total leads":
+        return {
+          gradient: "bg-gradient-to-br from-orange-500 via-red-500 to-pink-600",
+          iconBg: "bg-white/20 backdrop-blur-sm",
+          iconColor: "text-white",
+          textColor: "text-white",
+          valueColor: "text-white",
+          changeColor: "text-orange-100"
+        };
+      case "new leads":
+        return {
+          gradient: "bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600",
+          iconBg: "bg-white/20 backdrop-blur-sm",
+          iconColor: "text-white",
+          textColor: "text-white",
+          valueColor: "text-white",
+          changeColor: "text-emerald-100"
+        };
+      case "active agents":
+        return {
+          gradient: "bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600",
+          iconBg: "bg-white/20 backdrop-blur-sm",
+          iconColor: "text-white",
+          textColor: "text-white",
+          valueColor: "text-white",
+          changeColor: "text-blue-100"
+        };
       default:
-        return "bg-slate-100 dark:bg-slate-700 text-slate-500";
+        return {
+          gradient: "bg-gradient-to-br from-slate-600 to-slate-700",
+          iconBg: "bg-white/20 backdrop-blur-sm",
+          iconColor: "text-white",
+          textColor: "text-white",
+          valueColor: "text-white",
+          changeColor: "text-slate-100"
+        };
     }
   };
+
+  const cardStyle = getCardStyle();
 
   return (
-    <Card>
-      <CardContent className="p-6">
+    <div className={`relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 ${cardStyle.gradient}`}>
+      {/* Subtle pattern overlay */}
+      <div className="absolute inset-0 bg-white/5 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)]" style={{backgroundSize: '20px 20px'}}></div>
+      
+      <CardContent className="p-6 relative z-10">
         <div className="flex items-center justify-between">
-          <div>
-            <p className="text-slate-600 dark:text-slate-400 text-sm">{title}</p>
-            <p className="text-3xl font-bold text-slate-800 dark:text-white">{value}</p>
+          <div className="space-y-2">
+            <p className={`text-sm font-medium ${cardStyle.textColor} opacity-90`}>{title}</p>
+            <p className={`text-3xl font-bold ${cardStyle.valueColor} tracking-tight`}>{value}</p>
           </div>
-          <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${getIconBgColor()}`}>
-            <Icon className="w-6 h-6" />
+          <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${cardStyle.iconBg} shadow-lg`}>
+            <Icon className={`w-7 h-7 ${cardStyle.iconColor}`} />
           </div>
         </div>
         <div className="flex items-center mt-4 text-sm">
-          <span className={`font-medium ${getTrendColor()}`}>{change}</span>
-          <span className="text-slate-600 dark:text-slate-400 ml-1">from last month</span>
+          <div className="flex items-center space-x-1">
+            <span className={`font-semibold ${getTrendColor()} bg-white/20 px-2 py-1 rounded-full text-xs`}>
+              {change}
+            </span>
+            <span className={`${cardStyle.changeColor} opacity-75 text-xs`}>from last month</span>
+          </div>
         </div>
       </CardContent>
-    </Card>
+    </div>
   );
 }
