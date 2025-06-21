@@ -66,7 +66,7 @@ export default function PropertySearch({ onSearchChange }: PropertySearchProps) 
         bathrooms: (newData.bathrooms && newData.bathrooms !== "any") ? parseFloat(newData.bathrooms) : undefined,
         // When searching, show all properties (not just featured)
         featured: newData.search ? undefined : true,
-        limit: 6
+        limit: newData.search ? 6 : 3
       };
       onSearchChange(filters);
     }
