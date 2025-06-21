@@ -2,6 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { X } from "lucide-react";
 
 interface MinimalPropertyFormProps {
   open: boolean;
@@ -61,6 +68,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
 
   // Populate form when editing existing property
   useEffect(() => {
+    console.log('MinimalPropertyForm: property changed', { property, open });
     if (property && open) {
       setFormData({
         title: property.title || "",
@@ -329,8 +337,10 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('MinimalPropertyForm: Form submitted', { formData, property });
     
     if (!validateForm()) {
+      console.log('MinimalPropertyForm: Validation failed', errors);
       toast({
         title: "Validation Error",
         description: "Please fill in all required fields highlighted in red",
@@ -339,6 +349,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       return;
     }
 
+    console.log('MinimalPropertyForm: Calling mutation');
     mutation.mutate(formData);
   };
 
@@ -437,93 +448,107 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
     setSelectedVideos(prev => prev.filter((_, i) => i !== index));
   };
 
-  if (!open) return null;
-
   return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white dark:bg-gray-800 border-b p-4 flex items-center justify-between">
-          <h2 className="text-xl font-semibold">{property ? "Edit Property" : "Add New Property"}</h2>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 text-2xl"
-          >
-            ×
-          </button>
-        </div>
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <div className="flex items-center justify-between">
+            <DialogTitle>{property ? "Edit Property" : "Add New Property"}</DialogTitle>
+            <Button variant="ghost" size="sm" onClick={onClose}>
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+        </DialogHeader>
         
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Basic Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
-                <label className={`block text-sm font-medium mb-1 ${errors.title ? "text-red-500" : ""}`}>
+                <Label htmlFor="title" className={errors.title ? "text-red-500" : ""}>
                   Property Title *
-                </label>
-                <input
-                  type="text"
+                </Label>
+                <Input
+                  id="title"
                   value={formData.title}
                   onChange={(e) => handleChange("title", e.target.value)}
                   placeholder="Modern Family Home"
-                  className={`w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 ${errors.title ? "border-red-500 focus:border-red-500" : ""}`}
+                  className={errors.title ? "border-red-500 focus:border-red-500" : ""}
                   required
                 />
                 {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Property Type</label>
-                <select
-                  value={formData.propertyType}
-                  onChange={(e) => handleChange("propertyType", e.target.value)}
-                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-                >
-                  <option value="house">House</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="townhouse">Townhouse</option>
-                  <option value="villa">Villa</option>
-                  <option value="estate">Estate</option>
-                  <option value="farm">Farm</option>
-                  <option value="land">Land</option>
-                  <option value="commercial">Commercial</option>
-                </select>
+                <Label htmlFor="propertyType">Property Type</Label>
+                <Select value={formData.propertyType} onValueChange={(value) => handleChange("propertyType", value)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="house">House</SelectItem>
+                    <SelectItem value="apartment">Apartment</SelectItem>
+                    <SelectItem value="townhouse">Townhouse</SelectItem>
+                    <SelectItem value="villa">Villa</SelectItem>
+                    <SelectItem value="estate">Estate</SelectItem>
+                    <SelectItem value="farm">Farm</SelectItem>
+                    <SelectItem value="land">Land</SelectItem>
+                    <SelectItem value="commercial">Commercial</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Listing Type</label>
-                <select
-                  value={formData.listingType}
-                  onChange={(e) => handleChange("listingType", e.target.value)}
-                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-                >
-                  <option value="sale">For Sale</option>
-                  <option value="rent">For Rent</option>
-                </select>
+                <Label htmlFor="listingType">Listing Type</Label>
+                <Select value={formData.listingType} onValueChange={(value) => handleChange("listingType", value)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sale">For Sale</SelectItem>
+                    <SelectItem value="rent">For Rent</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="status">Property Status</Label>
+                <Select value={formData.status} onValueChange={(value) => handleChange("status", value)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="sold">Sold</SelectItem>
+                    <SelectItem value="rented">Rented</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
             <div>
-              <label className={`block text-sm font-medium mb-1 ${errors.description ? "text-red-500" : ""}`}>
+              <Label htmlFor="description" className={errors.description ? "text-red-500" : ""}>
                 Description *
-              </label>
-              <textarea
+              </Label>
+              <Textarea
+                id="description"
                 value={formData.description}
                 onChange={(e) => handleChange("description", e.target.value)}
                 placeholder="Describe the property in detail..."
                 rows={3}
-                className={`w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 ${errors.description ? "border-red-500 focus:border-red-500" : ""}`}
+                className={errors.description ? "border-red-500 focus:border-red-500" : ""}
                 required
               />
               {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Additional Information</label>
-              <textarea
+              <Label htmlFor="additionalInfo">Additional Information</Label>
+              <Textarea
+                id="additionalInfo"
                 value={formData.additionalInfo}
                 onChange={(e) => handleChange("additionalInfo", e.target.value)}
                 placeholder="Any additional details, special features, or notes about the property..."
                 rows={3}
-                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
           </div>
