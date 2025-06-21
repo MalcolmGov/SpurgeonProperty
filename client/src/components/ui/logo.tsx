@@ -23,9 +23,7 @@ export function Logo({ className, showText = true, variant = "default" }: LogoPr
             "logo-color-enhanced"
           )}
           style={{
-            filter: 'sepia(0.4) hue-rotate(280deg) saturate(1.6) brightness(1.3) contrast(1.2)',
-            // Reduced sepia, increased brightness and contrast for better text legibility
-            mixBlendMode: 'normal'
+            // Temporarily remove filter to check original logo readability
           }}
         />
       </div>
