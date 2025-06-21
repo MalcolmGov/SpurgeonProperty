@@ -490,7 +490,7 @@ export class DatabaseStorage implements IStorage {
         db.select({ count: count() }).from(properties).where(eq(properties.status, 'sold'))
       ]);
 
-      return {
+      const stats = {
         totalProperties: totalPropertiesResult[0].count,
         activeProperties: activePropertiesResult[0].count,
         totalLeads: totalLeadsResult[0].count,
@@ -498,6 +498,9 @@ export class DatabaseStorage implements IStorage {
         totalAgents: totalAgentsResult[0].count,
         recentSales: recentSalesResult[0].count
       };
+
+      console.log('Dashboard stats calculated:', stats);
+      return stats;
     } catch (error) {
       console.error('Error fetching stats:', error);
       throw new Error('Failed to fetch statistics');
