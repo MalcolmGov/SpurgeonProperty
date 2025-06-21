@@ -13,7 +13,19 @@ import { AnimatedPage, FadeInSection, StaggeredList, StaggeredItem, AnimatedCard
 import { motion } from "framer-motion";
 
 export default function Home() {
-  const { data: featuredProperties, isLoading, error, refetch } = useProperties({ featured: true, limit: 3 });
+  const [searchFilters, setSearchFilters] = useState({
+    search: "",
+    propertyType: "",
+    province: "",
+    minPrice: "",
+    maxPrice: "",
+    bedrooms: "",
+    bathrooms: "",
+    featured: true,
+    limit: 3
+  });
+  
+  const { data: featuredProperties, isLoading, error, refetch } = useProperties(searchFilters);
   const [, navigate] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [comparisonProperties, setComparisonProperties] = useState<number[]>([]);
@@ -230,7 +242,7 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: 1.2 }}
                 className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-2xl max-w-4xl mx-auto"
               >
-                <PropertySearch />
+                <PropertySearch onSearchChange={setSearchFilters} />
               </motion.div>
             </div>
 
@@ -266,10 +278,10 @@ export default function Home() {
                   className="text-center mb-16"
                 >
                   <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">
-                    Featured Properties
+                    {searchFilters.search ? `Search Results for "${searchFilters.search}"` : "Featured Properties"}
                   </h2>
                   <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-                    Discover handpicked properties that offer exceptional value and prime locations
+                    {searchFilters.search ? `Found ${featuredProperties?.length || 0} properties matching your search` : "Discover handpicked properties that offer exceptional value and prime locations"}
                   </p>
                 </motion.div>
                 

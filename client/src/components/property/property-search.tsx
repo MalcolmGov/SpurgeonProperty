@@ -6,7 +6,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent } from "@/components/ui/card";
 import { Search } from "lucide-react";
 
-export default function PropertySearch() {
+interface PropertySearchProps {
+  onSearchChange?: (filters: any) => void;
+}
+
+export default function PropertySearch({ onSearchChange }: PropertySearchProps) {
   const [, setLocation] = useLocation();
 
   const [searchData, setSearchData] = useState({
@@ -24,7 +28,12 @@ export default function PropertySearch() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Build query parameters
+    // If onSearchChange is provided (homepage), don't navigate - filtering happens in real-time
+    if (onSearchChange) {
+      return;
+    }
+    
+    // Build query parameters for navigation to Properties page
     const params = new URLSearchParams();
     if (searchData.search) params.set("search", searchData.search);
     if (searchData.propertyType && searchData.propertyType !== "all") params.set("propertyType", searchData.propertyType);
@@ -42,7 +51,24 @@ export default function PropertySearch() {
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setSearchData(prev => ({ ...prev, [field]: value }));
+    const newData = { ...searchData, [field]: value };
+    setSearchData(newData);
+    
+    // If onSearchChange prop is provided (homepage), update filters in real-time
+    if (onSearchChange) {
+      const filters = {
+        search: newData.search || "",
+        propertyType: (newData.propertyType && newData.propertyType !== "all") ? newData.propertyType : "",
+        province: (newData.province && newData.province !== "all") ? newData.province : "",
+        minPrice: newData.minPrice ? parseInt(newData.minPrice) : undefined,
+        maxPrice: newData.maxPrice ? parseInt(newData.maxPrice) : undefined,
+        bedrooms: (newData.bedrooms && newData.bedrooms !== "any") ? parseInt(newData.bedrooms) : undefined,
+        bathrooms: (newData.bathrooms && newData.bathrooms !== "any") ? parseFloat(newData.bathrooms) : undefined,
+        featured: true,
+        limit: 6
+      };
+      onSearchChange(filters);
+    }
   };
 
   return (
@@ -212,7 +238,7 @@ export default function PropertySearch() {
             className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white py-3 font-semibold transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
           >
             <Search className="w-5 h-5" />
-            <span>Search Properties</span>
+            <span>{onSearchChange ? "Search Live" : "Search Properties"}</span>
           </Button>
         </form>
       </CardContent>
