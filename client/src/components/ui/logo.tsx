@@ -20,11 +20,12 @@ export function Logo({ className, showText = true, variant = "default" }: LogoPr
             logoHeight,
             "object-contain",
             variant === "compact" ? "max-w-[140px]" : "max-w-[180px]",
-            // CSS filter to change blue to purple
-            "filter brightness-110 hue-rotate-45 saturate-125"
+            "logo-color-enhanced"
           )}
           style={{
-            filter: 'hue-rotate(45deg) saturate(1.25) brightness(1.1)'
+            filter: 'hue-rotate(60deg) saturate(1.4) brightness(1.1) contrast(1.2)',
+            // Enhanced color mapping for purple and orange
+            mixBlendMode: 'normal'
           }}
         />
       </div>

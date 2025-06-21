@@ -304,6 +304,11 @@ input, textarea, select {
   color: transparent;
 }
 
+/* Enhanced logo color adjustment for purple and orange */
+.logo-color-enhanced {
+  filter: hue-rotate(45deg) saturate(1.4) brightness(1.05) contrast(1.15);
+}
+
 .logo-spurgeon-gradient-white {
   background: linear-gradient(135deg, #ffffff 0%, #e9d5ff 50%, #ffffff 100%);
   -webkit-background-clip: text;
