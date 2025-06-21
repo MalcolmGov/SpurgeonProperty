@@ -83,6 +83,60 @@ export default function AdminProperties() {
     }
   };
 
+  const handleExport = () => {
+    if (!properties || properties.length === 0) {
+      toast({
+        title: "No Data to Export",
+        description: "There are no properties to export",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Create CSV content
+    const headers = [
+      'ID', 'Title', 'Property Type', 'Listing Type', 'Price', 'Status', 
+      'Bedrooms', 'Bathrooms', 'Address', 'City', 'Province', 'Agent', 
+      'Created Date', 'Views'
+    ];
+    
+    const csvContent = [
+      headers.join(','),
+      ...properties.map(property => [
+        property.id,
+        `"${property.title.replace(/"/g, '""')}"`,
+        property.propertyType || '',
+        property.listingType || 'sale',
+        `"${formatPrice(property.price).replace(/"/g, '""')}"`,
+        property.status || 'active',
+        property.bedrooms || '',
+        property.bathrooms || '',
+        `"${property.address?.replace(/"/g, '""') || ''}"`,
+        property.city || '',
+        property.province || '',
+        `"${property.agent?.name?.replace(/"/g, '""') || 'Unassigned'}"`,
+        property.createdAt ? new Date(property.createdAt).toLocaleDateString() : '',
+        property.views || 0
+      ].join(','))
+    ].join('\n');
+
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `properties-export-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast({
+      title: "Export Successful",
+      description: `Exported ${properties.length} properties to CSV file`,
+    });
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "active":
@@ -217,7 +271,12 @@ export default function AdminProperties() {
                   </Select>
                 </div>
                 <div className="flex items-end">
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={handleExport}
+                    disabled={!properties || properties.length === 0}
+                  >
                     <Download className="w-4 h-4 mr-2" />
                     Export
                   </Button>
