@@ -565,9 +565,11 @@ export default function Home() {
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.6 }}
                       viewport={{ once: true }}
-                      className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4 sm:mb-6"
+                      className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6"
                     >
-                      Your Personal Property Assistant
+                      <span className="bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
+                        Your Personal Property Assistant
+                      </span>
                     </motion.h2>
                     <motion.p 
                       initial={{ opacity: 0, x: -20 }}
