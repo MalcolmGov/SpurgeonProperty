@@ -230,6 +230,7 @@ function AgentForm({ agent, onSuccess }: { agent?: Agent; onSuccess: () => void 
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/agents"] });
+      queryClient.refetchQueries({ queryKey: ["/api/admin/agents"] });
       toast({ title: "Agent updated successfully" });
       onSuccess();
     },
@@ -812,8 +813,25 @@ export default function AdminAgents() {
                   <CardHeader className="pb-3">
                     <div className="flex justify-between items-start">
                       <div className="flex items-center space-x-3">
-                        <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-                          <User className="w-6 h-6 text-white" />
+                        <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-purple-200">
+                          {agent.avatar ? (
+                            <img 
+                              src={agent.avatar + '?t=' + Date.now()} 
+                              alt={agent.name}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                // Fallback to default avatar if image fails to load
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = 'none';
+                                target.parentElement!.classList.add('bg-gradient-to-br', 'from-purple-500', 'to-pink-500', 'flex', 'items-center', 'justify-center');
+                                target.parentElement!.innerHTML = '<svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
+                              }}
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                              <User className="w-6 h-6 text-white" />
+                            </div>
+                          )}
                         </div>
                         <div>
                           <CardTitle className="text-lg">{agent.name}</CardTitle>
