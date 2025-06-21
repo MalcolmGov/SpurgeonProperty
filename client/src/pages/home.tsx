@@ -11,8 +11,11 @@ import { Building, Users, TrendingUp, Award } from "lucide-react";
 import { useState } from "react";
 import { AnimatedPage, FadeInSection, StaggeredList, StaggeredItem, AnimatedCard } from "@/components/ui/animated-transitions";
 import { motion } from "framer-motion";
+import { useTheme } from "@/contexts/theme-context";
+import { Sun, Moon } from "lucide-react";
 
 export default function Home() {
+  const { theme, setTheme } = useTheme();
   const [searchFilters, setSearchFilters] = useState({
     search: "",
     propertyType: "",
@@ -93,6 +96,18 @@ export default function Home() {
                 <Link href="/sell-property" className="text-white hover:text-orange-300 px-3 py-2 text-sm font-medium transition-colors">
                   Sell Property
                 </Link>
+                
+                {/* Theme Toggle Button */}
+                <button
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  className="relative text-white hover:text-orange-300 p-2 transition-colors"
+                  title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+                >
+                  <Sun className="h-5 w-5 rotate-0 scale-100 transition-all duration-300 dark:-rotate-90 dark:scale-0" />
+                  <Moon className="absolute h-5 w-5 top-2 left-2 rotate-90 scale-0 transition-all duration-300 dark:rotate-0 dark:scale-100" />
+                  <span className="sr-only">Toggle theme</span>
+                </button>
+                
                 <button
                   onClick={() => {
                     window.open('https://online.mortgagemax.co.za/mfactory-braiden-elijah', '_blank');
