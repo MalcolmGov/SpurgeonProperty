@@ -152,7 +152,7 @@ export default function AdvancedPropertySearch({
               <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
               <Input
                 id="search"
-                placeholder="Search by title, address, or keywords..."
+                placeholder="Search by title, address, suburb, city..."
                 value={filters.search}
                 onChange={(e) => handleFilterChange('search', e.target.value)}
                 className="pl-10"

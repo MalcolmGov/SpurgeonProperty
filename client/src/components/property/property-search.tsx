@@ -67,7 +67,7 @@ export default function PropertySearch() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <Input
                   type="text"
-                  placeholder="Search by title, address, or keywords..."
+                  placeholder="Search by title, address, suburb, city..."
                   value={searchData.search}
                   onChange={(e) => handleInputChange("search", e.target.value)}
                   className="pl-10 bg-gray-50 border-gray-200 focus:border-purple-500 focus:ring-purple-500 text-gray-900 placeholder:text-gray-500"

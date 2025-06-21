@@ -94,7 +94,9 @@ export class DatabaseStorage implements IStorage {
           or(
             like(properties.title, `%${filters.search}%`),
             like(properties.description, `%${filters.search}%`),
-            like(properties.address, `%${filters.search}%`)
+            like(properties.address, `%${filters.search}%`),
+            like(properties.suburb, `%${filters.search}%`),
+            like(properties.city, `%${filters.search}%`)
           )
         );
       }
