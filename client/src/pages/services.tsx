@@ -177,34 +177,6 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Services Wheel Section */}
-      <section className="py-16 bg-white dark:bg-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
-                Our Client-Centric Approach
-              </span>
-            </h2>
-            <p className="text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-              Every service we offer revolves around our clients' success. Our integrated approach 
-              ensures seamless coordination across all aspects of your property and investment needs.
-            </p>
-          </div>
-          
-          <div className="flex justify-center">
-            <div className="relative max-w-2xl">
-              <img 
-                src={servicesWheel} 
-                alt="Spurgeon Property Services Wheel - Client Centric Approach" 
-                className="w-full h-auto drop-shadow-2xl"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent rounded-full"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Services Grid */}
       <section className="py-16 bg-slate-50 dark:bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -313,6 +285,34 @@ export default function ServicesPage() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Wheel Section */}
+      <section className="py-16 bg-white dark:bg-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
+                Our Client-Centric Approach
+              </span>
+            </h2>
+            <p className="text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
+              Every service we offer revolves around our clients' success. Our integrated approach 
+              ensures seamless coordination across all aspects of your property and investment needs.
+            </p>
+          </div>
+          
+          <div className="flex justify-center">
+            <div className="relative max-w-2xl">
+              <img 
+                src={servicesWheel} 
+                alt="Spurgeon Property Services Wheel - Client Centric Approach" 
+                className="w-full h-auto drop-shadow-2xl"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent rounded-full"></div>
             </div>
           </div>
         </div>
