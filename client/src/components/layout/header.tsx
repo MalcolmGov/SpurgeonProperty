@@ -22,6 +22,7 @@ export default function Header() {
   const navigation = [
     { name: "Home", href: "/", icon: Home },
     { name: "Properties", href: "/properties", icon: Building },
+    { name: "Services", href: "/services", icon: Briefcase },
     { name: "Rentals", href: "/rentals", icon: MapPin },
     { name: "About", href: "/about", icon: Users },
     { name: "Sell Property", href: "/sell-property", icon: Building },
