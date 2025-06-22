@@ -334,7 +334,7 @@ export default function ServicesPage() {
             Contact our expert team today for a personalized consultation and discover 
             how our comprehensive services can help you achieve your property goals.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex justify-center">
             <button 
               onClick={() => setIsContactOpen(true)}
               style={{ 
@@ -360,34 +360,6 @@ export default function ServicesPage() {
             >
               <Phone className="mr-2 h-5 w-5" style={{ color: 'inherit' }} />
               Schedule Consultation
-            </button>
-            <button 
-              onClick={() => setIsContactOpen(true)}
-              style={{ 
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '12px 32px',
-                fontSize: '18px',
-                fontWeight: '600',
-                color: '#ffffff',
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                border: '2px solid #ffffff',
-                borderRadius: '6px',
-                minWidth: '200px',
-                cursor: 'pointer'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#ffffff';
-                e.currentTarget.style.color = '#7c3aed';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-                e.currentTarget.style.color = '#ffffff';
-              }}
-            >
-              <Mail className="mr-2 h-5 w-5" style={{ color: 'inherit' }} />
-              Get In Touch
             </button>
           </div>
         </div>
