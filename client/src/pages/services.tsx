@@ -337,17 +337,57 @@ export default function ServicesPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
               onClick={() => setIsContactOpen(true)}
-              className="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold text-purple-700 bg-white border-2 border-white rounded-md hover:bg-purple-50 transition-all duration-200 min-w-[200px] whitespace-nowrap"
+              style={{ 
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '12px 32px',
+                fontSize: '18px',
+                fontWeight: '600',
+                color: '#7c3aed',
+                backgroundColor: '#ffffff',
+                border: '2px solid #ffffff',
+                borderRadius: '6px',
+                minWidth: '200px',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#faf5ff';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#ffffff';
+              }}
             >
-              <Phone className="mr-2 h-5 w-5 flex-shrink-0" />
-              <span className="text-purple-700">Schedule Consultation</span>
+              <Phone className="mr-2 h-5 w-5" style={{ color: 'inherit' }} />
+              Schedule Consultation
             </button>
             <button 
               onClick={() => setIsContactOpen(true)}
-              className="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold text-white bg-white/20 border-2 border-white rounded-md hover:bg-white hover:text-purple-700 transition-all duration-200 backdrop-blur-sm min-w-[200px] whitespace-nowrap"
+              style={{ 
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '12px 32px',
+                fontSize: '18px',
+                fontWeight: '600',
+                color: '#ffffff',
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                border: '2px solid #ffffff',
+                borderRadius: '6px',
+                minWidth: '200px',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#ffffff';
+                e.currentTarget.style.color = '#7c3aed';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                e.currentTarget.style.color = '#ffffff';
+              }}
             >
-              <Mail className="mr-2 h-5 w-5 flex-shrink-0" />
-              <span className="text-white">Get In Touch</span>
+              <Mail className="mr-2 h-5 w-5" style={{ color: 'inherit' }} />
+              Get In Touch
             </button>
           </div>
         </div>
