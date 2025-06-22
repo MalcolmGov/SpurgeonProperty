@@ -19,8 +19,12 @@ import {
   ArrowRight
 } from "lucide-react";
 import servicesWheel from "@assets/image_1750577117020.png";
+import { useState } from "react";
+import ContactForm from "@/components/forms/contact-form";
 
 export default function ServicesPage() {
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  
   const services = [
     {
       id: "property-investment",
@@ -256,6 +260,7 @@ export default function ServicesPage() {
               <div className="mt-8">
                 <Button 
                   size="lg" 
+                  onClick={() => setIsContactOpen(true)}
                   className="bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600 text-white font-semibold px-8 py-3"
                 >
                   Start Your Journey
@@ -331,24 +336,34 @@ export default function ServicesPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               size="lg" 
+              onClick={() => setIsContactOpen(true)}
               className="bg-white text-purple-700 hover:bg-purple-50 font-semibold px-8 py-3"
             >
               <Phone className="mr-2 h-5 w-5" />
-              Call (011) 123-4567
+              Schedule Consultation
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
+              onClick={() => setIsContactOpen(true)}
               className="border-white text-white hover:bg-white hover:text-purple-700 font-semibold px-8 py-3"
             >
               <Mail className="mr-2 h-5 w-5" />
-              info@spurgeonproperty.co.za
+              Get In Touch
             </Button>
           </div>
         </div>
       </section>
 
       <Footer />
+      
+      {/* Contact Form Modal */}
+      <ContactForm 
+        isOpen={isContactOpen}
+        onClose={() => setIsContactOpen(false)}
+        propertyTitle="Services Consultation"
+        inquiryType="Services Inquiry"
+      />
     </div>
   );
 }

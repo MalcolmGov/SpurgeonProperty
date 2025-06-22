@@ -15,6 +15,9 @@ interface ContactFormProps {
   propertyId?: number;
   agentId?: number | null;
   onClose: () => void;
+  isOpen?: boolean;
+  propertyTitle?: string;
+  inquiryType?: string;
 }
 
 interface WhatsAppButtonProps {
@@ -80,7 +83,14 @@ function WhatsAppButton({ propertyId, agentId, formData, onClose }: WhatsAppButt
   );
 }
 
-export default function ContactForm({ propertyId, agentId, onClose }: ContactFormProps) {
+export default function ContactForm({ 
+  propertyId, 
+  agentId, 
+  onClose, 
+  isOpen = false, 
+  propertyTitle = "", 
+  inquiryType = "General Inquiry" 
+}: ContactFormProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
