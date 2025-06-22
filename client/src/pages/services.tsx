@@ -223,9 +223,10 @@ export default function ServicesPage() {
                   <Button 
                     variant="ghost" 
                     size="sm" 
+                    onClick={() => setIsContactOpen(true)}
                     className="w-full text-purple-600 hover:text-purple-700 hover:bg-purple-50 dark:hover:bg-purple-900/20 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300"
                   >
-                    Learn More
+                    Get In Touch
                     <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </CardContent>

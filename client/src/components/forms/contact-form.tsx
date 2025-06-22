@@ -96,7 +96,7 @@ export default function ContactForm({
     email: "",
     phone: "",
     message: "",
-    inquiryType: "viewing_request",
+    inquiryType: inquiryType === "Services Inquiry" ? "services_consultation" : "viewing_request",
     preferredContactTime: "anytime"
   });
 
@@ -160,19 +160,18 @@ export default function ContactForm({
   };
 
   return (
-    <Dialog open={true} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-xl font-semibold text-slate-800 dark:text-white">
-              Get in Touch with Agent
-            </DialogTitle>
-            <Button variant="ghost" size="sm" onClick={onClose}>
-              <X className="w-4 h-4" />
-            </Button>
-          </div>
+          <DialogTitle className="text-xl font-semibold text-slate-800 dark:text-white flex items-center gap-2">
+            <MessageCircle className="w-5 h-5 text-purple-600" />
+            {propertyTitle || "Get in Touch with Agent"}
+          </DialogTitle>
           <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">
-            Submit your details and we'll connect you with the property agent within 24 hours.
+            {propertyTitle ? 
+              "Submit your details for a consultation about our comprehensive services." :
+              "Submit your details and we'll connect you with the property agent within 24 hours."
+            }
           </p>
         </DialogHeader>
         
