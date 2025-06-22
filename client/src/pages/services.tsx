@@ -337,17 +337,17 @@ export default function ServicesPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
               onClick={() => setIsContactOpen(true)}
-              className="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold text-purple-700 bg-white border-2 border-white rounded-md hover:bg-purple-50 transition-all duration-200"
+              className="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold text-purple-700 bg-white border-2 border-white rounded-md hover:bg-purple-50 transition-all duration-200 min-w-[200px] whitespace-nowrap"
             >
-              <Phone className="mr-2 h-5 w-5" />
-              Schedule Consultation
+              <Phone className="mr-2 h-5 w-5 flex-shrink-0" />
+              <span className="text-purple-700">Schedule Consultation</span>
             </button>
             <button 
               onClick={() => setIsContactOpen(true)}
-              className="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold text-white bg-white/10 border-2 border-white rounded-md hover:bg-white hover:text-purple-700 transition-all duration-200 backdrop-blur-sm"
+              className="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold text-white bg-white/20 border-2 border-white rounded-md hover:bg-white hover:text-purple-700 transition-all duration-200 backdrop-blur-sm min-w-[200px] whitespace-nowrap"
             >
-              <Mail className="mr-2 h-5 w-5" />
-              Get In Touch
+              <Mail className="mr-2 h-5 w-5 flex-shrink-0" />
+              <span className="text-white">Get In Touch</span>
             </button>
           </div>
         </div>
