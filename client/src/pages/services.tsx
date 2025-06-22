@@ -160,23 +160,7 @@ export default function ServicesPage() {
               From property acquisition to wealth management, we provide integrated solutions 
               that deliver exceptional results across every aspect of your real estate journey.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
-                className="bg-white text-purple-700 hover:bg-purple-50 font-semibold px-8 py-3"
-              >
-                <Phone className="mr-2 h-5 w-5" />
-                Schedule Consultation
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="border-white text-white hover:bg-white hover:text-purple-700 font-semibold px-8 py-3"
-              >
-                <Mail className="mr-2 h-5 w-5" />
-                Get In Touch
-              </Button>
-            </div>
+
           </div>
         </div>
       </section>
