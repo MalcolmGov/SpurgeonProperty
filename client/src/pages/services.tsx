@@ -335,22 +335,20 @@ export default function ServicesPage() {
             how our comprehensive services can help you achieve your property goals.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
+            <button 
               onClick={() => setIsContactOpen(true)}
-              className="bg-white text-purple-700 hover:bg-purple-50 font-semibold px-8 py-3"
+              className="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold text-purple-700 bg-white border-2 border-white rounded-md hover:bg-purple-50 transition-all duration-200"
             >
               <Phone className="mr-2 h-5 w-5" />
               Schedule Consultation
-            </Button>
-            <Button 
-              size="lg" 
+            </button>
+            <button 
               onClick={() => setIsContactOpen(true)}
-              className="bg-white/10 border-2 border-white text-white hover:bg-white hover:text-purple-700 font-semibold px-8 py-3 backdrop-blur-sm"
+              className="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold text-white bg-white/10 border-2 border-white rounded-md hover:bg-white hover:text-purple-700 transition-all duration-200 backdrop-blur-sm"
             >
               <Mail className="mr-2 h-5 w-5" />
               Get In Touch
-            </Button>
+            </button>
           </div>
         </div>
       </section>
