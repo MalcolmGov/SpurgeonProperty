@@ -18,7 +18,7 @@ import {
   Mail,
   ArrowRight
 } from "lucide-react";
-import servicesWheel from "@assets/services-wheel.png";
+import servicesWheel from "@assets/image_1750577117020.png";
 
 export default function ServicesPage() {
   const services = [

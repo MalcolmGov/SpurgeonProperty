@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Home, Building, Users, MapPin, Sun, Moon, Menu, Settings } from "lucide-react";
+import { Home, Building, Users, MapPin, Sun, Moon, Menu, Settings, Briefcase } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 
 export default function Header() {
