@@ -41,20 +41,17 @@ export default function Header() {
           
           {/* Desktop Navigation - Hidden on mobile */}
           <div className="hidden md:flex items-center space-x-4">
-            {navigation.map((item) => {
-              console.log('Rendering nav item:', item.name, item.href);
-              return (
-                <Link key={item.name} href={item.href}>
-                  <button
-                    className={`text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors ${
-                      isActive(item.href) ? "text-purple-600 font-medium" : ""
-                    }`}
-                  >
-                    {item.name}
-                  </button>
-                </Link>
-              );
-            })}
+            {navigation.map((item) => (
+              <Link key={item.name} href={item.href}>
+                <button
+                  className={`text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors ${
+                    isActive(item.href) ? "text-purple-600 font-medium" : ""
+                  }`}
+                >
+                  {item.name}
+                </button>
+              </Link>
+            ))}
             
             {/* Theme Toggle Button */}
             <Button
