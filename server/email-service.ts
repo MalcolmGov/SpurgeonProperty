@@ -76,14 +76,25 @@ class EmailNotificationService {
       for (const recipient of recipients) {
         const personalizedContent = this.personalizeEmailContent(htmlContent, recipient, notification);
         
-        await this.transporter.sendMail({
-          from: process.env.GMAIL_USER,
-          to: recipient,
-          subject: subject,
-          html: personalizedContent
-        });
-        
-        console.log(`Email notification sent to ${recipient}`);
+        if (this.sendGridService) {
+          // Use SendGrid API
+          await this.sendGridService.send({
+            to: recipient,
+            from: 'noreply@spurgeonproperty.co.za',
+            subject: subject,
+            html: personalizedContent
+          });
+          console.log(`Email notification sent to ${recipient} via SendGrid`);
+        } else if (this.transporter) {
+          // Use Gmail SMTP fallback
+          await this.transporter.sendMail({
+            from: process.env.GMAIL_USER,
+            to: recipient,
+            subject: subject,
+            html: personalizedContent
+          });
+          console.log(`Email notification sent to ${recipient} via Gmail`);
+        }
       }
 
       return true;
@@ -217,17 +228,19 @@ class EmailNotificationService {
 
   // Test email function
   async testEmailConnection(): Promise<boolean> {
-    if (!this.transporter) {
-      return false;
-    }
-
-    try {
-      await this.transporter.verify();
+    if (this.sendGridService) {
+      // SendGrid doesn't need connection testing - API key validation happens on send
       return true;
-    } catch (error) {
-      console.error('Email connection test failed:', error);
-      return false;
+    } else if (this.transporter) {
+      try {
+        await this.transporter.verify();
+        return true;
+      } catch (error) {
+        console.error('Gmail connection test failed:', error);
+        return false;
+      }
     }
+    return false;
   }
 }
 
