@@ -1,9 +1,9 @@
 # Email Setup Guide for Monitoring System
 
 ## Current Issue
-The monitoring system cannot send emails because Gmail requires an App Password instead of your regular Gmail password for programmatic access.
+The monitoring system cannot send emails because the current Gmail App Password is invalid or expired. Gmail is rejecting the authentication credentials.
 
-## Solution: Generate Gmail App Password
+## Solution: Generate New Gmail App Password
 
 ### Step 1: Enable 2-Factor Authentication
 1. Go to your Google Account settings: https://myaccount.google.com/
@@ -11,20 +11,24 @@ The monitoring system cannot send emails because Gmail requires an App Password 
 3. Under "Signing in to Google", click "2-Step Verification"
 4. Follow the setup process if not already enabled
 
-### Step 2: Generate App Password
+### Step 2: Generate New App Password
 1. In Google Account Security settings
 2. Click "2-Step Verification" 
 3. Scroll down and click "App passwords"
-4. Select "Mail" as the app
-5. Select "Other (custom name)" as the device
-6. Enter: "Spurgeon Property Monitoring"
-7. Click "Generate"
-8. Copy the 16-character app password (format: xxxx xxxx xxxx xxxx)
+4. **Delete the old "Spurgeon Property Monitoring" app password if it exists**
+5. Click "Generate new app password"
+6. Select "Mail" as the app
+7. Select "Other (custom name)" as the device
+8. Enter: "Spurgeon Property Monitoring v2"
+9. Click "Generate"
+10. Copy the 16-character app password (format: xxxx xxxx xxxx xxxx)
+11. **Important: Remove all spaces** - use only the 16 characters without spaces
 
 ### Step 3: Update Replit Secrets
 1. In your Replit project, go to the "Secrets" tab
-2. Update the existing `GMAIL_PASS` secret with the new app password
+2. Update the existing `GMAIL_PASS` secret with the new app password (16 characters, no spaces)
 3. Ensure `GMAIL_USER` is set to: malcolmgov24@gmail.com
+4. **Critical: Enter the password without any spaces** - just the 16 characters
 
 ### Step 4: Test Email System
 After updating the secrets, the monitoring system will automatically restart and you can test:
