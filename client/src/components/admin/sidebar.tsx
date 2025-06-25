@@ -34,7 +34,7 @@ export default function AdminSidebar() {
             
             return (
               <Link key={item.name} href={item.href}>
-                <a
+                <div
                   className={`flex items-center space-x-3 w-full px-4 py-3 rounded-lg transition-colors cursor-pointer touch-manipulation min-h-[48px] ${
                     active
                       ? "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400"
@@ -44,7 +44,7 @@ export default function AdminSidebar() {
                 >
                   <item.icon className="w-5 h-5 flex-shrink-0" />
                   <span className="font-medium">{item.name}</span>
-                </a>
+                </div>
               </Link>
             );
           })}

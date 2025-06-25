@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import AdminSidebar from '@/components/admin/sidebar';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -95,20 +96,24 @@ export default function AdminMonitoring() {
   };
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">System Monitoring</h1>
-          <p className="text-muted-foreground">Real-time monitoring and analytics for Spurgeon Property</p>
-        </div>
-        <Button 
-          onClick={() => testAlertMutation.mutate()}
-          disabled={testAlertMutation.isPending}
-        >
-          <Mail className="w-4 h-4 mr-2" />
-          Test Alert
-        </Button>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      <AdminSidebar />
+      
+      <main className="lg:ml-64 min-h-screen">
+        <div className="p-4 lg:p-6 pt-20 lg:pt-6">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h1 className="text-3xl font-bold">System Monitoring</h1>
+              <p className="text-muted-foreground">Real-time monitoring and analytics for Spurgeon Property</p>
+            </div>
+            <Button 
+              onClick={() => testAlertMutation.mutate()}
+              disabled={testAlertMutation.isPending}
+            >
+              <Mail className="w-4 h-4 mr-2" />
+              Test Alert
+            </Button>
+          </div>
 
       <Tabs defaultValue="overview" className="space-y-6">
         <TabsList className="grid w-full grid-cols-4">
@@ -407,6 +412,8 @@ export default function AdminMonitoring() {
           </Card>
         </TabsContent>
       </Tabs>
+        </div>
+      </main>
     </div>
   );
 }
