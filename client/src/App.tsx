@@ -22,7 +22,7 @@ import AdminAgents from "@/pages/admin-agents";
 import AdminAITools from "@/pages/admin-ai-tools";
 import NotFound from "@/pages/not-found";
 
-const AdminMonitoring = lazy(() => import("@/pages/admin-monitoring"));
+const AdminMonitoring = lazy(() => import("@/pages/admin-monitoring-simple"));
 
 function Router() {
   const [location] = useLocation();

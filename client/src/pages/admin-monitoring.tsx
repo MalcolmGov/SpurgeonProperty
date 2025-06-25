@@ -130,23 +130,32 @@ export default function AdminMonitoring() {
   const displayHealthData = healthData || mockHealthData;
   const displayAnalyticsData = analyticsData || mockAnalyticsData;
 
+  // Debug logging
+  console.log('Monitoring page render:', {
+    healthData,
+    analyticsData,
+    displayHealthData,
+    displayAnalyticsData
+  });
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <AdminSidebar />
       
       <main className="lg:ml-64 min-h-screen">
         <div className="p-4 lg:p-6 pt-20 lg:pt-6">
           <div className="flex justify-between items-center mb-6">
             <div>
-              <h1 className="text-3xl font-bold">System Monitoring</h1>
-              <p className="text-muted-foreground">Real-time monitoring and analytics for Spurgeon Property</p>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">System Monitoring</h1>
+              <p className="text-gray-600 dark:text-gray-300">Real-time monitoring and analytics for Spurgeon Property</p>
             </div>
             <Button 
               onClick={() => testAlertMutation.mutate()}
               disabled={testAlertMutation.isPending}
+              className="bg-purple-600 hover:bg-purple-700 text-white"
             >
               <Mail className="w-4 h-4 mr-2" />
-              Test Alert
+              {testAlertMutation.isPending ? 'Sending...' : 'Test Alert'}
             </Button>
           </div>
 
