@@ -22,6 +22,7 @@ import { agentAuthService, requireAgentAuth } from "./agent-auth";
 import { extractSpurgeonProperties } from "./spurgeon-extractor";
 import { importSampleProperties } from "./sample-properties";
 import { emailService } from "./email-service";
+import { registerMonitoringRoutes } from "./routes/admin-monitoring";
 import { z } from "zod";
 import multer from "multer";
 import path from "path";
@@ -1160,6 +1161,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Store WebSocket server reference for broadcasting
   (httpServer as any).wss = wss;
+
+  // Register monitoring routes
+  registerMonitoringRoutes(app);
   
   return httpServer;
 }
