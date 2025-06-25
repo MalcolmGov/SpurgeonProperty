@@ -1,144 +1,81 @@
-# DNS Configuration Guide for spurgeonproperty.co.za
+# DNS Configuration Guide - spurgeonproperty.co.za
 
-## Current Status
-The domain www.spurgeonproperty.co.za is not currently resolving. This means the DNS records need to be configured to point to your hosting server.
+## Quick Setup Steps
 
-## Required DNS Records
+### 1. Access Replit Deployment Dashboard
+1. Go to your Replit project
+2. Click the "Deploy" tab
+3. Navigate to deployed project settings
+4. Click "Domains" or "Custom Domain"
 
-### A Records (IPv4)
-```
-Type: A
-Name: @ (root domain)
-Value: [Your server IP address]
-TTL: 300
+### 2. Add Your Domain
+1. Click "Add Custom Domain"
+2. Enter: `www.spurgeonproperty.co.za`
+3. Also add: `spurgeonproperty.co.za` 
+4. Replit will provide DNS records
 
-Type: A  
-Name: www
-Value: [Your server IP address]
-TTL: 300
-```
-
-### CNAME Records (Alternative for www)
+### 3. Replit DNS Records
+You'll receive records similar to:
 ```
 Type: CNAME
 Name: www
-Value: spurgeonproperty.co.za
+Value: spurgeon-property--username.replit.app
 TTL: 300
-```
 
-### Additional Recommended Records
-
-#### MX Records (Email)
-```
-Type: MX
+Type: A or CNAME
 Name: @
-Value: [Your email server]
-Priority: 10
+Value: [Replit IP/hostname]
 TTL: 300
 ```
 
-#### TXT Records (Verification & Security)
+### 4. Configure at Domain Registrar
+Log into your .co.za domain provider and add these DNS records:
+
+#### For Afrihost (.co.za provider)
+1. Login to Afrihost Client Zone
+2. Go to "Domain Management"
+3. Select spurgeonproperty.co.za
+4. Click "DNS Records"
+5. Add the CNAME and A records from Replit
+
+#### For Other South African Providers
+- **Hetzner**: DNS Console → dns.hetzner.com
+- **Internet Solutions**: IS Control Panel → DNS Management
+- **Web Africa**: Client Portal → DNS Section
+- **Register.co.za**: Domain Management → DNS Settings
+
+### 5. DNS Record Setup
 ```
-Type: TXT
-Name: @
-Value: "v=spf1 include:_spf.google.com ~all"
-TTL: 300
+Record Type: CNAME
+Name/Host: www
+Value/Points to: [from Replit dashboard]
+TTL: 300 seconds
 
-Type: TXT
-Name: _dmarc
-Value: "v=DMARC1; p=none; rua=mailto:admin@spurgeonproperty.co.za"
-TTL: 300
-```
-
-## Steps to Configure DNS
-
-### 1. Access Your Domain Registrar
-- Log into your domain registrar's control panel
-- Navigate to DNS management section
-- Look for "DNS Records", "DNS Zone", or "Name Servers"
-
-### 2. Add Required Records
-- Add the A records pointing to your server IP
-- Add the www CNAME or A record
-- Configure any additional records needed
-
-### 3. Wait for Propagation
-- DNS changes can take 24-48 hours to fully propagate
-- Use online DNS checker tools to monitor propagation
-- Test with: `nslookup www.spurgeonproperty.co.za`
-
-## Server Configuration Required
-
-### 1. Web Server Setup
-Configure your web server (nginx/Apache) to serve:
-- spurgeonproperty.co.za
-- www.spurgeonproperty.co.za
-
-### 2. SSL Certificate
-Obtain SSL certificates for both:
-- spurgeonproperty.co.za
-- www.spurgeonproperty.co.za
-
-### 3. Redirect Configuration
-Set up redirects to ensure consistency:
-- Redirect HTTP to HTTPS
-- Choose primary domain (recommend www.spurgeonproperty.co.za)
-
-## Application Updates Made
-
-The application has been updated to use www.spurgeonproperty.co.za as the primary domain:
-
-- ✅ CORS configuration updated
-- ✅ Meta tags and Open Graph updated  
-- ✅ Canonical URLs updated
-- ✅ Sitemap generation updated
-- ✅ Structured data updated
-- ✅ Application constants updated
-
-## Testing DNS Configuration
-
-Once DNS is configured, test with:
-
-```bash
-# Test domain resolution
-nslookup www.spurgeonproperty.co.za
-
-# Test HTTP response
-curl -I http://www.spurgeonproperty.co.za
-
-# Test HTTPS (after SSL setup)
-curl -I https://www.spurgeonproperty.co.za
+Record Type: A (if CNAME not supported)
+Name/Host: @
+Value/Points to: [IP from Replit]
+TTL: 300 seconds
 ```
 
-## Common DNS Providers
+## Timeline
+- **DNS Saving**: Immediate
+- **Propagation**: 5-60 minutes (South African domains typically faster)
+- **SSL Certificate**: 15-45 minutes after DNS propagates
+- **Full Activation**: 1-2 hours maximum
 
-### Popular South African Providers
-- **Afrihost**: DNS management in hosting control panel
-- **Hetzner**: DNS console at dns.hetzner.com
-- **Internet Solutions**: IS control panel
-- **Web Africa**: Client portal DNS section
+## Verification Tools
+- DNS Checker: https://www.whatsmydns.net/
+- SSL Checker: https://www.ssllabs.com/ssltest/
+- South African DNS: https://dns.google/query?name=spurgeonproperty.co.za
 
-### International Providers
-- **Cloudflare**: Dashboard > DNS
-- **GoDaddy**: Domain manager > DNS
-- **Namecheap**: Domain list > Manage > Advanced DNS
+## Post-Setup
+Once DNS propagates:
+1. Test: https://www.spurgeonproperty.co.za
+2. Verify SSL certificate is active
+3. Test all site functionality
+4. Submit sitemap to Google Search Console
 
-## Cloudflare Setup (Recommended)
-
-For better performance and security, consider using Cloudflare:
-
-1. Create Cloudflare account
-2. Add spurgeonproperty.co.za domain
-3. Update nameservers at registrar
-4. Configure DNS records in Cloudflare
-5. Enable security and performance features
-
-## Need Help?
-
-If you need assistance with DNS configuration:
-1. Contact your domain registrar's support
-2. Provide them with your server IP address
-3. Request setup of A records for @ and www
-4. Ask about SSL certificate provisioning
-
-The application is ready for production deployment once DNS is properly configured.
+## Support
+- Replit Discord: For deployment issues
+- Domain Registrar: For DNS configuration help
+- DNS Propagation typically takes 5-60 minutes in South Africa
