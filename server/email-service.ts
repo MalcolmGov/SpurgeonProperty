@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { MailService } from '@sendgrid/mail';
 
 interface EmailNotification {
   type: 'NEW_LEAD' | 'APPLICATION_SUBMITTED' | 'PROPERTY_INQUIRY';
@@ -16,23 +17,30 @@ interface EmailNotification {
 
 class EmailNotificationService {
   private transporter: nodemailer.Transporter | null = null;
+  private sendGridService: MailService | null = null;
   private ownerEmail = 'peter@spurgeonproperty.com';
   private testEmail = 'malcolmgov24@gmail.com';
 
   constructor() {
-    this.initializeTransporter();
+    this.initializeEmailServices();
   }
 
-  private initializeTransporter() {
-    // Gmail SMTP configuration for Spurgeon Property notifications
-    // Uses Malcolm's Gmail account for monitoring alerts
+  private initializeEmailServices() {
+    // Try SendGrid first (simpler and more reliable)
+    const sendGridApiKey = process.env.SENDGRID_API_KEY;
+    if (sendGridApiKey) {
+      this.sendGridService = new MailService();
+      this.sendGridService.setApiKey(sendGridApiKey);
+      console.log('Email service initialized with SendGrid API');
+      return;
+    }
+
+    // Fallback to Gmail SMTP if SendGrid not available
     const gmailUser = process.env.GMAIL_USER;
     const gmailPassword = process.env.GMAIL_PASS;
     
     if (gmailUser && gmailPassword) {
-      // Remove spaces from app password (common formatting issue)
       const cleanPassword = gmailPassword.replace(/\s/g, '');
-      
       this.transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -42,14 +50,12 @@ class EmailNotificationService {
       });
       console.log('Email service initialized with Gmail credentials for:', gmailUser);
     } else {
-      console.log('Gmail credentials not found - email service disabled');
-      console.log('GMAIL_USER exists:', !!gmailUser);
-      console.log('GMAIL_PASS exists:', !!gmailPassword);
+      console.log('No email service configured - notifications disabled');
     }
   }
 
   async sendLeadNotification(notification: EmailNotification): Promise<boolean> {
-    if (!this.transporter) {
+    if (!this.transporter && !this.sendGridService) {
       console.log('Email service not configured - skipping email notification');
       return false;
     }
