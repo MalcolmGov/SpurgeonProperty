@@ -164,7 +164,7 @@ export default function AdminMonitoringSimple() {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-medium">Alert Threshold</span>
-                    <Badge variant="outline">Response Time > 2s</Badge>
+                    <Badge variant="outline">Response Time &gt; 2s</Badge>
                   </div>
                   <Button 
                     onClick={() => testAlertMutation.mutate()}
