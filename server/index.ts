@@ -10,6 +10,12 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { testDatabaseConnection } from "./database.js";
 import { performanceMonitor } from "./performance";
+import { monitoringService } from "./monitoring-service";
+import { 
+  performanceMonitoringMiddleware, 
+  errorMonitoringMiddleware, 
+  requestTrackingMiddleware 
+} from "./middleware/monitoring-middleware";
 
 const app = express();
 
@@ -75,6 +81,10 @@ app.use(compression());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
+// Monitoring middleware
+app.use(performanceMonitoringMiddleware);
+app.use(requestTrackingMiddleware);
+
 // Serve static files from client/public directory
 app.use(express.static('client/public'));
 
@@ -122,7 +132,8 @@ async function startServer() {
     // Share the server instance with the app for WebSocket access
     (app as any).httpServer = server;
 
-    // Global error handler with detailed logging
+    // Global error handler with detailed logging and monitoring
+    app.use(errorMonitoringMiddleware);
     app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
       const status = err.status || err.statusCode || 500;
       const message = err.message || "Internal Server Error";
@@ -153,14 +164,38 @@ async function startServer() {
       }
     });
 
-    // Health check endpoint
+    // Enhanced health check endpoint
     app.get('/health', (_req, res) => {
+      const healthStatus = monitoringService.getHealthStatus();
       res.json({
-        status: 'ok',
-        timestamp: new Date().toISOString(),
+        ...healthStatus,
         version: process.env.npm_package_version || '1.0.0',
         environment: process.env.NODE_ENV || 'development'
       });
+    });
+
+    // Monitoring endpoints
+    app.get('/api/metrics', (_req, res) => {
+      const healthStatus = monitoringService.getHealthStatus();
+      res.json(healthStatus);
+    });
+
+    app.get('/api/analytics/daily', async (_req, res) => {
+      try {
+        const report = await monitoringService.generateDailyReport();
+        res.json(report);
+      } catch (error) {
+        res.status(500).json({ error: 'Failed to generate analytics report' });
+      }
+    });
+
+    app.post('/api/monitoring/test-alert', async (_req, res) => {
+      try {
+        await monitoringService.sendDailyAnalyticsReport();
+        res.json({ message: 'Test alert sent successfully' });
+      } catch (error) {
+        res.status(500).json({ error: 'Failed to send test alert' });
+      }
     });
 
     // Setup vite in development or serve static files in production
