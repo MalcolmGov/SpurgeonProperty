@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Home, BarChart3, Building, Users, UserCheck, Settings, Menu, X } from "lucide-react";
+import { Home, BarChart3, Building, Users, UserCheck, Settings, Menu, X, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Logo } from "@/components/ui/logo";
@@ -16,6 +16,7 @@ export default function AdminSidebar() {
     { name: "Properties", href: "/admin/properties", icon: Building },
     { name: "Leads", href: "/admin/leads", icon: Users },
     { name: "Agents", href: "/admin/agents", icon: UserCheck },
+    { name: "Monitoring", href: "/admin/monitoring", icon: Monitor },
     { name: "Settings", href: "/admin/settings", icon: Settings },
   ];
 

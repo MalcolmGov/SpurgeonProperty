@@ -144,7 +144,7 @@ class MonitoringService {
   async sendDailyAnalyticsReport() {
     try {
       const metrics = await this.generateDailyReport();
-      const systemHealth = this.getSystemHealthSummary();
+      const systemHealth = this.getHealthStatus();
       
       const emailContent = this.generateAnalyticsEmailContent(metrics, systemHealth);
       

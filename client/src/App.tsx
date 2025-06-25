@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy } from "react";
 import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -22,6 +22,8 @@ import AdminAgents from "@/pages/admin-agents";
 import AdminAITools from "@/pages/admin-ai-tools";
 import NotFound from "@/pages/not-found";
 
+const AdminMonitoring = lazy(() => import("@/pages/admin-monitoring"));
+
 function Router() {
   const [location] = useLocation();
 
@@ -42,6 +44,7 @@ function Router() {
       <Route path="/admin/properties" component={AdminProperties} />
       <Route path="/admin/leads" component={AdminLeads} />
       <Route path="/admin/agents" component={AdminAgents} />
+      <Route path="/admin/monitoring" component={AdminMonitoring} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/properties/:id" component={PropertyDetail} />
