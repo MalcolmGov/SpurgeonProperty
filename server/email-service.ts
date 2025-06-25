@@ -30,11 +30,14 @@ class EmailNotificationService {
     const gmailPassword = process.env.GMAIL_PASS;
     
     if (gmailUser && gmailPassword) {
+      // Remove spaces from app password (common formatting issue)
+      const cleanPassword = gmailPassword.replace(/\s/g, '');
+      
       this.transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: gmailUser,
-          pass: gmailPassword
+          pass: cleanPassword
         }
       });
       console.log('Email service initialized with Gmail credentials for:', gmailUser);
