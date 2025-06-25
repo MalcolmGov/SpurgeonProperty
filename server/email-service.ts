@@ -25,9 +25,9 @@ class EmailNotificationService {
 
   private initializeTransporter() {
     // Gmail SMTP configuration for Spurgeon Property notifications
-    // Uses dedicated notifications Gmail account
-    const gmailUser = process.env.GMAIL_USER || 'notificationsspurgeonproperty@gmail.com';
-    const gmailPassword = process.env.GMAIL_PASSWORD || 'uqgv ryzf assq ckqi';
+    // Uses Malcolm's Gmail account for monitoring alerts
+    const gmailUser = process.env.GMAIL_USER;
+    const gmailPassword = process.env.GMAIL_PASS;
     
     if (gmailUser && gmailPassword) {
       this.transporter = nodemailer.createTransport({
@@ -37,9 +37,11 @@ class EmailNotificationService {
           pass: gmailPassword
         }
       });
-      console.log('Email service initialized with Gmail credentials');
+      console.log('Email service initialized with Gmail credentials for:', gmailUser);
     } else {
       console.log('Gmail credentials not found - email service disabled');
+      console.log('GMAIL_USER exists:', !!gmailUser);
+      console.log('GMAIL_PASS exists:', !!gmailPassword);
     }
   }
 
