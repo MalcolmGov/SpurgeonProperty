@@ -49,9 +49,12 @@ export default function SocialAdGeneratorSimple() {
   const [generatedAds, setGeneratedAds] = useState<GeneratedAd[]>([]);
   
   // Fetch properties for selection
-  const { data: properties = [], isLoading } = useQuery({
+  const { data: properties = [], isLoading, error } = useQuery({
     queryKey: ['/api/properties'],
-    select: (data: Property[]) => data?.filter(p => p.listingType === 'sale' || p.listingType === 'rent') || []
+    select: (data: Property[]) => {
+      console.log('Properties data received:', data);
+      return data?.filter(p => p.listingType === 'sale' || p.listingType === 'rent') || [];
+    }
   });
 
   // Generate social media ad
@@ -152,6 +155,17 @@ export default function SocialAdGeneratorSimple() {
         <CardContent className="p-8 text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading properties...</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <CardContent className="p-8 text-center">
+          <p className="text-red-600">Error loading properties. Please try again.</p>
+          <p className="text-sm text-gray-500 mt-2">{String(error)}</p>
         </CardContent>
       </Card>
     );
