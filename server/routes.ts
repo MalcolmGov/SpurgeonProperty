@@ -1225,10 +1225,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Register monitoring routes
   registerMonitoringRoutes(app);
   
-  // Serve demo social ad
-  app.get("/demo-social-ad.html", (req, res) => {
-    res.sendFile(path.join(process.cwd(), "demo-social-ad.html"));
-  });
+
 
   return httpServer;
 }

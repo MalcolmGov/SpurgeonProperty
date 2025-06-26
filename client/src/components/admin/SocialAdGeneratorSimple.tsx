@@ -258,13 +258,38 @@ export default function SocialAdGeneratorSimple() {
           )}
 
           {/* Action Button */}
-          <div className="pt-4">
+          <div className="pt-4 flex gap-4">
             <Button 
               onClick={handleGenerateAd}
               disabled={!selectedProperty || generateAdMutation.isPending}
               className="bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600"
             >
               {generateAdMutation.isPending ? "Generating..." : "Generate Social Ad"}
+            </Button>
+            
+            <Button 
+              variant="outline"
+              onClick={() => {
+                // Generate demo ad with selected property or first property
+                const demoProperty = selectedProperty || properties[0];
+                if (demoProperty) {
+                  const demoAd = {
+                    imageUrl: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1024&h=1024&fit=crop',
+                    caption: `🏡 ${demoProperty.propertyType} in ${demoProperty.suburb || demoProperty.city}\n\n✨ ${demoProperty.bedrooms} bed, ${demoProperty.bathrooms} bath\n💰 R${demoProperty.price?.toLocaleString()}\n🌟 ${demoProperty.features?.slice(0, 3).join(', ') || 'Premium features'}\n\nContact Spurgeon Property today!`,
+                    hashtags: ['#Property', '#RealEstate', '#SouthAfrica', `#${demoProperty.city?.replace(/\s+/g, '')}`, `#${demoProperty.propertyType}ForSale`],
+                    callToAction: 'View Property',
+                    targetAudience: `${demoProperty.propertyType} buyers in ${demoProperty.city}`
+                  };
+                  setGeneratedAds([demoAd]);
+                  toast({
+                    title: "Demo Ad Generated!",
+                    description: "This shows how your social media ads will look."
+                  });
+                }
+              }}
+              className="border-purple-300 text-purple-700 hover:bg-purple-50"
+            >
+              View Demo
             </Button>
           </div>
         </CardContent>
