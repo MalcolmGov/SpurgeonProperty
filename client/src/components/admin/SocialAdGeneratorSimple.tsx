@@ -5,11 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Share2, Download, Copy, Instagram, Facebook, Linkedin, Twitter } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { queryClient } from "@/lib/queryClient";
 
 interface Property {
   id: number;
@@ -41,7 +38,7 @@ interface GeneratedAd {
   targetAudience: string;
 }
 
-export default function SocialAdGenerator() {
+export default function SocialAdGeneratorSimple() {
   const { toast } = useToast();
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [adConfig, setAdConfig] = useState<SocialAdConfig>({
@@ -52,9 +49,9 @@ export default function SocialAdGenerator() {
   const [generatedAds, setGeneratedAds] = useState<GeneratedAd[]>([]);
   
   // Fetch properties for selection
-  const { data: properties = [] } = useQuery({
+  const { data: properties = [], isLoading } = useQuery({
     queryKey: ['/api/properties'],
-    select: (data: Property[]) => data.filter(p => p.listingType === 'sale' || p.listingType === 'rent')
+    select: (data: Property[]) => data?.filter(p => p.listingType === 'sale' || p.listingType === 'rent') || []
   });
 
   // Generate social media ad
@@ -71,6 +68,11 @@ export default function SocialAdGenerator() {
           style: config.style
         })
       });
+      
+      if (!response.ok) {
+        throw new Error('Failed to generate ad');
+      }
+      
       return response.json();
     },
     onSuccess: (data: GeneratedAd) => {
@@ -80,7 +82,8 @@ export default function SocialAdGenerator() {
         description: `Created ${adConfig.platform} ad successfully.`
       });
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Generation error:', error);
       toast({
         title: "Generation Failed",
         description: "Could not generate social media ad. Please try again.",
@@ -89,41 +92,15 @@ export default function SocialAdGenerator() {
     }
   });
 
-  // Generate multiple platform ads
-  const generateMultipleAdsMutation = useMutation({
-    mutationFn: async (propertyId: number) => {
-      const platforms: SocialAdConfig[] = [
-        { platform: 'facebook', size: 'feed', style: 'modern' },
-        { platform: 'instagram', size: 'square', style: 'luxury' },
-        { platform: 'linkedin', size: 'banner', style: 'minimalist' },
-        { platform: 'twitter', size: 'banner', style: 'vibrant' }
-      ];
-      
-      const responses = await Promise.all(
-        platforms.map(async config => {
-          const response = await fetch(`/api/properties/${propertyId}/social-ad`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(config)
-          });
-          return response.json();
-        })
-      );
-      return responses;
-    },
-    onSuccess: (data: GeneratedAd[]) => {
-      setGeneratedAds(data);
-      toast({
-        title: "Multi-Platform Ads Generated!",
-        description: `Created ${data.length} social media ads successfully.`
-      });
-    }
-  });
-
   const handleGenerateAd = () => {
-    if (!selectedProperty) return;
+    if (!selectedProperty) {
+      toast({
+        title: "No Property Selected",
+        description: "Please select a property first.",
+        variant: "destructive"
+      });
+      return;
+    }
     
     generateAdMutation.mutate({
       ...adConfig,
@@ -168,6 +145,17 @@ export default function SocialAdGenerator() {
       default: return <Share2 className="h-4 w-4" />;
     }
   };
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardContent className="p-8 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading properties...</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -257,22 +245,26 @@ export default function SocialAdGenerator() {
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex gap-2 pt-4">
+          {/* Selected Property Info */}
+          {selectedProperty && (
+            <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+              <h4 className="font-semibold text-purple-800 dark:text-purple-200">
+                Selected: {selectedProperty.title}
+              </h4>
+              <p className="text-sm text-purple-600 dark:text-purple-300">
+                {selectedProperty.propertyType} • {selectedProperty.bedrooms} bed • {selectedProperty.bathrooms} bath • R{selectedProperty.price?.toLocaleString()}
+              </p>
+            </div>
+          )}
+
+          {/* Action Button */}
+          <div className="pt-4">
             <Button 
               onClick={handleGenerateAd}
               disabled={!selectedProperty || generateAdMutation.isPending}
               className="bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600"
             >
-              {generateAdMutation.isPending ? "Generating..." : "Generate Ad"}
-            </Button>
-            
-            <Button 
-              variant="outline"
-              onClick={() => selectedProperty && generateMultipleAdsMutation.mutate(selectedProperty.id)}
-              disabled={!selectedProperty || generateMultipleAdsMutation.isPending}
-            >
-              {generateMultipleAdsMutation.isPending ? "Generating..." : "Generate All Platforms"}
+              {generateAdMutation.isPending ? "Generating..." : "Generate Social Ad"}
             </Button>
           </div>
         </CardContent>
@@ -289,7 +281,7 @@ export default function SocialAdGenerator() {
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      {getPlatformIcon('facebook')}
+                      {getPlatformIcon(adConfig.platform)}
                       Social Media Ad #{index + 1}
                     </div>
                     <Badge variant="outline" className="capitalize">

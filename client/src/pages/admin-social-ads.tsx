@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SocialAdGenerator from "@/components/admin/SocialAdGenerator";
+import SocialAdGeneratorSimple from "@/components/admin/SocialAdGeneratorSimple";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Share2, Zap, Target, TrendingUp } from "lucide-react";
@@ -199,7 +199,7 @@ export default function AdminSocialAds() {
       </Card>
 
       {/* Main Generator Component */}
-      <SocialAdGenerator propertyId={0} />
+      <SocialAdGeneratorSimple />
     </div>
   );
 }
