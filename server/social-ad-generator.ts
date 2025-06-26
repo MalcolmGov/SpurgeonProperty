@@ -173,8 +173,8 @@ Create a polished, marketing-ready advertisement that would attract premium prop
     ];
     
     const locationHashtags = [
-      `#${property.city?.replace(/\s+/g, '')}Properties`,
-      `#${property.suburb?.replace(/\s+/g, '')}Homes`,
+      property.city ? `#${property.city.replace(/\s+/g, '')}Properties` : '',
+      property.suburb ? `#${property.suburb.replace(/\s+/g, '')}Homes` : '',
       property.city?.toLowerCase().includes('cape') ? '#CapeTownRealEstate' : '#JohannesburgRealEstate'
     ].filter(Boolean);
     

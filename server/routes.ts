@@ -22,6 +22,7 @@ import { agentAuthService, requireAgentAuth } from "./agent-auth";
 import { extractSpurgeonProperties } from "./spurgeon-extractor";
 import { importSampleProperties } from "./sample-properties";
 import { emailService } from "./email-service";
+import { socialAdGenerator } from "./social-ad-generator";
 import { registerMonitoringRoutes } from "./routes/admin-monitoring";
 import { z } from "zod";
 import multer from "multer";
@@ -1139,6 +1140,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Admin stats error:', error);
       res.status(500).json({ message: "Failed to fetch dashboard stats" });
+    }
+  });
+
+  // Social Media Ad Generation
+  app.post("/api/properties/:id/social-ad", async (req, res) => {
+    try {
+      const propertyId = parseInt(req.params.id);
+      const { platform, size, style } = req.body;
+
+      const property = await storage.getProperty(propertyId);
+      if (!property) {
+        return res.status(404).json({ error: "Property not found" });
+      }
+
+      const adConfig = {
+        platform: platform || 'facebook',
+        size: size || 'square',
+        style: style || 'modern'
+      };
+
+      const generatedAd = await socialAdGenerator.generatePropertyAd(property, adConfig);
+      
+      res.json(generatedAd);
+    } catch (error) {
+      console.error("Social ad generation error:", error);
+      res.status(500).json({ error: "Failed to generate social media ad" });
+    }
+  });
+
+  // Generate hashtag suggestions
+  app.get("/api/properties/:id/hashtags", async (req, res) => {
+    try {
+      const propertyId = parseInt(req.params.id);
+      const property = await storage.getProperty(propertyId);
+      
+      if (!property) {
+        return res.status(404).json({ error: "Property not found" });
+      }
+
+      const hashtags = socialAdGenerator.generateHashtagSuggestions(property);
+      res.json({ hashtags });
+    } catch (error) {
+      console.error("Hashtag generation error:", error);
+      res.status(500).json({ error: "Failed to generate hashtags" });
     }
   });
 
