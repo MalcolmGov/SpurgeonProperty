@@ -16,8 +16,9 @@ export default function AdminSidebar() {
     { name: "Properties", href: "/admin/properties", icon: Building },
     { name: "Leads", href: "/admin/leads", icon: Users },
     { name: "Agents", href: "/admin/agents", icon: UserCheck },
-    { name: "Social Ads", href: "/admin/social-ads", icon: Share2 },
-    { name: "Monitoring", href: "/admin/monitoring", icon: Monitor },
+    // Temporarily hidden
+    // { name: "Social Ads", href: "/admin/social-ads", icon: Share2 },
+    // { name: "Monitoring", href: "/admin/monitoring", icon: Monitor },
     { name: "Settings", href: "/admin/settings", icon: Settings },
   ];
 
