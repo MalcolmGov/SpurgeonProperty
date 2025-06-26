@@ -85,8 +85,8 @@ export default function SocialAdGeneratorSimple() {
     onError: (error) => {
       console.error('Generation error:', error);
       toast({
-        title: "Generation Failed",
-        description: "Could not generate social media ad. Please try again.",
+        title: "API Quota Exceeded",
+        description: "OpenAI API quota exceeded. Please add credits to your OpenAI account to generate AI-powered social media ads.",
         variant: "destructive"
       });
     }

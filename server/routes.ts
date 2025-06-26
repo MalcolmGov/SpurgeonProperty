@@ -1165,7 +1165,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(generatedAd);
     } catch (error) {
       console.error("Social ad generation error:", error);
-      res.status(500).json({ error: "Failed to generate social media ad" });
+      
+      // Provide helpful error message for quota issues
+      if (error.message?.includes('quota') || error.message?.includes('429')) {
+        return res.status(200).json({
+          error: "OpenAI API quota exceeded. Please check your OpenAI billing details.",
+          demo: true,
+          suggestion: "Add more credits to your OpenAI account to generate AI-powered ads."
+        });
+      }
+      
+      res.status(500).json({ 
+        error: "Failed to generate social media ad",
+        details: error.message 
+      });
     }
   });
 
