@@ -55,13 +55,15 @@ export class SocialAdGenerator {
     } catch (error) {
       console.error('Social ad generation failed:', error);
       
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      
       // Return demo content when API fails
-      if (error.message?.includes('quota') || error.message?.includes('429')) {
+      if (errorMessage.includes('quota') || errorMessage.includes('429')) {
         return this.generateDemoAd(property, config);
       }
       
-      console.error('Error details:', error.stack);
-      throw new Error(`Failed to generate social media ad: ${error.message}`);
+      console.error('Error details:', error instanceof Error ? error.stack : 'Unknown error');
+      throw new Error(`Failed to generate social media ad: ${errorMessage}`);
     }
   }
   
