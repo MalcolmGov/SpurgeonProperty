@@ -21,6 +21,7 @@ import AdminLeads from "@/pages/admin/leads-mobile";
 import AdminAgents from "@/pages/admin-agents";
 import AdminAITools from "@/pages/admin-ai-tools";
 import AdminSocialAdsSimple from "@/pages/admin-social-ads-simple";
+import AdminSettings from "@/pages/admin-settings";
 import NotFound from "@/pages/not-found";
 
 const AdminMonitoring = lazy(() => import("@/pages/admin-monitoring-simple"));
@@ -47,6 +48,7 @@ function Router() {
       <Route path="/admin/agents" component={AdminAgents} />
       <Route path="/admin/monitoring" component={AdminMonitoring} />
       <Route path="/admin/social-ads" component={AdminSocialAdsSimple} />
+      <Route path="/admin/settings" component={AdminSettings} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/properties/:id" component={PropertyDetail} />
