@@ -18,9 +18,15 @@ const loginSchema = z.object({
 
 // Register schema
 const registerSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
+  firstName: z.string().min(2, "First name must be at least 2 characters"),
+  lastName: z.string().min(2, "Last name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  confirmPassword: z.string().min(8, "Confirm password is required"),
+  role: z.string().default("admin"),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
 });
 
 type LoginData = z.infer<typeof loginSchema>;
@@ -42,9 +48,12 @@ export default function SimpleAdminLogin() {
   const registerForm = useForm<RegisterData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
+      confirmPassword: "",
+      role: "admin",
     },
   });
 
@@ -92,12 +101,22 @@ export default function SimpleAdminLogin() {
   const handleRegister = async (data: RegisterData) => {
     setIsLoading(true);
     try {
+      // Split the full name into firstName and lastName for backend compatibility
+      const registrationData = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+        role: data.role
+      };
+
       const response = await fetch("/api/admin/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(registrationData),
         credentials: "include",
       });
 
@@ -214,26 +233,44 @@ export default function SimpleAdminLogin() {
             <TabsContent value="register" className="space-y-4">
               <Form {...registerForm}>
                 <form onSubmit={registerForm.handleSubmit(handleRegister)} className="space-y-4">
-                  <FormField
-                    control={registerForm.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Full Name</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={registerForm.control}
+                      name="firstName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>First Name</FormLabel>
+                          <FormControl>
+                            <div className="relative">
+                              <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                              <Input
+                                placeholder="First name"
+                                className="pl-10"
+                                {...field}
+                              />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={registerForm.control}
+                      name="lastName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Last Name</FormLabel>
+                          <FormControl>
                             <Input
-                              placeholder="Enter your full name"
-                              className="pl-10"
+                              placeholder="Last name"
                               {...field}
                             />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                   <FormField
                     control={registerForm.control}
                     name="email"
@@ -266,7 +303,28 @@ export default function SimpleAdminLogin() {
                             <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                             <Input
                               type="password"
-                              placeholder="Enter your password"
+                              placeholder="Enter your password (min 8 characters)"
+                              className="pl-10"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={registerForm.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirm Password</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                            <Input
+                              type="password"
+                              placeholder="Confirm your password"
                               className="pl-10"
                               {...field}
                             />
