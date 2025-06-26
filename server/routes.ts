@@ -1012,15 +1012,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin Authentication Routes
   app.post("/api/admin/register", async (req, res) => {
     try {
+      console.log('Admin registration attempt:', { 
+        email: req.body.email, 
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        role: req.body.role 
+      });
+      
       const validatedData = insertAdminUserSchema.parse(req.body);
+      console.log('Validation passed for:', validatedData.email);
+      
+      // Check if email is authorized (debug logging)
+      const isAuthorized = adminAuthService.isAuthorizedEmail(validatedData.email);
+      console.log('Email authorization check:', { 
+        email: validatedData.email, 
+        isAuthorized 
+      });
+      
+      if (!isAuthorized) {
+        console.log('Registration rejected: Email not authorized');
+        return res.status(403).json({ 
+          message: "Email not authorized for admin access. Contact system administrator." 
+        });
+      }
       
       // Check if email already exists
       const emailExists = await adminAuthService.emailExists(validatedData.email);
+      console.log('Email exists check:', { 
+        email: validatedData.email, 
+        exists: emailExists 
+      });
+      
       if (emailExists) {
+        console.log('Registration rejected: Email already exists');
         return res.status(400).json({ message: "Email already registered" });
       }
       
+      console.log('Proceeding with admin user creation...');
       const adminUser = await adminAuthService.registerAdmin(validatedData);
+      console.log('Admin user created successfully:', { 
+        id: adminUser.id, 
+        email: adminUser.email 
+      });
       
       // Remove sensitive data from response
       const { passwordHash, ...userResponse } = adminUser;
@@ -1029,16 +1062,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
         user: userResponse 
       });
     } catch (error) {
+      console.error('Admin registration error details:', {
+        error: error instanceof Error ? error.message : error,
+        stack: error instanceof Error ? error.stack : undefined,
+        requestBody: req.body
+      });
+      
       if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: "Invalid registration data", errors: error.errors });
+        console.log('Zod validation errors:', error.errors);
+        return res.status(400).json({ 
+          message: "Invalid registration data", 
+          errors: error.errors,
+          details: error.errors.map(e => `${e.path.join('.')}: ${e.message}`)
+        });
       }
       if (error instanceof Error && error.message === "Email domain not authorized for admin access") {
         return res.status(403).json({ 
-          message: "Not Authorized to access the portal" 
+          message: "Email not authorized for admin access. Contact system administrator." 
         });
       }
-      console.error('Admin registration error:', error);
-      res.status(500).json({ message: "Failed to create admin user" });
+      res.status(500).json({ 
+        message: "Failed to create admin user",
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   });
 
