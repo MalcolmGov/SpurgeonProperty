@@ -1,61 +1,48 @@
-# SSL Certificate Issue - Resolution Steps
+# SSL Certificate Issue - www.spurgeonproperty.co.za
 
-## Problem Identified
-- DNS is resolving correctly
-- SSL certificate not yet provisioned for www.spurgeonproperty.co.za
-- Error: NET::ERR_CERT_COMMON_NAME_INVALID
-- Browser showing "Your connection is not private"
+## Current Status
+- **DNS**: Correctly configured, pointing to Replit servers
+- **SSL Certificate**: FAILED - Certificate only valid for `replit.app`
+- **Domain Status**: Failed in Replit dashboard
+- **Error**: "SSL: no alternative certificate subject name matches target hostname"
+
+## Technical Details
+```
+Certificate Details:
+Subject: CN = replit.app
+Issuer: Google Trust Services, CN = WR3
+Status: Valid for *.replit.app but NOT for spurgeonproperty.co.za
+```
 
 ## Root Cause
-SSL certificates for custom domains on Replit require:
-1. DNS to be fully propagated (✅ Complete)
-2. Replit to detect the DNS change
-3. Automatic SSL certificate provisioning (⏳ In Progress)
+Replit's automatic SSL certificate provisioning has failed to generate a certificate for your custom domain. This is a recurring infrastructure issue on Replit's side.
 
-## Resolution Timeline
-- DNS propagation: Complete
-- SSL provisioning: 5-30 minutes after DNS detection
-- Total time: Usually 15-45 minutes from DNS configuration
+## Immediate Action Required
 
-## Immediate Actions
+### Option 1: Force SSL Renewal in Replit
+1. Go to Replit deployment dashboard
+2. Remove the custom domain temporarily
+3. Wait 5 minutes
+4. Re-add www.spurgeonproperty.co.za
+5. Wait for SSL provisioning (15-60 minutes)
 
-### 1. Wait for SSL Provisioning
-- Replit automatically detects DNS changes
-- SSL certificate provisioned via Let's Encrypt
-- No manual action required
+### Option 2: Cloudflare SSL Proxy (Recommended)
+1. Sign up for free Cloudflare account
+2. Add spurgeonproperty.co.za to Cloudflare
+3. Change nameservers at your domain registrar to Cloudflare's
+4. Enable "Full (Strict)" SSL mode
+5. Create CNAME record: www → spurgeon-property--malcolm36.replit.app
+6. Enable "Always Use HTTPS"
 
-### 2. Check Replit Dashboard
-- Monitor deployment dashboard for SSL status
-- Look for certificate provisioning notifications
-- Verify domain status shows "Active"
+### Option 3: Platform Migration
+Consider moving to platforms with more reliable SSL:
+- **Vercel**: Automatic SSL with custom domains
+- **Railway**: Reliable certificate provisioning
+- **Netlify**: Instant SSL setup
 
-### 3. Force SSL Refresh (if needed)
-- Remove and re-add domain in Replit dashboard
-- This triggers fresh SSL certificate request
-- Wait 5-10 minutes for provisioning
+## Current Workaround
+Your application is fully functional at:
+https://spurgeon-property--malcolm36.replit.app
 
-## Workarounds
-
-### Temporary Access
-- Use Replit URL: https://spurgeon-property--malcolm36.replit.app
-- All functionality available on temporary URL
-- Production features fully active
-
-### Browser Override (Testing Only)
-- Click "Advanced" → "Proceed to www.spurgeonproperty.co.za (unsafe)"
-- Only for testing purposes
-- Do not use for customer access
-
-## Expected Resolution
-- SSL certificate should be active within 30 minutes
-- Site will automatically become secure
-- Green padlock will appear in browser
-- No further action required
-
-## If Issue Persists After 1 Hour
-1. Check Replit deployment logs
-2. Contact Replit support
-3. Verify DNS records are correct
-4. Consider domain re-configuration
-
-Your deployment is successful - this is just an SSL timing issue that resolves automatically.
+## Recommendation
+Use Cloudflare SSL proxy (Option 2) for immediate resolution while keeping your current Replit deployment. This provides enterprise-grade SSL without migration costs.
