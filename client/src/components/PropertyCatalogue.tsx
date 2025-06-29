@@ -99,7 +99,7 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
           ${selectedProps.map(property => `
             <div style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
               ${property.images && property.images.length > 0 ? `
-                <div style="height: 200px; background-image: url('${window.location.origin}${property.images[typeof property.featuredImage === 'number' ? property.featuredImage : 0]}'); background-size: cover; background-position: center; position: relative;">
+                <div style="height: 200px; background-image: url('${window.location.origin}${property.images[property.featuredImage ? parseInt(property.featuredImage.toString()) : 0]}'); background-size: cover; background-position: center; position: relative;">
                   <div style="position: absolute; top: 15px; left: 15px; background: rgba(139, 92, 246, 0.9); color: white; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 18px;">
                     ${formatPrice(property.price)}
                   </div>
@@ -339,7 +339,7 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
                   >
                     <Checkbox
                       checked={selectedProperties.includes(property.id)}
-                      onChange={() => handlePropertyToggle(property.id)}
+                      onCheckedChange={() => handlePropertyToggle(property.id)}
                       className="mt-1"
                     />
                     <div className="flex-1 min-w-0">
