@@ -31,6 +31,7 @@ import fs from "fs";
 import express from "express";
 import cookieParser from "cookie-parser";
 import AdmZip from "adm-zip";
+import { spawn } from "child_process";
 
 // Configure multer for file uploads
 const uploadDir = path.join(process.cwd(), 'uploads');
@@ -1267,6 +1268,196 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Store WebSocket server reference for broadcasting
   (httpServer as any).wss = wss;
+
+  // Python PDF Generation Endpoints
+  
+  // Create temp directory for PDF generation
+  const tempDir = path.join(process.cwd(), 'temp');
+  if (!fs.existsSync(tempDir)) {
+    fs.mkdirSync(tempDir, { recursive: true });
+  }
+
+  // Helper function to generate Python catalogue PDF
+  async function generatePythonCataloguePDF(properties: any[], outputPath: string, title: string, clientName?: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      const pythonScript = path.join(process.cwd(), 'generate_catalogue_pdf.py');
+      const tempDataPath = path.join(tempDir, `catalogue_data_${Date.now()}.json`);
+      
+      try {
+        // Format properties for Python generator
+        const pythonData = properties.map(property => ({
+          title: property.title,
+          price: property.price,
+          currency: 'ZAR',
+          bedrooms: property.bedrooms,
+          bathrooms: property.bathrooms,
+          area: property.area,
+          description: property.description,
+          features: property.features || [],
+          address: `${property.address}, ${property.suburb}, ${property.city}, ${property.province}`,
+          images: property.images?.map((img: string) => path.join(process.cwd(), 'uploads', img)) || [],
+          agent: property.agent
+        }));
+
+        // Write catalogue data to temp file
+        const catalogueData = {
+          properties: pythonData,
+          title,
+          clientName
+        };
+        fs.writeFileSync(tempDataPath, JSON.stringify(catalogueData, null, 2));
+        
+        const python = spawn('python', [pythonScript, tempDataPath, outputPath]);
+        
+        python.on('close', (code) => {
+          // Cleanup temp data file
+          if (fs.existsSync(tempDataPath)) {
+            fs.unlinkSync(tempDataPath);
+          }
+          resolve(code === 0);
+        });
+        
+        python.on('error', (error) => {
+          console.error('Python process error:', error);
+          if (fs.existsSync(tempDataPath)) {
+            fs.unlinkSync(tempDataPath);
+          }
+          resolve(false);
+        });
+      } catch (error) {
+        console.error('Python PDF generation setup error:', error);
+        if (fs.existsSync(tempDataPath)) {
+          fs.unlinkSync(tempDataPath);
+        }
+        resolve(false);
+      }
+    });
+  }
+
+  // Generate Python-based property catalogue PDF
+  app.post('/api/properties/catalogue/python-pdf', async (req, res) => {
+    try {
+      const { propertyIds, title = 'Property Catalogue', clientName } = req.body;
+      
+      if (!propertyIds || !Array.isArray(propertyIds)) {
+        return res.status(400).json({ error: 'Property IDs required' });
+      }
+
+      // Fetch properties
+      const properties = await Promise.all(
+        propertyIds.map((id: number) => storage.getProperty(id))
+      );
+
+      const validProperties = properties.filter(p => p !== null);
+      
+      if (validProperties.length === 0) {
+        return res.status(404).json({ error: 'No valid properties found' });
+      }
+
+      // Generate catalogue PDF using Python
+      const outputPath = path.join(tempDir, `python_catalogue_${Date.now()}.pdf`);
+      const success = await generatePythonCataloguePDF(validProperties, outputPath, title, clientName);
+
+      if (success && fs.existsSync(outputPath)) {
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="${title.replace(/[^a-zA-Z0-9]/g, '_')}_professional.pdf"`);
+        
+        const fileStream = fs.createReadStream(outputPath);
+        fileStream.pipe(res);
+        
+        // Cleanup temp file after sending
+        fileStream.on('end', () => {
+          if (fs.existsSync(outputPath)) {
+            fs.unlinkSync(outputPath);
+          }
+        });
+      } else {
+        res.status(500).json({ error: 'Failed to generate professional PDF catalogue' });
+      }
+    } catch (error) {
+      console.error('Python catalogue generation error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+  // Generate single property Python PDF
+  app.post('/api/properties/:id/python-pdf', async (req, res) => {
+    try {
+      const propertyId = parseInt(req.params.id);
+      const property = await storage.getProperty(propertyId);
+      
+      if (!property) {
+        return res.status(404).json({ error: 'Property not found' });
+      }
+
+      // Format property data for Python generator
+      const pythonData = {
+        title: property.title,
+        price: property.price,
+        currency: 'ZAR',
+        bedrooms: property.bedrooms,
+        bathrooms: property.bathrooms,
+        area: property.area,
+        description: property.description,
+        features: property.features || [],
+        address: `${property.address}, ${property.suburb}, ${property.city}, ${property.province}`,
+        images: property.images?.map((img: string) => path.join(process.cwd(), 'uploads', img)) || [],
+        agent: property.agent
+      };
+
+      // Generate PDF using Python script
+      const outputPath = path.join(tempDir, `python_property_${propertyId}.pdf`);
+      const tempDataPath = path.join(tempDir, `property_data_${Date.now()}.json`);
+      
+      try {
+        fs.writeFileSync(tempDataPath, JSON.stringify(pythonData, null, 2));
+        
+        const pythonScript = path.join(process.cwd(), 'generate_single_pdf.py');
+        const python = spawn('python', [pythonScript, tempDataPath, outputPath]);
+        
+        python.on('close', (code) => {
+          // Cleanup temp data file
+          if (fs.existsSync(tempDataPath)) {
+            fs.unlinkSync(tempDataPath);
+          }
+          
+          if (code === 0 && fs.existsSync(outputPath)) {
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', `attachment; filename="property_${propertyId}_professional.pdf"`);
+            
+            const fileStream = fs.createReadStream(outputPath);
+            fileStream.pipe(res);
+            
+            // Cleanup temp file after sending
+            fileStream.on('end', () => {
+              if (fs.existsSync(outputPath)) {
+                fs.unlinkSync(outputPath);
+              }
+            });
+          } else {
+            res.status(500).json({ error: 'Failed to generate professional PDF' });
+          }
+        });
+        
+        python.on('error', (error) => {
+          console.error('Python process error:', error);
+          if (fs.existsSync(tempDataPath)) {
+            fs.unlinkSync(tempDataPath);
+          }
+          res.status(500).json({ error: 'Python PDF generation failed' });
+        });
+      } catch (error) {
+        console.error('Python PDF setup error:', error);
+        if (fs.existsSync(tempDataPath)) {
+          fs.unlinkSync(tempDataPath);
+        }
+        res.status(500).json({ error: 'Failed to prepare PDF data' });
+      }
+    } catch (error) {
+      console.error('Property PDF generation error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 
   // Register monitoring routes
   registerMonitoringRoutes(app);

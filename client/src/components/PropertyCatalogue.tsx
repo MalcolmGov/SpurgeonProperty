@@ -24,6 +24,7 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
   const [propertyType, setPropertyType] = useState('all');
   const [listingType, setListingType] = useState('all');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isGeneratingPython, setIsGeneratingPython] = useState(false);
   
   const { toast } = useToast();
 
@@ -304,6 +305,68 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
     }
   };
 
+  const generatePythonCatalogue = async () => {
+    if (selectedProperties.length === 0) {
+      toast({
+        title: "No Properties Selected",
+        description: "Please select at least one property for the catalogue",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsGeneratingPython(true);
+
+    try {
+      const response = await fetch('/api/properties/catalogue/python-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          propertyIds: selectedProperties,
+          title: catalogueTitle || 'Property Catalogue',
+          clientName: clientName
+        }),
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = `${catalogueTitle?.replace(/[^a-zA-Z0-9]/g, '_') || 'catalogue'}_professional.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        toast({
+          title: "Success",
+          description: "Professional PDF catalogue generated successfully!",
+        });
+
+        setIsOpen(false);
+        setSelectedProperties([]);
+        setCatalogueTitle('Property Portfolio');
+        setClientName('');
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate professional PDF');
+      }
+    } catch (error) {
+      console.error('Python catalogue generation error:', error);
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to generate professional PDF catalogue",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingPython(false);
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -452,22 +515,36 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
             )}
           </div>
 
-          {/* Generate Button */}
+          {/* Generate Buttons */}
           <div className="flex justify-end space-x-3 pt-4 border-t">
             <Button variant="outline" onClick={() => setIsOpen(false)}>
               Cancel
             </Button>
             <Button 
               onClick={generateCatalogue} 
-              disabled={isGenerating || selectedProperties.length === 0}
-              className="bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600"
+              disabled={isGenerating || isGeneratingPython || selectedProperties.length === 0}
+              variant="outline"
             >
               {isGenerating ? (
-                <>Generating...</>
+                <>Generating HTML...</>
               ) : (
                 <>
                   <Download className="h-4 w-4 mr-2" />
-                  Generate Catalogue
+                  HTML Catalogue
+                </>
+              )}
+            </Button>
+            <Button 
+              onClick={generatePythonCatalogue} 
+              disabled={isGenerating || isGeneratingPython || selectedProperties.length === 0}
+              className="bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600"
+            >
+              {isGeneratingPython ? (
+                <>Generating Professional...</>
+              ) : (
+                <>
+                  <Download className="h-4 w-4 mr-2" />
+                  Professional PDF
                 </>
               )}
             </Button>
