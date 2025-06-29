@@ -116,24 +116,29 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
                 <span className="line-clamp-2">{property.address}, {property.suburb}, {property.city}, {property.province}</span>
               </p>
               <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 dark:text-slate-400 mb-4">
-                <div className="flex items-center">
-                  <div className="w-8 h-8 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mr-2">
-                    <Bed className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <div className="text-left">
-                    <span className="font-semibold text-slate-800 dark:text-white block">{property.bedrooms}</span>
-                    <span className="text-xs text-slate-500">Bedrooms</span>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-8 h-8 bg-green-50 dark:bg-green-900/20 rounded-lg flex items-center justify-center mr-2">
-                    <Bath className="w-4 h-4 text-green-600 dark:text-green-400" />
-                  </div>
-                  <div className="text-left">
-                    <span className="font-semibold text-slate-800 dark:text-white block">{property.bathrooms}</span>
-                    <span className="text-xs text-slate-500">Bathrooms</span>
-                  </div>
-                </div>
+                {/* Only show bedrooms/bathrooms for residential properties */}
+                {!["commercial", "land"].includes(property.propertyType) && (
+                  <>
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mr-2">
+                        <Bed className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <div className="text-left">
+                        <span className="font-semibold text-slate-800 dark:text-white block">{property.bedrooms}</span>
+                        <span className="text-xs text-slate-500">Bedrooms</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 bg-green-50 dark:bg-green-900/20 rounded-lg flex items-center justify-center mr-2">
+                        <Bath className="w-4 h-4 text-green-600 dark:text-green-400" />
+                      </div>
+                      <div className="text-left">
+                        <span className="font-semibold text-slate-800 dark:text-white block">{property.bathrooms}</span>
+                        <span className="text-xs text-slate-500">Bathrooms</span>
+                      </div>
+                    </div>
+                  </>
+                )}
                 <div className="flex items-center">
                   <div className="w-8 h-8 bg-purple-50 dark:bg-purple-900/20 rounded-lg flex items-center justify-center mr-2">
                     <Square className="w-4 h-4 text-purple-600 dark:text-purple-400" />
