@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AdminSidebar from "@/components/admin/sidebar";
 import MinimalPropertyForm from "@/components/forms/minimal-property-form";
+import PropertyCatalogue from "@/components/PropertyCatalogue";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -270,16 +271,17 @@ export default function AdminProperties() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="flex items-end">
+                <div className="flex items-end gap-2">
                   <Button 
                     variant="outline" 
-                    className="w-full"
+                    className="flex-1"
                     onClick={handleExport}
                     disabled={!properties || properties.length === 0}
                   >
                     <Download className="w-4 h-4 mr-2" />
-                    Export
+                    Export CSV
                   </Button>
+                  <PropertyCatalogue className="flex-1" />
                 </div>
               </div>
             </CardContent>
