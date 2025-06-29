@@ -126,82 +126,82 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
               }
             }
             
-            // Add page break after every 2 properties (except the last one)
-            const pageBreak = (index > 0 && (index + 1) % 2 === 0 && index < selectedProps.length - 1) ? 
+            // Add page break after every property (except the last one)
+            const pageBreak = (index < selectedProps.length - 1) ? 
               '<div style="page-break-after: always; height: 1px;"></div>' : '';
 
             return `
-            <div style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin-bottom: 30px;">
+            <div style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin-bottom: 40px;">
               ${property.images && property.images.length > 0 && imageUrl ? `
-                <div style="position: relative; height: 250px; background: #f8f9fa;">
+                <div style="position: relative; height: 350px; background: #f8f9fa;">
                   <img src="${imageUrl}" style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="${property.title}" crossorigin="anonymous" />
-                  <div style="position: absolute; top: 15px; left: 15px; background: rgba(139, 92, 246, 0.9); color: white; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 18px;">
+                  <div style="position: absolute; top: 20px; left: 20px; background: rgba(139, 92, 246, 0.9); color: white; padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 20px;">
                     ${formatPrice(property.price)}
                   </div>
-                  <div style="position: absolute; top: 15px; right: 15px; background: rgba(139, 92, 246, 0.9); color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; text-transform: capitalize;">
+                  <div style="position: absolute; top: 20px; right: 20px; background: rgba(139, 92, 246, 0.9); color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; text-transform: capitalize;">
                     ${property.propertyType}
                   </div>
                 </div>
               ` : `
-                <div style="height: 250px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af; flex-direction: column;">
-                  <div style="font-size: 48px; margin-bottom: 10px;">🏠</div>
-                  <div style="font-size: 14px; color: #6b7280;">No Image Available</div>
+                <div style="height: 350px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af; flex-direction: column;">
+                  <div style="font-size: 64px; margin-bottom: 15px;">🏠</div>
+                  <div style="font-size: 16px; color: #6b7280;">No Image Available</div>
                 </div>
               `}
               
-              <div style="padding: 25px;">
-                <h3 style="color: #1f2937; font-size: 18px; font-weight: 600; margin: 0 0 12px 0; line-height: 1.3;">${property.title}</h3>
+              <div style="padding: 35px;">
+                <h3 style="color: #1f2937; font-size: 24px; font-weight: 600; margin: 0 0 15px 0; line-height: 1.3;">${property.title}</h3>
                 
-                <div style="display: flex; align-items: center; color: #6b7280; font-size: 13px; margin-bottom: 16px;">
-                  <span style="margin-right: 5px;">📍</span>
+                <div style="display: flex; align-items: center; color: #6b7280; font-size: 15px; margin-bottom: 20px;">
+                  <span style="margin-right: 8px;">📍</span>
                   ${property.address}, ${property.suburb}, ${property.city}, ${property.province}
                 </div>
 
                 ${!["commercial", "land"].includes(property.propertyType) ? `
-                  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-                    <div style="text-align: center; padding: 12px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
-                      <div style="font-weight: 600; color: #1f2937; font-size: 16px;">🛏️ ${property.bedrooms}</div>
-                      <div style="color: #64748b; font-size: 11px;">Bedrooms</div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                    <div style="text-align: center; padding: 16px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
+                      <div style="font-weight: 600; color: #1f2937; font-size: 20px;">🛏️ ${property.bedrooms}</div>
+                      <div style="color: #64748b; font-size: 13px; margin-top: 4px;">Bedrooms</div>
                     </div>
-                    <div style="text-align: center; padding: 12px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
-                      <div style="font-weight: 600; color: #1f2937; font-size: 16px;">🛁 ${property.bathrooms}</div>
-                      <div style="color: #64748b; font-size: 11px;">Bathrooms</div>
+                    <div style="text-align: center; padding: 16px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
+                      <div style="font-weight: 600; color: #1f2937; font-size: 20px;">🛁 ${property.bathrooms}</div>
+                      <div style="color: #64748b; font-size: 13px; margin-top: 4px;">Bathrooms</div>
                     </div>
-                    <div style="text-align: center; padding: 12px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
-                      <div style="font-weight: 600; color: #1f2937; font-size: 16px;">📐 ${property.area || 0}m²</div>
-                      <div style="color: #64748b; font-size: 11px;">Area</div>
+                    <div style="text-align: center; padding: 16px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
+                      <div style="font-weight: 600; color: #1f2937; font-size: 20px;">📐 ${property.area || 0}m²</div>
+                      <div style="color: #64748b; font-size: 13px; margin-top: 4px;">Area</div>
                     </div>
                   </div>
                 ` : `
-                  <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px; max-width: 200px;">
-                    <div style="text-align: center; padding: 12px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
-                      <div style="font-weight: 600; color: #1f2937; font-size: 16px;">📐 ${property.area || 0}m²</div>
-                      <div style="color: #64748b; font-size: 11px;">Area</div>
+                  <div style="display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 20px; max-width: 250px;">
+                    <div style="text-align: center; padding: 16px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
+                      <div style="font-weight: 600; color: #1f2937; font-size: 20px;">📐 ${property.area || 0}m²</div>
+                      <div style="color: #64748b; font-size: 13px; margin-top: 4px;">Area</div>
                     </div>
                   </div>
                 `}
 
-                <p style="color: #4b5563; line-height: 1.5; margin-bottom: 16px; font-size: 13px;">
-                  ${property.description.substring(0, 160)}${property.description.length > 160 ? '...' : ''}
+                <p style="color: #4b5563; line-height: 1.6; margin-bottom: 20px; font-size: 15px;">
+                  ${property.description.length > 300 ? property.description.substring(0, 300) + '...' : property.description}
                 </p>
 
                 ${property.features && property.features.length > 0 ? `
-                  <div style="margin-bottom: 16px;">
-                    <h4 style="color: #1f2937; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Key Features:</h4>
-                    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                      ${property.features.slice(0, 5).map(feature => `
-                        <span style="background: #f3f0ff; color: #7c3aed; padding: 3px 8px; border-radius: 4px; font-size: 11px; border: 1px solid #e9d5ff;">${feature}</span>
+                  <div style="margin-bottom: 20px;">
+                    <h4 style="color: #1f2937; font-size: 16px; font-weight: 600; margin-bottom: 12px;">Key Features:</h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                      ${property.features.slice(0, 8).map(feature => `
+                        <span style="background: #f3f0ff; color: #7c3aed; padding: 6px 12px; border-radius: 6px; font-size: 13px; border: 1px solid #e9d5ff;">${feature}</span>
                       `).join('')}
                     </div>
                   </div>
                 ` : ''}
 
                 ${property.agent ? `
-                  <div style="border-top: 1px solid #e5e7eb; padding-top: 16px; margin-top: 16px;">
-                    <h4 style="color: #1f2937; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Contact Agent:</h4>
-                    <div style="color: #6b7280; font-size: 12px; line-height: 1.4;">
-                      <div style="margin-bottom: 2px;"><strong>${property.agent.name}</strong> - ${property.agent.title}</div>
-                      <div style="margin-bottom: 2px;">📧 ${property.agent.email}</div>
+                  <div style="border-top: 2px solid #e5e7eb; padding-top: 20px; margin-top: 20px;">
+                    <h4 style="color: #1f2937; font-size: 16px; font-weight: 600; margin-bottom: 10px;">Contact Agent:</h4>
+                    <div style="color: #6b7280; font-size: 14px; line-height: 1.5;">
+                      <div style="margin-bottom: 4px;"><strong>${property.agent.name}</strong> - ${property.agent.title}</div>
+                      <div style="margin-bottom: 4px;">📧 ${property.agent.email}</div>
                       <div>📞 ${property.agent.phone}</div>
                     </div>
                   </div>
