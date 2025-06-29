@@ -1277,6 +1277,89 @@ export async function registerRoutes(app: Express): Promise<Server> {
     fs.mkdirSync(tempDir, { recursive: true });
   }
 
+  // Generate property catalogue (HTML or Python PDF)
+  app.post('/api/properties/catalogue', async (req, res) => {
+    try {
+      const { propertyIds, title = 'Property Catalogue', clientName, format = 'html' } = req.body;
+      
+      if (!propertyIds || !Array.isArray(propertyIds)) {
+        return res.status(400).json({ error: 'Property IDs required' });
+      }
+
+      // Fetch properties
+      const properties = await Promise.all(
+        propertyIds.map((id: number) => storage.getProperty(id))
+      );
+
+      const validProperties = properties.filter(p => p !== null);
+      
+      if (validProperties.length === 0) {
+        return res.status(404).json({ error: 'No valid properties found' });
+      }
+
+      // Handle Python PDF generation
+      if (format === 'python-pdf') {
+        const outputPath = path.join(tempDir, `python_catalogue_${Date.now()}.pdf`);
+        console.log(`Generating Python catalogue PDF to: ${outputPath}`);
+        
+        const success = await generatePythonCataloguePDF(validProperties, outputPath, title, clientName);
+        console.log(`Python PDF generation success: ${success}`);
+
+        if (success && fs.existsSync(outputPath)) {
+          const stats = fs.statSync(outputPath);
+          console.log(`Generated PDF file size: ${stats.size} bytes`);
+          
+          if (stats.size === 0) {
+            console.error('Generated PDF file is empty');
+            res.status(500).json({ error: 'Generated PDF file is empty' });
+            return;
+          }
+          
+          res.setHeader('Content-Type', 'application/pdf');
+          res.setHeader('Content-Disposition', `attachment; filename="${title.replace(/[^a-zA-Z0-9]/g, '_')}_professional.pdf"`);
+          res.setHeader('Content-Length', stats.size.toString());
+          
+          const fileStream = fs.createReadStream(outputPath);
+          
+          fileStream.on('error', (error) => {
+            console.error('File stream error:', error);
+            if (!res.headersSent) {
+              res.status(500).json({ error: 'Failed to stream PDF file' });
+            }
+          });
+          
+          fileStream.on('end', () => {
+            console.log('PDF file stream completed');
+            // Cleanup temp file after sending
+            setTimeout(() => {
+              if (fs.existsSync(outputPath)) {
+                fs.unlinkSync(outputPath);
+                console.log('Cleaned up temp PDF file');
+              }
+            }, 1000);
+          });
+          
+          fileStream.pipe(res);
+          return;
+        } else {
+          console.error(`PDF generation failed or file does not exist at: ${outputPath}`);
+          res.status(500).json({ error: 'Failed to generate professional PDF catalogue' });
+          return;
+        }
+      }
+
+      // Default HTML response (for backward compatibility)
+      res.status(200).json({ 
+        message: 'Catalogue endpoint working', 
+        properties: validProperties.length,
+        format: format
+      });
+    } catch (error) {
+      console.error('Error generating property catalogue:', error);
+      res.status(500).json({ error: 'Failed to generate catalogue' });
+    }
+  });
+
   // Helper function to generate Python catalogue PDF
   async function generatePythonCataloguePDF(properties: any[], outputPath: string, title: string, clientName?: string): Promise<boolean> {
     return new Promise((resolve) => {

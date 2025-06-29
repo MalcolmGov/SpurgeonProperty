@@ -318,7 +318,7 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
     setIsGeneratingPython(true);
 
     try {
-      const response = await fetch('/api/properties/catalogue/python-pdf', {
+      const response = await fetch('/api/properties/catalogue', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -326,7 +326,8 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
         body: JSON.stringify({
           propertyIds: selectedProperties,
           title: catalogueTitle || 'Property Catalogue',
-          clientName: clientName
+          clientName: clientName,
+          format: 'python-pdf'
         }),
       });
 
