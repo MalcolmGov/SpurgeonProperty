@@ -105,10 +105,15 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
         </div>
 
         <div style="display: grid; gap: 30px;">
-          ${selectedProps.map(property => `
+          ${selectedProps.map(property => {
+            const imageIndex = property.featuredImage ? parseInt(property.featuredImage.toString()) : 0;
+            const imageName = property.images && property.images[imageIndex] ? property.images[imageIndex] : '';
+            const cleanImageName = imageName ? imageName.replace(/^\/uploads\//, '') : '';
+            
+            return `
             <div style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-              ${property.images && property.images.length > 0 ? `
-                <div style="height: 200px; background-image: url('${window.location.origin}/uploads/${property.images[property.featuredImage ? parseInt(property.featuredImage.toString()) : 0].replace(/^\/uploads\//, '')}'); background-size: cover; background-position: center; position: relative;">
+              ${property.images && property.images.length > 0 && cleanImageName ? `
+                <div style="height: 200px; background-image: url('${window.location.origin}/uploads/${cleanImageName}'); background-size: cover; background-position: center; position: relative;">
                   <div style="position: absolute; top: 15px; left: 15px; background: rgba(139, 92, 246, 0.9); color: white; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 18px;">
                     ${formatPrice(property.price)}
                   </div>
@@ -175,7 +180,8 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
                 ` : ''}
               </div>
             </div>
-          `).join('')}
+          `;
+          }).join('')}
         </div>
 
         <div style="margin-top: 40px; text-align: center; border-top: 2px solid #8b5cf6; padding-top: 20px;">
