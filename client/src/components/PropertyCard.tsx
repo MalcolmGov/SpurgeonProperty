@@ -435,21 +435,26 @@ export default function PropertyCard({
           </div>
 
           {/* Premium Property Details */}
-          <div className="grid grid-cols-3 gap-4 py-3 px-4 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 rounded-xl border border-slate-200 dark:border-slate-600">
-            <div className="flex flex-col items-center text-center">
-              <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg mb-1">
-                <Bed className="h-4 w-4 text-white" />
-              </div>
-              <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Bedrooms</span>
-              <span className="text-sm font-bold text-slate-900 dark:text-slate-100">{property.bedrooms}</span>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg mb-1">
-                <Bath className="h-4 w-4 text-white" />
-              </div>
-              <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Bathrooms</span>
-              <span className="text-sm font-bold text-slate-900 dark:text-slate-100">{property.bathrooms}</span>
-            </div>
+          <div className={`grid gap-4 py-3 px-4 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 rounded-xl border border-slate-200 dark:border-slate-600 ${!["commercial", "land"].includes(property.propertyType) ? "grid-cols-3" : "grid-cols-1"}`}>
+            {/* Only show bedrooms/bathrooms for residential properties */}
+            {!["commercial", "land"].includes(property.propertyType) && (
+              <>
+                <div className="flex flex-col items-center text-center">
+                  <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg mb-1">
+                    <Bed className="h-4 w-4 text-white" />
+                  </div>
+                  <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Bedrooms</span>
+                  <span className="text-sm font-bold text-slate-900 dark:text-slate-100">{property.bedrooms}</span>
+                </div>
+                <div className="flex flex-col items-center text-center">
+                  <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg mb-1">
+                    <Bath className="h-4 w-4 text-white" />
+                  </div>
+                  <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Bathrooms</span>
+                  <span className="text-sm font-bold text-slate-900 dark:text-slate-100">{property.bathrooms}</span>
+                </div>
+              </>
+            )}
             <div className="flex flex-col items-center text-center">
               <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-green-500 to-green-600 rounded-lg mb-1">
                 <Square className="h-4 w-4 text-white" />
