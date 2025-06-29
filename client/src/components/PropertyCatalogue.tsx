@@ -332,26 +332,30 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
       });
 
       if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = `${catalogueTitle?.replace(/[^a-zA-Z0-9]/g, '_') || 'catalogue'}_professional.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
+        const responseData = await response.json();
         
-        toast({
-          title: "Success",
-          description: "Professional PDF catalogue generated successfully!",
-        });
+        if (responseData.downloadUrl) {
+          // Download the PDF file from the provided URL
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = responseData.downloadUrl;
+          a.download = responseData.filename || `${catalogueTitle?.replace(/[^a-zA-Z0-9]/g, '_') || 'catalogue'}_professional.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          
+          toast({
+            title: "Success",
+            description: "Professional PDF catalogue generated successfully!",
+          });
 
-        setIsOpen(false);
-        setSelectedProperties([]);
-        setCatalogueTitle('Property Portfolio');
-        setClientName('');
+          setIsOpen(false);
+          setSelectedProperties([]);
+          setCatalogueTitle('Property Portfolio');
+          setClientName('');
+        } else {
+          throw new Error('Invalid response: No download URL provided');
+        }
       } else {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to generate professional PDF');
