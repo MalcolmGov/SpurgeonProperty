@@ -22,9 +22,7 @@ export function Logo({ className, showText = true, variant = "default" }: LogoPr
             variant === "compact" ? "max-w-[140px]" : "max-w-[180px]",
             "logo-color-enhanced"
           )}
-          style={{
-            filter: 'sepia(1) hue-rotate(250deg) brightness(1.2) contrast(1.1)'
-          }}
+          style={{}}
         />
       </div>
     </div>
