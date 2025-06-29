@@ -168,8 +168,14 @@ class PropertyPDFGenerator:
             print(f"Error optimizing image {image_path}: {e}")
             return None
 
-    def format_price(self, price: float, currency: str = "USD") -> str:
+    def format_price(self, price, currency: str = "USD") -> str:
         """Format price with currency symbol"""
+        # Convert price to float if it's a string
+        try:
+            price_float = float(str(price).replace(',', '').replace(' ', ''))
+        except (ValueError, TypeError):
+            price_float = 0.0
+            
         currency_symbols = {
             'USD': '$',
             'ZAR': 'R',
@@ -178,12 +184,12 @@ class PropertyPDFGenerator:
         }
         symbol = currency_symbols.get(currency, currency)
         
-        if price >= 1000000:
-            return f"{symbol}{price/1000000:.1f}M"
-        elif price >= 1000:
-            return f"{symbol}{price/1000:.0f}K" if price % 1000 == 0 else f"{symbol}{price:,.0f}"
+        if price_float >= 1000000:
+            return f"{symbol}{price_float/1000000:.1f}M"
+        elif price_float >= 1000:
+            return f"{symbol}{price_float/1000:.0f}K" if price_float % 1000 == 0 else f"{symbol}{price_float:,.0f}"
         else:
-            return f"{symbol}{price:,.0f}"
+            return f"{symbol}{price_float:,.0f}"
 
     class PropertyCanvas(canvas.Canvas):
         """Custom canvas for property PDFs with headers and footers"""

@@ -1363,19 +1363,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const tempDataPath = path.join(tempDir, `catalogue_data_${Date.now()}.json`);
       
       try {
-        // Format properties for Python generator
+        // Format properties for Python generator with proper type conversion
         const pythonData = properties.map(property => ({
-          title: property.title,
-          price: property.price,
+          title: property.title || 'Property',
+          price: parseFloat(String(property.price).replace(/[^0-9.]/g, '')) || 0,
           currency: 'ZAR',
-          bedrooms: property.bedrooms,
-          bathrooms: property.bathrooms,
-          area: property.area,
-          description: property.description,
-          features: property.features || [],
-          address: `${property.address}, ${property.suburb}, ${property.city}, ${property.province}`,
+          bedrooms: parseInt(String(property.bedrooms)) || 0,
+          bathrooms: parseInt(String(property.bathrooms)) || 0,
+          area: parseFloat(String(property.area || property.floorArea || 0)) || 0,
+          description: property.description || '',
+          features: Array.isArray(property.features) ? property.features : [],
+          address: `${property.address || ''}, ${property.suburb || ''}, ${property.city || ''}, ${property.province || ''}`.replace(/^,\s*|,\s*$/g, ''),
           images: property.images?.map((img: string) => path.join(process.cwd(), 'uploads', img)) || [],
-          agent: property.agent
+          agent: property.agent || {
+            name: 'Spurgeon Property',
+            title: 'Real Estate Agent',
+            phone: '+27 11 123 4567',
+            email: 'info@spurgeonproperty.com'
+          }
         }));
 
         // Write catalogue data to temp file
