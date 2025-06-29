@@ -263,10 +263,13 @@ class PropertyPDFGenerator:
             # Hero image
             if property_data.get('images') and len(property_data['images']) > 0:
                 hero_image_path = property_data['images'][0]
-                hero_img = self.optimize_image(hero_image_path, self.HERO_WIDTH, self.HERO_HEIGHT)
-                if hero_img:
-                    story.append(Image(hero_img, width=self.HERO_WIDTH, height=self.HERO_HEIGHT))
-                    story.append(Spacer(1, 0.25 * inch))
+                if os.path.exists(hero_image_path):
+                    try:
+                        hero_img = Image(hero_image_path, width=self.HERO_WIDTH, height=self.HERO_HEIGHT)
+                        story.append(hero_img)
+                        story.append(Spacer(1, 0.25 * inch))
+                    except Exception as e:
+                        print(f"Warning: Could not load hero image {hero_image_path}: {e}")
             
             # Property title
             title = Paragraph(property_data.get('title', 'Property Listing'), self.styles['PropertyHeadline'])
@@ -427,9 +430,12 @@ class PropertyPDFGenerator:
                 img_cell = ""
                 if property_data.get('images') and len(property_data['images']) > 0:
                     img_path = property_data['images'][0]
-                    thumb_img = self.optimize_image(img_path, self.THUMBNAIL_WIDTH, self.THUMBNAIL_HEIGHT)
-                    if thumb_img:
-                        img_cell = Image(thumb_img, width=self.THUMBNAIL_WIDTH, height=self.THUMBNAIL_HEIGHT)
+                    if os.path.exists(img_path):
+                        try:
+                            img_cell = Image(img_path, width=self.THUMBNAIL_WIDTH, height=self.THUMBNAIL_HEIGHT)
+                        except Exception as e:
+                            print(f"Warning: Could not load thumbnail {img_path}: {e}")
+                            img_cell = ""
                 
                 # Details column
                 details_text = []
