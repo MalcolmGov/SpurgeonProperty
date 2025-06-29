@@ -74,14 +74,24 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
     try {
       const selectedProps = properties.filter(p => selectedProperties.includes(p.id));
       
+      if (selectedProps.length === 0) {
+        toast({
+          title: "No Properties Selected",
+          description: "Please select at least one property for the catalogue",
+          variant: "destructive",
+        });
+        return;
+      }
+      
       // Create a temporary container for PDF generation
       const catalogueContainer = document.createElement('div');
       catalogueContainer.style.position = 'absolute';
       catalogueContainer.style.left = '-9999px';
-      catalogueContainer.style.width = '210mm'; // A4 width
+      catalogueContainer.style.top = '0';
+      catalogueContainer.style.width = '794px'; // A4 width in pixels (210mm at 96dpi)
       catalogueContainer.style.backgroundColor = 'white';
       catalogueContainer.style.fontFamily = 'Arial, sans-serif';
-      catalogueContainer.style.padding = '20mm';
+      catalogueContainer.style.padding = '40px';
       catalogueContainer.style.boxSizing = 'border-box';
 
       // Build the catalogue HTML
@@ -182,12 +192,15 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
       // Wait for images to load
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Generate PDF
+      // Generate PDF with error handling
       const canvas = await html2canvas(catalogueContainer, {
-        scale: 2,
+        scale: 1.5,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
+        logging: false,
+        width: catalogueContainer.scrollWidth,
+        height: catalogueContainer.scrollHeight,
       });
 
       const imgData = canvas.toDataURL('image/png');
@@ -199,9 +212,11 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
       let heightLeft = imgHeight;
       let position = 0;
 
+      // Add first page
       pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
 
+      // Add additional pages if needed
       while (heightLeft >= 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
@@ -210,10 +225,12 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
       }
 
       // Clean up
-      document.body.removeChild(catalogueContainer);
+      if (document.body.contains(catalogueContainer)) {
+        document.body.removeChild(catalogueContainer);
+      }
 
       // Download the PDF
-      const fileName = `${catalogueTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${new Date().toISOString().split('T')[0]}.pdf`;
+      const fileName = `${catalogueTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_catalogue.pdf`;
       pdf.save(fileName);
 
       toast({
@@ -228,9 +245,18 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
 
     } catch (error) {
       console.error('Catalogue generation error:', error);
+      
+      // Clean up any remaining containers
+      const containers = document.querySelectorAll('[style*="-9999px"]');
+      containers.forEach(container => {
+        if (document.body.contains(container)) {
+          document.body.removeChild(container);
+        }
+      });
+      
       toast({
         title: "Generation Failed",
-        description: "Failed to generate the property catalogue",
+        description: error instanceof Error ? error.message : "Failed to generate the property catalogue",
         variant: "destructive",
       });
     } finally {
@@ -329,19 +355,35 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
                 {properties.map((property) => (
                   <div
                     key={property.id}
-                    className={`flex items-start space-x-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                    className={`flex items-start space-x-3 p-3 rounded-lg border transition-colors ${
                       selectedProperties.includes(property.id)
                         ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-700'
                         : 'hover:bg-slate-50 dark:hover:bg-slate-700'
                     }`}
-                    onClick={() => handlePropertyToggle(property.id)}
                   >
                     <Checkbox
                       checked={selectedProperties.includes(property.id)}
-                      onCheckedChange={() => handlePropertyToggle(property.id)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setSelectedProperties(prev => [...prev, property.id]);
+                        } else {
+                          setSelectedProperties(prev => prev.filter(id => id !== property.id));
+                        }
+                      }}
                       className="mt-1"
                     />
-                    <div className="flex-1 min-w-0">
+                    <div 
+                      className="flex-1 min-w-0 cursor-pointer" 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const isCurrentlySelected = selectedProperties.includes(property.id);
+                        if (isCurrentlySelected) {
+                          setSelectedProperties(prev => prev.filter(id => id !== property.id));
+                        } else {
+                          setSelectedProperties(prev => [...prev, property.id]);
+                        }
+                      }}
+                    >
                       <h4 className="font-medium text-sm truncate">{property.title}</h4>
                       <p className="text-xs text-slate-600 dark:text-slate-400 flex items-center mt-1">
                         <MapPin className="h-3 w-3 mr-1" />
