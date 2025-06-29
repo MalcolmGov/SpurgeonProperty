@@ -102,6 +102,10 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
           ${clientName ? `<p style="color: #6b7280; font-size: 16px; margin: 10px 0 0 0;">Prepared for: ${clientName}</p>` : ''}
         </div>
 
+        <div style="text-align: center; margin-bottom: 30px;">
+          <h2 style="background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); color: transparent; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; margin: 0; font-weight: 600; letter-spacing: 0.5px;">Property Portfolio</h2>
+        </div>
+
         <div style="display: grid; gap: 30px;">
           ${selectedProps.map(property => {
             const imageIndex = property.featuredImage ? parseInt(property.featuredImage.toString()) : 0;
