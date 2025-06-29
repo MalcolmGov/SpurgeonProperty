@@ -97,10 +97,8 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
       // Build the catalogue HTML
       catalogueContainer.innerHTML = `
         <div style="text-align: center; margin-bottom: 40px; border-bottom: 3px solid #8b5cf6; padding-bottom: 20px;">
-          <div style="background: linear-gradient(135deg, #8b5cf6, #f97316); color: transparent; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 36px; font-weight: bold; margin-bottom: 10px; letter-spacing: 2px;">
-            SPURGEON PROPERTY
-          </div>
-          <h1 style="color: #1f2937; font-size: 28px; margin: 0; font-weight: 600;">${catalogueTitle}</h1>
+          <img src="${window.location.origin}/spurgeon-property-logo.png" alt="Spurgeon Property" style="height: 60px; margin-bottom: 15px;" />
+          <h1 style="background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); color: transparent; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px; margin: 0; font-weight: 700; letter-spacing: 1px;">${catalogueTitle}</h1>
           ${clientName ? `<p style="color: #6b7280; font-size: 16px; margin: 10px 0 0 0;">Prepared for: ${clientName}</p>` : ''}
         </div>
 
@@ -185,10 +183,8 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
         </div>
 
         <div style="margin-top: 40px; text-align: center; border-top: 2px solid #8b5cf6; padding-top: 20px;">
-          <div style="background: linear-gradient(135deg, #8b5cf6, #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 24px; font-weight: bold; margin-bottom: 10px;">
-            SPURGEON PROPERTY
-          </div>
-          <p style="color: #6b7280; margin: 5px 0;">Your Gateway to Premium Properties</p>
+          <img src="${window.location.origin}/spurgeon-property-logo.png" alt="Spurgeon Property" style="height: 40px; margin-bottom: 10px;" />
+          <p style="background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); color: transparent; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 16px; font-weight: 600; margin: 5px 0;">Your Gateway to Premium Properties</p>
           <p style="color: #6b7280; font-size: 12px;">www.spurgeonproperty.co.za | info@spurgeonproperty.co.za</p>
         </div>
       `;
