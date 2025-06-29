@@ -554,48 +554,52 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Property Details</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {/* Only show bedrooms/bathrooms for residential properties */}
+              {!["commercial", "land"].includes(formData.propertyType) && (
+                <>
+                  <div>
+                    <Label htmlFor="bedrooms">Bedrooms</Label>
+                    <Select value={formData.bedrooms} onValueChange={(value) => handleChange("bedrooms", value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1">1</SelectItem>
+                        <SelectItem value="2">2</SelectItem>
+                        <SelectItem value="3">3</SelectItem>
+                        <SelectItem value="4">4</SelectItem>
+                        <SelectItem value="5">5</SelectItem>
+                        <SelectItem value="6">6+</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="bathrooms">Bathrooms</Label>
+                    <Select value={formData.bathrooms} onValueChange={(value) => handleChange("bathrooms", value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1">1</SelectItem>
+                        <SelectItem value="1.5">1.5</SelectItem>
+                        <SelectItem value="2">2</SelectItem>
+                        <SelectItem value="2.5">2.5</SelectItem>
+                        <SelectItem value="3">3</SelectItem>
+                        <SelectItem value="3.5">3.5</SelectItem>
+                        <SelectItem value="4">4+</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </>
+              )}
               <div>
-                <Label htmlFor="bedrooms">Bedrooms</Label>
-                <Select value={formData.bedrooms} onValueChange={(value) => handleChange("bedrooms", value)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1">1</SelectItem>
-                    <SelectItem value="2">2</SelectItem>
-                    <SelectItem value="3">3</SelectItem>
-                    <SelectItem value="4">4</SelectItem>
-                    <SelectItem value="5">5</SelectItem>
-                    <SelectItem value="6">6+</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="bathrooms">Bathrooms</Label>
-                <Select value={formData.bathrooms} onValueChange={(value) => handleChange("bathrooms", value)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1">1</SelectItem>
-                    <SelectItem value="1.5">1.5</SelectItem>
-                    <SelectItem value="2">2</SelectItem>
-                    <SelectItem value="2.5">2.5</SelectItem>
-                    <SelectItem value="3">3</SelectItem>
-                    <SelectItem value="3.5">3.5</SelectItem>
-                    <SelectItem value="4">4+</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="area">Floor Area (m²) *</Label>
+                <Label htmlFor="area">Floor Area (m²)</Label>
                 <Input
                   id="area"
                   type="number"
                   value={formData.area}
                   onChange={(e) => handleChange("area", e.target.value)}
                   placeholder="150"
-                  required
                 />
               </div>
               <div>

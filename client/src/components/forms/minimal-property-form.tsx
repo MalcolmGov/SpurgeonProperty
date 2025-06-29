@@ -673,37 +673,42 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Property Details</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">Bedrooms</label>
-                <select
-                  value={formData.bedrooms}
-                  onChange={(e) => handleChange("bedrooms", e.target.value)}
-                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-                >
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6+</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Bathrooms</label>
-                <select
-                  value={formData.bathrooms}
-                  onChange={(e) => handleChange("bathrooms", e.target.value)}
-                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-                >
-                  <option value="1">1</option>
-                  <option value="1.5">1.5</option>
-                  <option value="2">2</option>
-                  <option value="2.5">2.5</option>
-                  <option value="3">3</option>
-                  <option value="3.5">3.5</option>
-                  <option value="4">4+</option>
-                </select>
-              </div>
+              {/* Only show bedrooms/bathrooms for residential properties */}
+              {!["commercial", "land"].includes(formData.propertyType) && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Bedrooms</label>
+                    <select
+                      value={formData.bedrooms}
+                      onChange={(e) => handleChange("bedrooms", e.target.value)}
+                      className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                    >
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6+</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Bathrooms</label>
+                    <select
+                      value={formData.bathrooms}
+                      onChange={(e) => handleChange("bathrooms", e.target.value)}
+                      className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                    >
+                      <option value="1">1</option>
+                      <option value="1.5">1.5</option>
+                      <option value="2">2</option>
+                      <option value="2.5">2.5</option>
+                      <option value="3">3</option>
+                      <option value="3.5">3.5</option>
+                      <option value="4">4+</option>
+                    </select>
+                  </div>
+                </>
+              )}
               <div>
                 <label className="block text-sm font-medium mb-1">Floor Area (m²)</label>
                 <input
