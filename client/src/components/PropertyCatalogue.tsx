@@ -87,19 +87,18 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
       // Build the catalogue HTML
       catalogueContainer.innerHTML = `
         <div style="text-align: center; margin-bottom: 40px; border-bottom: 3px solid #8b5cf6; padding-bottom: 20px;">
-          <div style="background: linear-gradient(135deg, #8b5cf6, #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px; font-weight: bold; margin-bottom: 10px;">
+          <div style="background: linear-gradient(135deg, #8b5cf6, #f97316); color: transparent; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 36px; font-weight: bold; margin-bottom: 10px; letter-spacing: 2px;">
             SPURGEON PROPERTY
           </div>
           <h1 style="color: #1f2937; font-size: 28px; margin: 0; font-weight: 600;">${catalogueTitle}</h1>
           ${clientName ? `<p style="color: #6b7280; font-size: 16px; margin: 10px 0 0 0;">Prepared for: ${clientName}</p>` : ''}
-          <p style="color: #6b7280; font-size: 14px; margin: 5px 0 0 0;">Generated on ${new Date().toLocaleDateString('en-ZA')}</p>
         </div>
 
         <div style="display: grid; gap: 30px;">
           ${selectedProps.map(property => `
             <div style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
               ${property.images && property.images.length > 0 ? `
-                <div style="height: 200px; background-image: url('${window.location.origin}${property.images[property.featuredImage ? parseInt(property.featuredImage.toString()) : 0]}'); background-size: cover; background-position: center; position: relative;">
+                <div style="height: 200px; background-image: url('${window.location.origin}/uploads/${property.images[property.featuredImage ? parseInt(property.featuredImage.toString()) : 0].replace(/^\/uploads\//, '')}'); background-size: cover; background-position: center; position: relative;">
                   <div style="position: absolute; top: 15px; left: 15px; background: rgba(139, 92, 246, 0.9); color: white; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 18px;">
                     ${formatPrice(property.price)}
                   </div>
