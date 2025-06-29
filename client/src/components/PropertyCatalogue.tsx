@@ -182,10 +182,17 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
           }).join('')}
         </div>
 
-        <div style="margin-top: 40px; text-align: center; border-top: 2px solid #8b5cf6; padding-top: 20px;">
-          <img src="${window.location.origin}/spurgeon-property-logo.png" alt="Spurgeon Property" style="height: 40px; margin-bottom: 10px;" />
-          <p style="background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); color: transparent; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 16px; font-weight: 600; margin: 5px 0;">Your Gateway to Premium Properties</p>
-          <p style="color: #6b7280; font-size: 12px;">www.spurgeonproperty.co.za | info@spurgeonproperty.co.za</p>
+        <div style="margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); border-radius: 12px; text-align: center;">
+          <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+            <img src="${window.location.origin}/spurgeon-property-logo.png" alt="Spurgeon Property" style="height: 50px; margin-bottom: 15px;" />
+            <div style="background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); color: transparent; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 24px; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px;">SPURGEON PROPERTY</div>
+            <p style="color: #6b7280; font-size: 14px; font-weight: 500; margin: 8px 0;">Your Gateway to Premium Properties</p>
+            <div style="border-top: 1px solid #e5e7eb; margin: 15px 0; padding-top: 15px;">
+              <p style="color: #374151; font-size: 12px; margin: 4px 0;">📧 info@spurgeonproperty.co.za</p>
+              <p style="color: #374151; font-size: 12px; margin: 4px 0;">🌐 www.spurgeonproperty.co.za</p>
+              <p style="color: #9ca3af; font-size: 10px; margin-top: 10px;">Premium Real Estate Services • South Africa</p>
+            </div>
+          </div>
         </div>
       `;
 
