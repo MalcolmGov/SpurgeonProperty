@@ -14,7 +14,7 @@ export function Logo({ className, showText = true, variant = "default" }: LogoPr
       {/* Spurgeon Property Logo with Purple Filter */}
       <div className="bg-white rounded px-2 py-1 shadow-sm">
         <img 
-          src="/spurgeon-property-logo.png" 
+          src="/spurgeon-logo.png" 
           alt="Spurgeon Property" 
           className={cn(
             logoHeight,
@@ -23,7 +23,7 @@ export function Logo({ className, showText = true, variant = "default" }: LogoPr
             "logo-color-enhanced"
           )}
           style={{
-            // Temporarily remove filter to check original logo readability
+            filter: 'sepia(1) hue-rotate(250deg) brightness(1.2) contrast(1.1)'
           }}
         />
       </div>
