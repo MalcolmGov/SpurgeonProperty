@@ -1309,7 +1309,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         const python = spawn('python', [pythonScript, tempDataPath, outputPath]);
         
+        let stdout = '';
+        let stderr = '';
+        
+        python.stdout.on('data', (data) => {
+          stdout += data.toString();
+        });
+        
+        python.stderr.on('data', (data) => {
+          stderr += data.toString();
+        });
+        
         python.on('close', (code) => {
+          console.log(`Python script output: ${stdout}`);
+          if (stderr) {
+            console.error(`Python script errors: ${stderr}`);
+          }
+          
           // Cleanup temp data file
           if (fs.existsSync(tempDataPath)) {
             fs.unlinkSync(tempDataPath);
@@ -1356,22 +1372,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Generate catalogue PDF using Python
       const outputPath = path.join(tempDir, `python_catalogue_${Date.now()}.pdf`);
+      console.log(`Generating Python catalogue PDF to: ${outputPath}`);
+      
       const success = await generatePythonCataloguePDF(validProperties, outputPath, title, clientName);
+      console.log(`Python PDF generation success: ${success}`);
 
       if (success && fs.existsSync(outputPath)) {
+        const stats = fs.statSync(outputPath);
+        console.log(`Generated PDF file size: ${stats.size} bytes`);
+        
+        if (stats.size === 0) {
+          console.error('Generated PDF file is empty');
+          res.status(500).json({ error: 'Generated PDF file is empty' });
+          return;
+        }
+        
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename="${title.replace(/[^a-zA-Z0-9]/g, '_')}_professional.pdf"`);
+        res.setHeader('Content-Length', stats.size.toString());
         
         const fileStream = fs.createReadStream(outputPath);
-        fileStream.pipe(res);
         
-        // Cleanup temp file after sending
-        fileStream.on('end', () => {
-          if (fs.existsSync(outputPath)) {
-            fs.unlinkSync(outputPath);
+        fileStream.on('error', (error) => {
+          console.error('File stream error:', error);
+          if (!res.headersSent) {
+            res.status(500).json({ error: 'Failed to stream PDF file' });
           }
         });
+        
+        fileStream.on('end', () => {
+          console.log('PDF file stream completed');
+          // Cleanup temp file after sending
+          setTimeout(() => {
+            if (fs.existsSync(outputPath)) {
+              fs.unlinkSync(outputPath);
+              console.log('Cleaned up temp PDF file');
+            }
+          }, 1000);
+        });
+        
+        fileStream.pipe(res);
       } else {
+        console.error(`PDF generation failed or file does not exist at: ${outputPath}`);
         res.status(500).json({ error: 'Failed to generate professional PDF catalogue' });
       }
     } catch (error) {

@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "title": "Stunning, fully furnished apartment for sale in Paulshof",
+      "price": 1650000,
+      "currency": "ZAR",
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "area": 120,
+      "description": "Two bedroom, two bathroom apartment for sale in Paulshof. This beautifully appointed apartment offers modern living at its finest.",
+      "features": ["Fully furnished", "Modern kitchen", "Built-in wardrobes", "Balcony with views", "24/7 security", "Swimming pool"],
+      "address": "123 Paulshof Drive, Paulshof, Sandton, Gauteng",
+      "images": [],
+      "agent": {
+        "name": "Reshma Kila",
+        "title": "Real Estate Agent",
+        "phone": "+27 11 234 5678",
+        "email": "reshma.kila@evogroup.co.za"
+      }
+    }
+  ],
+  "title": "Test Portfolio",
+  "clientName": "Test Client"
+}
