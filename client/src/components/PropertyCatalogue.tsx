@@ -209,8 +209,7 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
         <div style="margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); border-radius: 12px; text-align: center;">
           <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
             <img src="${window.location.origin}/spurgeon-logo.png" alt="Spurgeon Property" style="height: 50px; margin-bottom: 15px;" />
-            <div style="background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); color: transparent; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 24px; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px;">SPURGEON PROPERTY</div>
-            <p style="color: #6b7280; font-size: 14px; font-weight: 500; margin: 8px 0;">Your Gateway to Premium Properties</p>
+            <h2 style="color: #8b5cf6; font-size: 24px; font-weight: 700; margin: 0 0 8px 0; letter-spacing: 1px;">Your Gateway to Premium Properties</h2>
             <div style="border-top: 1px solid #e5e7eb; margin: 15px 0; padding-top: 15px;">
               <p style="color: #374151; font-size: 12px; margin: 4px 0;">📧 info@spurgeonproperty.co.za</p>
               <p style="color: #374151; font-size: 12px; margin: 4px 0;">🌐 www.spurgeonproperty.co.za</p>
