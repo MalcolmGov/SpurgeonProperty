@@ -470,35 +470,41 @@ export default function PropertyForm({ property, open, onClose }: PropertyFormPr
                   <SelectItem value="cluster_home">Cluster Home</SelectItem>
                   <SelectItem value="farm">Farm</SelectItem>
                   <SelectItem value="vacant_land">Vacant Land</SelectItem>
+                  <SelectItem value="commercial">Commercial</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <div>
-              <Label htmlFor="bedrooms">Bedrooms *</Label>
-              <Select value={formData.bedrooms} onValueChange={(value) => handleInputChange("bedrooms", value)}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {[1, 2, 3, 4, 5, 6, 7, 8].map(num => (
-                    <SelectItem key={num} value={num.toString()}>{num}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label htmlFor="bathrooms">Bathrooms *</Label>
-              <Select value={formData.bathrooms} onValueChange={(value) => handleInputChange("bathrooms", value)}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {["1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5"].map(num => (
-                    <SelectItem key={num} value={num}>{num}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            {/* Only show bedrooms/bathrooms for residential properties */}
+            {!["commercial", "vacant_land"].includes(formData.propertyType) && (
+              <>
+                <div>
+                  <Label htmlFor="bedrooms">Bedrooms *</Label>
+                  <Select value={formData.bedrooms} onValueChange={(value) => handleInputChange("bedrooms", value)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[1, 2, 3, 4, 5, 6, 7, 8].map(num => (
+                        <SelectItem key={num} value={num.toString()}>{num}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="bathrooms">Bathrooms *</Label>
+                  <Select value={formData.bathrooms} onValueChange={(value) => handleInputChange("bathrooms", value)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {["1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5"].map(num => (
+                        <SelectItem key={num} value={num}>{num}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </>
+            )}
           </div>
 
           {/* Additional Details */}
