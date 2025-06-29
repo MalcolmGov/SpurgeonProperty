@@ -96,14 +96,14 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
 
       // Build the catalogue HTML
       catalogueContainer.innerHTML = `
-        <div style="text-align: center; margin-bottom: 40px; border-bottom: 3px solid #8b5cf6; padding-bottom: 20px;">
-          <img src="${window.location.origin}/spurgeon-logo.png" alt="Spurgeon Property" style="height: 60px; margin-bottom: 15px;" />
-          <h1 style="background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); color: transparent; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px; margin: 0; font-weight: 700; letter-spacing: 1px;">${catalogueTitle}</h1>
-          ${clientName ? `<p style="color: #6b7280; font-size: 16px; margin: 10px 0 0 0;">Prepared for: ${clientName}</p>` : ''}
-        </div>
-
-        <div style="text-align: center; margin-bottom: 30px;">
-          <h2 style="background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); color: transparent; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; margin: 0; font-weight: 600; letter-spacing: 0.5px;">Property Portfolio</h2>
+        <div style="text-align: center; margin-bottom: 40px; padding: 30px; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); border-radius: 12px;">
+          <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+            <img src="${window.location.origin}/spurgeon-logo.png" alt="Spurgeon Property" style="height: 60px; margin-bottom: 15px;" />
+            <h1 style="color: #1f2937; font-size: 32px; margin: 0 0 10px 0; font-weight: 700; letter-spacing: 1px;">${catalogueTitle}</h1>
+            ${clientName ? `<p style="color: #6b7280; font-size: 16px; margin: 10px 0;">Prepared for: ${clientName}</p>` : ''}
+            <div style="height: 2px; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); margin: 20px auto; width: 80%;"></div>
+            <h2 style="color: #8b5cf6; font-size: 28px; margin: 0; font-weight: 600; letter-spacing: 0.5px;">Property Portfolio</h2>
+          </div>
         </div>
 
         <div style="display: grid; gap: 30px;">
