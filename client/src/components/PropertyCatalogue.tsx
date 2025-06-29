@@ -99,10 +99,8 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
         <div style="text-align: center; margin-bottom: 40px; padding: 30px; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); border-radius: 12px;">
           <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
             <img src="${window.location.origin}/spurgeon-logo.png" alt="Spurgeon Property" style="height: 60px; margin-bottom: 15px;" />
-            <h1 style="color: #1f2937; font-size: 32px; margin: 0 0 10px 0; font-weight: 700; letter-spacing: 1px;">${catalogueTitle}</h1>
+            <h1 style="background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; font-size: 32px; margin: 0; font-weight: 700; letter-spacing: 1px;">${catalogueTitle}</h1>
             ${clientName ? `<p style="color: #6b7280; font-size: 16px; margin: 10px 0;">Prepared for: ${clientName}</p>` : ''}
-            <div style="height: 2px; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%); margin: 20px auto; width: 80%;"></div>
-            <h2 style="color: #8b5cf6; font-size: 28px; margin: 0; font-weight: 600; letter-spacing: 0.5px;">Property Portfolio</h2>
           </div>
         </div>
 
@@ -110,12 +108,24 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
           ${selectedProps.map(property => {
             const imageIndex = property.featuredImage ? parseInt(property.featuredImage.toString()) : 0;
             const imageName = property.images && property.images[imageIndex] ? property.images[imageIndex] : '';
-            const cleanImageName = imageName ? imageName.replace(/^\/uploads\//, '') : '';
+            
+            // Fix image URL construction
+            let imageUrl = '';
+            if (imageName) {
+              if (imageName.startsWith('/uploads/')) {
+                imageUrl = `${window.location.origin}${imageName}`;
+              } else if (imageName.startsWith('property-')) {
+                imageUrl = `${window.location.origin}/uploads/${imageName}`;
+              } else {
+                imageUrl = `${window.location.origin}/uploads/${imageName}`;
+              }
+            }
             
             return `
             <div style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-              ${property.images && property.images.length > 0 && cleanImageName ? `
-                <div style="height: 200px; background-image: url('${window.location.origin}/uploads/${cleanImageName}'); background-size: cover; background-position: center; position: relative;">
+              ${property.images && property.images.length > 0 && imageUrl ? `
+                <img src="${imageUrl}" style="width: 100%; height: 200px; object-fit: cover; display: block;" alt="${property.title}" />
+                <div style="position: relative; margin-top: -200px; height: 200px;">
                   <div style="position: absolute; top: 15px; left: 15px; background: rgba(139, 92, 246, 0.9); color: white; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 18px;">
                     ${formatPrice(property.price)}
                   </div>
@@ -123,7 +133,11 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
                     ${property.propertyType}
                   </div>
                 </div>
-              ` : ''}
+              ` : `
+                <div style="height: 200px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #9ca3af;">
+                  <span style="font-size: 48px;">🏠</span>
+                </div>
+              `}
               
               <div style="padding: 20px;">
                 <h3 style="color: #1f2937; font-size: 22px; font-weight: 600; margin: 0 0 10px 0;">${property.title}</h3>
