@@ -245,10 +245,22 @@ export default function PropertyCard({
                   
                   {/* Video Indicator for Compact */}
                   {((property.videos && property.videos.length > 0) || (property.videoUrls && property.videoUrls.length > 0)) && (
-                    <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-medium shadow-lg backdrop-blur-sm">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // Redirect to first video URL if available, otherwise go to property details
+                        if (property.videoUrls && property.videoUrls.length > 0) {
+                          window.open(property.videoUrls[0], '_blank');
+                        } else {
+                          window.location.href = `/properties/${property.id}`;
+                        }
+                      }}
+                      className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-medium shadow-lg backdrop-blur-sm hover:from-red-600 hover:to-red-700 transition-all duration-200 cursor-pointer"
+                    >
                       <Play className="h-2.5 w-2.5" />
                       <span className="text-xs">Video</span>
-                    </div>
+                    </button>
                   )}
                 </div>
 
@@ -363,10 +375,22 @@ export default function PropertyCard({
             
             {/* Video Indicator */}
             {((property.videos && property.videos.length > 0) || (property.videoUrls && property.videoUrls.length > 0)) && (
-              <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-medium shadow-lg backdrop-blur-sm border border-white/20">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  // Redirect to first video URL if available, otherwise go to property details
+                  if (property.videoUrls && property.videoUrls.length > 0) {
+                    window.open(property.videoUrls[0], '_blank');
+                  } else {
+                    window.location.href = `/properties/${property.id}`;
+                  }
+                }}
+                className="flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-medium shadow-lg backdrop-blur-sm border border-white/20 hover:from-red-600 hover:to-red-700 transition-all duration-200 cursor-pointer"
+              >
                 <Play className="h-3 w-3" />
                 <span>Video</span>
-              </div>
+              </button>
             )}
           </div>
 

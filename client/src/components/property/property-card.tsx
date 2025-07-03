@@ -88,10 +88,22 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
                   )}
                   {/* Video Indicator */}
                   {((property.videos && property.videos.length > 0) || (property.videoUrls && property.videoUrls.length > 0)) && (
-                    <Badge className="bg-red-600 text-white flex items-center gap-1">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // Redirect to first video URL if available, otherwise go to property details
+                        if (property.videoUrls && property.videoUrls.length > 0) {
+                          window.open(property.videoUrls[0], '_blank');
+                        } else {
+                          window.location.href = `/properties/${property.id}`;
+                        }
+                      }}
+                      className="bg-red-600 text-white flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium hover:bg-red-700 transition-colors cursor-pointer"
+                    >
                       <Play className="h-3 w-3" />
                       Video
-                    </Badge>
+                    </button>
                   )}
                 </div>
                 {property.propertyType && (
@@ -211,10 +223,22 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
             )}
             {/* Video Indicator */}
             {((property.videos && property.videos.length > 0) || (property.videoUrls && property.videoUrls.length > 0)) && (
-              <Badge className="bg-red-600 text-white px-2 py-1 text-xs rounded-md flex items-center gap-1">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  // Redirect to first video URL if available, otherwise go to property details
+                  if (property.videoUrls && property.videoUrls.length > 0) {
+                    window.open(property.videoUrls[0], '_blank');
+                  } else {
+                    window.location.href = `/properties/${property.id}`;
+                  }
+                }}
+                className="bg-red-600 text-white px-2 py-1 text-xs rounded-md flex items-center gap-1 hover:bg-red-700 transition-colors cursor-pointer"
+              >
                 <Play className="h-3 w-3" />
                 Video
-              </Badge>
+              </button>
             )}
           </div>
           {property.propertyType && (
