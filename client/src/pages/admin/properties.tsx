@@ -20,9 +20,9 @@ export default function AdminProperties() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingProperty, setEditingProperty] = useState<PropertyWithAgent | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [typeFilter, setTypeFilter] = useState("");
-  const [listingTypeFilter, setListingTypeFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [listingTypeFilter, setListingTypeFilter] = useState("all");
   
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -39,9 +39,10 @@ export default function AdminProperties() {
   
   const { data: properties, isLoading } = useProperties({
     search: searchQuery,
-    status: statusFilter || undefined,
-    propertyType: typeFilter || undefined,
-    listingType: listingTypeFilter || undefined,
+    status: statusFilter === "all" ? undefined : statusFilter,
+    propertyType: typeFilter === "all" ? undefined : typeFilter,
+    listingType: listingTypeFilter === "all" ? undefined : listingTypeFilter,
+    limit: 100, // Show up to 100 properties in admin dashboard
   });
 
   const deletePropertyMutation = useMutation({
