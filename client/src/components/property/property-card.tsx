@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Bed, Bath, Square, MapPin } from "lucide-react";
+import { Heart, Bed, Bath, Square, MapPin, Play } from "lucide-react";
 import { useState } from "react";
 import type { PropertyWithAgent } from "@shared/schema";
 
@@ -85,6 +85,13 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
                   )}
                   {property.status === "pending" && (
                     <Badge className="bg-yellow-500 text-white">Pending</Badge>
+                  )}
+                  {/* Video Indicator */}
+                  {((property.videos && property.videos.length > 0) || (property.videoUrls && property.videoUrls.length > 0)) && (
+                    <Badge className="bg-red-600 text-white flex items-center gap-1">
+                      <Play className="h-3 w-3" />
+                      Video
+                    </Badge>
                   )}
                 </div>
                 {property.propertyType && (
@@ -201,6 +208,13 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
             )}
             {property.status === "pending" && (
               <Badge className="bg-yellow-500 text-white px-2 py-1 text-xs rounded-md">Pending</Badge>
+            )}
+            {/* Video Indicator */}
+            {((property.videos && property.videos.length > 0) || (property.videoUrls && property.videoUrls.length > 0)) && (
+              <Badge className="bg-red-600 text-white px-2 py-1 text-xs rounded-md flex items-center gap-1">
+                <Play className="h-3 w-3" />
+                Video
+              </Badge>
             )}
           </div>
           {property.propertyType && (

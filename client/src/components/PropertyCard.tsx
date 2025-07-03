@@ -25,7 +25,8 @@ import {
   Castle,
   Trees,
   Landmark,
-  Warehouse
+  Warehouse,
+  Play
 } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
 
@@ -236,11 +237,19 @@ export default function PropertyCard({
                 )}
                 
                 {/* Modern Property Type Badge for Compact */}
-                <div className="absolute top-1 right-1">
+                <div className="absolute top-1 right-1 flex flex-col gap-1 items-end">
                   <div className={`flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r ${propertyConfig.gradient} text-white text-xs font-medium shadow-lg backdrop-blur-sm`}>
                     <propertyConfig.icon className="h-3 w-3" />
                     <span>{propertyConfig.label}</span>
                   </div>
+                  
+                  {/* Video Indicator for Compact */}
+                  {((property.videos && property.videos.length > 0) || (property.videoUrls && property.videoUrls.length > 0)) && (
+                    <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-medium shadow-lg backdrop-blur-sm">
+                      <Play className="h-2.5 w-2.5" />
+                      <span className="text-xs">Video</span>
+                    </div>
+                  )}
                 </div>
 
                 {property.featured && (
@@ -346,11 +355,19 @@ export default function PropertyCard({
           </div>
           
           {/* Modern Property Type Badge */}
-          <div className="absolute bottom-4 right-4">
+          <div className="absolute bottom-4 right-4 flex flex-col gap-2 items-end">
             <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r ${propertyConfig.gradient} text-white text-sm font-medium shadow-lg backdrop-blur-sm border border-white/20`}>
               <propertyConfig.icon className="h-4 w-4" />
               <span>{propertyConfig.label}</span>
             </div>
+            
+            {/* Video Indicator */}
+            {((property.videos && property.videos.length > 0) || (property.videoUrls && property.videoUrls.length > 0)) && (
+              <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-medium shadow-lg backdrop-blur-sm border border-white/20">
+                <Play className="h-3 w-3" />
+                <span>Video</span>
+              </div>
+            )}
           </div>
 
           {/* Premium Featured Badge */}

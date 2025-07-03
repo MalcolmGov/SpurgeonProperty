@@ -378,30 +378,109 @@ export default function PropertyDetail() {
               </TabsContent>
               
               <TabsContent value="videos">
-                {property.videos && property.videos.length > 0 ? (
+                {(property.videos && property.videos.length > 0) || (property.videoUrls && property.videoUrls.length > 0) ? (
                   <div className="space-y-6">
                     <h3 className="text-xl font-semibold text-slate-800 dark:text-white">
                       Property Videos
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {property.videos.map((video, index) => (
-                        <div key={index} className="space-y-2">
-                          <video 
-                            controls 
-                            className="w-full rounded-lg border border-slate-200 dark:border-slate-700"
-                            preload="metadata"
-                          >
-                            <source src={video} type="video/mp4" />
-                            <source src={video} type="video/webm" />
-                            <source src={video} type="video/quicktime" />
-                            Your browser does not support the video tag.
-                          </video>
-                          <p className="text-sm text-slate-600 dark:text-slate-400">
-                            Video {index + 1}
-                          </p>
+                    
+                    {/* Uploaded Video Files */}
+                    {property.videos && property.videos.length > 0 && (
+                      <div className="space-y-4">
+                        <h4 className="text-lg font-medium text-slate-700 dark:text-slate-300">
+                          Uploaded Videos
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {property.videos.map((video, index) => (
+                            <div key={index} className="space-y-2">
+                              <video 
+                                controls 
+                                className="w-full rounded-lg border border-slate-200 dark:border-slate-700"
+                                preload="metadata"
+                              >
+                                <source src={video} type="video/mp4" />
+                                <source src={video} type="video/webm" />
+                                <source src={video} type="video/quicktime" />
+                                Your browser does not support the video tag.
+                              </video>
+                              <p className="text-sm text-slate-600 dark:text-slate-400 text-center">
+                                Video {index + 1}
+                              </p>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    )}
+                    
+                    {/* Video URLs */}
+                    {property.videoUrls && property.videoUrls.length > 0 && (
+                      <div className="space-y-4">
+                        <h4 className="text-lg font-medium text-slate-700 dark:text-slate-300">
+                          External Videos
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {property.videoUrls.map((url, index) => {
+                            // Extract video ID for YouTube and Vimeo for embedding
+                            const isYouTube = url.includes('youtube.com') || url.includes('youtu.be');
+                            const isVimeo = url.includes('vimeo.com');
+                            
+                            let embedUrl = '';
+                            if (isYouTube) {
+                              const videoId = url.includes('youtu.be/') 
+                                ? url.split('youtu.be/')[1]?.split('?')[0]
+                                : url.split('v=')[1]?.split('&')[0];
+                              if (videoId) {
+                                embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                              }
+                            } else if (isVimeo) {
+                              const videoId = url.split('vimeo.com/')[1]?.split('?')[0];
+                              if (videoId) {
+                                embedUrl = `https://player.vimeo.com/video/${videoId}`;
+                              }
+                            }
+
+                            return (
+                              <div key={index} className="space-y-3">
+                                {embedUrl ? (
+                                  <iframe
+                                    src={embedUrl}
+                                    className="w-full h-64 rounded-lg border border-slate-200 dark:border-slate-700"
+                                    allowFullScreen
+                                    title={`External Video ${index + 1}`}
+                                  />
+                                ) : (
+                                  <div className="w-full h-64 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 flex flex-col items-center justify-center space-y-2">
+                                    <span className="text-4xl">🎥</span>
+                                    <p className="text-sm text-slate-600 dark:text-slate-400">External Video</p>
+                                    <a 
+                                      href={url} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer"
+                                      className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm underline"
+                                    >
+                                      Open Video Link
+                                    </a>
+                                  </div>
+                                )}
+                                <div className="text-center space-y-1">
+                                  <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                    {isYouTube ? '📺 YouTube Video' : isVimeo ? '🎬 Vimeo Video' : '🎥 External Video'}
+                                  </p>
+                                  <a 
+                                    href={url} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+                                  >
+                                    Open in new tab →
+                                  </a>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="text-center py-12">
