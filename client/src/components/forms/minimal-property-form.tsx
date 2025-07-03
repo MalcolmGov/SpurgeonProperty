@@ -49,6 +49,8 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
   const [selectedVideos, setSelectedVideos] = useState<File[]>([]);
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [uploadedVideos, setUploadedVideos] = useState<string[]>([]);
+  const [videoUrls, setVideoUrls] = useState<string[]>([]);
+  const [newVideoUrl, setNewVideoUrl] = useState("");
   const [featuredImageIndex, setFeaturedImageIndex] = useState<number | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -109,6 +111,11 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       // Set existing videos
       if (property.videos && Array.isArray(property.videos)) {
         setUploadedVideos(property.videos);
+      }
+      
+      // Set existing video URLs
+      if (property.videoUrls && Array.isArray(property.videoUrls)) {
+        setVideoUrls(property.videoUrls);
       }
     } else if (open && !property) {
       // Reset form for new property
@@ -273,7 +280,8 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         features: features,
         images: allImages,
         featuredImage: featuredImageUrl,
-        videos: allVideos
+        videos: allVideos,
+        videoUrls: videoUrls
       };
 
       console.log('Property data being sent:', propertyData);
@@ -323,6 +331,8 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       setSelectedVideos([]);
       setUploadedImages([]);
       setUploadedVideos([]);
+      setVideoUrls([]);
+      setNewVideoUrl("");
       setFeaturedImageIndex(null);
       onClose();
     },
@@ -446,6 +456,47 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
 
   const removeVideo = (index: number) => {
     setSelectedVideos(prev => prev.filter((_, i) => i !== index));
+  };
+
+  // Helper function to validate and add video URLs
+  const addVideoUrl = () => {
+    if (!newVideoUrl.trim()) return;
+    
+    // Basic URL validation and format detection
+    const url = newVideoUrl.trim();
+    const isYouTube = url.includes('youtube.com') || url.includes('youtu.be');
+    const isVimeo = url.includes('vimeo.com');
+    const isValidUrl = /^https?:\/\/.+/.test(url);
+    
+    if (!isValidUrl) {
+      toast({
+        title: "Invalid URL",
+        description: "Please enter a valid URL starting with http:// or https://",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (videoUrls.includes(url)) {
+      toast({
+        title: "Duplicate URL",
+        description: "This video URL has already been added",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setVideoUrls(prev => [...prev, url]);
+    setNewVideoUrl("");
+    
+    toast({
+      title: "Video URL Added",
+      description: `${isYouTube ? 'YouTube' : isVimeo ? 'Vimeo' : 'Video'} URL added successfully`,
+    });
+  };
+
+  const removeVideoUrl = (index: number) => {
+    setVideoUrls(prev => prev.filter((_, i) => i !== index));
   };
 
   return (
@@ -1113,7 +1164,10 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
             <div>
               <label className="block text-sm font-medium mb-2">Property Videos</label>
               <div className="space-y-4">
-                <div>
+                
+                {/* File Upload Option */}
+                <div className="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
+                  <h4 className="font-medium mb-2 text-sm">Upload Video Files</h4>
                   <input
                     type="file"
                     multiple
@@ -1123,6 +1177,32 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     Select MP4, AVI, MOV, WMV, FLV, WebM, or MKV files (max 100MB each)
+                  </p>
+                </div>
+
+                {/* Video URL Option */}
+                <div className="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
+                  <h4 className="font-medium mb-2 text-sm">Add Video URLs (YouTube, Vimeo, etc.)</h4>
+                  <div className="flex gap-2">
+                    <Input
+                      value={newVideoUrl}
+                      onChange={(e) => setNewVideoUrl(e.target.value)}
+                      placeholder="https://www.youtube.com/watch?v=..."
+                      className="flex-1"
+                      onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addVideoUrl())}
+                    />
+                    <Button
+                      type="button"
+                      onClick={addVideoUrl}
+                      disabled={!newVideoUrl.trim()}
+                      size="sm"
+                      className="bg-purple-600 hover:bg-purple-700"
+                    >
+                      Add URL
+                    </Button>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Supports YouTube, Vimeo, and other video platforms
                   </p>
                 </div>
 
@@ -1178,6 +1258,43 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
                           >
                             ×
                           </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Added Video URLs */}
+                {videoUrls.length > 0 && (
+                  <div>
+                    <p className="text-sm font-medium mb-2">Video URLs ({videoUrls.length})</p>
+                    <div className="space-y-3">
+                      {videoUrls.map((url, index) => (
+                        <div key={index} className="flex items-center justify-between p-3 border rounded-lg bg-white dark:bg-gray-700">
+                          <div className="flex-1 mr-3">
+                            <div className="text-sm font-medium text-gray-900 dark:text-white">
+                              {url.includes('youtube.com') || url.includes('youtu.be') ? '📺 YouTube' : 
+                               url.includes('vimeo.com') ? '🎬 Vimeo' : '🎥 Video'}
+                            </div>
+                            <div className="text-xs text-gray-500 truncate max-w-xs">{url}</div>
+                            <a 
+                              href={url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400"
+                            >
+                              Open in new tab →
+                            </a>
+                          </div>
+                          <Button
+                            type="button"
+                            onClick={() => removeVideoUrl(index)}
+                            variant="destructive"
+                            size="sm"
+                            className="bg-red-500 hover:bg-red-600 text-white px-2 py-1"
+                          >
+                            Remove
+                          </Button>
                         </div>
                       ))}
                     </div>

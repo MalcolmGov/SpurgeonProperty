@@ -28,6 +28,7 @@ export const properties = pgTable("properties", {
   images: jsonb("images").$type<string[]>().default([]),
   featuredImage: text("featured_image"), // Primary image for property cards
   videos: jsonb("videos").$type<string[]>().default([]),
+  videoUrls: jsonb("video_urls").$type<string[]>().default([]), // External video URLs (YouTube, Vimeo, etc.)
   status: text("status").notNull().default("active"), // active, pending, sold, rented
   agentId: integer("agent_id"),
   featured: boolean("featured").default(false),
