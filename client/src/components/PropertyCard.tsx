@@ -52,7 +52,12 @@ export default function PropertyCard({
 
   const formatPrice = (price: string) => {
     if (!price || price === '' || price === 'null' || price === 'undefined') {
-      return 'Price on request';
+      return 'POA';
+    }
+    
+    // Check for POA specifically
+    if (price.toString().trim().toUpperCase() === 'POA') {
+      return 'POA';
     }
     
     // If price is already formatted (starts with "R"), return as is
@@ -66,8 +71,8 @@ export default function PropertyCard({
       return `R ${numericPrice.toLocaleString('en-ZA')}`;
     }
     
-    // Fallback - just add R prefix if not already there
-    return `R ${price}`;
+    // For any non-numeric value, return as POA
+    return 'POA';
   };
 
   const handleFavorite = () => {

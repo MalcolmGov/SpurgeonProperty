@@ -56,7 +56,12 @@ export default function PropertyComparison({
 
   const formatPrice = (price: string) => {
     if (!price || price === '' || price === 'null' || price === 'undefined') {
-      return 'Price on request';
+      return 'POA';
+    }
+    
+    // Check for POA specifically
+    if (price.toString().trim().toUpperCase() === 'POA') {
+      return 'POA';
     }
     
     // If price is already formatted (starts with "R"), return as is
@@ -68,7 +73,7 @@ export default function PropertyComparison({
     const numPrice = parseFloat(price.toString().replace(/[^\d.]/g, ''));
     
     if (isNaN(numPrice)) {
-      return 'Price on request';
+      return 'POA';
     }
     
     return `R ${new Intl.NumberFormat('en-ZA', {
