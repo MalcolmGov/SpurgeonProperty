@@ -169,9 +169,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
     if (!formData.description.trim()) {
       newErrors.description = "Property description is required";
     }
-    if (!formData.price.trim()) {
-      newErrors.price = "Sale price is required";
-    }
+    // Price is now optional - will default to "POA" if empty
     if (!formData.address.trim()) {
       newErrors.address = "Street address is required";
     }
@@ -609,18 +607,19 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
             <h3 className="text-lg font-semibold">Financial Details</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className={`block text-sm font-medium mb-1 ${errors.price ? "text-red-500" : ""}`}>
-                  Sale Price (ZAR) *
+                <label className="block text-sm font-medium mb-1">
+                  Sale Price (ZAR)
                 </label>
                 <input
                   type="number"
                   value={formData.price}
                   onChange={(e) => handleChange("price", e.target.value)}
-                  placeholder="850000"
-                  className={`w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 ${errors.price ? "border-red-500 focus:border-red-500" : ""}`}
-                  required
+                  placeholder="Leave empty for POA (Price on Application)"
+                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
                 />
-                {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price}</p>}
+                <p className="text-xs text-gray-500 mt-1">
+                  Leave empty to display "POA" (Price on Application)
+                </p>
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Monthly Rates (ZAR)</label>

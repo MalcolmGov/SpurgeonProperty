@@ -85,9 +85,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
     if (!formData.description.trim()) {
       newErrors.description = "Property description is required";
     }
-    if (!formData.price.trim()) {
-      newErrors.price = "Sale price is required";
-    }
+    // Price is now optional - will default to "POA" if empty
     if (!formData.address.trim()) {
       newErrors.address = "Street address is required";
     }
@@ -439,18 +437,19 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
             <h3 className="text-lg font-semibold">Financial Details</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <Label htmlFor="price" className={errors.price ? "text-red-500" : ""}>
-                  Sale Price (ZAR) *
+                <Label htmlFor="price">
+                  Sale Price (ZAR)
                 </Label>
                 <Input
                   id="price"
                   type="number"
                   value={formData.price}
                   onChange={(e) => handleChange("price", e.target.value)}
-                  placeholder="850000"
-                  className={errors.price ? "border-red-500 focus:border-red-500" : ""}
-                  required
+                  placeholder="Leave empty for POA (Price on Application)"
                 />
+                <p className="text-xs text-gray-500 mt-1">
+                  Leave empty to display "POA" (Price on Application)
+                </p>
                 {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price}</p>}
               </div>
               <div>

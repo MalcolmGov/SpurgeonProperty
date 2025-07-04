@@ -300,6 +300,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log('Creating property with data:', JSON.stringify(req.body, null, 2));
       console.log('Images in request:', req.body.images);
       
+      // Set default price to "POA" if empty or not provided
+      if (!req.body.price || req.body.price.trim() === '') {
+        req.body.price = 'POA';
+      }
+      
       const validatedData = insertPropertySchema.parse(req.body);
       console.log('Validated data images:', validatedData.images);
       
@@ -321,6 +326,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const id = parseInt(req.params.id);
       console.log(`Updating property ${id} with data:`, JSON.stringify(req.body, null, 2));
       console.log(`Images being updated for property ${id}:`, req.body.images);
+      
+      // Set default price to "POA" if empty or not provided during update
+      if (req.body.price !== undefined && (!req.body.price || req.body.price.trim() === '')) {
+        req.body.price = 'POA';
+      }
       
       const validatedData = insertPropertySchema.partial().parse(req.body);
       console.log(`Validated update data for property ${id}:`, validatedData.images);
@@ -868,6 +878,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/properties/geocoded", async (req, res) => {
     try {
       const propertyData = req.body;
+      
+      // Set default price to "POA" if empty or not provided
+      if (!propertyData.price || propertyData.price.trim() === '') {
+        propertyData.price = 'POA';
+      }
       
       // Auto-geocode if coordinates are missing
       if (!propertyData.latitude || !propertyData.longitude) {

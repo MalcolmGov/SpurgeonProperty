@@ -8,7 +8,7 @@ export const properties = pgTable("properties", {
   title: text("title").notNull(),
   description: text("description").notNull(),
   additionalInfo: text("additional_info"),
-  price: text("price").notNull(),
+  price: text("price").notNull().default("POA"),
   address: text("address").notNull(),
   suburb: text("suburb").notNull(),
   city: text("city").notNull(),
@@ -150,6 +150,8 @@ export const insertPropertySchema = createInsertSchema(properties).omit({
   views: true,
   createdAt: true,
   updatedAt: true,
+}).extend({
+  price: z.string().optional(), // Make price optional in forms, will default to "POA" if empty
 });
 
 export const insertAgentSchema = createInsertSchema(agents).omit({

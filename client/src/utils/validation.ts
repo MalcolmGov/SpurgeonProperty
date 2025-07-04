@@ -31,7 +31,7 @@ export const ContactFormSchema = z.object({
 export const PropertyFormSchema = z.object({
   title: z.string().min(10, 'Title must be at least 10 characters').max(200),
   description: z.string().min(50, 'Description must be at least 50 characters').max(2000),
-  price: z.string().min(1, 'Price is required'),
+  price: z.string().optional(),
   address: z.string().min(10, 'Address must be at least 10 characters').max(200),
   suburb: z.string().min(2, 'Suburb is required').max(100),
   city: z.string().min(2, 'City is required').max(100),
