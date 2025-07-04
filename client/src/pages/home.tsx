@@ -25,7 +25,7 @@ export default function Home() {
     bedrooms: "",
     bathrooms: "",
     featured: true,
-    limit: 3
+    limit: 9
   });
   
   const { data: featuredProperties, isLoading, error, refetch } = useProperties(searchFilters);
@@ -312,7 +312,7 @@ export default function Home() {
                 
                 {isLoading ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-                    {[1, 2, 3].map((i) => (
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
                       <motion.div
                         key={i}
                         initial={{ opacity: 0, y: 20 }}

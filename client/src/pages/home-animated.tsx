@@ -13,7 +13,7 @@ import { AnimatedPage, FadeInSection, StaggeredList, StaggeredItem, AnimatedCard
 import { motion } from "framer-motion";
 
 export default function Home() {
-  const { data: featuredProperties, isLoading } = useProperties({ featured: true, limit: 3 });
+  const { data: featuredProperties, isLoading } = useProperties({ featured: true, limit: 9 });
   const [, navigate] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [comparisonProperties, setComparisonProperties] = useState<number[]>([]);
@@ -247,7 +247,7 @@ export default function Home() {
                 
                 {isLoading ? (
                   <StaggeredList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {[1, 2, 3].map((i) => (
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
                       <StaggeredItem key={i}>
                         <PropertyCardSkeleton index={i - 1} />
                       </StaggeredItem>
