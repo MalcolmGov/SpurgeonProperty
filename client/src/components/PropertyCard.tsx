@@ -241,6 +241,25 @@ export default function PropertyCard({
                   </div>
                 )}
                 
+                {/* Compact Badges */}
+                <div className="absolute top-1 left-1 flex flex-col gap-1">
+                  {/* Listing Type Badge for Compact */}
+                  <Badge className={`text-white border-0 shadow-lg text-xs font-semibold px-2 py-0.5 rounded-lg ${
+                    property.listingType === 'rent' 
+                      ? 'bg-gradient-to-r from-blue-500 to-blue-600' 
+                      : 'bg-gradient-to-r from-green-500 to-green-600'
+                  }`}>
+                    {property.listingType === 'rent' ? 'Rental' : 'Sale'}
+                  </Badge>
+                  
+                  {/* Featured Badge for Compact */}
+                  {property.featured && (
+                    <Badge className="bg-gradient-to-r from-orange-500 to-amber-500 text-white border-0 shadow-lg text-xs font-semibold px-2 py-0.5 rounded-lg">
+                      ⭐ Featured
+                    </Badge>
+                  )}
+                </div>
+                
                 {/* Modern Property Type Badge for Compact */}
                 <div className="absolute top-1 right-1 flex flex-col gap-1 items-end">
                   <div className={`flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r ${propertyConfig.gradient} text-white text-xs font-medium shadow-lg backdrop-blur-sm`}>
@@ -399,14 +418,24 @@ export default function PropertyCard({
             )}
           </div>
 
-          {/* Premium Featured Badge */}
-          {property.featured && (
-            <div className="absolute top-4 left-4">
+          {/* Premium Badges */}
+          <div className="absolute top-4 left-4 flex flex-col gap-2">
+            {/* Listing Type Badge */}
+            <Badge className={`text-white border-0 shadow-lg text-sm font-semibold px-3 py-1.5 rounded-xl ${
+              property.listingType === 'rent' 
+                ? 'bg-gradient-to-r from-blue-500 to-blue-600' 
+                : 'bg-gradient-to-r from-green-500 to-green-600'
+            }`}>
+              {property.listingType === 'rent' ? 'Rental' : 'Sale'}
+            </Badge>
+            
+            {/* Featured Badge */}
+            {property.featured && (
               <Badge className="bg-gradient-to-r from-orange-500 to-amber-500 text-white border-0 shadow-lg text-sm font-semibold px-3 py-1.5 rounded-xl">
                 ⭐ Featured
               </Badge>
-            </div>
-          )}
+            )}
+          </div>
 
           {/* Premium Action Buttons */}
           <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">

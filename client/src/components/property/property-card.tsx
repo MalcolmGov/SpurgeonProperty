@@ -82,6 +82,15 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
               )}
               <div className="absolute top-3 left-3 flex flex-col gap-2">
                 <div className="flex gap-2">
+                  {/* Listing Type Badge */}
+                  <Badge className={`text-white ${
+                    property.listingType === 'rent' 
+                      ? 'bg-blue-600' 
+                      : 'bg-green-600'
+                  }`}>
+                    {property.listingType === 'rent' ? 'Rental' : 'Sale'}
+                  </Badge>
+                  
                   {property.featured && (
                     <Badge className="bg-orange-primary text-white">Featured</Badge>
                   )}
@@ -217,6 +226,15 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
         {/* Tags */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           <div className="flex gap-2">
+            {/* Listing Type Badge for Grid View */}
+            <Badge className={`text-white px-2 py-1 text-xs rounded-md ${
+              property.listingType === 'rent' 
+                ? 'bg-blue-600' 
+                : 'bg-green-600'
+            }`}>
+              {property.listingType === 'rent' ? 'Rental' : 'Sale'}
+            </Badge>
+            
             {property.featured && (
               <Badge className="bg-orange-primary text-white px-2 py-1 text-xs rounded-md">Featured</Badge>
             )}
