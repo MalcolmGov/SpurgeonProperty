@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { db } from './db';
 import { adminUsers, adminSessions, type AdminUser, type AdminLoginData, type InsertAdminUser } from '@shared/schema';
-import { eq, and, gt } from 'drizzle-orm';
+import { eq, and, gt, sql } from 'drizzle-orm';
 import type { Request, Response, NextFunction } from 'express';
 
 const SALT_ROUNDS = 12;
@@ -69,12 +69,12 @@ export class AdminAuthService {
       throw new Error("Email domain not authorized for admin access");
     }
 
-    // Find user by email
+    // Find user by email (case-insensitive)
     const [user] = await db
       .select()
       .from(adminUsers)
       .where(and(
-        eq(adminUsers.email, credentials.email),
+        sql`LOWER(${adminUsers.email}) = LOWER(${credentials.email})`,
         eq(adminUsers.isActive, true)
       ));
 
