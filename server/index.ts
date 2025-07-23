@@ -6,6 +6,7 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import cors from "cors";
 import compression from "compression";
+import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { testDatabaseConnection } from "./database.js";
@@ -88,9 +89,15 @@ app.use(requestTrackingMiddleware);
 // Serve static files from client/public directory
 app.use(express.static('client/public'));
 
-// Serve generated catalogue files
-app.use('/spurgeon_catalogue.html', express.static('spurgeon_catalogue.html'));
-app.use('/spurgeon_professional_catalogue.pdf', express.static('spurgeon_professional_catalogue.pdf'));
+// Serve generated catalogue files from root directory
+
+app.get('/spurgeon_catalogue.html', (req, res) => {
+  res.sendFile(path.join(process.cwd(), 'spurgeon_catalogue.html'));
+});
+
+app.get('/spurgeon_professional_catalogue.pdf', (req, res) => {
+  res.sendFile(path.join(process.cwd(), 'spurgeon_professional_catalogue.pdf'));
+});
 
 app.use((req, res, next) => {
   const start = Date.now();

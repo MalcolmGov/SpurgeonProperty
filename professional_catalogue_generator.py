@@ -273,8 +273,7 @@ class ModernPropertyCatalogue:
         """Add catalogue footer"""
         footer_table = Table([
             ['Your Gateway to Premium Properties'],
-            ['info@spurgeonproperty.co.za • www.spurgeonproperty.co.za'],
-            ['Professional Property Services Since 2020']
+            ['peter@spurgeonproperty.com • https://spurgeonproperty.com']
         ], colWidths=[170*mm])
         
         footer_table.setStyle(TableStyle([
@@ -284,7 +283,6 @@ class ModernPropertyCatalogue:
             ('FONTNAME', (0, 0), (0, 0), 'Helvetica-Bold'),
             ('FONTSIZE', (0, 0), (0, 0), 14),
             ('FONTSIZE', (0, 1), (0, 1), 10),
-            ('FONTSIZE', (0, 2), (0, 2), 8),
             ('TOPPADDING', (0, 0), (-1, -1), 8),
             ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
         ]))

@@ -345,8 +345,7 @@ class HTMLPropertyCatalogue:
         
         <div class="footer">
             <h3>Your Gateway to Premium Properties</h3>
-            <p>info@spurgeonproperty.co.za • www.spurgeonproperty.co.za</p>
-            <p>Professional Property Services Since 2020</p>
+            <p>peter@spurgeonproperty.com • https://spurgeonproperty.com</p>
         </div>
     </div>
 </body>

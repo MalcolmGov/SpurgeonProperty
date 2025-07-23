@@ -1607,7 +1607,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       console.log('Generating HTML catalogue...');
       
-      const properties = await storage.getProperties();
+      const { selectedProperties } = req.body;
+      
+      // Get properties data (either selected or all)
+      let properties;
+      if (selectedProperties && selectedProperties.length > 0) {
+        console.log(`Generating catalogue for ${selectedProperties.length} selected properties`);
+        properties = [];
+        for (const id of selectedProperties) {
+          const property = await storage.getPropertyById(id);
+          if (property) {
+            properties.push(property);
+          }
+        }
+      } else {
+        properties = await storage.getProperties();
+      }
+      
       console.log(`Found ${properties.length} properties for catalogue`);
       
       if (properties.length === 0) {
@@ -1669,7 +1685,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       console.log('Generating PDF catalogue...');
       
-      const properties = await storage.getProperties();
+      const { selectedProperties } = req.body;
+      
+      // Get properties data (either selected or all)
+      let properties;
+      if (selectedProperties && selectedProperties.length > 0) {
+        console.log(`Generating catalogue for ${selectedProperties.length} selected properties`);
+        properties = [];
+        for (const id of selectedProperties) {
+          const property = await storage.getPropertyById(id);
+          if (property) {
+            properties.push(property);
+          }
+        }
+      } else {
+        properties = await storage.getProperties();
+      }
+      
       console.log(`Found ${properties.length} properties for PDF catalogue`);
       
       if (properties.length === 0) {
