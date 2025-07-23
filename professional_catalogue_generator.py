@@ -39,9 +39,21 @@ class PropertyCard(Flowable):
         try:
             # Handle string prices
             if isinstance(price, str):
-                price = float(price.replace(',', '').replace('R', '').strip())
-            return f"R {int(price):,}"
-        except:
+                price_str = price.replace(',', '').replace('R', '').replace(' ', '').strip()
+                if price_str:
+                    price = float(price_str)
+                else:
+                    return "POA"
+            
+            # Format with proper currency
+            if price >= 1000000:
+                return f"R {price/1000000:.1f}M"
+            elif price >= 1000:
+                return f"R {int(price):,}"
+            else:
+                return f"R {int(price)}"
+        except Exception as e:
+            print(f"Error formatting price {price}: {e}")
             return "POA"
     
     def draw(self):
@@ -76,6 +88,8 @@ class PropertyCard(Flowable):
         
         canvas.setFillColor(DARK_GRAY)
         canvas.setFont('Helvetica-Bold', 12)
+        
+        print(f"Drawing property: {title[:30]}...")
         
         # Calculate title position and wrap if needed
         max_width = self.width - 20*mm
@@ -129,7 +143,7 @@ class PropertyCard(Flowable):
             canvas.drawString(spec_x, specs_y, f"🚿 {bathrooms} Bath")
             spec_x += 25*mm
         
-        if floor_area:
+        if floor_area and floor_area != 0:
             canvas.drawString(spec_x, specs_y, f"📐 {floor_area}m²")
         
         # Features

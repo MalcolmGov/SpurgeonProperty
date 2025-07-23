@@ -1,0 +1,24 @@
+[
+  {
+    "id": 82,
+    "title": "Test Property",
+    "price": 1500000,
+    "propertyType": "Apartment",
+    "suburb": "Umhlanga",
+    "city": "Durban",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "area": 85,
+    "features": [
+      "Pool",
+      "Gym"
+    ],
+    "images": [
+      "/uploads/test.jpg"
+    ],
+    "agent": {
+      "name": "Test Agent",
+      "phone": "+27123456789"
+    }
+  }
+]

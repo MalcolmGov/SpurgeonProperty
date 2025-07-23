@@ -1,0 +1,34 @@
+[
+  {
+    "id": 82,
+    "title": "Luxury apartment for corporate rental in Palm Gate Umhlanga fully furnished",
+    "description": "2 bedrooms 2 bathrooms upstairs lounge downstairs dining room gourmet kitchen two undercover parking's.",
+    "price": 25000,
+    "address": "11 Centenary Blvd, Umhlanga Ridge, uMhlanga",
+    "suburb": "uMhlanga",
+    "city": "Durban",
+    "province": "KwaZulu-Natal",
+    "propertyType": "apartment",
+    "listingType": "rent",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "area": 85,
+    "features": [
+      "Balcony",
+      "Security Complex",
+      "Furnished"
+    ],
+    "images": [
+      "/uploads/property-1751627937675-847007781.jpeg"
+    ],
+    "featuredImage": "/uploads/property-1751627937675-847007781.jpeg",
+    "status": "active",
+    "agent": {
+      "id": 9,
+      "name": "Peter Spurgeon",
+      "email": "Peter@spurgeonproperty.com",
+      "phone": "0842089307",
+      "title": "Managing Director"
+    }
+  }
+]

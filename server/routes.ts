@@ -1716,6 +1716,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if (typeof data.features === 'string') {
           try { data.features = JSON.parse(data.features); } catch (e) { data.features = []; }
         }
+        // Fix data format issues for PDF generator
+        if (!data.area && data.floorArea) {
+          data.area = data.floorArea;
+        }
+        // Ensure area is a number or null
+        if (data.area === 0 || !data.area) {
+          data.area = null; // Will display as "Area not specified" in PDF
+        }
+        // Ensure price is a number for calculations
+        if (typeof data.price === 'string') {
+          data.price = parseFloat(data.price.replace(/[^0-9.]/g, '')) || 0;
+        }
+        console.log('Property data for PDF:', {
+          id: data.id,
+          title: data.title,
+          price: data.price,
+          area: data.area,
+          propertyType: data.propertyType
+        });
         return data;
       });
       
