@@ -1615,7 +1615,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log(`Generating catalogue for ${selectedProperties.length} selected properties`);
         properties = [];
         for (const id of selectedProperties) {
-          const property = await storage.getPropertyById(id);
+          const property = await storage.getProperty(id);
           if (property) {
             properties.push(property);
           }
@@ -1693,7 +1693,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log(`Generating catalogue for ${selectedProperties.length} selected properties`);
         properties = [];
         for (const id of selectedProperties) {
-          const property = await storage.getPropertyById(id);
+          const property = await storage.getProperty(id);
           if (property) {
             properties.push(property);
           }
