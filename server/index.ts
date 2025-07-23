@@ -88,6 +88,10 @@ app.use(requestTrackingMiddleware);
 // Serve static files from client/public directory
 app.use(express.static('client/public'));
 
+// Serve generated catalogue files
+app.use('/spurgeon_catalogue.html', express.static('spurgeon_catalogue.html'));
+app.use('/spurgeon_professional_catalogue.pdf', express.static('spurgeon_professional_catalogue.pdf'));
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;

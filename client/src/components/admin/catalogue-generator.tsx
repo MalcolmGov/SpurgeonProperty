@@ -38,6 +38,9 @@ export function CatalogueGenerator() {
         description: data.message,
         variant: "default",
       });
+      
+      // Open HTML catalogue in new tab
+      window.open(data.downloadUrl, '_blank');
     },
     onError: (error: any) => {
       toast({
@@ -67,6 +70,14 @@ export function CatalogueGenerator() {
         description: data.message,
         variant: "default",
       });
+      
+      // Trigger PDF download
+      const link = document.createElement('a');
+      link.href = data.downloadUrl;
+      link.download = data.filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     },
     onError: (error: any) => {
       toast({
