@@ -43,7 +43,7 @@ class HTMLPropertyCatalogue:
             image_url = f".{image_url}"
         
         title = property_data.get('title', 'Property Title')
-        price = self.format_price(property_data.get('salePrice'))
+        price = self.format_price(property_data.get('price'))
         property_type = property_data.get('propertyType', 'Property')
         type_class = self.get_property_type_color(property_type)
         
@@ -61,8 +61,8 @@ class HTMLPropertyCatalogue:
             specs.append(f"🛏️ {property_data['bedrooms']} Bed")
         if property_data.get('bathrooms'):
             specs.append(f"🚿 {property_data['bathrooms']} Bath")
-        if property_data.get('floorArea'):
-            specs.append(f"📐 {property_data['floorArea']}m²")
+        if property_data.get('area'):
+            specs.append(f"📐 {property_data['area']}m²")
         
         specs_html = " • ".join(specs) if specs else ""
         

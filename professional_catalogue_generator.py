@@ -37,6 +37,9 @@ class PropertyCard(Flowable):
         if not price or price == 0:
             return "POA"
         try:
+            # Handle string prices
+            if isinstance(price, str):
+                price = float(price.replace(',', '').replace('R', '').strip())
             return f"R {int(price):,}"
         except:
             return "POA"
@@ -60,7 +63,7 @@ class PropertyCard(Flowable):
         canvas.drawString(12*mm, self.height - 18*mm, prop_type.upper())
         
         # Price
-        price_text = self.format_price(self.property_data.get('salePrice'))
+        price_text = self.format_price(self.property_data.get('price'))
         canvas.setFillColor(BRAND_ORANGE)
         canvas.setFont('Helvetica-Bold', 14)
         price_width = canvas.stringWidth(price_text, 'Helvetica-Bold', 14)
@@ -112,7 +115,7 @@ class PropertyCard(Flowable):
         specs_y = self.height - 65*mm
         bedrooms = self.property_data.get('bedrooms')
         bathrooms = self.property_data.get('bathrooms')
-        floor_area = self.property_data.get('floorArea')
+        floor_area = self.property_data.get('area')
         
         spec_x = 10*mm
         canvas.setFont('Helvetica', 8)
