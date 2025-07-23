@@ -20,9 +20,15 @@ export function CatalogueGenerator() {
   const [generatingPDF, setGeneratingPDF] = useState(false);
 
   const generateHTMLMutation = useMutation({
-    mutationFn: () => apiRequest('/api/admin/catalogue/html', {
+    mutationFn: () => fetch('/api/admin/catalogue/html', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    }).then(res => {
+      if (!res.ok) throw new Error('Failed to generate HTML catalogue');
+      return res.json();
     }),
     onMutate: () => setGeneratingHTML(true),
     onSettled: () => setGeneratingHTML(false),
@@ -43,9 +49,15 @@ export function CatalogueGenerator() {
   });
 
   const generatePDFMutation = useMutation({
-    mutationFn: () => apiRequest('/api/admin/catalogue/pdf', {
+    mutationFn: () => fetch('/api/admin/catalogue/pdf', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    }).then(res => {
+      if (!res.ok) throw new Error('Failed to generate PDF catalogue');
+      return res.json();
     }),
     onMutate: () => setGeneratingPDF(true),
     onSettled: () => setGeneratingPDF(false),

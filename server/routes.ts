@@ -1603,7 +1603,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Professional Catalogue Generation Routes
   
   // Generate HTML catalogue for web viewing and social media
-  app.post("/api/admin/catalogue/html", async (req: Request, res: Response) => {
+  app.post("/api/admin/catalogue/html", requireAdminAuth, async (req: Request, res: Response) => {
     try {
       console.log('Generating HTML catalogue...');
       
@@ -1665,7 +1665,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Generate PDF catalogue for professional sharing
-  app.post("/api/admin/catalogue/pdf", async (req: Request, res: Response) => {
+  app.post("/api/admin/catalogue/pdf", requireAdminAuth, async (req: Request, res: Response) => {
     try {
       console.log('Generating PDF catalogue...');
       
