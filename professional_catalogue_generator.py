@@ -329,7 +329,15 @@ def main():
     
     try:
         with open(json_file, 'r') as f:
-            properties_data = json.load(f)
+            data = json.load(f)
+        
+        # Handle both list and object formats
+        if isinstance(data, list):
+            properties_data = data
+        elif isinstance(data, dict) and 'properties' in data:
+            properties_data = data['properties']
+        else:
+            properties_data = [data] if data else []
         
         # Create catalogue
         catalogue = ModernPropertyCatalogue()
