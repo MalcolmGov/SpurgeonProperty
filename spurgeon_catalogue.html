@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spurgeon Property - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #8b5cf6 0%, #fb8037 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .catalogue-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #8b5cf6 0%, #fb8037 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+            padding: 40px;
+        }
+        
+        .property-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid #f0f0f0;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .property-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .property-card:hover .property-image img {
+            transform: scale(1.05);
+        }
+        
+        .property-type-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .type-house { background: #8b5cf6; }
+        .type-apartment { background: #3dafea; }
+        .type-townhouse { background: #22b14c; }
+        .type-villa { background: #fb8037; }
+        .type-commercial { background: #555555; }
+        .type-land { background: #c49c34; }
+        .type-default { background: #8b5cf6; }
+        
+        .property-price {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(251, 128, 55, 0.95);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .property-content {
+            padding: 25px;
+        }
+        
+        .property-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .property-location {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .property-specs {
+            background: #f8f9ff;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #8b5cf6;
+            border-left: 4px solid #8b5cf6;
+        }
+        
+        .property-features {
+            color: #3dafea;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .property-agent {
+            background: linear-gradient(135deg, #8b5cf6 0%, #fb8037 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .agent-phone {
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #8b5cf6 0%, #fb8037 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .footer h3 {
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        
+        .footer p {
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .properties-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .catalogue-container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .property-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="catalogue-container">
+        <div class="header">
+            <div class="logo">SPURGEON Property</div>
+            <div class="subtitle">Property Portfolio - Prepared for Spurgeon Property</div>
+        </div>
+        
+        <div class="properties-grid">
+            
+        <div class="property-card">
+            <div class="property-image">
+                <img src="./uploads/property-1751627937675-847007781.jpeg" alt="Luxury apartment for corporate rental in Palm Gate Umhlanga fully furnished" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OTk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBGb3VuZDwvdGV4dD4KICA8L3N2Zz4K'">
+                <div class="property-type-badge type-apartment">Apartment</div>
+                <div class="property-price">R 25,000</div>
+            </div>
+            <div class="property-content">
+                <h3 class="property-title">Luxury apartment for corporate rental in Palm Gate Umhlanga fully furnished</h3>
+                <p class="property-location">📍 Umhlanga, Durban</p>
+                <div class="property-specs">🛏️ 2 Bed • 🚿 2 Bath • 📐 120m²</div>
+                <div class="property-features">Balcony • Security Complex • Furnished</div>
+                <div class="property-agent">
+                    <strong>Contact:</strong> Reshma Kila<br>
+                    <span class="agent-phone">+27-11-040-9507</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="property-card">
+            <div class="property-image">
+                <img src="./uploads/property-1751598709198-220157723.jpeg" alt="Modern Family Home in Paulshof with Garden" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OTk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBGb3VuZDwvdGV4dD4KICA8L3N2Zz4K'">
+                <div class="property-type-badge type-house">House</div>
+                <div class="property-price">R 3,200,000</div>
+            </div>
+            <div class="property-content">
+                <h3 class="property-title">Modern Family Home in Paulshof with Garden</h3>
+                <p class="property-location">📍 Paulshof, Johannesburg</p>
+                <div class="property-specs">🛏️ 3 Bed • 🚿 2 Bath • 📐 180m²</div>
+                <div class="property-features">Garden • Double Garage • Swimming Pool • Security System</div>
+                <div class="property-agent">
+                    <strong>Contact:</strong> Veruschkia Barnard<br>
+                    <span class="agent-phone">+27-11-040-9507</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="property-card">
+            <div class="property-image">
+                <img src="./uploads/property-1749875735396-204745832.jpg" alt="Executive Townhouse in Sandton CBD" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OTk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBGb3VuZDwvdGV4dD4KICA8L3N2Zz4K'">
+                <div class="property-type-badge type-townhouse">Townhouse</div>
+                <div class="property-price">R 4,500,000</div>
+            </div>
+            <div class="property-content">
+                <h3 class="property-title">Executive Townhouse in Sandton CBD</h3>
+                <p class="property-location">📍 Sandton, Johannesburg</p>
+                <div class="property-specs">🛏️ 4 Bed • 🚿 3 Bath • 📐 220m²</div>
+                <div class="property-features">Modern Kitchen • Study • Double Garage • Security Estate • Air Conditioning</div>
+                <div class="property-agent">
+                    <strong>Contact:</strong> Spurgeon Peter<br>
+                    <span class="agent-phone">+27-11-040-9507</span>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+        
+        <div class="footer">
+            <h3>Your Gateway to Premium Properties</h3>
+            <p>info@spurgeonproperty.co.za • www.spurgeonproperty.co.za</p>
+            <p>Professional Property Services Since 2020</p>
+        </div>
+    </div>
+</body>
+</html>
+            

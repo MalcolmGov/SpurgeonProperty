@@ -1,0 +1,71 @@
+[
+  {
+    "id": 82,
+    "title": "Luxury apartment for corporate rental in Palm Gate Umhlanga fully furnished",
+    "description": "2 bedrooms 2 bathrooms upstairs lounge downstairs dining room and kitchen fully furnished apartment in Palm Gate Umhlanga",
+    "salePrice": 25000,
+    "listingType": "rent",
+    "propertyType": "Apartment",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "floorArea": 120,
+    "address": "11 Canterbury Blvd, Umhlanga Ridge",
+    "suburb": "Umhlanga",
+    "city": "Durban",
+    "province": "KwaZulu-Natal",
+    "features": ["Balcony", "Security Complex", "Furnished"],
+    "images": ["/uploads/property-1751627937675-847007781.jpeg"],
+    "agent": {
+      "id": 7,
+      "name": "Reshma Kila",
+      "phone": "+27-11-040-9507",
+      "email": "reshma.kila@evogroup.co.za"
+    }
+  },
+  {
+    "id": 83,
+    "title": "Modern Family Home in Paulshof with Garden",
+    "description": "Beautiful 3 bedroom family home featuring modern finishes, spacious living areas, and a well-maintained garden perfect for entertaining.",
+    "salePrice": 3200000,
+    "listingType": "sale",
+    "propertyType": "House",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "floorArea": 180,
+    "address": "25 Oak Street, Paulshof",
+    "suburb": "Paulshof",
+    "city": "Johannesburg",
+    "province": "Gauteng",
+    "features": ["Garden", "Double Garage", "Swimming Pool", "Security System"],
+    "images": ["/uploads/property-1751598709198-220157723.jpeg"],
+    "agent": {
+      "id": 8,
+      "name": "Veruschkia Barnard",
+      "phone": "+27-11-040-9507",
+      "email": "veruschkiabarnard@rocketmail.com"
+    }
+  },
+  {
+    "id": 84,
+    "title": "Executive Townhouse in Sandton CBD",
+    "description": "Prime location executive townhouse with contemporary design, high-end finishes, and close proximity to business district and shopping centers.",
+    "salePrice": 4500000,
+    "listingType": "sale",
+    "propertyType": "Townhouse",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "floorArea": 220,
+    "address": "15 William Nicol Drive, Sandton",
+    "suburb": "Sandton",
+    "city": "Johannesburg",
+    "province": "Gauteng",
+    "features": ["Modern Kitchen", "Study", "Double Garage", "Security Estate", "Air Conditioning"],
+    "images": ["/uploads/property-1749875735396-204745832.jpg"],
+    "agent": {
+      "id": 9,
+      "name": "Spurgeon Peter",
+      "phone": "+27-11-040-9507",
+      "email": "Peter@spurgeonproperty.com"
+    }
+  }
+]

@@ -1600,6 +1600,136 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Professional Catalogue Generation Routes
+  
+  // Generate HTML catalogue for web viewing and social media
+  app.post("/api/admin/catalogue/html", requireAdminAuth, async (req: Request, res: Response) => {
+    try {
+      console.log('Generating HTML catalogue...');
+      
+      const properties = await storage.getProperties();
+      console.log(`Found ${properties.length} properties for catalogue`);
+      
+      if (properties.length === 0) {
+        return res.status(400).json({ error: "No properties available for catalogue generation" });
+      }
+      
+      const propertiesData = properties.map(prop => {
+        const data = { ...prop };
+        if (typeof data.images === 'string') {
+          try { data.images = JSON.parse(data.images); } catch (e) { data.images = []; }
+        }
+        if (typeof data.features === 'string') {
+          try { data.features = JSON.parse(data.features); } catch (e) { data.features = []; }
+        }
+        return data;
+      });
+      
+      const jsonFile = path.join(process.cwd(), 'temp_properties.json');
+      await fs.promises.writeFile(jsonFile, JSON.stringify(propertiesData, null, 2));
+      
+      const pythonProcess = spawn('python3', ['create_html_catalogue.py', jsonFile], {
+        cwd: process.cwd(),
+        stdio: ['pipe', 'pipe', 'pipe']
+      });
+      
+      let stdout = '', stderr = '';
+      pythonProcess.stdout.on('data', (data) => { stdout += data.toString(); });
+      pythonProcess.stderr.on('data', (data) => { stderr += data.toString(); });
+      
+      pythonProcess.on('close', async (code) => {
+        await fs.promises.unlink(jsonFile).catch(() => {});
+        
+        if (code === 0) {
+          console.log('HTML catalogue generated successfully');
+          res.json({ 
+            success: true, 
+            message: "HTML catalogue generated successfully",
+            filename: "spurgeon_catalogue.html",
+            downloadUrl: "/spurgeon_catalogue.html"
+          });
+        } else {
+          console.error('Python script failed:', stderr);
+          res.status(500).json({ error: `Catalogue generation failed: ${stderr || stdout}` });
+        }
+      });
+      
+      pythonProcess.on('error', (error) => {
+        res.status(500).json({ error: `Failed to start catalogue generation: ${error.message}` });
+      });
+      
+    } catch (error) {
+      console.error('Error generating HTML catalogue:', error);
+      res.status(500).json({ error: "Failed to generate HTML catalogue" });
+    }
+  });
+  
+  // Generate PDF catalogue for professional sharing
+  app.post("/api/admin/catalogue/pdf", requireAdminAuth, async (req: Request, res: Response) => {
+    try {
+      console.log('Generating PDF catalogue...');
+      
+      const properties = await storage.getProperties();
+      console.log(`Found ${properties.length} properties for PDF catalogue`);
+      
+      if (properties.length === 0) {
+        return res.status(400).json({ error: "No properties available for catalogue generation" });
+      }
+      
+      const propertiesData = properties.map(prop => {
+        const data = { ...prop };
+        if (typeof data.images === 'string') {
+          try { data.images = JSON.parse(data.images); } catch (e) { data.images = []; }
+        }
+        if (typeof data.features === 'string') {
+          try { data.features = JSON.parse(data.features); } catch (e) { data.features = []; }
+        }
+        return data;
+      });
+      
+      const jsonFile = path.join(process.cwd(), 'temp_properties.json');
+      await fs.promises.writeFile(jsonFile, JSON.stringify(propertiesData, null, 2));
+      
+      const pythonProcess = spawn('python3', ['professional_catalogue_generator.py', jsonFile], {
+        cwd: process.cwd(),
+        stdio: ['pipe', 'pipe', 'pipe']
+      });
+      
+      let stdout = '', stderr = '';
+      pythonProcess.stdout.on('data', (data) => { stdout += data.toString(); });
+      pythonProcess.stderr.on('data', (data) => { stderr += data.toString(); });
+      
+      pythonProcess.on('close', async (code) => {
+        await fs.promises.unlink(jsonFile).catch(() => {});
+        
+        if (code === 0) {
+          console.log('PDF catalogue generated successfully');
+          res.json({ 
+            success: true, 
+            message: "PDF catalogue generated successfully",
+            filename: "spurgeon_professional_catalogue.pdf",
+            downloadUrl: "/spurgeon_professional_catalogue.pdf"
+          });
+        } else {
+          console.error('Python script failed:', stderr);
+          res.status(500).json({ error: `PDF generation failed: ${stderr || stdout}` });
+        }
+      });
+      
+      pythonProcess.on('error', (error) => {
+        res.status(500).json({ error: `Failed to start PDF generation: ${error.message}` });
+      });
+      
+    } catch (error) {
+      console.error('Error generating PDF catalogue:', error);
+      res.status(500).json({ error: "Failed to generate PDF catalogue" });
+    }
+  });
+
+  // Serve generated catalogue files
+  app.use('/spurgeon_catalogue.html', express.static(path.join(process.cwd(), 'spurgeon_catalogue.html')));
+  app.use('/spurgeon_professional_catalogue.pdf', express.static(path.join(process.cwd(), 'spurgeon_professional_catalogue.pdf')));
+
   // Register monitoring routes
   registerMonitoringRoutes(app);
   
