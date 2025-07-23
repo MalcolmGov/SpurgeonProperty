@@ -8,6 +8,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/contexts/theme-context";
 import Home from "@/pages/home";
 import About from "@/pages/about";
+import Contact from "@/pages/contact";
 import Properties from "@/pages/properties";
 import Services from "@/pages/services";
 import Rentals from "@/pages/rentals";
@@ -58,6 +59,7 @@ function Router() {
       <Route path="/services" component={Services} />
       <Route path="/rentals" component={Rentals} />
       <Route path="/about" component={About} />
+      <Route path="/contact" component={Contact} />
       <Route path="/sell-property" component={SellProperty} />
       <Route path="/map" component={MapPage} />
       <Route path="/" component={Home} />
