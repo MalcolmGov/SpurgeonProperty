@@ -107,6 +107,9 @@ class HTMLPropertyCatalogue:
             for property_data in properties_data:
                 property_cards += self.create_property_card(property_data)
             
+            # Determine grid class for single property layout
+            grid_class = "single-property" if len(properties_data) == 1 else ""
+            
             # Complete HTML template
             html_content = f'''
 <!DOCTYPE html>
@@ -317,17 +320,129 @@ class HTMLPropertyCatalogue:
         
         @media print {{
             body {{
-                background: white;
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                min-height: auto !important;
             }}
             
             .catalogue-container {{
-                box-shadow: none;
-                border-radius: 0;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                max-width: none !important;
+                margin: 0 !important;
+                background: white !important;
+            }}
+            
+            .header {{
+                background: linear-gradient(135deg, #8b5cf6 0%, #fb8037 100%) !important;
+                color: white !important;
+                padding: 20px !important;
+                text-align: center !important;
+                margin-bottom: 20px !important;
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+            }}
+            
+            .properties-grid {{
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 15px !important;
+                padding: 10px !important;
+                page-break-inside: avoid !important;
             }}
             
             .property-card {{
-                break-inside: avoid;
-                page-break-inside: avoid;
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+                margin-bottom: 15px !important;
+                border: 1px solid #ddd !important;
+                border-radius: 8px !important;
+                overflow: hidden !important;
+                background: white !important;
+            }}
+            
+            .property-card:hover {{
+                transform: none !important;
+                box-shadow: none !important;
+            }}
+            
+            .property-image {{
+                height: 150px !important;
+                page-break-inside: avoid !important;
+            }}
+            
+            .property-image img {{
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important;
+                transform: none !important;
+            }}
+            
+            .property-type-badge {{
+                background: #8b5cf6 !important;
+                color: white !important;
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+            }}
+            
+            .property-price {{
+                background: #fb8037 !important;
+                color: white !important;
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+                backdrop-filter: none !important;
+            }}
+            
+            .property-content {{
+                padding: 15px !important;
+                page-break-inside: avoid !important;
+            }}
+            
+            .property-specs {{
+                background: #f8f9ff !important;
+                color: #8b5cf6 !important;
+                border-left: 4px solid #8b5cf6 !important;
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+            }}
+            
+            .property-features {{
+                color: #3dafea !important;
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+            }}
+            
+            .property-agent {{
+                background: linear-gradient(135deg, #8b5cf6 0%, #fb8037 100%) !important;
+                color: white !important;
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+                page-break-inside: avoid !important;
+            }}
+            
+            .footer {{
+                background: linear-gradient(135deg, #8b5cf6 0%, #fb8037 100%) !important;
+                color: white !important;
+                padding: 20px !important;
+                text-align: center !important;
+                margin-top: 20px !important;
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+                page-break-inside: avoid !important;
+            }}
+            
+            /* Ensure single property layouts work well */
+            @page {{
+                margin: 0.5in;
+                size: A4;
+            }}
+            
+            /* For single property, use full width */
+            .properties-grid.single-property {{
+                grid-template-columns: 1fr !important;
+                max-width: 600px !important;
+                margin: 0 auto !important;
             }}
         }}
     </style>
@@ -339,7 +454,7 @@ class HTMLPropertyCatalogue:
             <div class="subtitle">Property Portfolio - Prepared for Spurgeon Property</div>
         </div>
         
-        <div class="properties-grid">
+        <div class="properties-grid {grid_class}">
             {property_cards}
         </div>
         
