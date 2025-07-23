@@ -1628,7 +1628,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const jsonFile = path.join(process.cwd(), 'temp_properties.json');
       await fs.promises.writeFile(jsonFile, JSON.stringify(propertiesData, null, 2));
       
-      const pythonProcess = spawn('python3', ['create_html_catalogue.py', jsonFile], {
+      const pythonProcess = spawn('/home/runner/workspace/.pythonlibs/bin/python3', ['create_html_catalogue.py', jsonFile], {
         cwd: process.cwd(),
         stdio: ['pipe', 'pipe', 'pipe']
       });
@@ -1690,7 +1690,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const jsonFile = path.join(process.cwd(), 'temp_properties.json');
       await fs.promises.writeFile(jsonFile, JSON.stringify(propertiesData, null, 2));
       
-      const pythonProcess = spawn('python3', ['professional_catalogue_generator.py', jsonFile], {
+      const pythonProcess = spawn('/home/runner/workspace/.pythonlibs/bin/python3', ['professional_catalogue_generator.py', jsonFile], {
         cwd: process.cwd(),
         stdio: ['pipe', 'pipe', 'pipe']
       });
