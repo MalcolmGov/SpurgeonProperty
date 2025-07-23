@@ -150,26 +150,10 @@ export function CatalogueGenerator() {
   });
 
   const handleGenerateHTML = () => {
-    if (selectedProperties.length === 0) {
-      toast({
-        title: "No Properties Selected",
-        description: "Please select at least one property or use 'Select All' to include all properties.",
-        variant: "destructive",
-      });
-      return;
-    }
     generateHTMLMutation.mutate();
   };
 
   const handleGeneratePDF = () => {
-    if (selectedProperties.length === 0) {
-      toast({
-        title: "No Properties Selected",
-        description: "Please select at least one property or use 'Select All' to include all properties.",
-        variant: "destructive",
-      });
-      return;
-    }
     generatePDFMutation.mutate();
   };
 
@@ -201,7 +185,7 @@ export function CatalogueGenerator() {
             Property Selection
           </CardTitle>
           <CardDescription>
-            Choose specific properties to include in your catalogue. Select individual properties or use "Select All" for complete listings.
+            Choose specific properties to include in your catalogue. Select individual properties, use "Select All", or generate with no selection to include all properties.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -324,7 +308,7 @@ export function CatalogueGenerator() {
             </ul>
             <Button 
               onClick={handleGenerateHTML}
-              disabled={generatingHTML || selectedProperties.length === 0}
+              disabled={generatingHTML}
               className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800"
             >
               {generatingHTML ? (
@@ -380,7 +364,7 @@ export function CatalogueGenerator() {
             </ul>
             <Button 
               onClick={handleGeneratePDF}
-              disabled={generatingPDF || selectedProperties.length === 0}
+              disabled={generatingPDF}
               className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800"
             >
               {generatingPDF ? (
