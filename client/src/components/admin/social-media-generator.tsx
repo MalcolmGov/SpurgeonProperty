@@ -237,34 +237,34 @@ export function SocialMediaGenerator() {
                 </span>
               </div>
               <!-- Property Type Badge -->
-              <div style="background: rgba(255,255,255,0.25); color: white; 
-                          padding: 12px 20px; border-radius: 25px; font-weight: 700; 
-                          font-size: 13px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);
-                          letter-spacing: 0.5px;">
+              <div style="background: rgba(255,255,255,0.35); color: white; 
+                          padding: 12px 20px; border-radius: 25px; font-weight: 800; 
+                          font-size: 13px; backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.5);
+                          letter-spacing: 0.5px; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
                 🏢 ${property.propertyType.toUpperCase()}
               </div>
             </div>
             
             <!-- Property Details Bar -->
             ${property.bedrooms && property.bathrooms ? `
-              <div style="background: rgba(255,255,255,0.15); color: white; padding: 15px 25px; 
+              <div style="background: rgba(255,255,255,0.25); color: white; padding: 15px 25px; 
                          border-radius: 20px; display: flex; gap: 30px; justify-content: center; backdrop-filter: blur(15px);
-                         box-shadow: 0 8px 32px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2);
+                         box-shadow: 0 8px 32px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.4);
                          margin-bottom: 25px;">
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <span style="font-size: 20px;">🛏️</span>
-                  <span style="font-weight: 800; font-size: 18px;">${property.bedrooms}</span>
-                  <span style="font-size: 16px; font-weight: 600; opacity: 0.9;">Beds</span>
+                  <span style="font-weight: 800; font-size: 18px; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">${property.bedrooms}</span>
+                  <span style="font-size: 16px; font-weight: 700; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">Beds</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <span style="font-size: 20px;">🚿</span>
-                  <span style="font-weight: 800; font-size: 18px;">${property.bathrooms}</span>
-                  <span style="font-size: 16px; font-weight: 600; opacity: 0.9;">Baths</span>
+                  <span style="font-weight: 800; font-size: 18px; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">${property.bathrooms}</span>
+                  <span style="font-size: 16px; font-weight: 700; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">Baths</span>
                 </div>
                 ${property.features && property.features.length > 0 && property.features.includes('Swimming Pool') ? `
                   <div style="display: flex; align-items: center; gap: 10px;">
                     <span style="font-size: 20px;">🏊</span>
-                    <span style="font-size: 16px; font-weight: 600; opacity: 0.9;">Swimming Pool</span>
+                    <span style="font-size: 16px; font-weight: 700; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">Swimming Pool</span>
                   </div>
                 ` : ''}
               </div>
@@ -274,12 +274,12 @@ export function SocialMediaGenerator() {
             <div style="text-align: center; margin-bottom: 30px;">
               <h1 style="font-size: ${isSquare ? '42px' : '38px'}; font-weight: 900; 
                          margin-bottom: 20px; line-height: 1.1; color: white;
-                         letter-spacing: -1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                         letter-spacing: -1px; text-shadow: 3px 3px 8px rgba(0,0,0,0.7), 1px 1px 3px rgba(0,0,0,0.9);">
                 ${property.title}
               </h1>
               
               <div style="font-size: 18px; color: white; display: flex; align-items: center; justify-content: center; 
-                         gap: 12px; font-weight: 600; opacity: 0.95;">
+                         gap: 12px; font-weight: 700; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">
                 <span style="font-size: 20px;">📍</span>
                 <span>${property.suburb}, ${property.city}</span>
               </div>
@@ -287,13 +287,13 @@ export function SocialMediaGenerator() {
             
             <!-- Price Display (Centered) -->
             <div style="display: flex; justify-content: center; margin-bottom: 25px;">
-              <div style="background: rgba(255,255,255,0.95); color: #8b5cf6; 
-                         padding: 25px 40px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-                         text-align: center; backdrop-filter: blur(10px);">
-                <div style="font-size: 14px; opacity: 0.8; margin-bottom: 8px; font-weight: 700; 
+              <div style="background: rgba(255,255,255,0.98); color: #1a1a1a; 
+                         padding: 25px 40px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+                         text-align: center; backdrop-filter: blur(15px); border: 2px solid rgba(255,255,255,0.8);">
+                <div style="font-size: 14px; margin-bottom: 8px; font-weight: 700; 
                            letter-spacing: 2px; color: #6b7280;">PRICE</div>
                 <div style="font-size: ${isSquare ? '36px' : '32px'}; font-weight: 900; 
-                           letter-spacing: -1px; line-height: 1;">
+                           letter-spacing: -1px; line-height: 1; color: #8b5cf6;">
                   ${formatPrice(property.price)}
                 </div>
               </div>
@@ -301,21 +301,21 @@ export function SocialMediaGenerator() {
             
             <!-- Contact & CTA Section -->
             <div style="display: flex; justify-content: space-between; align-items: center; 
-                       margin-top: 20px; padding-top: 20px; border-top: 2px solid rgba(255,255,255,0.3);">
+                       margin-top: 20px; padding-top: 20px; border-top: 2px solid rgba(255,255,255,0.4);">
               
               <!-- Contact Information -->
               <div style="display: flex; flex-direction: column; gap: 6px;">
-                <div style="font-size: 16px; font-weight: 700; color: white;">
+                <div style="font-size: 16px; font-weight: 800; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.6);">
                   📞 084 208 9307
                 </div>
-                <div style="font-size: 14px; color: white; font-weight: 500; opacity: 0.9;">
+                <div style="font-size: 14px; color: white; font-weight: 600; text-shadow: 2px 2px 4px rgba(0,0,0,0.6);">
                   📧 peter@spurgeonproperty.com
                 </div>
               </div>
               
               <!-- Website Info -->
               <div style="text-align: right;">
-                <div style="font-size: 14px; color: white; font-weight: 700; opacity: 0.95;">
+                <div style="font-size: 14px; color: white; font-weight: 800; text-shadow: 2px 2px 4px rgba(0,0,0,0.6);">
                   www.spurgeonproperty.co.za
                 </div>
               </div>
