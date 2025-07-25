@@ -294,28 +294,23 @@ export function SocialMediaGenerator() {
             
             <!-- Contact Information & CTA (Bottom) -->
             <div style="text-align: center; color: white; padding: 0 20px;">
-              <div style="background: rgba(255,255,255,0.15); padding: 25px; border-radius: 20px; 
-                         backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.2);
-                         box-shadow: 0 8px 25px rgba(0,0,0,0.3); margin-bottom: 15px;">
-                
-                <!-- Phone Number -->
-                <div style="font-size: 20px; font-weight: 900; margin-bottom: 12px;
-                           text-shadow: 2px 2px 6px rgba(0,0,0,0.8); color: white;">
-                  📞 084 208 9307
-                </div>
-                
-                <!-- Email Address -->
-                <div style="font-size: 16px; font-weight: 800; margin-bottom: 12px;
-                           text-shadow: 2px 2px 6px rgba(0,0,0,0.8); color: white;">
-                  ✉️ peter@spurgeonproperty.com
-                </div>
-                
-                <!-- Website -->
-                <div style="font-size: 16px; font-weight: 700; margin-bottom: 0;
-                           text-shadow: 2px 2px 6px rgba(0,0,0,0.8); color: white;">
-                  🌐 spurgeonproperty.com
-                </div>
-                
+              
+              <!-- Phone Number -->
+              <div style="font-size: 22px; font-weight: 900; margin-bottom: 15px;
+                         text-shadow: 3px 3px 10px rgba(0,0,0,0.9); color: white;">
+                📞 084 208 9307
+              </div>
+              
+              <!-- Email Address -->
+              <div style="font-size: 18px; font-weight: 800; margin-bottom: 15px;
+                         text-shadow: 3px 3px 10px rgba(0,0,0,0.9); color: white;">
+                ✉️ peter@spurgeonproperty.com
+              </div>
+              
+              <!-- Website -->
+              <div style="font-size: 18px; font-weight: 700; margin-bottom: 20px;
+                         text-shadow: 3px 3px 10px rgba(0,0,0,0.9); color: white;">
+                🌐 spurgeonproperty.com
               </div>
               
               <div style="background: white; color: #8b5cf6; padding: 15px 30px; 
