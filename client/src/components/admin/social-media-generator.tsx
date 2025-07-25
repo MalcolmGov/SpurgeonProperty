@@ -60,7 +60,18 @@ export function SocialMediaGenerator() {
 
   const formatPrice = (price: number) => {
     if (!price || price === 0) return "POA";
-    return `R ${price.toLocaleString()}`;
+    
+    // Convert to millions format like "R2,95m"
+    if (price >= 1000000) {
+      const millions = price / 1000000;
+      // Format with comma as decimal separator for South African style
+      return `R${millions.toFixed(2).replace('.', ',')}m`;
+    } else if (price >= 1000) {
+      const thousands = price / 1000;
+      return `R${thousands.toFixed(0)}k`;
+    } else {
+      return `R${price.toLocaleString()}`;
+    }
   };
 
   const getImageSrc = (property: Property) => {
@@ -216,21 +227,46 @@ export function SocialMediaGenerator() {
                       color: #1a1a1a; padding: 40px; display: flex; flex-direction: column; justify-content: space-between;
                       border-bottom: 6px solid #8b5cf6;">
             
-            <!-- Header Section -->
+            <!-- Header Section with Beds/Baths -->
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 35px;">
-              <!-- Logo -->
-              <div style="background: white; padding: 20px 28px; border-radius: 15px; 
+              <!-- Logo (larger) -->
+              <div style="background: white; padding: 25px 35px; border-radius: 15px; 
                          box-shadow: 0 4px 20px rgba(139,92,246,0.15); border: 2px solid #f8f9fa;">
                 <img src="/spurgeon-logo.png" 
-                     style="height: 38px;" 
+                     style="height: 48px;" 
                      crossorigin="anonymous" />
               </div>
-              <!-- Property Type Badge -->
-              <div style="background: linear-gradient(135deg, #8b5cf6, #a855f7); color: white; 
-                          padding: 14px 22px; border-radius: 30px; font-weight: 700; 
-                          font-size: 13px; box-shadow: 0 4px 15px rgba(139,92,246,0.3);
-                          letter-spacing: 0.5px;">
-                🏢 ${property.propertyType.toUpperCase()}
+              <!-- Property Details -->
+              <div style="display: flex; gap: 15px; align-items: center;">
+                ${property.bedrooms && property.bathrooms ? `
+                  <div style="background: rgba(255,255,255,0.95); color: #1a1a1a; padding: 12px 18px; 
+                             border-radius: 15px; display: flex; gap: 20px; backdrop-filter: blur(10px);
+                             box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.8);">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <span style="font-size: 18px;">🛏️</span>
+                      <span style="font-weight: 800; font-size: 16px; color: #8b5cf6;">${property.bedrooms}</span>
+                      <span style="font-size: 14px; font-weight: 600; color: #6b7280;">Beds</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <span style="font-size: 18px;">🚿</span>
+                      <span style="font-weight: 800; font-size: 16px; color: #8b5cf6;">${property.bathrooms}</span>
+                      <span style="font-size: 14px; font-weight: 600; color: #6b7280;">Baths</span>
+                    </div>
+                    ${property.features && property.features.length > 0 && property.features.includes('Swimming Pool') ? `
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 18px;">🏊</span>
+                        <span style="font-size: 14px; font-weight: 600; color: #6b7280;">Pool</span>
+                      </div>
+                    ` : ''}
+                  </div>
+                ` : ''}
+                <!-- Property Type Badge -->
+                <div style="background: linear-gradient(135deg, #8b5cf6, #a855f7); color: white; 
+                            padding: 14px 22px; border-radius: 30px; font-weight: 700; 
+                            font-size: 13px; box-shadow: 0 4px 15px rgba(139,92,246,0.3);
+                            letter-spacing: 0.5px;">
+                  🏢 ${property.propertyType.toUpperCase()}
+                </div>
               </div>
             </div>
             
@@ -291,20 +327,11 @@ export function SocialMediaGenerator() {
                 </div>
               </div>
               
-              <!-- CTA Button -->
-              <div>
-                <a href="https://www.spurgeonproperty.co.za/properties/${property.id}" 
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   style="background: linear-gradient(135deg, #8b5cf6, #f97316); color: white; 
-                          text-decoration: none; font-size: 14px; font-weight: 800;
-                          padding: 18px 28px; border-radius: 30px; 
-                          display: inline-flex; align-items: center; gap: 10px;
-                          box-shadow: 0 6px 20px rgba(139,92,246,0.3); 
-                          letter-spacing: 0.5px; white-space: nowrap;
-                          border: none; transition: all 0.3s ease;">
-                  VIEW PROPERTY DETAILS
-                </a>
+              <!-- Website Info -->
+              <div style="text-align: right;">
+                <div style="font-size: 14px; color: #8b5cf6; font-weight: 700;">
+                  www.spurgeonproperty.co.za
+                </div>
               </div>
               
             </div>
@@ -317,31 +344,7 @@ export function SocialMediaGenerator() {
                  style="width: 100%; height: 100%; object-fit: cover;" 
                  crossorigin="anonymous" />
             
-            <!-- Clean Minimal Overlay on Image -->
-            ${property.bedrooms && property.bathrooms ? `
-              <div style="position: absolute; bottom: 30px; left: 30px; right: 30px;">
-                <div style="background: rgba(255,255,255,0.95); color: #1a1a1a; padding: 20px 30px; 
-                           border-radius: 15px; display: flex; gap: 35px; justify-content: center; backdrop-filter: blur(10px);
-                           box-shadow: 0 6px 25px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.8);">
-                  <div style="display: flex; align-items: center; gap: 12px;">
-                    <span style="font-size: 22px;">🛏️</span>
-                    <span style="font-weight: 800; font-size: 20px; color: #8b5cf6;">${property.bedrooms}</span>
-                    <span style="font-size: 16px; font-weight: 600; color: #6b7280;">Beds</span>
-                  </div>
-                  <div style="display: flex; align-items: center; gap: 12px;">
-                    <span style="font-size: 22px;">🚿</span>
-                    <span style="font-weight: 800; font-size: 20px; color: #8b5cf6;">${property.bathrooms}</span>
-                    <span style="font-size: 16px; font-weight: 600; color: #6b7280;">Baths</span>
-                  </div>
-                  ${property.features && property.features.length > 0 && property.features.includes('Swimming Pool') ? `
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                      <span style="font-size: 22px;">🏊</span>
-                      <span style="font-size: 16px; font-weight: 600; color: #6b7280;">Swimming Pool</span>
-                    </div>
-                  ` : ''}
-                </div>
-              </div>
-            ` : ''}
+
           </div>
         </div>
       `;
