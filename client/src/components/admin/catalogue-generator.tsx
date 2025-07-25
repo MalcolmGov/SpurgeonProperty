@@ -360,58 +360,48 @@ export function CatalogueGenerator() {
           </CardContent>
         </Card>
 
-        {/* PDF Catalogue Card */}
+        {/* Social Media Images Card */}
         <Card className="relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-orange-500 to-red-500 rounded-bl-full opacity-10"></div>
+          <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-500 rounded-bl-full opacity-10"></div>
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-orange-100 dark:bg-orange-900/20 rounded-lg">
-                  <FileText className="h-6 w-6 text-orange-600" />
+                <div className="p-2 bg-pink-100 dark:bg-pink-900/20 rounded-lg">
+                  <Image className="h-6 w-6 text-pink-600" />
                 </div>
                 <div>
-                  <CardTitle className="text-lg">Professional PDF</CardTitle>
-                  <CardDescription>High-quality PDF for printing and sharing</CardDescription>
+                  <CardTitle className="text-lg">Social Media Images</CardTitle>
+                  <CardDescription>Ready-to-post images for social platforms</CardDescription>
                 </div>
               </div>
-              <Badge variant="secondary">Print</Badge>
+              <Badge variant="secondary">New!</Badge>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <ul className="space-y-2 text-sm">
               <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
-                Professional typography and layout
+                <span className="w-1.5 h-1.5 bg-pink-500 rounded-full"></span>
+                Instagram, Facebook, TikTok formats
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
-                Optimized for high-quality printing
+                Professional branded designs
               </li>
               <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-pink-500 rounded-full"></span>
-                Property cards with detailed specs
+                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                Instant download as PNG images
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
-                Branded with Spurgeon Property colors
+                Optimized for social media engagement
               </li>
             </ul>
             <Button 
-              onClick={handleGeneratePDF}
-              disabled={generatingPDF}
-              className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800"
+              onClick={() => window.location.href = '/admin/social-media'}
+              className="w-full bg-gradient-to-r from-pink-600 to-purple-700 hover:from-pink-700 hover:to-purple-800"
             >
-              {generatingPDF ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Generating...
-                </>
-              ) : (
-                <>
-                  <Download className="mr-2 h-4 w-4" />
-                  Generate PDF
-                </>
-              )}
+              <Image className="mr-2 h-4 w-4" />
+              Create Social Media Images
             </Button>
           </CardContent>
         </Card>
