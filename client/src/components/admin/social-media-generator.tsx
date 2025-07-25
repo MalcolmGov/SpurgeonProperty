@@ -309,7 +309,7 @@ export function SocialMediaGenerator() {
                   </div>
                   <div style="font-size: 16px; font-weight: 700; 
                              text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">
-                    🌐 www.spurgeonproperty.co.za
+                    🌐 spurgeonproperty.com
                   </div>
                 </div>
               </div>
