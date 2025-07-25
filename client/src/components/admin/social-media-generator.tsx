@@ -227,8 +227,8 @@ export function SocialMediaGenerator() {
                       color: white; padding: 40px; display: flex; flex-direction: column; justify-content: space-between;
                       position: relative; overflow: hidden;">
             
-            <!-- Header Section - Logo and Property Type -->
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; padding: 0 15px;">
+            <!-- Header Row - Logo and Property Type -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; padding: 0 20px;">
               <!-- Spurgeon Property Logo -->
               <div style="background: rgba(255,255,255,0.98); padding: 12px 20px; border-radius: 30px; 
                          box-shadow: 0 8px 30px rgba(0,0,0,0.25); backdrop-filter: blur(20px); border: 2px solid rgba(255,255,255,0.95);">
@@ -249,66 +249,46 @@ export function SocialMediaGenerator() {
               </div>
             </div>
             
-            <!-- Property Title & Location -->
-            <div style="text-align: center; margin-bottom: 25px; padding: 0 20px;">
-              <h1 style="font-size: ${isSquare ? '40px' : '36px'}; font-weight: 900; 
-                         margin-bottom: 18px; line-height: 1.1; color: white;
-                         letter-spacing: -1px; text-shadow: 3px 3px 8px rgba(0,0,0,0.8), 1px 1px 3px rgba(0,0,0,0.9);">
+            <!-- Main Heading -->
+            <div style="text-align: center; margin-bottom: 20px; padding: 0 25px;">
+              <h1 style="font-size: ${isSquare ? '44px' : '40px'}; font-weight: 900; 
+                         line-height: 1.1; color: white; letter-spacing: -1px; margin: 0;
+                         text-shadow: 3px 3px 12px rgba(0,0,0,0.8), 1px 1px 4px rgba(0,0,0,0.9);">
                 ${property.title}
               </h1>
-              
-              <div style="font-size: 18px; color: white; display: flex; align-items: center; justify-content: center; 
-                         gap: 12px; font-weight: 700; text-shadow: 2px 2px 6px rgba(0,0,0,0.8); margin-bottom: 20px;">
-                <span style="font-size: 20px;">📍</span>
-                <span>${property.suburb}, ${property.city}</span>
+            </div>
+            
+            <!-- Location -->
+            <div style="text-align: center; margin-bottom: 25px; padding: 0 20px;">
+              <div style="font-size: 20px; color: white; font-weight: 700; 
+                         text-shadow: 2px 2px 8px rgba(0,0,0,0.8);">
+                📍 ${property.suburb}, ${property.city}
               </div>
             </div>
             
-            <!-- Property Features Bar - Enhanced Floating Design -->
+            <!-- Feature Tags - Clean Minimal Style -->
             ${property.bedrooms && property.bathrooms ? `
-              <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 25px; padding: 0 20px;">
-                <div style="display: flex; align-items: center; gap: 10px; padding: 12px 20px; 
-                           background: linear-gradient(135deg, #3b82f6, #1e40af); border-radius: 22px; color: white;
-                           box-shadow: 0 10px 30px rgba(59,130,246,0.5), 0 3px 12px rgba(0,0,0,0.4); 
-                           backdrop-filter: blur(15px); border: 2px solid rgba(255,255,255,0.3);">
-                  <span style="font-size: 20px;">🛏️</span>
-                  <span style="font-weight: 900; font-size: 17px; text-shadow: 1px 1px 2px rgba(0,0,0,0.4);">${property.bedrooms}</span>
-                  <span style="font-size: 15px; font-weight: 800; text-shadow: 1px 1px 2px rgba(0,0,0,0.4);">Beds</span>
+              <div style="text-align: center; margin-bottom: 30px; padding: 0 20px;">
+                <div style="color: white; font-size: 18px; font-weight: 800; 
+                           text-shadow: 2px 2px 8px rgba(0,0,0,0.8); letter-spacing: 1px;">
+                  <span style="color: #3b82f6;">🛏️</span> ${property.bedrooms} Beds 
+                  <span style="margin: 0 15px; color: rgba(255,255,255,0.6);">|</span>
+                  <span style="color: #10b981;">🚿</span> ${property.bathrooms} Baths
+                  ${property.features && property.features.length > 0 && property.features.includes('Swimming Pool') ? `
+                    <span style="margin: 0 15px; color: rgba(255,255,255,0.6);">|</span>
+                    <span style="color: #06b6d4;">🏊</span> Swimming Pool
+                  ` : ''}
                 </div>
-                <div style="display: flex; align-items: center; gap: 10px; padding: 12px 20px; 
-                           background: linear-gradient(135deg, #10b981, #065f46); border-radius: 22px; color: white;
-                           box-shadow: 0 10px 30px rgba(16,185,129,0.5), 0 3px 12px rgba(0,0,0,0.4); 
-                           backdrop-filter: blur(15px); border: 2px solid rgba(255,255,255,0.3);">
-                  <span style="font-size: 20px;">🚿</span>
-                  <span style="font-weight: 900; font-size: 17px; text-shadow: 1px 1px 2px rgba(0,0,0,0.4);">${property.bathrooms}</span>
-                  <span style="font-size: 15px; font-weight: 800; text-shadow: 1px 1px 2px rgba(0,0,0,0.4);">Baths</span>
-                </div>
-                ${property.features && property.features.length > 0 && property.features.includes('Swimming Pool') ? `
-                  <div style="display: flex; align-items: center; gap: 10px; padding: 12px 20px; 
-                             background: linear-gradient(135deg, #06b6d4, #0e7490); border-radius: 22px; color: white;
-                             box-shadow: 0 10px 30px rgba(6,182,212,0.5), 0 3px 12px rgba(0,0,0,0.4); 
-                             backdrop-filter: blur(15px); border: 2px solid rgba(255,255,255,0.3);">
-                    <span style="font-size: 20px;">🏊</span>
-                    <span style="font-size: 15px; font-weight: 800; text-shadow: 1px 1px 2px rgba(0,0,0,0.4);">Pool</span>
-                  </div>
-                ` : ''}
               </div>
             ` : ''}
             
-            <!-- Price Display (Clean White Focal Point) -->
-            <div style="display: flex; justify-content: center; margin-bottom: 30px; padding: 0 20px;">
-              <div style="background: white; color: #1a1a1a; 
-                         padding: 25px 50px; border-radius: 25px; 
-                         box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 8px 25px rgba(139,92,246,0.4);
-                         text-align: center; min-width: 250px; transform: translateY(-8px);">
-                <div style="font-size: 16px; margin-bottom: 10px; font-weight: 900; 
-                           letter-spacing: 3px; color: #6b7280; text-transform: uppercase;">PRICE</div>
-                <div style="font-size: ${isSquare ? '42px' : '38px'}; font-weight: 900; 
-                           letter-spacing: -2px; line-height: 1; color: #8b5cf6;
-                           text-shadow: 0 2px 8px rgba(139,92,246,0.3);
-                           word-break: keep-all; white-space: nowrap;">
-                  ${formatPrice(property.price)}
-                </div>
+            <!-- Price Display - Large Clean Text -->
+            <div style="text-align: center; margin-bottom: 35px; padding: 0 20px;">
+              <div style="font-size: ${isSquare ? '56px' : '52px'}; font-weight: 900; 
+                         color: white; letter-spacing: -2px; line-height: 1;
+                         text-shadow: 4px 4px 16px rgba(0,0,0,0.9), 2px 2px 8px rgba(0,0,0,0.8);
+                         word-break: keep-all; white-space: nowrap;">
+                ${formatPrice(property.price)}
               </div>
             </div>
             
