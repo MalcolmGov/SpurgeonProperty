@@ -23,6 +23,7 @@ interface Property {
   bathrooms?: number;
   images: string[];
   featuredImage?: string;
+  features?: string[];
   status: string;
 }
 
@@ -111,73 +112,205 @@ export function SocialMediaGenerator() {
       tempDiv.style.color = 'white';
       tempDiv.style.overflow = 'hidden';
       
-      // Create the social media post content
-      tempDiv.innerHTML = `
-        <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column;">
-          <!-- Background Image -->
-          <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden;">
+      // Create format-specific layouts
+      const isVertical = selectedFormat.height > selectedFormat.width;
+      const isSquare = selectedFormat.width === selectedFormat.height;
+      
+      tempDiv.innerHTML = isVertical ? `
+        <!-- Vertical Layout for Stories/TikTok -->
+        <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+          
+          <!-- Property Image Top -->
+          <div style="flex: 1.2; position: relative; overflow: hidden;">
             <img src="${getImageSrc(property)}" 
-                 style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;" 
+                 style="width: 100%; height: 100%; object-fit: cover;" 
                  crossorigin="anonymous" />
-          </div>
-          
-          <!-- Gradient Overlay -->
-          <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; 
-                      background: linear-gradient(45deg, rgba(139, 92, 246, 0.8) 0%, rgba(249, 115, 22, 0.8) 100%);"></div>
-          
-          <!-- Content -->
-          <div style="position: relative; z-index: 10; padding: 60px; display: flex; flex-direction: column; height: 100%;">
             
-            <!-- Header -->
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px;">
-              <div style="background: white; color: #8b5cf6; padding: 15px 25px; border-radius: 25px; font-weight: bold; font-size: 18px;">
-                SPURGEON PROPERTY
+            <!-- Header with Logo -->
+            <div style="position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: center;">
+              <div style="background: rgba(255,255,255,0.95); padding: 10px 15px; border-radius: 20px;">
+                <img src="/spurgeon-logo.png" style="height: 25px;" crossorigin="anonymous" />
               </div>
-              <div style="background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 20px; font-size: 16px;">
-                ${property.propertyType.toUpperCase()}
+              <div style="background: rgba(139, 92, 246, 0.9); color: white; padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 12px;">
+                🏢 ${property.propertyType.toUpperCase()}
               </div>
             </div>
             
-            <!-- Main Content -->
-            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
-              <h1 style="font-size: ${selectedFormat.width > 1200 ? '48px' : '36px'}; font-weight: bold; 
-                         margin-bottom: 20px; line-height: 1.2; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+            <!-- Features Overlay -->
+            ${property.bedrooms && property.bathrooms ? `
+              <div style="position: absolute; bottom: 20px; left: 20px; right: 20px;">
+                <div style="background: rgba(0,0,0,0.8); color: white; padding: 12px 16px; border-radius: 12px; display: flex; justify-content: center; gap: 20px;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 16px;">🛏️</span>
+                    <span style="font-weight: bold;">${property.bedrooms} Beds</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 16px;">🚿</span>
+                    <span style="font-weight: bold;">${property.bathrooms} Baths</span>
+                  </div>
+                </div>
+              </div>
+            ` : ''}
+          </div>
+          
+          <!-- Content Bottom -->
+          <div style="flex: 1; background: linear-gradient(135deg, #8b5cf6 0%, #f97316 100%); 
+                      color: white; padding: 30px; display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
+            
+            <!-- Property Details -->
+            <div>
+              <h1 style="font-size: 24px; font-weight: bold; margin-bottom: 15px; line-height: 1.2;">
                 ${property.title}
               </h1>
               
-              <div style="font-size: 24px; margin-bottom: 30px; display: flex; align-items: center;">
-                <span style="margin-right: 10px;">📍</span>
-                ${property.suburb}, ${property.city}
+              <div style="font-size: 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span style="font-size: 18px;">📍</span>
+                <span>${property.suburb}, ${property.city}</span>
               </div>
               
-              ${property.bedrooms && property.bathrooms ? `
-                <div style="display: flex; gap: 30px; margin-bottom: 30px; font-size: 20px;">
-                  <div style="display: flex; align-items: center;">
-                    <span style="margin-right: 8px;">🛏️</span>
-                    ${property.bedrooms} Beds
+              <!-- Price Box -->
+              <div style="background: white; color: #8b5cf6; padding: 15px 20px; border-radius: 12px; margin: 15px 0; display: inline-block;">
+                <div style="font-size: 12px; opacity: 0.7; margin-bottom: 3px;">PRICE</div>
+                <div style="font-size: 28px; font-weight: bold;">${formatPrice(property.price)}</div>
+              </div>
+              
+              ${property.features && property.features.length > 0 ? `
+                <div style="margin: 15px 0;">
+                  <div style="font-size: 12px; opacity: 0.9; margin-bottom: 8px;">FEATURES</div>
+                  <div style="font-size: 14px; line-height: 1.3;">
+                    ${property.features.slice(0, 2).map(feature => `• ${feature}`).join('<br>')}
                   </div>
-                  <div style="display: flex; align-items: center;">
-                    <span style="margin-right: 8px;">🚿</span>
-                    ${property.bathrooms} Baths
+                </div>
+              ` : ''}
+            </div>
+            
+            <!-- Footer Contact -->
+            <div style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 15px;">
+              <div style="margin-bottom: 8px;">
+                <a href="tel:+27842089307" style="color: white; text-decoration: none; font-size: 14px; font-weight: bold;">📞 084 208 9307</a>
+              </div>
+              <div style="margin-bottom: 8px;">
+                <a href="https://www.spurgeonproperty.co.za/properties/${property.id}" 
+                   style="color: white; text-decoration: none; font-size: 12px; background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 15px; display: inline-block;">
+                  👀 View Details
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      ` : `
+        <!-- Horizontal/Square Layout -->
+        <div style="position: relative; width: 100%; height: 100%; display: flex; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+          
+          <!-- Property Image Side -->
+          <div style="flex: 1; position: relative; overflow: hidden;">
+            <img src="${getImageSrc(property)}" 
+                 style="width: 100%; height: 100%; object-fit: cover;" 
+                 crossorigin="anonymous" />
+            
+            <!-- Property Type Badge -->
+            <div style="position: absolute; top: 20px; right: 20px; background: rgba(139, 92, 246, 0.9); 
+                        color: white; padding: 12px 20px; border-radius: 25px; font-weight: bold; 
+                        font-size: 14px; display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 16px;">🏢</span>
+              ${property.propertyType.toUpperCase()}
+            </div>
+            
+            <!-- Features Overlay -->
+            ${property.bedrooms && property.bathrooms ? `
+              <div style="position: absolute; bottom: 20px; left: 20px; right: 20px;">
+                <div style="background: rgba(0,0,0,0.8); color: white; padding: 15px 20px; 
+                           border-radius: 12px; display: flex; gap: 25px; justify-content: center;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 18px;">🛏️</span>
+                    <span style="font-weight: bold;">${property.bedrooms}</span>
+                    <span>Beds</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 18px;">🚿</span>
+                    <span style="font-weight: bold;">${property.bathrooms}</span>
+                    <span>Baths</span>
+                  </div>
+                  ${property.features && property.features.length > 0 ? `
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <span style="font-size: 18px;">✨</span>
+                      <span>${property.features.slice(0, 1).join(', ')}</span>
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+            ` : ''}
+          </div>
+          
+          <!-- Content Side -->
+          <div style="flex: 1; background: linear-gradient(135deg, #8b5cf6 0%, #f97316 100%); 
+                      color: white; padding: 30px; display: flex; flex-direction: column; justify-content: space-between;">
+            
+            <!-- Header with Logo -->
+            <div style="text-align: center; margin-bottom: 20px;">
+              <img src="/spurgeon-logo.png" 
+                   style="height: 40px; margin-bottom: 8px; filter: brightness(0) invert(1);" 
+                   crossorigin="anonymous" />
+              <div style="font-size: 12px; font-weight: 500; opacity: 0.9;">Premium Real Estate</div>
+            </div>
+            
+            <!-- Property Details -->
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: center;">
+              
+              <h1 style="font-size: ${isSquare ? '24px' : '20px'}; font-weight: bold; 
+                         margin-bottom: 15px; line-height: 1.3;">
+                ${property.title}
+              </h1>
+              
+              <div style="font-size: 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span style="font-size: 18px;">📍</span>
+                <span>${property.suburb}, ${property.city}</span>
+              </div>
+              
+              <!-- Price Box -->
+              <div style="background: white; color: #8b5cf6; padding: 15px 20px; border-radius: 12px; 
+                         margin: 15px auto; box-shadow: 0 4px 16px rgba(0,0,0,0.2); display: inline-block;">
+                <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">PRICE</div>
+                <div style="font-size: ${isSquare ? '28px' : '24px'}; font-weight: bold;">
+                  ${formatPrice(property.price)}
+                </div>
+              </div>
+              
+              <!-- Property Features -->
+              ${property.features && property.features.length > 0 ? `
+                <div style="margin: 15px 0;">
+                  <div style="font-size: 12px; opacity: 0.9; margin-bottom: 8px;">FEATURES</div>
+                  <div style="font-size: 14px; line-height: 1.4;">
+                    ${property.features.slice(0, 2).map(feature => `• ${feature}`).join('<br>')}
                   </div>
                 </div>
               ` : ''}
               
-              <div style="font-size: ${selectedFormat.width > 1200 ? '56px' : '42px'}; font-weight: bold; 
-                         background: white; color: #8b5cf6; padding: 20px 30px; border-radius: 15px; 
-                         display: inline-block; text-align: center; margin-bottom: 30px;">
-                ${formatPrice(property.price)}
-              </div>
             </div>
             
-            <!-- Footer -->
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div style="font-size: 18px;">
-                📞 0842089307 | 📧 peter@spurgeonproperty.com
+            <!-- Footer Contact -->
+            <div style="text-align: center; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 15px;">
+              <div style="margin-bottom: 10px;">
+                <a href="tel:+27842089307" style="color: white; text-decoration: none; font-size: 14px; font-weight: bold;">
+                  📞 084 208 9307
+                </a>
               </div>
-              <div style="font-size: 16px; background: rgba(255,255,255,0.2); 
-                         padding: 10px 20px; border-radius: 20px;">
-                www.spurgeonproperty.co.za
+              <div style="margin-bottom: 10px;">
+                <a href="mailto:peter@spurgeonproperty.com" style="color: white; text-decoration: none; font-size: 12px;">
+                  📧 peter@spurgeonproperty.com
+                </a>
+              </div>
+              <div style="margin-bottom: 10px;">
+                <a href="https://www.spurgeonproperty.co.za" style="color: white; text-decoration: none; font-size: 12px;">
+                  🌐 spurgeonproperty.co.za
+                </a>
+              </div>
+              <div>
+                <a href="https://www.spurgeonproperty.co.za/properties/${property.id}" 
+                   style="color: white; text-decoration: none; font-size: 12px; 
+                          background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 15px; display: inline-block;">
+                  👀 View Property
+                </a>
               </div>
             </div>
             
