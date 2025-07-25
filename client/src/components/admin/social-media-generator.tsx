@@ -212,59 +212,67 @@ export function SocialMediaGenerator() {
         <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #ffffff;">
           
           <!-- Content Top (50% height) -->
-          <div style="flex: 1; background: linear-gradient(135deg, #8b5cf6 0%, #f97316 100%); 
-                      color: white; padding: 50px 40px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div style="flex: 1; background: linear-gradient(135deg, rgba(139,92,246,0.95) 0%, rgba(249,115,22,0.95) 100%); 
+                      color: white; padding: 30px; display: flex; flex-direction: column; justify-content: space-between;">
             
             <!-- Header with Logo and Property Type -->
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px;">
-              <div style="background: rgba(255,255,255,0.98); padding: 20px 25px; border-radius: 25px; 
-                         box-shadow: 0 12px 40px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+              <div style="background: white; padding: 18px 24px; border-radius: 20px; 
+                         box-shadow: 0 8px 25px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 12px;">
                 <img src="/spurgeon-logo.png" 
-                     style="height: 40px;" 
+                     style="height: 36px;" 
                      crossorigin="anonymous" />
-                <div style="color: #8b5cf6; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; line-height: 1.2;">
+                <div style="color: #8b5cf6; font-size: 12px; font-weight: 700; letter-spacing: 1.2px; line-height: 1.3;">
                   PREMIUM<br>REAL ESTATE
                 </div>
               </div>
-              <div style="background: rgba(255,255,255,0.2); color: white; padding: 15px 25px; border-radius: 30px; font-weight: 800; 
-                          font-size: 15px; display: flex; align-items: center; gap: 10px; backdrop-filter: blur(15px);
-                          border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
+              <div style="background: rgba(255,255,255,0.25); color: white; padding: 12px 20px; border-radius: 25px; font-weight: 700; 
+                          font-size: 13px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.4);">
                 🏢 ${property.propertyType.toUpperCase()}
               </div>
             </div>
             
-            <!-- Property Details -->
-            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: center; margin: 30px 0;">
+            <!-- Main Content Area -->
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: center; 
+                       padding: 20px 0;">
               
-              <h1 style="font-size: ${isSquare ? '36px' : '32px'}; font-weight: 900; 
-                         margin-bottom: 25px; line-height: 1.1; text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
-                         letter-spacing: -0.5px;">
+              <!-- Property Title -->
+              <h1 style="font-size: ${isSquare ? '38px' : '34px'}; font-weight: 900; 
+                         margin-bottom: 20px; line-height: 1.1; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+                         letter-spacing: -0.8px; text-align: center;">
                 ${property.title}
               </h1>
               
-              <div style="font-size: 20px; margin-bottom: 35px; display: flex; align-items: center; justify-content: center; 
-                         gap: 15px; opacity: 0.95; font-weight: 600;">
-                <span style="font-size: 24px;">📍</span>
+              <!-- Location -->
+              <div style="font-size: 18px; margin-bottom: 30px; display: flex; align-items: center; justify-content: center; 
+                         gap: 12px; opacity: 0.95; font-weight: 600;">
+                <span style="font-size: 20px;">📍</span>
                 <span>${property.suburb}, ${property.city}</span>
               </div>
               
-              <!-- Price and Features Section -->
-              <div style="display: flex; justify-content: center; align-items: flex-start; gap: 40px; margin: 30px 0;">
+              <!-- Price and Features Layout -->
+              <div style="display: flex; justify-content: center; align-items: center; gap: 30px; 
+                         margin: 25px 0; flex-wrap: wrap;">
                 
                 <!-- Price Box -->
-                <div style="background: rgba(255,255,255,0.98); color: #8b5cf6; padding: 30px 35px; border-radius: 25px; 
-                           box-shadow: 0 15px 50px rgba(0,0,0,0.2); min-width: 220px; transform: scale(1.05);">
-                  <div style="font-size: 14px; opacity: 0.7; margin-bottom: 8px; font-weight: 700; letter-spacing: 2px; text-align: center;">PRICE</div>
-                  <div style="font-size: ${isSquare ? '34px' : '30px'}; font-weight: 900; letter-spacing: -1px; text-align: center; line-height: 1;">
+                <div style="background: white; color: #8b5cf6; padding: 25px 30px; border-radius: 20px; 
+                           box-shadow: 0 10px 30px rgba(0,0,0,0.2); min-width: 200px;">
+                  <div style="font-size: 12px; opacity: 0.7; margin-bottom: 6px; font-weight: 700; 
+                             letter-spacing: 1.5px; text-align: center;">PRICE</div>
+                  <div style="font-size: ${isSquare ? '32px' : '28px'}; font-weight: 900; 
+                             letter-spacing: -1px; text-align: center; line-height: 1;">
                     ${formatPrice(property.price)}
                   </div>
                 </div>
                 
                 <!-- Features -->
                 ${property.features && property.features.length > 0 ? `
-                  <div style="text-align: left; margin-top: 10px;">
-                    <div style="font-size: 14px; opacity: 0.9; margin-bottom: 12px; font-weight: 700; letter-spacing: 2px;">FEATURES</div>
-                    <div style="font-size: 18px; line-height: 1.6; font-weight: 600;">
+                  <div style="text-align: center; background: rgba(255,255,255,0.15); 
+                             padding: 20px 25px; border-radius: 15px; backdrop-filter: blur(10px);
+                             border: 1px solid rgba(255,255,255,0.2);">
+                    <div style="font-size: 12px; opacity: 0.9; margin-bottom: 10px; font-weight: 700; 
+                               letter-spacing: 1.5px;">KEY FEATURES</div>
+                    <div style="font-size: 16px; line-height: 1.5; font-weight: 600;">
                       ${property.features.slice(0, 2).map(feature => `• ${feature}`).join('<br>')}
                     </div>
                   </div>
@@ -273,37 +281,39 @@ export function SocialMediaGenerator() {
               
             </div>
             
-            <!-- Footer Contact and CTA -->
-            <div style="display: flex; justify-content: space-between; align-items: center; 
-                       border-top: 3px solid rgba(255,255,255,0.25); padding-top: 25px; margin-top: 20px;">
+            <!-- Footer with Contact and CTA -->
+            <div style="border-top: 2px solid rgba(255,255,255,0.3); padding-top: 20px; 
+                       display: flex; justify-content: space-between; align-items: center; gap: 20px;">
               
-              <!-- Contact Info -->
-              <div style="display: flex; align-items: center; gap: 25px;">
+              <!-- Contact Information -->
+              <div style="display: flex; flex-direction: column; gap: 8px; text-align: left;">
                 <div>
-                  <a href="tel:+27842089307" style="color: white; text-decoration: none; font-size: 18px; font-weight: 800;">
+                  <a href="tel:+27842089307" style="color: white; text-decoration: none; font-size: 16px; font-weight: 700;
+                     display: flex; align-items: center; gap: 8px;">
                     📞 084 208 9307
                   </a>
                 </div>
                 <div>
-                  <a href="mailto:peter@spurgeonproperty.com" style="color: white; text-decoration: none; font-size: 15px; opacity: 0.9; font-weight: 600;">
+                  <a href="mailto:peter@spurgeonproperty.com" style="color: white; text-decoration: none; 
+                     font-size: 14px; opacity: 0.9; font-weight: 500;">
                     📧 peter@spurgeonproperty.com
                   </a>
                 </div>
               </div>
               
-              <!-- Premium CTA Button -->
+              <!-- CTA Button -->
               <div>
                 <a href="https://www.spurgeonproperty.co.za/properties/${property.id}" 
                    target="_blank"
                    rel="noopener noreferrer"
-                   style="color: #8b5cf6; text-decoration: none; font-size: 16px; font-weight: 800;
-                          background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,1) 100%); 
-                          padding: 15px 30px; border-radius: 30px; display: inline-flex; align-items: center; gap: 10px;
-                          box-shadow: 0 12px 40px rgba(0,0,0,0.2); backdrop-filter: blur(15px);
-                          border: 2px solid rgba(255,255,255,0.5); transition: all 0.3s ease;
-                          letter-spacing: 0.5px;">
-                  <span style="font-size: 18px;">🔗</span>
-                  VIEW PROPERTY DETAILS
+                   style="color: #8b5cf6; text-decoration: none; font-size: 14px; font-weight: 800;
+                          background: white; padding: 16px 24px; border-radius: 25px; 
+                          display: inline-flex; align-items: center; gap: 8px;
+                          box-shadow: 0 8px 25px rgba(0,0,0,0.2); 
+                          border: 2px solid rgba(255,255,255,0.9);
+                          letter-spacing: 0.5px; white-space: nowrap;">
+                  <span style="font-size: 16px;">🔗</span>
+                  VIEW DETAILS
                 </a>
               </div>
               
