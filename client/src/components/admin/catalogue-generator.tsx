@@ -41,9 +41,9 @@ export function CatalogueGenerator() {
 
   // Fetch all properties for selection
   const { data: properties = [], isLoading } = useQuery({
-    queryKey: ['/api/properties'],
+    queryKey: ['/api/properties?limit=1000'],
     queryFn: () => 
-      fetch('/api/properties?limit=100', {
+      fetch('/api/properties?limit=1000', {
         credentials: 'include'
       }).then(res => res.json()) as Promise<Property[]>
   });
