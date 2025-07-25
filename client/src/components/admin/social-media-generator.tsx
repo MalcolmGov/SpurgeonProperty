@@ -213,53 +213,58 @@ export function SocialMediaGenerator() {
           
           <!-- Content Top (50% height) -->
           <div style="flex: 1; background: linear-gradient(135deg, #8b5cf6 0%, #f97316 100%); 
-                      color: white; padding: 40px; display: flex; flex-direction: column; justify-content: space-between;">
+                      color: white; padding: 50px 40px; display: flex; flex-direction: column; justify-content: space-between;">
             
             <!-- Header with Logo and Property Type -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-              <div style="background: white; padding: 12px 18px; border-radius: 20px; display: flex; align-items: center; gap: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px;">
+              <div style="background: rgba(255,255,255,0.98); padding: 20px 25px; border-radius: 25px; 
+                         box-shadow: 0 12px 40px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 12px;">
                 <img src="/spurgeon-logo.png" 
-                     style="height: 35px;" 
+                     style="height: 40px;" 
                      crossorigin="anonymous" />
-                <div style="color: #8b5cf6; font-size: 12px; font-weight: 600; letter-spacing: 1px;">
-                  PREMIUM REAL ESTATE
+                <div style="color: #8b5cf6; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; line-height: 1.2;">
+                  PREMIUM<br>REAL ESTATE
                 </div>
               </div>
-              <div style="background: rgba(255,255,255,0.25); color: white; padding: 12px 20px; border-radius: 25px; font-weight: 700; 
-                          font-size: 14px; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(10px);">
+              <div style="background: rgba(255,255,255,0.2); color: white; padding: 15px 25px; border-radius: 30px; font-weight: 800; 
+                          font-size: 15px; display: flex; align-items: center; gap: 10px; backdrop-filter: blur(15px);
+                          border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
                 🏢 ${property.propertyType.toUpperCase()}
               </div>
             </div>
             
             <!-- Property Details -->
-            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: center;">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: center; margin: 30px 0;">
               
-              <h1 style="font-size: ${isSquare ? '32px' : '28px'}; font-weight: 800; 
-                         margin-bottom: 20px; line-height: 1.2; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
+              <h1 style="font-size: ${isSquare ? '36px' : '32px'}; font-weight: 900; 
+                         margin-bottom: 25px; line-height: 1.1; text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+                         letter-spacing: -0.5px;">
                 ${property.title}
               </h1>
               
-              <div style="font-size: 18px; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 12px; opacity: 0.95;">
-                <span style="font-size: 22px;">📍</span>
-                <span style="font-weight: 500;">${property.suburb}, ${property.city}</span>
+              <div style="font-size: 20px; margin-bottom: 35px; display: flex; align-items: center; justify-content: center; 
+                         gap: 15px; opacity: 0.95; font-weight: 600;">
+                <span style="font-size: 24px;">📍</span>
+                <span>${property.suburb}, ${property.city}</span>
               </div>
               
-              <!-- Price and Features Row -->
-              <div style="display: flex; justify-content: center; align-items: center; gap: 30px; margin: 20px 0;">
+              <!-- Price and Features Section -->
+              <div style="display: flex; justify-content: center; align-items: flex-start; gap: 40px; margin: 30px 0;">
+                
                 <!-- Price Box -->
-                <div style="background: white; color: #8b5cf6; padding: 20px 25px; border-radius: 18px; 
-                           box-shadow: 0 8px 32px rgba(0,0,0,0.15); min-width: 180px;">
-                  <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px; font-weight: 600; letter-spacing: 1px;">PRICE</div>
-                  <div style="font-size: ${isSquare ? '28px' : '24px'}; font-weight: 900; letter-spacing: -1px;">
+                <div style="background: rgba(255,255,255,0.98); color: #8b5cf6; padding: 30px 35px; border-radius: 25px; 
+                           box-shadow: 0 15px 50px rgba(0,0,0,0.2); min-width: 220px; transform: scale(1.05);">
+                  <div style="font-size: 14px; opacity: 0.7; margin-bottom: 8px; font-weight: 700; letter-spacing: 2px; text-align: center;">PRICE</div>
+                  <div style="font-size: ${isSquare ? '34px' : '30px'}; font-weight: 900; letter-spacing: -1px; text-align: center; line-height: 1;">
                     ${formatPrice(property.price)}
                   </div>
                 </div>
                 
                 <!-- Features -->
                 ${property.features && property.features.length > 0 ? `
-                  <div style="text-align: left;">
-                    <div style="font-size: 12px; opacity: 0.9; margin-bottom: 8px; font-weight: 600; letter-spacing: 1px;">FEATURES</div>
-                    <div style="font-size: 16px; line-height: 1.5; font-weight: 500;">
+                  <div style="text-align: left; margin-top: 10px;">
+                    <div style="font-size: 14px; opacity: 0.9; margin-bottom: 12px; font-weight: 700; letter-spacing: 2px;">FEATURES</div>
+                    <div style="font-size: 18px; line-height: 1.6; font-weight: 600;">
                       ${property.features.slice(0, 2).map(feature => `• ${feature}`).join('<br>')}
                     </div>
                   </div>
@@ -268,26 +273,40 @@ export function SocialMediaGenerator() {
               
             </div>
             
-            <!-- Footer Contact -->
-            <div style="display: flex; justify-content: center; align-items: center; gap: 30px; border-top: 2px solid rgba(255,255,255,0.2); padding-top: 20px;">
-              <div>
-                <a href="tel:+27842089307" style="color: white; text-decoration: none; font-size: 16px; font-weight: 700;">
-                  📞 084 208 9307
-                </a>
+            <!-- Footer Contact and CTA -->
+            <div style="display: flex; justify-content: space-between; align-items: center; 
+                       border-top: 3px solid rgba(255,255,255,0.25); padding-top: 25px; margin-top: 20px;">
+              
+              <!-- Contact Info -->
+              <div style="display: flex; align-items: center; gap: 25px;">
+                <div>
+                  <a href="tel:+27842089307" style="color: white; text-decoration: none; font-size: 18px; font-weight: 800;">
+                    📞 084 208 9307
+                  </a>
+                </div>
+                <div>
+                  <a href="mailto:peter@spurgeonproperty.com" style="color: white; text-decoration: none; font-size: 15px; opacity: 0.9; font-weight: 600;">
+                    📧 peter@spurgeonproperty.com
+                  </a>
+                </div>
               </div>
-              <div>
-                <a href="mailto:peter@spurgeonproperty.com" style="color: white; text-decoration: none; font-size: 14px; opacity: 0.9;">
-                  📧 peter@spurgeonproperty.com
-                </a>
-              </div>
+              
+              <!-- Premium CTA Button -->
               <div>
                 <a href="https://www.spurgeonproperty.co.za/properties/${property.id}" 
-                   style="color: white; text-decoration: none; font-size: 14px; font-weight: 600;
-                          background: rgba(255,255,255,0.25); padding: 8px 16px; border-radius: 20px;
-                          backdrop-filter: blur(10px);">
-                  👀 View Property
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   style="color: #8b5cf6; text-decoration: none; font-size: 16px; font-weight: 800;
+                          background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,1) 100%); 
+                          padding: 15px 30px; border-radius: 30px; display: inline-flex; align-items: center; gap: 10px;
+                          box-shadow: 0 12px 40px rgba(0,0,0,0.2); backdrop-filter: blur(15px);
+                          border: 2px solid rgba(255,255,255,0.5); transition: all 0.3s ease;
+                          letter-spacing: 0.5px;">
+                  <span style="font-size: 18px;">🔗</span>
+                  VIEW PROPERTY DETAILS
                 </a>
               </div>
+              
             </div>
             
           </div>
