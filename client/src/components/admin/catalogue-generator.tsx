@@ -21,6 +21,7 @@ interface Property {
   bedrooms?: number;
   bathrooms?: number;
   images: string[];
+  featuredImage?: string;
   status: string;
 }
 
@@ -72,6 +73,22 @@ export function CatalogueGenerator() {
   const formatPrice = (price: number) => {
     if (!price || price === 0) return "POA";
     return `R ${price.toLocaleString()}`;
+  };
+
+  const getImageSrc = (property: Property) => {
+    // Prioritize featured image if available
+    const imageToUse = property.featuredImage || property.images?.[0];
+    if (!imageToUse) {
+      return '/api/placeholder/300/200';
+    }
+    
+    // Ensure the image path starts with /uploads or is a full URL
+    if (imageToUse.startsWith('http') || imageToUse.startsWith('/uploads')) {
+      return imageToUse;
+    }
+    
+    // If it's a relative path, prepend /uploads
+    return `/uploads/${imageToUse}`;
   };
 
   const generateHTMLMutation = useMutation({
@@ -212,48 +229,65 @@ export function CatalogueGenerator() {
             {properties.map((property) => (
               <div
                 key={property.id}
-                className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                className={`border rounded-lg overflow-hidden cursor-pointer transition-all ${
                   selectedProperties.includes(property.id)
                     ? 'border-purple-500 bg-purple-50 dark:bg-purple-950/20'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
                 onClick={() => togglePropertySelection(property.id)}
               >
-                <div className="flex items-start space-x-3">
-                  <Checkbox
-                    checked={selectedProperties.includes(property.id)}
-                    className="mt-1 pointer-events-none"
+                {/* Property Image */}
+                <div className="relative h-32 bg-gray-100">
+                  <img
+                    src={getImageSrc(property)}
+                    alt={property.title}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = '/api/placeholder/300/200';
+                    }}
                   />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Home className="h-4 w-4 text-purple-600" />
-                      <Badge variant="outline" className="text-xs">
-                        {property.propertyType}
-                      </Badge>
-                      <Badge variant={property.status === 'sold' ? 'destructive' : 'secondary'} className="text-xs">
-                        {property.status?.toUpperCase()}
-                      </Badge>
+                  {/* Checkbox overlay */}
+                  <div className="absolute top-2 left-2">
+                    <Checkbox
+                      checked={selectedProperties.includes(property.id)}
+                      className="bg-white shadow-sm pointer-events-none"
+                    />
+                  </div>
+                  {/* Property type badge */}
+                  <div className="absolute top-2 right-2">
+                    <Badge variant="outline" className="text-xs bg-white/90 backdrop-blur-sm">
+                      {property.propertyType}
+                    </Badge>
+                  </div>
+                  {/* Status badge */}
+                  <div className="absolute bottom-2 left-2">
+                    <Badge variant={property.status === 'sold' ? 'destructive' : 'secondary'} className="text-xs">
+                      {property.status?.toUpperCase()}
+                    </Badge>
+                  </div>
+                </div>
+
+                {/* Property Details */}
+                <div className="p-3">
+                  <h3 className="font-medium text-sm line-clamp-2 mb-2">
+                    {property.title}
+                  </h3>
+                  <div className="space-y-1 text-xs text-gray-600">
+                    <div className="flex items-center gap-1">
+                      <MapPin className="h-3 w-3" />
+                      <span className="truncate">{property.suburb}, {property.city}</span>
                     </div>
-                    <h3 className="font-medium text-sm line-clamp-2 mb-2">
-                      {property.title}
-                    </h3>
-                    <div className="space-y-1 text-xs text-gray-600">
-                      <div className="flex items-center gap-1">
-                        <MapPin className="h-3 w-3" />
-                        <span className="truncate">{property.suburb}, {property.city}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <DollarSign className="h-3 w-3" />
-                        <span className="font-medium text-purple-600">
-                          {formatPrice(property.price)}
-                        </span>
-                      </div>
-                      {property.bedrooms && property.bathrooms && (
-                        <div className="text-gray-500">
-                          {property.bedrooms} bed • {property.bathrooms} bath
-                        </div>
-                      )}
+                    <div className="flex items-center gap-1">
+                      <DollarSign className="h-3 w-3" />
+                      <span className="font-medium text-purple-600">
+                        {formatPrice(property.price)}
+                      </span>
                     </div>
+                    {property.bedrooms && property.bathrooms && (
+                      <div className="text-gray-500">
+                        {property.bedrooms} bed • {property.bathrooms} bath
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
