@@ -55,7 +55,7 @@ export function CatalogueGenerator() {
     } else if (!selectAll) {
       setSelectedProperties([]);
     }
-  }, [selectAll, properties]);
+  }, [selectAll, properties.length]);
 
   // Handle individual property selection
   const togglePropertySelection = (propertyId: number) => {
