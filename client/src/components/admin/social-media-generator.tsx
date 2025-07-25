@@ -118,66 +118,73 @@ export function SocialMediaGenerator() {
       
       tempDiv.innerHTML = isVertical ? `
         <!-- Vertical Layout for Stories/TikTok -->
-        <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+        <div style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #ffffff;">
           
-          <!-- Property Image Top -->
-          <div style="flex: 1.2; position: relative; overflow: hidden;">
+          <!-- Property Image Top (65% height) -->
+          <div style="flex: 1.8; position: relative; overflow: hidden;">
             <img src="${getImageSrc(property)}" 
                  style="width: 100%; height: 100%; object-fit: cover;" 
                  crossorigin="anonymous" />
             
             <!-- Header with Logo -->
-            <div style="position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: center;">
-              <div style="background: rgba(255,255,255,0.95); padding: 10px 15px; border-radius: 20px;">
-                <img src="/spurgeon-logo.png" style="height: 25px;" crossorigin="anonymous" />
+            <div style="position: absolute; top: 40px; left: 30px; right: 30px; display: flex; justify-content: space-between; align-items: center;">
+              <div style="background: rgba(255,255,255,0.98); padding: 15px 20px; border-radius: 25px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
+                <img src="/spurgeon-logo.png" style="height: 35px;" crossorigin="anonymous" />
               </div>
-              <div style="background: rgba(139, 92, 246, 0.9); color: white; padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 12px;">
+              <div style="background: rgba(139, 92, 246, 0.95); color: white; padding: 12px 20px; border-radius: 25px; font-weight: 700; 
+                          font-size: 14px; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(10px);
+                          box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);">
                 🏢 ${property.propertyType.toUpperCase()}
               </div>
             </div>
             
             <!-- Features Overlay -->
             ${property.bedrooms && property.bathrooms ? `
-              <div style="position: absolute; bottom: 20px; left: 20px; right: 20px;">
-                <div style="background: rgba(0,0,0,0.8); color: white; padding: 12px 16px; border-radius: 12px; display: flex; justify-content: center; gap: 20px;">
-                  <div style="display: flex; align-items: center; gap: 6px;">
-                    <span style="font-size: 16px;">🛏️</span>
-                    <span style="font-weight: bold;">${property.bedrooms} Beds</span>
+              <div style="position: absolute; bottom: 30px; left: 30px; right: 30px;">
+                <div style="background: rgba(0,0,0,0.85); color: white; padding: 18px 25px; 
+                           border-radius: 20px; display: flex; justify-content: center; gap: 30px; backdrop-filter: blur(15px);
+                           box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 22px;">🛏️</span>
+                    <span style="font-weight: bold; font-size: 18px;">${property.bedrooms}</span>
+                    <span style="font-size: 16px;">Beds</span>
                   </div>
-                  <div style="display: flex; align-items: center; gap: 6px;">
-                    <span style="font-size: 16px;">🚿</span>
-                    <span style="font-weight: bold;">${property.bathrooms} Baths</span>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 22px;">🚿</span>
+                    <span style="font-weight: bold; font-size: 18px;">${property.bathrooms}</span>
+                    <span style="font-size: 16px;">Baths</span>
                   </div>
                 </div>
               </div>
             ` : ''}
           </div>
           
-          <!-- Content Bottom -->
+          <!-- Content Bottom (35% height) -->
           <div style="flex: 1; background: linear-gradient(135deg, #8b5cf6 0%, #f97316 100%); 
-                      color: white; padding: 30px; display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
+                      color: white; padding: 40px 35px; display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
             
             <!-- Property Details -->
             <div>
-              <h1 style="font-size: 24px; font-weight: bold; margin-bottom: 15px; line-height: 1.2;">
+              <h1 style="font-size: 28px; font-weight: 800; margin-bottom: 20px; line-height: 1.2; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
                 ${property.title}
               </h1>
               
-              <div style="font-size: 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <span style="font-size: 18px;">📍</span>
-                <span>${property.suburb}, ${property.city}</span>
+              <div style="font-size: 18px; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 12px; opacity: 0.95;">
+                <span style="font-size: 22px;">📍</span>
+                <span style="font-weight: 500;">${property.suburb}, ${property.city}</span>
               </div>
               
               <!-- Price Box -->
-              <div style="background: white; color: #8b5cf6; padding: 15px 20px; border-radius: 12px; margin: 15px 0; display: inline-block;">
-                <div style="font-size: 12px; opacity: 0.7; margin-bottom: 3px;">PRICE</div>
-                <div style="font-size: 28px; font-weight: bold;">${formatPrice(property.price)}</div>
+              <div style="background: white; color: #8b5cf6; padding: 20px 25px; border-radius: 20px; margin: 20px auto; 
+                         display: inline-block; box-shadow: 0 12px 40px rgba(0,0,0,0.15); min-width: 180px;">
+                <div style="font-size: 12px; opacity: 0.7; margin-bottom: 8px; font-weight: 600; letter-spacing: 1px;">PRICE</div>
+                <div style="font-size: 32px; font-weight: 900; letter-spacing: -1px;">${formatPrice(property.price)}</div>
               </div>
               
               ${property.features && property.features.length > 0 ? `
-                <div style="margin: 15px 0;">
-                  <div style="font-size: 12px; opacity: 0.9; margin-bottom: 8px;">FEATURES</div>
-                  <div style="font-size: 14px; line-height: 1.3;">
+                <div style="margin: 25px 0;">
+                  <div style="font-size: 12px; opacity: 0.9; margin-bottom: 12px; font-weight: 600; letter-spacing: 1px;">FEATURES</div>
+                  <div style="font-size: 16px; line-height: 1.5; font-weight: 500;">
                     ${property.features.slice(0, 2).map(feature => `• ${feature}`).join('<br>')}
                   </div>
                 </div>
@@ -185,14 +192,16 @@ export function SocialMediaGenerator() {
             </div>
             
             <!-- Footer Contact -->
-            <div style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 15px;">
-              <div style="margin-bottom: 8px;">
-                <a href="tel:+27842089307" style="color: white; text-decoration: none; font-size: 14px; font-weight: bold;">📞 084 208 9307</a>
+            <div style="border-top: 2px solid rgba(255,255,255,0.2); padding-top: 20px;">
+              <div style="margin-bottom: 12px;">
+                <a href="tel:+27842089307" style="color: white; text-decoration: none; font-size: 18px; font-weight: 700;">📞 084 208 9307</a>
               </div>
-              <div style="margin-bottom: 8px;">
+              <div style="margin-bottom: 12px;">
                 <a href="https://www.spurgeonproperty.co.za/properties/${property.id}" 
-                   style="color: white; text-decoration: none; font-size: 12px; background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 15px; display: inline-block;">
-                  👀 View Details
+                   style="color: white; text-decoration: none; font-size: 14px; font-weight: 600;
+                          background: rgba(255,255,255,0.25); padding: 10px 18px; border-radius: 20px; display: inline-block;
+                          backdrop-filter: blur(10px);">
+                  👀 View Property Details
                 </a>
               </div>
             </div>
@@ -200,41 +209,43 @@ export function SocialMediaGenerator() {
         </div>
       ` : `
         <!-- Horizontal/Square Layout -->
-        <div style="position: relative; width: 100%; height: 100%; display: flex; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+        <div style="position: relative; width: 100%; height: 100%; display: flex; font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #ffffff;">
           
-          <!-- Property Image Side -->
-          <div style="flex: 1; position: relative; overflow: hidden;">
+          <!-- Property Image Side (60% width) -->
+          <div style="flex: 1.5; position: relative; overflow: hidden;">
             <img src="${getImageSrc(property)}" 
                  style="width: 100%; height: 100%; object-fit: cover;" 
                  crossorigin="anonymous" />
             
             <!-- Property Type Badge -->
-            <div style="position: absolute; top: 20px; right: 20px; background: rgba(139, 92, 246, 0.9); 
-                        color: white; padding: 12px 20px; border-radius: 25px; font-weight: bold; 
-                        font-size: 14px; display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 16px;">🏢</span>
+            <div style="position: absolute; top: 30px; right: 30px; background: rgba(139, 92, 246, 0.95); 
+                        color: white; padding: 16px 24px; border-radius: 30px; font-weight: 700; 
+                        font-size: 16px; display: flex; align-items: center; gap: 10px; backdrop-filter: blur(10px);
+                        box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);">
+              <span style="font-size: 20px;">🏢</span>
               ${property.propertyType.toUpperCase()}
             </div>
             
             <!-- Features Overlay -->
             ${property.bedrooms && property.bathrooms ? `
-              <div style="position: absolute; bottom: 20px; left: 20px; right: 20px;">
-                <div style="background: rgba(0,0,0,0.8); color: white; padding: 15px 20px; 
-                           border-radius: 12px; display: flex; gap: 25px; justify-content: center;">
-                  <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 18px;">🛏️</span>
-                    <span style="font-weight: bold;">${property.bedrooms}</span>
-                    <span>Beds</span>
+              <div style="position: absolute; bottom: 30px; left: 30px; right: 30px;">
+                <div style="background: rgba(0,0,0,0.85); color: white; padding: 20px 25px; 
+                           border-radius: 20px; display: flex; gap: 35px; justify-content: center; backdrop-filter: blur(15px);
+                           box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 24px;">🛏️</span>
+                    <span style="font-weight: bold; font-size: 18px;">${property.bedrooms}</span>
+                    <span style="font-size: 16px;">Beds</span>
                   </div>
-                  <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 18px;">🚿</span>
-                    <span style="font-weight: bold;">${property.bathrooms}</span>
-                    <span>Baths</span>
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 24px;">🚿</span>
+                    <span style="font-weight: bold; font-size: 18px;">${property.bathrooms}</span>
+                    <span style="font-size: 16px;">Baths</span>
                   </div>
                   ${property.features && property.features.length > 0 ? `
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                      <span style="font-size: 18px;">✨</span>
-                      <span>${property.features.slice(0, 1).join(', ')}</span>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                      <span style="font-size: 24px;">✨</span>
+                      <span style="font-size: 16px;">${property.features.slice(0, 1).join(', ')}</span>
                     </div>
                   ` : ''}
                 </div>
@@ -242,45 +253,49 @@ export function SocialMediaGenerator() {
             ` : ''}
           </div>
           
-          <!-- Content Side -->
+          <!-- Content Side (40% width) -->
           <div style="flex: 1; background: linear-gradient(135deg, #8b5cf6 0%, #f97316 100%); 
-                      color: white; padding: 30px; display: flex; flex-direction: column; justify-content: space-between;">
+                      color: white; padding: 50px 40px; display: flex; flex-direction: column; justify-content: space-between;">
             
             <!-- Header with Logo -->
-            <div style="text-align: center; margin-bottom: 20px;">
-              <img src="/spurgeon-logo.png" 
-                   style="height: 40px; margin-bottom: 8px; filter: brightness(0) invert(1);" 
-                   crossorigin="anonymous" />
-              <div style="font-size: 12px; font-weight: 500; opacity: 0.9;">Premium Real Estate</div>
+            <div style="text-align: center; margin-bottom: 40px;">
+              <div style="background: white; padding: 15px 20px; border-radius: 25px; display: inline-block; margin-bottom: 15px;">
+                <img src="/spurgeon-logo.png" 
+                     style="height: 45px;" 
+                     crossorigin="anonymous" />
+              </div>
+              <div style="font-size: 14px; font-weight: 600; opacity: 0.95; letter-spacing: 1px;">
+                PREMIUM REAL ESTATE
+              </div>
             </div>
             
             <!-- Property Details -->
             <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: center;">
               
-              <h1 style="font-size: ${isSquare ? '24px' : '20px'}; font-weight: bold; 
-                         margin-bottom: 15px; line-height: 1.3;">
+              <h1 style="font-size: ${isSquare ? '28px' : '26px'}; font-weight: 800; 
+                         margin-bottom: 25px; line-height: 1.2; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
                 ${property.title}
               </h1>
               
-              <div style="font-size: 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <span style="font-size: 18px;">📍</span>
-                <span>${property.suburb}, ${property.city}</span>
+              <div style="font-size: 18px; margin-bottom: 35px; display: flex; align-items: center; justify-content: center; gap: 12px; opacity: 0.95;">
+                <span style="font-size: 22px;">📍</span>
+                <span style="font-weight: 500;">${property.suburb}, ${property.city}</span>
               </div>
               
               <!-- Price Box -->
-              <div style="background: white; color: #8b5cf6; padding: 15px 20px; border-radius: 12px; 
-                         margin: 15px auto; box-shadow: 0 4px 16px rgba(0,0,0,0.2); display: inline-block;">
-                <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">PRICE</div>
-                <div style="font-size: ${isSquare ? '28px' : '24px'}; font-weight: bold;">
+              <div style="background: white; color: #8b5cf6; padding: 25px 30px; border-radius: 20px; 
+                         margin: 25px auto; box-shadow: 0 12px 40px rgba(0,0,0,0.15); display: inline-block; min-width: 200px;">
+                <div style="font-size: 14px; opacity: 0.7; margin-bottom: 8px; font-weight: 600; letter-spacing: 1px;">PRICE</div>
+                <div style="font-size: ${isSquare ? '32px' : '28px'}; font-weight: 900; letter-spacing: -1px;">
                   ${formatPrice(property.price)}
                 </div>
               </div>
               
               <!-- Property Features -->
               ${property.features && property.features.length > 0 ? `
-                <div style="margin: 15px 0;">
-                  <div style="font-size: 12px; opacity: 0.9; margin-bottom: 8px;">FEATURES</div>
-                  <div style="font-size: 14px; line-height: 1.4;">
+                <div style="margin: 30px 0;">
+                  <div style="font-size: 14px; opacity: 0.9; margin-bottom: 15px; font-weight: 600; letter-spacing: 1px;">FEATURES</div>
+                  <div style="font-size: 16px; line-height: 1.6; font-weight: 500;">
                     ${property.features.slice(0, 2).map(feature => `• ${feature}`).join('<br>')}
                   </div>
                 </div>
@@ -289,27 +304,28 @@ export function SocialMediaGenerator() {
             </div>
             
             <!-- Footer Contact -->
-            <div style="text-align: center; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 15px;">
-              <div style="margin-bottom: 10px;">
-                <a href="tel:+27842089307" style="color: white; text-decoration: none; font-size: 14px; font-weight: bold;">
+            <div style="text-align: center; border-top: 2px solid rgba(255,255,255,0.2); padding-top: 25px;">
+              <div style="margin-bottom: 15px;">
+                <a href="tel:+27842089307" style="color: white; text-decoration: none; font-size: 18px; font-weight: 700;">
                   📞 084 208 9307
                 </a>
               </div>
-              <div style="margin-bottom: 10px;">
-                <a href="mailto:peter@spurgeonproperty.com" style="color: white; text-decoration: none; font-size: 12px;">
+              <div style="margin-bottom: 15px;">
+                <a href="mailto:peter@spurgeonproperty.com" style="color: white; text-decoration: none; font-size: 14px; opacity: 0.9;">
                   📧 peter@spurgeonproperty.com
                 </a>
               </div>
-              <div style="margin-bottom: 10px;">
-                <a href="https://www.spurgeonproperty.co.za" style="color: white; text-decoration: none; font-size: 12px;">
+              <div style="margin-bottom: 15px;">
+                <a href="https://www.spurgeonproperty.co.za" style="color: white; text-decoration: none; font-size: 14px; opacity: 0.9;">
                   🌐 spurgeonproperty.co.za
                 </a>
               </div>
               <div>
                 <a href="https://www.spurgeonproperty.co.za/properties/${property.id}" 
-                   style="color: white; text-decoration: none; font-size: 12px; 
-                          background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 15px; display: inline-block;">
-                  👀 View Property
+                   style="color: white; text-decoration: none; font-size: 14px; font-weight: 600;
+                          background: rgba(255,255,255,0.25); padding: 12px 20px; border-radius: 25px; display: inline-block;
+                          transition: all 0.3s ease; backdrop-filter: blur(10px);">
+                  👀 View Property Details
                 </a>
               </div>
             </div>
