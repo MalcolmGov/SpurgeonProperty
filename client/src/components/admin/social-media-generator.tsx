@@ -230,8 +230,8 @@ export function SocialMediaGenerator() {
             <!-- Header Row - Logo and Property Type -->
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; padding: 0 20px;">
               <!-- Spurgeon Property Logo -->
-              <div style="background: rgba(255,255,255,0.98); padding: 8px 16px; border-radius: 25px; 
-                         box-shadow: 0 8px 30px rgba(0,0,0,0.25); backdrop-filter: blur(20px); border: 2px solid rgba(255,255,255,0.95);">
+              <div style="background: #ffffff; padding: 10px 18px; border-radius: 25px; 
+                         box-shadow: 0 8px 30px rgba(0,0,0,0.25); border: 2px solid #ffffff;">
                 <img src="/spurgeon-logo.png" 
                      style="height: 32px; width: auto; display: block; filter: sepia(1) hue-rotate(235deg) brightness(1.2) contrast(1.1);" 
                      alt="Spurgeon Property" />
