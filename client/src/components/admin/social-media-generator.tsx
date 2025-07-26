@@ -292,37 +292,16 @@ export function SocialMediaGenerator() {
               </div>
             </div>
             
-            <!-- Contact Information Section - Simple Reliable Layout -->
-            <div style="padding: 10px 20px; text-align: center;">
+            <!-- Contact Information Bar -->
+            <div style="background: rgba(255,255,255,0.9); padding: 12px 20px; text-align: center; 
+                       margin: 10px 15px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
               
-              <!-- Phone -->
-              <div style="background: white; margin: 8px 0; padding: 10px 15px; border-radius: 12px; 
-                         box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
-                <span style="color: #10b981; font-size: 16px; margin-right: 8px;">📞</span>
-                <span style="color: #1f2937; font-weight: 900; font-size: 16px;">084 208 9307</span>
+              <!-- Contact Info - Two Lines -->
+              <div style="color: #1f2937; font-weight: 800; font-size: 13px; line-height: 1.4;">
+                📞 084 208 9307
               </div>
-              
-              <!-- Email -->
-              <div style="background: white; margin: 8px 0; padding: 10px 15px; border-radius: 12px; 
-                         box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
-                <span style="color: #3b82f6; font-size: 16px; margin-right: 8px;">✉️</span>
-                <span style="color: #1f2937; font-weight: 800; font-size: 13px;">peter@spurgeonproperty.com</span>
-              </div>
-              
-              <!-- Website -->
-              <div style="background: white; margin: 8px 0; padding: 10px 15px; border-radius: 12px; 
-                         box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
-                <span style="color: #8b5cf6; font-size: 16px; margin-right: 8px;">🌐</span>
-                <span style="color: #1f2937; font-weight: 800; font-size: 13px;">spurgeonproperty.com</span>
-              </div>
-              
-              <!-- CTA Button -->
-              <div style="margin-top: 15px;">
-                <div style="background: #8b5cf6; color: white; padding: 12px 24px; border-radius: 20px; 
-                           font-size: 12px; font-weight: 900; display: inline-block; 
-                           letter-spacing: 1px; text-transform: uppercase;">
-                  VIEW PROPERTY DETAILS
-                </div>
+              <div style="color: #1f2937; font-weight: 800; font-size: 12px; line-height: 1.4; margin-top: 4px;">
+                ✉️ peter@spurgeonproperty.com  |  🌐 spurgeonproperty.com
               </div>
               
             </div>
