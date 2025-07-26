@@ -230,13 +230,13 @@ export function SocialMediaGenerator() {
             <!-- Header Row - Logo and Property Type -->
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; padding: 0 20px;">
               <!-- Spurgeon Property Logo -->
-              <div style="background: #ffffff !important; padding: 12px 20px; border-radius: 25px; 
+              <div style="background: #ffffff !important; padding: 14px 24px; border-radius: 28px; 
                          box-shadow: 0 8px 30px rgba(0,0,0,0.25); border: 2px solid #ffffff;
                          position: relative; overflow: hidden;">
-                <div style="background: #ffffff; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 23px;"></div>
+                <div style="background: #ffffff; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 26px;"></div>
                 <img src="/spurgeon-logo.png" 
-                     style="height: 32px; width: auto; display: block; filter: sepia(1) hue-rotate(235deg) brightness(1.2) contrast(1.1); 
-                            position: relative; z-index: 2; background: #ffffff; border-radius: 3px; padding: 2px;" 
+                     style="height: 42px; width: auto; display: block; filter: sepia(1) hue-rotate(235deg) brightness(1.2) contrast(1.1); 
+                            position: relative; z-index: 2; background: #ffffff; border-radius: 3px; padding: 3px;" 
                      alt="Spurgeon Property" />
               </div>
               <!-- Property Type Badge -->
