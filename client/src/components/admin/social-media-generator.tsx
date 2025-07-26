@@ -238,10 +238,10 @@ export function SocialMediaGenerator() {
               </div>
               <!-- Property Type Badge -->
               <div style="background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; 
-                          padding: 10px 18px; border-radius: 22px; font-weight: 800; 
-                          font-size: 11px; backdrop-filter: blur(15px); border: 2px solid rgba(255,255,255,0.6);
+                          padding: 12px 20px; border-radius: 25px; font-weight: 800; 
+                          font-size: 12px; backdrop-filter: blur(15px); border: 2px solid rgba(255,255,255,0.6);
                           letter-spacing: 0.8px; box-shadow: 0 6px 20px rgba(139,92,246,0.3);
-                          text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+                          text-shadow: 1px 1px 2px rgba(0,0,0,0.3); min-width: fit-content; white-space: nowrap;">
                 🏢 ${property.propertyType.toUpperCase()}
               </div>
             </div>
@@ -290,15 +290,15 @@ export function SocialMediaGenerator() {
             </div>
             
             <!-- Contact Information - Strong Readable Design -->
-            <div style="text-align: center; margin-bottom: 25px; padding: 0 20px;">
+            <div style="text-align: center; margin-bottom: 25px; padding: 0 15px;">
               <div style="color: #FFFFFF; font-weight: bold; text-shadow: 2px 2px 6px rgba(0,0,0,0.9);">
-                <div style="font-size: 22px; margin-bottom: 8px; letter-spacing: 1px;">
+                <div style="font-size: 22px; margin-bottom: 6px; letter-spacing: 1px;">
                   📞 084 208 9307
                 </div>
-                <div style="font-size: 18px; margin-bottom: 4px; letter-spacing: 0.5px;">
+                <div style="font-size: 16px; margin-bottom: 3px; letter-spacing: 0.3px;">
                   ✉️ peter@spurgeonproperty.com
                 </div>
-                <div style="font-size: 18px; letter-spacing: 0.5px;">
+                <div style="font-size: 16px; letter-spacing: 0.3px;">
                   🌐 spurgeonproperty.com
                 </div>
               </div>
