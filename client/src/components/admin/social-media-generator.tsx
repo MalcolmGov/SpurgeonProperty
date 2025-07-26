@@ -292,36 +292,63 @@ export function SocialMediaGenerator() {
               </div>
             </div>
             
-            <!-- Contact Information & CTA (Bottom) -->
-            <div style="text-align: center; color: white; padding: 0 15px;">
+            <!-- Contact Information Section -->
+            <div style="padding: 20px; margin-bottom: 10px;">
               
-              <!-- Phone Number -->
-              <div style="font-size: 20px; font-weight: 900; margin-bottom: 8px;
-                         text-shadow: 3px 3px 10px rgba(0,0,0,0.9); color: white;
-                         line-height: 1.2;">
-                📞 084 208 9307
+              <!-- Contact Cards Container -->
+              <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+                
+                <!-- Phone Card -->
+                <div style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+                           padding: 12px 18px; border-radius: 15px; display: flex; align-items: center; gap: 12px;
+                           box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.3);">
+                  <div style="background: #10b981; color: white; width: 32px; height: 32px; border-radius: 50%;
+                             display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                    📞
+                  </div>
+                  <div style="color: #1f2937; font-weight: 900; font-size: 18px; letter-spacing: 0.5px;">
+                    084 208 9307
+                  </div>
+                </div>
+                
+                <!-- Email Card -->
+                <div style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+                           padding: 12px 18px; border-radius: 15px; display: flex; align-items: center; gap: 12px;
+                           box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.3);">
+                  <div style="background: #3b82f6; color: white; width: 32px; height: 32px; border-radius: 50%;
+                             display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                    ✉️
+                  </div>
+                  <div style="color: #1f2937; font-weight: 800; font-size: 14px; letter-spacing: 0.3px;">
+                    peter@spurgeonproperty.com
+                  </div>
+                </div>
+                
+                <!-- Website Card -->
+                <div style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+                           padding: 12px 18px; border-radius: 15px; display: flex; align-items: center; gap: 12px;
+                           box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.3);">
+                  <div style="background: #8b5cf6; color: white; width: 32px; height: 32px; border-radius: 50%;
+                             display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                    🌐
+                  </div>
+                  <div style="color: #1f2937; font-weight: 800; font-size: 14px; letter-spacing: 0.3px;">
+                    spurgeonproperty.com
+                  </div>
+                </div>
+                
               </div>
               
-              <!-- Email Address -->
-              <div style="font-size: 14px; font-weight: 800; margin-bottom: 8px;
-                         text-shadow: 3px 3px 10px rgba(0,0,0,0.9); color: white;
-                         line-height: 1.2; word-break: break-all;">
-                ✉️ peter@spurgeonproperty.com
+              <!-- CTA Button -->
+              <div style="text-align: center;">
+                <div style="background: linear-gradient(45deg, #8b5cf6, #ec4899); color: white; 
+                           padding: 14px 28px; border-radius: 25px; font-size: 14px; font-weight: 900; 
+                           box-shadow: 0 8px 25px rgba(139,92,246,0.4); display: inline-block;
+                           letter-spacing: 1px; text-transform: uppercase;">
+                  VIEW PROPERTY DETAILS
+                </div>
               </div>
               
-              <!-- Website -->
-              <div style="font-size: 14px; font-weight: 700; margin-bottom: 15px;
-                         text-shadow: 3px 3px 10px rgba(0,0,0,0.9); color: white;
-                         line-height: 1.2;">
-                🌐 spurgeonproperty.com
-              </div>
-              
-              <div style="background: white; color: #8b5cf6; padding: 12px 25px; 
-                         border-radius: 20px; font-size: 14px; font-weight: 900; 
-                         box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-                         letter-spacing: 1px; text-transform: uppercase;">
-                VIEW PROPERTY DETAILS
-              </div>
             </div>
             
           </div>
