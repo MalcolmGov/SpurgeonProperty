@@ -230,14 +230,11 @@ export function SocialMediaGenerator() {
             <!-- Header Row - Logo and Property Type -->
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; padding: 0 20px;">
               <!-- Spurgeon Property Logo -->
-              <div style="background: rgba(255,255,255,0.98); padding: 12px 20px; border-radius: 30px; 
+              <div style="background: rgba(255,255,255,0.98); padding: 8px 16px; border-radius: 25px; 
                          box-shadow: 0 8px 30px rgba(0,0,0,0.25); backdrop-filter: blur(20px); border: 2px solid rgba(255,255,255,0.95);">
-                <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-                  <div style="font-size: 14px; font-weight: 900; color: #8b5cf6; letter-spacing: 1px; margin-bottom: 1px; 
-                             text-shadow: 0 1px 2px rgba(139,92,246,0.3);">SPURGEON</div>
-                  <div style="font-size: 10px; font-weight: 700; color: #f97316; letter-spacing: 1.5px;
-                             text-shadow: 0 1px 2px rgba(249,115,22,0.3);">Property</div>
-                </div>
+                <img src="/attached_assets/image_1753494199351.png" 
+                     style="height: 32px; width: auto; display: block;" 
+                     alt="Spurgeon Property" />
               </div>
               <!-- Property Type Badge -->
               <div style="background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; 
