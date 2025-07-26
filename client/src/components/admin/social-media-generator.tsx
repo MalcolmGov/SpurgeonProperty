@@ -378,57 +378,11 @@ export function SocialMediaGenerator() {
           Social Media Image Generator
         </h1>
         <p className="text-gray-600 mt-2">
-          Generate eye-catching property images optimized for Facebook, Instagram, TikTok, and other social platforms.
+          Generate eye-catching square property images optimized for Instagram posts and Facebook marketing.
         </p>
       </div>
 
-      {/* Format Selection */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Camera className="h-5 w-5" />
-            Social Media Format
-          </CardTitle>
-          <CardDescription>
-            Choose the format that best fits your target platform
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {SOCIAL_FORMATS.map((format) => (
-              <div
-                key={format.name}
-                className={`border rounded-lg p-4 cursor-pointer transition-all ${
-                  selectedFormat.name === format.name
-                    ? 'border-purple-500 bg-purple-50 dark:bg-purple-950/20'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-                onClick={() => setSelectedFormat(format)}
-              >
-                <div className="aspect-square bg-gradient-to-br from-purple-100 to-orange-100 rounded-lg mb-3 flex items-center justify-center">
-                  <div 
-                    className="bg-white rounded shadow-sm"
-                    style={{
-                      width: format.width > format.height ? '60px' : '40px',
-                      height: format.width > format.height ? '40px' : '60px',
-                    }}
-                  />
-                </div>
-                <h3 className="font-medium text-sm mb-1">{format.name}</h3>
-                <p className="text-xs text-gray-500 mb-2">{format.width}×{format.height}</p>
-                <p className="text-xs text-gray-600">{format.description}</p>
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {format.platforms.map(platform => (
-                    <Badge key={platform} variant="outline" className="text-xs">
-                      {platform}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+
 
       {/* Property Selection */}
       <Card>
