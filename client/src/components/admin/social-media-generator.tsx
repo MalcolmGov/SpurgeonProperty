@@ -293,28 +293,31 @@ export function SocialMediaGenerator() {
             </div>
             
             <!-- Contact Information & CTA (Bottom) -->
-            <div style="text-align: center; color: white; padding: 0 20px;">
+            <div style="text-align: center; color: white; padding: 0 15px;">
               
               <!-- Phone Number -->
-              <div style="font-size: 22px; font-weight: 900; margin-bottom: 15px;
-                         text-shadow: 3px 3px 10px rgba(0,0,0,0.9); color: white;">
+              <div style="font-size: 20px; font-weight: 900; margin-bottom: 8px;
+                         text-shadow: 3px 3px 10px rgba(0,0,0,0.9); color: white;
+                         line-height: 1.2;">
                 📞 084 208 9307
               </div>
               
               <!-- Email Address -->
-              <div style="font-size: 18px; font-weight: 800; margin-bottom: 15px;
-                         text-shadow: 3px 3px 10px rgba(0,0,0,0.9); color: white;">
+              <div style="font-size: 14px; font-weight: 800; margin-bottom: 8px;
+                         text-shadow: 3px 3px 10px rgba(0,0,0,0.9); color: white;
+                         line-height: 1.2; word-break: break-all;">
                 ✉️ peter@spurgeonproperty.com
               </div>
               
               <!-- Website -->
-              <div style="font-size: 18px; font-weight: 700; margin-bottom: 20px;
-                         text-shadow: 3px 3px 10px rgba(0,0,0,0.9); color: white;">
+              <div style="font-size: 14px; font-weight: 700; margin-bottom: 15px;
+                         text-shadow: 3px 3px 10px rgba(0,0,0,0.9); color: white;
+                         line-height: 1.2;">
                 🌐 spurgeonproperty.com
               </div>
               
-              <div style="background: white; color: #8b5cf6; padding: 15px 30px; 
-                         border-radius: 25px; font-size: 16px; font-weight: 900; 
+              <div style="background: white; color: #8b5cf6; padding: 12px 25px; 
+                         border-radius: 20px; font-size: 14px; font-weight: 900; 
                          box-shadow: 0 8px 25px rgba(0,0,0,0.4);
                          letter-spacing: 1px; text-transform: uppercase;">
                 VIEW PROPERTY DETAILS
