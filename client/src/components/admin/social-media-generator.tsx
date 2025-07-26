@@ -289,14 +289,18 @@ export function SocialMediaGenerator() {
               </div>
             </div>
             
-            <!-- Contact Information - Modern Floating Style -->
+            <!-- Contact Information - Enhanced Clarity -->
             <div style="text-align: center; margin-bottom: 20px; padding: 0 20px;">
-              <div style="color: white; font-size: 16px; font-weight: 700; 
-                         text-shadow: 2px 2px 8px rgba(0,0,0,0.8); letter-spacing: 0.5px; margin-bottom: 8px;">
+              <div style="background: rgba(0,0,0,0.6); color: white; font-size: 18px; font-weight: 800; 
+                         text-shadow: 1px 1px 3px rgba(0,0,0,0.9); letter-spacing: 1px; margin-bottom: 6px;
+                         padding: 8px 20px; border-radius: 25px; display: inline-block;
+                         border: 2px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px);">
                 📞 084 208 9307
               </div>
-              <div style="color: white; font-size: 14px; font-weight: 600; 
-                         text-shadow: 2px 2px 8px rgba(0,0,0,0.8); letter-spacing: 0.3px; opacity: 0.95;">
+              <div style="background: rgba(0,0,0,0.5); color: white; font-size: 14px; font-weight: 700; 
+                         text-shadow: 1px 1px 3px rgba(0,0,0,0.9); letter-spacing: 0.5px;
+                         padding: 6px 16px; border-radius: 20px; display: inline-block;
+                         border: 2px solid rgba(255,255,255,0.2); backdrop-filter: blur(8px);">
                 ✉️ peter@spurgeonproperty.com  •  🌐 spurgeonproperty.com
               </div>
             </div>
