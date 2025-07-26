@@ -283,7 +283,7 @@ export function SocialMediaGenerator() {
             ` : ''}
             
             <!-- Price Display - Large Clean Text -->
-            <div style="text-align: center; margin-bottom: 35px; padding: 0 20px;">
+            <div style="text-align: center; margin-bottom: 20px; padding: 0 20px;">
               <div style="font-size: ${isSquare ? '56px' : '52px'}; font-weight: 900; 
                          color: white; letter-spacing: -2px; line-height: 1;
                          text-shadow: 4px 4px 16px rgba(0,0,0,0.9), 2px 2px 8px rgba(0,0,0,0.8);
@@ -293,7 +293,7 @@ export function SocialMediaGenerator() {
             </div>
             
             <!-- Contact Information - Strong Readable Design -->
-            <div style="text-align: center; margin-bottom: 25px; padding: 0 10px;">
+            <div style="text-align: center; margin-bottom: 30px; padding: 0 10px;">
               <div style="color: #FFFFFF; font-weight: bold; text-shadow: 2px 2px 6px rgba(0,0,0,0.9);">
                 <div style="font-size: 20px; margin-bottom: 5px; letter-spacing: 0.8px;">
                   📞 084 208 9307
