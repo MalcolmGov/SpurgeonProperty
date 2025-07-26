@@ -289,14 +289,18 @@ export function SocialMediaGenerator() {
               </div>
             </div>
             
-            <!-- Contact Information - Clean Professional Layout -->
-            <div style="text-align: center; margin-bottom: 20px; padding: 0 20px;">
-              <div style="background: rgba(255,255,255,0.95); color: #1f2937; font-size: 16px; font-weight: 800; 
-                         margin: 0 auto; padding: 12px 25px; border-radius: 30px; max-width: 320px;
-                         box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.8);">
-                <div style="margin-bottom: 4px; font-size: 17px;">📞 084 208 9307</div>
-                <div style="font-size: 13px; font-weight: 600; opacity: 0.8;">
-                  ✉️ peter@spurgeonproperty.com  |  🌐 spurgeonproperty.com
+            <!-- Contact Information - Compact Professional Layout -->
+            <div style="text-align: center; margin-bottom: 20px; padding: 0 15px;">
+              <div style="background: rgba(255,255,255,0.95); color: #1f2937; font-weight: 700; 
+                         margin: 0 auto; padding: 10px 20px; border-radius: 25px; max-width: 380px;
+                         box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.9);
+                         line-height: 1.3;">
+                <div style="margin-bottom: 3px; font-size: 16px;">📞 084 208 9307</div>
+                <div style="font-size: 11px; font-weight: 600; opacity: 0.75; word-break: break-all;">
+                  ✉️ peter@spurgeonproperty.com
+                </div>
+                <div style="font-size: 11px; font-weight: 600; opacity: 0.75; margin-top: 1px;">
+                  🌐 spurgeonproperty.com
                 </div>
               </div>
             </div>
