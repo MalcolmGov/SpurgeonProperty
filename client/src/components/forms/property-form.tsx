@@ -166,13 +166,15 @@ export default function PropertyForm({ property, open, onClose }: PropertyFormPr
         });
       }
       
-      // Invalidate all property-related queries
-      queryClient.invalidateQueries({ queryKey: ["/api/properties"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/properties/featured"] });
+      // Invalidate all properties queries regardless of filters
+      queryClient.invalidateQueries({ 
+        predicate: (query) => {
+          return typeof query.queryKey[0] === 'string' && 
+                 query.queryKey[0].startsWith('/api/properties');
+        }
+      });
+      // Also invalidate dashboard stats
       queryClient.invalidateQueries({ queryKey: ["/api/admin/dashboard/stats"] });
-      
-      // Force a refresh of the properties list
-      queryClient.refetchQueries({ queryKey: ["/api/properties"] });
       
       toast({
         title: "Success",
