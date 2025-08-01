@@ -439,137 +439,125 @@ export function SocialMediaGenerator() {
       tempDiv.innerHTML = `
         <div style="width: 100%; height: 100%; position: relative; 
                     background: linear-gradient(135deg, #8B5CF6 0%, #F97316 100%);
-                    font-family: Arial, sans-serif; display: flex; flex-direction: column;
-                    border-radius: 24px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.25);">
+                    font-family: 'Segoe UI', Arial, sans-serif; display: flex; flex-direction: column;
+                    overflow: hidden;">
           
           <!-- Property Type Badge -->
           <div style="position: absolute; top: 20px; right: 20px; z-index: 10;">
-            <div style="background: rgba(0,0,0,0.4); color: white; padding: 8px 16px; 
-                       border-radius: 50px; font-size: 12px; font-weight: 700;
-                       backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);
+            <div style="background: rgba(0,0,0,0.6); color: white; padding: 8px 16px; 
+                       border-radius: 25px; font-size: 12px; font-weight: 700;
+                       backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);
                        text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">
               🏠 ${customProperty.propertyType}
             </div>
           </div>
           
-          <!-- Content Section (45% height) -->
-          <div style="flex: 0.85; display: flex; flex-direction: column; justify-content: space-between; 
-                     padding: 35px 25px 25px 25px; position: relative; z-index: 2;">
+          <!-- Top Content Section -->
+          <div style="padding: 30px 25px 20px 25px; text-align: center;">
             
-            <!-- Logo Section -->
-            <div style="text-align: center; margin-bottom: 25px;">
-              <div style="width: 42px; height: 42px; margin: 0 auto; position: relative;">
-                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-                           background: white; border-radius: 8px; z-index: 1;"></div>
-                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-                           background: white !important; border-radius: 8px; z-index: 2;"></div>
-                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-                           background: white !important; border-radius: 8px; z-index: 3;"></div>
+            <!-- Minimal Logo -->
+            <div style="margin-bottom: 25px;">
+              <div style="width: 50px; height: 50px; margin: 0 auto; 
+                         background: rgba(255,255,255,0.95); border-radius: 12px; 
+                         display: flex; align-items: center; justify-content: center;
+                         box-shadow: 0 8px 32px rgba(0,0,0,0.3);">
                 <img src="/spurgeon-logo.png" 
-                     style="position: relative; z-index: 4; width: 100%; height: 100%; 
-                           object-fit: contain; border-radius: 8px;" />
+                     style="width: 35px; height: 35px; object-fit: contain;" />
               </div>
             </div>
             
             <!-- Property Title -->
-            <div style="text-align: center; margin-bottom: 30px; padding: 0 15px;">
-              <div style="font-size: 28px; font-weight: 900; color: white; line-height: 1.2;
-                         text-shadow: 4px 4px 16px rgba(0,0,0,0.9), 2px 2px 8px rgba(0,0,0,0.8);
-                         letter-spacing: -0.5px;">
+            <div style="margin-bottom: 20px;">
+              <h1 style="font-size: 32px; font-weight: 900; color: white; line-height: 1.1;
+                         text-shadow: 3px 3px 15px rgba(0,0,0,0.8), 1px 1px 8px rgba(0,0,0,0.9);
+                         margin: 0; letter-spacing: -0.5px;">
                 ${customProperty.title}
-              </div>
+              </h1>
             </div>
             
-            <!-- Location with Enhanced Pin -->
-            <div style="text-align: center; margin-bottom: 35px; padding: 0 25px;">
-              <div style="font-size: 22px; color: white; font-weight: 700; 
-                         text-shadow: 3px 3px 12px rgba(0,0,0,0.9), 1px 1px 6px rgba(0,0,0,0.8);
-                         display: flex; align-items: center; justify-content: center; gap: 12px;">
-                <span style="font-size: 24px; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.8));">📍</span>
+            <!-- Location -->
+            <div style="margin-bottom: 25px;">
+              <div style="font-size: 20px; color: white; font-weight: 600; 
+                         text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+                         display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span style="font-size: 22px;">📍</span>
                 <span>${customProperty.suburb}, ${customProperty.city}</span>
               </div>
             </div>
             
-            <!-- Property Specs - Clean Badge Style -->
-            <div style="text-align: center; margin-bottom: 40px; padding: 0 20px;">
-              <div style="display: inline-flex; align-items: center; gap: 25px; 
-                         background: rgba(255,255,255,0.15); padding: 16px 28px; border-radius: 50px;
-                         backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3);">
-                <div style="display: flex; align-items: center; gap: 8px; color: white; font-weight: 800; font-size: 16px;">
-                  <span style="font-size: 20px;">🛏️</span>
+            <!-- Property Specs -->
+            <div style="margin-bottom: 25px;">
+              <div style="display: inline-flex; align-items: center; gap: 20px; 
+                         background: rgba(255,255,255,0.2); padding: 12px 24px; border-radius: 40px;
+                         backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.3);">
+                <div style="display: flex; align-items: center; gap: 6px; color: white; font-weight: 700; font-size: 15px;
+                           text-shadow: 1px 1px 4px rgba(0,0,0,0.7);">
+                  <span style="font-size: 18px;">🛏</span>
                   <span>${customProperty.bedrooms} Beds</span>
                 </div>
-                <div style="width: 2px; height: 20px; background: rgba(255,255,255,0.4);"></div>
-                <div style="display: flex; align-items: center; gap: 8px; color: white; font-weight: 800; font-size: 16px;">
-                  <span style="font-size: 20px;">🛁</span>
+                <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.4);"></div>
+                <div style="display: flex; align-items: center; gap: 6px; color: white; font-weight: 700; font-size: 15px;
+                           text-shadow: 1px 1px 4px rgba(0,0,0,0.7);">
+                  <span style="font-size: 18px;">🛁</span>
                   <span>${customProperty.bathrooms} Bath</span>
                 </div>
               </div>
             </div>
             
-            <!-- Price - Large and Bold -->
-            <div style="text-align: center; margin-bottom: 35px; padding: 0 20px;">
-              <div style="font-size: 64px; font-weight: 900; 
-                         color: white; letter-spacing: -2px; line-height: 0.9;
-                         text-shadow: 5px 5px 20px rgba(0,0,0,0.9), 3px 3px 12px rgba(0,0,0,0.8),
-                                      0 0 30px rgba(0,0,0,0.6);
-                         word-break: keep-all; white-space: nowrap;">
-                ${customProperty.price}
-              </div>
-            </div>
-            
-            <!-- Contact Information - Enhanced with Better Spacing -->
-            <div style="text-align: center; margin-bottom: 25px; padding: 0 15px;">
-              <div style="color: #FFFFFF; font-weight: 900; 
-                         text-shadow: 3px 3px 12px rgba(0,0,0,0.9), 1px 1px 6px rgba(0,0,0,0.8);">
-                <div style="font-size: 24px; margin-bottom: 12px; letter-spacing: 0.5px;
-                           display: flex; align-items: center; justify-content: center; gap: 10px;">
-                  <span style="font-size: 26px;">📞</span>
-                  <span>084 208 9307</span>
-                </div>
-                <div style="font-size: 16px; margin-bottom: 8px; letter-spacing: 0.3px;
-                           display: flex; align-items: center; justify-content: center; gap: 8px;">
-                  <span style="font-size: 18px;">✉️</span>
-                  <span>peter@spurgeonproperty.com</span>
-                </div>
-                <div style="font-size: 16px; letter-spacing: 0.3px;
-                           display: flex; align-items: center; justify-content: center; gap: 8px;">
-                  <span style="font-size: 18px;">🌐</span>
-                  <span>spurgeonproperty.com</span>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Footer Attribution -->
-            <div style="text-align: center; margin-top: auto; padding: 0 15px;">
-              <div style="font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 600;
-                         text-shadow: 1px 1px 4px rgba(0,0,0,0.8); letter-spacing: 0.5px;">
-                Prepared by Spurgeon Property
+            <!-- Price -->
+            <div style="margin-bottom: 30px;">
+              <div style="font-size: 72px; font-weight: 900; color: white; 
+                         text-shadow: 4px 4px 20px rgba(0,0,0,0.9), 2px 2px 12px rgba(0,0,0,0.8);
+                         letter-spacing: -3px; line-height: 0.9;">
+                R2.95m
               </div>
             </div>
             
           </div>
           
-          <!-- Property Image Bottom (55% height) with Ocean View Placeholder -->
-          <div style="flex: 1.1; position: relative; overflow: hidden; border-radius: 0 0 24px 24px;">
-            <div style="width: 100%; height: 100%; 
-                       background: linear-gradient(135deg, #0EA5E9 0%, #06B6D4 50%, #22D3EE 100%);
-                       display: flex; align-items: center; justify-content: center; position: relative;">
-              <!-- Ocean waves effect -->
-              <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 40%;
-                         background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%),
-                                     linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%),
-                                     linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.1) 75%),
-                                     linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.1) 75%);
-                         background-size: 20px 20px;
-                         background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-                         opacity: 0.3;"></div>
-              <!-- Beachfront apartment representation -->
-              <div style="position: relative; z-index: 2; text-align: center; color: white;">
-                <div style="font-size: 48px; margin-bottom: 10px; text-shadow: 2px 2px 8px rgba(0,0,0,0.7);">🏖️</div>
-                <div style="font-size: 18px; font-weight: 700; text-shadow: 2px 2px 8px rgba(0,0,0,0.7);">Beachfront Ocean View</div>
-                <div style="font-size: 14px; opacity: 0.9; text-shadow: 1px 1px 4px rgba(0,0,0,0.7);">Table View, Blouberg</div>
+          <!-- Property Image Section -->
+          <div style="flex: 1; position: relative; overflow: hidden;">
+            <img src="/uploads/beachfront-apartment-table-view.png" 
+                 style="width: 100%; height: 100%; object-fit: cover;" 
+                 crossorigin="anonymous" />
+            
+            <!-- Overlay for contact info -->
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; 
+                       background: linear-gradient(transparent, rgba(0,0,0,0.8)); 
+                       padding: 40px 25px 25px 25px;">
+              
+              <!-- Contact Information -->
+              <div style="text-align: center; margin-bottom: 15px;">
+                <div style="color: white; font-weight: 700;">
+                  <div style="font-size: 22px; margin-bottom: 8px; 
+                             text-shadow: 2px 2px 8px rgba(0,0,0,0.9);
+                             display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span style="font-size: 24px;">📞</span>
+                    <span>084 208 9307</span>
+                  </div>
+                  <div style="font-size: 14px; margin-bottom: 6px; opacity: 0.95;
+                             text-shadow: 1px 1px 6px rgba(0,0,0,0.9);
+                             display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <span style="font-size: 16px;">✉️</span>
+                    <span>peter@spurgeonproperty.com</span>
+                  </div>
+                  <div style="font-size: 14px; opacity: 0.95;
+                             text-shadow: 1px 1px 6px rgba(0,0,0,0.9);
+                             display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <span style="font-size: 16px;">🌐</span>
+                    <span>spurgeonproperty.com</span>
+                  </div>
+                </div>
               </div>
+              
+              <!-- Footer -->
+              <div style="text-align: center;">
+                <div style="font-size: 11px; color: rgba(255,255,255,0.8); font-weight: 500;
+                           text-shadow: 1px 1px 4px rgba(0,0,0,0.9);">
+                  Prepared by Spurgeon Property
+                </div>
+              </div>
+              
             </div>
           </div>
         </div>
