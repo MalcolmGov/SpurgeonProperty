@@ -261,61 +261,84 @@ export function SocialMediaGenerator() {
               </div>
             </div>
             
-            <!-- Main Heading -->
-            <div style="text-align: center; margin-bottom: 20px; padding: 0 25px;">
-              <h1 style="font-size: ${isSquare ? '44px' : '40px'}; font-weight: 900; 
-                         line-height: 1.1; color: white; letter-spacing: -1px; margin: 0;
-                         text-shadow: 3px 3px 12px rgba(0,0,0,0.8), 1px 1px 4px rgba(0,0,0,0.9);">
+            <!-- Main Title - Improved Hierarchy -->
+            <div style="text-align: center; margin-bottom: 35px; padding: 0 30px;">
+              <h1 style="font-size: ${isSquare ? '38px' : '34px'}; font-weight: 900; 
+                         line-height: 1.15; color: white; letter-spacing: -0.5px; margin: 0;
+                         text-shadow: 4px 4px 16px rgba(0,0,0,0.9), 2px 2px 8px rgba(0,0,0,0.7), 
+                                      0 0 20px rgba(0,0,0,0.5); 
+                         text-align: center; word-wrap: break-word;">
                 ${property.title}
               </h1>
             </div>
             
-            <!-- Location -->
-            <div style="text-align: center; margin-bottom: 25px; padding: 0 20px;">
-              <div style="font-size: 20px; color: white; font-weight: 700; 
-                         text-shadow: 2px 2px 8px rgba(0,0,0,0.8);">
-                📍 ${property.suburb}, ${property.city}
+            <!-- Location with Enhanced Pin -->
+            <div style="text-align: center; margin-bottom: 35px; padding: 0 25px;">
+              <div style="font-size: 22px; color: white; font-weight: 700; 
+                         text-shadow: 3px 3px 12px rgba(0,0,0,0.9), 1px 1px 6px rgba(0,0,0,0.8);
+                         display: flex; align-items: center; justify-content: center; gap: 12px;">
+                <span style="font-size: 24px; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.8));">📍</span>
+                <span>${property.suburb}, ${property.city}</span>
               </div>
             </div>
             
-            <!-- Feature Tags - Clean Minimal Style -->
+            <!-- Property Specs - Clean Badge Style -->
             ${property.bedrooms && property.bathrooms ? `
-              <div style="text-align: center; margin-bottom: 30px; padding: 0 20px;">
-                <div style="color: white; font-size: 18px; font-weight: 800; 
-                           text-shadow: 2px 2px 8px rgba(0,0,0,0.8); letter-spacing: 1px;">
-                  <span style="color: #3b82f6;">🛏️</span> ${property.bedrooms} Beds 
-                  <span style="margin: 0 15px; color: rgba(255,255,255,0.6);">|</span>
-                  <span style="color: #10b981;">🚿</span> ${property.bathrooms} Baths
-                  ${property.features && property.features.length > 0 && property.features.includes('Swimming Pool') ? `
-                    <span style="margin: 0 15px; color: rgba(255,255,255,0.6);">|</span>
-                    <span style="color: #06b6d4;">🏊</span> Swimming Pool
-                  ` : ''}
+              <div style="text-align: center; margin-bottom: 40px; padding: 0 20px;">
+                <div style="display: inline-flex; align-items: center; gap: 25px; 
+                           background: rgba(0,0,0,0.4); padding: 16px 28px; border-radius: 50px;
+                           backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3);">
+                  <div style="display: flex; align-items: center; gap: 8px; color: white; font-weight: 800; font-size: 16px;">
+                    <span style="font-size: 20px;">🛏️</span>
+                    <span>${property.bedrooms} Beds</span>
+                  </div>
+                  <div style="width: 2px; height: 20px; background: rgba(255,255,255,0.4);"></div>
+                  <div style="display: flex; align-items: center; gap: 8px; color: white; font-weight: 800; font-size: 16px;">
+                    <span style="font-size: 20px;">🛁</span>
+                    <span>${property.bathrooms} Baths</span>
+                  </div>
                 </div>
               </div>
             ` : ''}
             
-            <!-- Price Display - Large Clean Text -->
-            <div style="text-align: center; margin-bottom: 20px; padding: 0 20px;">
-              <div style="font-size: ${isSquare ? '56px' : '52px'}; font-weight: 900; 
-                         color: white; letter-spacing: -2px; line-height: 1;
-                         text-shadow: 4px 4px 16px rgba(0,0,0,0.9), 2px 2px 8px rgba(0,0,0,0.8);
+            <!-- Price - Large and Bold -->
+            <div style="text-align: center; margin-bottom: 35px; padding: 0 20px;">
+              <div style="font-size: ${isSquare ? '64px' : '58px'}; font-weight: 900; 
+                         color: white; letter-spacing: -2px; line-height: 0.9;
+                         text-shadow: 5px 5px 20px rgba(0,0,0,0.9), 3px 3px 12px rgba(0,0,0,0.8),
+                                      0 0 30px rgba(0,0,0,0.6);
                          word-break: keep-all; white-space: nowrap;">
                 ${formatPrice(property.price)}
               </div>
             </div>
             
-            <!-- Contact Information - Strong Readable Design -->
-            <div style="text-align: center; margin-bottom: 30px; padding: 0 10px;">
-              <div style="color: #FFFFFF; font-weight: bold; text-shadow: 2px 2px 6px rgba(0,0,0,0.9);">
-                <div style="font-size: 20px; margin-bottom: 5px; letter-spacing: 0.8px;">
-                  📞 084 208 9307
+            <!-- Contact Information - Enhanced with Better Spacing -->
+            <div style="text-align: center; margin-bottom: 25px; padding: 0 15px;">
+              <div style="color: #FFFFFF; font-weight: 900; 
+                         text-shadow: 3px 3px 12px rgba(0,0,0,0.9), 1px 1px 6px rgba(0,0,0,0.8);">
+                <div style="font-size: 24px; margin-bottom: 12px; letter-spacing: 0.5px;
+                           display: flex; align-items: center; justify-content: center; gap: 10px;">
+                  <span style="font-size: 26px;">📞</span>
+                  <span>084 208 9307</span>
                 </div>
-                <div style="font-size: 14px; margin-bottom: 2px; letter-spacing: 0.2px;">
-                  ✉️ peter@spurgeonproperty.com
+                <div style="font-size: 16px; margin-bottom: 8px; letter-spacing: 0.3px;
+                           display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <span style="font-size: 18px;">✉️</span>
+                  <span>peter@spurgeonproperty.com</span>
                 </div>
-                <div style="font-size: 14px; letter-spacing: 0.2px;">
-                  🌐 spurgeonproperty.com
+                <div style="font-size: 16px; letter-spacing: 0.3px;
+                           display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <span style="font-size: 18px;">🌐</span>
+                  <span>spurgeonproperty.com</span>
                 </div>
+              </div>
+            </div>
+            
+            <!-- Footer Attribution -->
+            <div style="text-align: center; margin-top: auto; padding: 0 15px;">
+              <div style="font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 600;
+                         text-shadow: 1px 1px 4px rgba(0,0,0,0.8); letter-spacing: 0.5px;">
+                Prepared by Spurgeon Property
               </div>
             </div>
             
