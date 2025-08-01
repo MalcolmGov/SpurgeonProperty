@@ -116,47 +116,102 @@ export default function Contact() {
 
                 {/* Contact Cards */}
                 <div className="space-y-6">
-                  <Card className="p-6 hover:shadow-lg transition-shadow">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-orange-500 rounded-lg flex items-center justify-center">
-                        <Phone className="w-6 h-6 text-white" />
+                  {/* Phone Contact Card */}
+                  <Card className="p-8 hover:shadow-xl transition-all duration-300 border-l-4 border-l-purple-500 bg-gradient-to-r from-white to-purple-50/50 dark:from-slate-800 dark:to-purple-900/10">
+                    <div className="flex items-start space-x-6">
+                      <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <Phone className="w-8 h-8 text-white" />
                       </div>
-                      <div>
-                        <h3 className="font-semibold text-lg mb-2">Phone</h3>
-                        <div className="space-y-1 text-gray-600 dark:text-gray-300">
-                          <p className="font-medium">Office: 011 391 2152</p>
-                          <p>Spurgeon Peter: 084 208 9307</p>
-                          <p>Louis Smit: 083 677 3748</p>
+                      <div className="flex-1">
+                        <h3 className="font-bold text-xl mb-3 text-gray-900 dark:text-white">Call Us Directly</h3>
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <p className="font-semibold text-lg text-gray-800 dark:text-gray-100">Office: 011 391 2152</p>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                            <p className="text-lg text-gray-700 dark:text-gray-200">Peter Spurgeon: 084 208 9307</p>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                            <p className="text-lg text-gray-700 dark:text-gray-200">Louis Smit: 083 677 3748</p>
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">Available 7 days a week, 8AM - 8PM</p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  {/* Email Contact Card */}
+                  <Card className="p-8 hover:shadow-xl transition-all duration-300 border-l-4 border-l-blue-500 bg-gradient-to-r from-white to-blue-50/50 dark:from-slate-800 dark:to-blue-900/10">
+                    <div className="flex items-start space-x-6">
+                      <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <Mail className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-bold text-xl mb-3 text-gray-900 dark:text-white">Email Support</h3>
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <a href="mailto:Peter@spurgeonproperty.com" className="font-semibold text-lg text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
+                              Peter@spurgeonproperty.com
+                            </a>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                            <a href="mailto:louissm@spurgeonproperty.com" className="text-lg text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
+                              louissm@spurgeonproperty.com
+                            </a>
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">We respond within 2-4 hours during business days</p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  {/* WhatsApp Contact Card */}
+                  <Card className="p-8 hover:shadow-xl transition-all duration-300 border-l-4 border-l-green-500 bg-gradient-to-r from-white to-green-50/50 dark:from-slate-800 dark:to-green-900/10">
+                    <div className="flex items-start space-x-6">
+                      <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <MessageCircle className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-bold text-xl mb-3 text-gray-900 dark:text-white">WhatsApp Chat</h3>
+                        <div className="space-y-3">
+                          <p className="text-gray-600 dark:text-gray-300">Get instant responses via WhatsApp</p>
+                          <Button 
+                            className="bg-green-500 hover:bg-green-600 text-white px-6 py-2"
+                            onClick={() => {
+                              const message = encodeURIComponent("Hi! I'm interested in your property services. Could you please assist me?");
+                              window.open(`https://wa.me/27842089307?text=${message}`, '_blank');
+                            }}
+                          >
+                            <MessageCircle className="w-4 h-4 mr-2" />
+                            Chat on WhatsApp
+                          </Button>
                         </div>
                       </div>
                     </div>
                   </Card>
 
-                  <Card className="p-6 hover:shadow-lg transition-shadow">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
-                        <Mail className="w-6 h-6 text-white" />
+                  {/* Service Areas Card */}
+                  <Card className="p-8 hover:shadow-xl transition-all duration-300 border-l-4 border-l-orange-500 bg-gradient-to-r from-white to-orange-50/50 dark:from-slate-800 dark:to-orange-900/10">
+                    <div className="flex items-start space-x-6">
+                      <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <MapPin className="w-8 h-8 text-white" />
                       </div>
-                      <div>
-                        <h3 className="font-semibold text-lg mb-2">Email</h3>
-                        <div className="space-y-1 text-gray-600 dark:text-gray-300">
-                          <p>Peter@spurgeonproperty.com</p>
-                          <p>louissm@spurgeonproperty.com</p>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-
-                  <Card className="p-6 hover:shadow-lg transition-shadow">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
-                        <MapPin className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-lg mb-2">Service Areas</h3>
+                      <div className="flex-1">
+                        <h3 className="font-bold text-xl mb-3 text-gray-900 dark:text-white">Service Areas</h3>
                         <div className="text-gray-600 dark:text-gray-300">
-                          <p>Serving all major areas across South Africa</p>
-                          <p className="text-sm mt-1">Cape Town • Johannesburg • Durban • Pretoria</p>
+                          <p className="text-lg mb-2">Serving all major areas across South Africa</p>
+                          <div className="flex flex-wrap gap-2 mt-3">
+                            {['Cape Town', 'Johannesburg', 'Durban', 'Pretoria', 'Port Elizabeth', 'Bloemfontein'].map((city) => (
+                              <Badge key={city} variant="secondary" className="bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+                                {city}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
