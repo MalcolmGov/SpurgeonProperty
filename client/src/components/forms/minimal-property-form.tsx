@@ -292,7 +292,13 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/properties"] });
+      // Invalidate all properties queries regardless of filters
+      queryClient.invalidateQueries({ 
+        predicate: (query) => {
+          return typeof query.queryKey[0] === 'string' && 
+                 query.queryKey[0].startsWith('/api/properties');
+        }
+      });
       toast({
         title: "Success",
         description: property ? "Property updated successfully" : "Property created successfully",
