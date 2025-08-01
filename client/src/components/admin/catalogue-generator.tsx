@@ -36,6 +36,7 @@ export function CatalogueGenerator() {
   const { toast } = useToast();
   const [generatingHTML, setGeneratingHTML] = useState(false);
   const [generatingPDF, setGeneratingPDF] = useState(false);
+  const [generatingOptimizedPDF, setGeneratingOptimizedPDF] = useState(false);
   const [selectedProperties, setSelectedProperties] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
 
@@ -103,19 +104,41 @@ export function CatalogueGenerator() {
       credentials: 'include'
     }).then(res => {
       if (!res.ok) throw new Error('Failed to generate HTML catalogue');
+      // Check if response is HTML content for download
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('text/html')) {
+        // Return blob for download
+        return res.blob().then(blob => ({
+          success: true,
+          blob: blob,
+          filename: 'property_catalogue.html'
+        }));
+      }
       return res.json();
     }),
     onMutate: () => setGeneratingHTML(true),
     onSettled: () => setGeneratingHTML(false),
-    onSuccess: (data: CatalogueResponse) => {
+    onSuccess: (data: any) => {
       toast({
         title: "Success!",
-        description: data.message,
+        description: "HTML catalogue generated successfully",
         variant: "default",
       });
       
-      // Open HTML catalogue in new tab
-      window.open(data.downloadUrl, '_blank');
+      // Handle blob download
+      if (data.blob) {
+        const url = URL.createObjectURL(data.blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = data.filename || 'property_catalogue.html';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      } else if (data.downloadUrl) {
+        // Fallback to opening in new tab
+        window.open(data.downloadUrl, '_blank');
+      }
     },
     onError: (error: any) => {
       toast({
@@ -166,12 +189,59 @@ export function CatalogueGenerator() {
     }
   });
 
+  // Optimized PDF Generation Mutation
+  const generateOptimizedPDFMutation = useMutation({
+    mutationFn: () => fetch('/api/properties/optimized-catalogue', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        propertyIds: selectedProperties.length > 0 ? selectedProperties : properties.map(p => p.id),
+        title: 'Premium Property Catalogue',
+        clientName: 'Valued Client'
+      }),
+      credentials: 'include'
+    }).then(res => {
+      if (!res.ok) throw new Error('Failed to generate optimized PDF catalogue');
+      return res.json();
+    }),
+    onMutate: () => setGeneratingOptimizedPDF(true),
+    onSettled: () => setGeneratingOptimizedPDF(false),
+    onSuccess: (data: CatalogueResponse) => {
+      toast({
+        title: "Success!",
+        description: data.message,
+        variant: "default",
+      });
+      
+      // Trigger PDF download
+      const link = document.createElement('a');
+      link.href = data.downloadUrl;
+      link.download = data.filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Generation Failed",
+        description: error.message || "Failed to generate optimized PDF catalogue",
+        variant: "destructive",
+      });
+    }
+  });
+
   const handleGenerateHTML = () => {
     generateHTMLMutation.mutate();
   };
 
   const handleGeneratePDF = () => {
     generatePDFMutation.mutate();
+  };
+
+  const handleGenerateOptimizedPDF = () => {
+    generateOptimizedPDFMutation.mutate();
   };
 
   if (isLoading) {
@@ -303,7 +373,7 @@ export function CatalogueGenerator() {
       </Card>
 
       {/* Generation Options */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* HTML Catalogue Card */}
         <Card className="relative overflow-hidden">
           <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-bl-full opacity-10"></div>
@@ -405,6 +475,62 @@ export function CatalogueGenerator() {
             </Button>
           </CardContent>
         </Card>
+
+        {/* Optimized PDF Catalogue Card */}
+        <Card className="relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-orange-500 to-red-500 rounded-bl-full opacity-10"></div>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-orange-100 dark:bg-orange-900/20 rounded-lg">
+                  <FileText className="h-6 w-6 text-orange-600" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Optimized PDF Catalogue</CardTitle>
+                  <CardDescription>Premium professional catalogue with contact info</CardDescription>
+                </div>
+              </div>
+              <Badge variant="secondary" className="bg-orange-100 text-orange-700">Premium</Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
+                Professional cover page with branding
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
+                Table of contents and organized layout
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                Peter Spurgeon contact info on every page
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                Enhanced headers, footers, and styling
+              </li>
+            </ul>
+            <Button 
+              onClick={handleGenerateOptimizedPDF}
+              disabled={generatingOptimizedPDF}
+              className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800"
+            >
+              {generatingOptimizedPDF ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <Download className="mr-2 h-4 w-4" />
+                  Generate Optimized PDF
+                </>
+              )}
+            </Button>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Usage Guide */}
@@ -413,7 +539,7 @@ export function CatalogueGenerator() {
           <CardTitle>How to Use Your Catalogues</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <h3 className="font-semibold text-purple-600 mb-3">HTML Catalogue Best For:</h3>
               <ul className="space-y-2 text-sm">
@@ -430,6 +556,15 @@ export function CatalogueGenerator() {
                 <li>• Professional brochures</li>
                 <li>• Print marketing materials</li>
                 <li>• Email attachments</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-purple-600 mb-3">Optimized PDF Best For:</h3>
+              <ul className="space-y-2 text-sm">
+                <li>• Premium client portfolios</li>
+                <li>• High-end property showcases</li>
+                <li>• Comprehensive property catalogs</li>
+                <li>• Professional marketing materials</li>
               </ul>
             </div>
           </div>

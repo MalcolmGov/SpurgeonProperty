@@ -1371,6 +1371,98 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Optimized Catalogue Generation API
+  app.post('/api/properties/optimized-catalogue', async (req, res) => {
+    try {
+      const { propertyIds, title = 'Premium Property Catalogue', clientName = 'Valued Client' } = req.body;
+      
+      if (!propertyIds || !Array.isArray(propertyIds)) {
+        return res.status(400).json({ error: 'Property IDs required' });
+      }
+
+      // Fetch properties with enhanced data processing
+      const properties = await Promise.all(
+        propertyIds.map(async (id: number) => {
+          const property = await storage.getProperty(id);
+          if (property) {
+            // Process and enhance property data
+            return {
+              ...property,
+              images: typeof property.images === 'string' ? JSON.parse(property.images || '[]') : (property.images || []),
+              features: typeof property.features === 'string' ? JSON.parse(property.features || '[]') : (property.features || []),
+              agent: {
+                id: 9,
+                name: "Peter Spurgeon",
+                title: "Principal Real Estate Agent",
+                phone: "084 208 9307",
+                email: "Peter@spurgeonproperty.com",
+                rating: 4.9
+              }
+            };
+          }
+          return null;
+        })
+      );
+
+      const validProperties = properties.filter(p => p !== null);
+      
+      if (validProperties.length === 0) {
+        return res.status(404).json({ error: 'No valid properties found' });
+      }
+
+      // Generate optimized catalogue
+      const uploadsDir = path.join(process.cwd(), 'uploads');
+      const filename = `optimized_catalogue_${Date.now()}.pdf`;
+      const outputPath = path.join(uploadsDir, filename);
+      
+      console.log(`Generating Optimized Catalogue PDF to: ${outputPath}`);
+      
+      const success = await generateOptimizedCatalogue(validProperties, outputPath, title, clientName);
+
+      if (success && fs.existsSync(outputPath)) {
+        const stats = fs.statSync(outputPath);
+        
+        if (stats.size === 0) {
+          res.status(500).json({ error: 'Generated catalogue is empty' });
+          return;
+        }
+        
+        const fileUrl = `/uploads/${filename}`;
+        res.json({ 
+          success: true,
+          message: 'Optimized property catalogue generated successfully',
+          downloadUrl: fileUrl,
+          filename: `${title.replace(/[^a-zA-Z0-9]/g, '_')}_optimized.pdf`,
+          propertyCount: validProperties.length,
+          features: [
+            'Professional cover page with Peter Spurgeon contact info',
+            'Comprehensive table of contents',
+            'Individual property pages with enhanced layouts',
+            'High-quality image optimization',
+            'Consistent branding throughout',
+            'Contact information on every page'
+          ]
+        });
+        
+        // Cleanup after 15 minutes
+        setTimeout(() => {
+          if (fs.existsSync(outputPath)) {
+            fs.unlinkSync(outputPath);
+            console.log(`Cleaned up optimized catalogue: ${filename}`);
+          }
+        }, 15 * 60 * 1000);
+        
+        return;
+      } else {
+        res.status(500).json({ error: 'Failed to generate optimized catalogue' });
+        return;
+      }
+    } catch (error) {
+      console.error('Error generating optimized catalogue:', error);
+      res.status(500).json({ error: 'Failed to generate optimized catalogue' });
+    }
+  });
+
   // Enhanced PDF Generation with Peter Spurgeon Contact Info
   app.post('/api/properties/enhanced-pdf', async (req, res) => {
     try {
@@ -1464,6 +1556,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: 'Failed to generate Enhanced PDF' });
     }
   });
+
+  // Helper function to generate Optimized Catalogue
+  async function generateOptimizedCatalogue(properties: any[], outputPath: string, title: string, clientName?: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      try {
+        const catalogueData = {
+          properties: properties.map(prop => ({
+            ...prop,
+            images: typeof prop.images === 'string' ? JSON.parse(prop.images || '[]') : (prop.images || []),
+            features: typeof prop.features === 'string' ? JSON.parse(prop.features || '[]') : (prop.features || []),
+          })),
+          clientName: clientName || 'Valued Client',
+          catalogueTitle: title || 'Premium Property Catalogue'
+        };
+
+        const tempDataPath = path.join(tempDir, `optimized_data_${Date.now()}.json`);
+        fs.writeFileSync(tempDataPath, JSON.stringify(catalogueData, null, 2));
+        
+        const pythonScript = path.join(process.cwd(), 'optimized_catalogue_generator.py');
+        const python = spawn('python', [pythonScript, tempDataPath, outputPath, title]);
+        
+        python.stdout.on('data', (data) => {
+          console.log(`Optimized Catalogue Python stdout: ${data}`);
+        });
+        
+        python.stderr.on('data', (data) => {
+          console.error(`Optimized Catalogue Python stderr: ${data}`);
+        });
+        
+        python.on('close', (code) => {
+          if (fs.existsSync(tempDataPath)) {
+            fs.unlinkSync(tempDataPath);
+          }
+          
+          console.log(`Optimized Catalogue Python process exited with code ${code}`);
+          resolve(code === 0 && fs.existsSync(outputPath));
+        });
+        
+        python.on('error', (error) => {
+          console.error('Optimized Catalogue Python process error:', error);
+          if (fs.existsSync(tempDataPath)) {
+            fs.unlinkSync(tempDataPath);
+          }
+          resolve(false);
+        });
+      } catch (error) {
+        console.error('Optimized Catalogue generation setup error:', error);
+        resolve(false);
+      }
+    });
+  }
 
   // Helper function to generate Enhanced PDF with Peter Spurgeon contact info
   async function generateEnhancedPDF(properties: any[], outputPath: string, title: string, clientName?: string): Promise<boolean> {
@@ -1820,12 +1963,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         if (code === 0) {
           console.log('HTML catalogue generated successfully');
-          res.json({ 
-            success: true, 
-            message: "HTML catalogue generated successfully",
-            filename: "spurgeon_catalogue.html",
-            downloadUrl: "/spurgeon_catalogue.html"
-          });
+          
+          // Read and send HTML file as download
+          const htmlPath = path.join(process.cwd(), 'spurgeon_catalogue.html');
+          if (fs.existsSync(htmlPath)) {
+            res.setHeader('Content-Type', 'text/html');
+            res.setHeader('Content-Disposition', 'attachment; filename="spurgeon_property_catalogue.html"');
+            
+            const htmlContent = fs.readFileSync(htmlPath, 'utf8');
+            res.send(htmlContent);
+          } else {
+            res.status(500).json({ error: 'HTML catalogue file not found' });
+          }
         } else {
           console.error('Python script failed:', stderr);
           res.status(500).json({ error: `Catalogue generation failed: ${stderr || stdout}` });
