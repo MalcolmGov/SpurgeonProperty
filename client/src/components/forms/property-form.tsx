@@ -39,7 +39,7 @@ export default function PropertyForm({ property, open, onClose }: PropertyFormPr
     features: [] as string[],
     images: [] as string[],
     status: "active",
-    agentId: "unassigned",
+    agentId: "9", // Default to Peter Spurgeon
     featured: false
   });
 
@@ -161,7 +161,7 @@ export default function PropertyForm({ property, open, onClose }: PropertyFormPr
           features: [] as string[],
           images: [] as string[],
           status: "active",
-          agentId: "unassigned",
+          agentId: "9", // Default to Peter Spurgeon
           featured: false
         });
       }

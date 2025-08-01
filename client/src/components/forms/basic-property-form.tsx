@@ -40,7 +40,7 @@ export default function BasicPropertyForm({ open, onClose }: BasicPropertyFormPr
     parkingSpaces: "1",
     yearBuilt: "",
     status: "active",
-    agentId: "",
+    agentId: "9", // Default to Peter Spurgeon
     featured: false
   });
 

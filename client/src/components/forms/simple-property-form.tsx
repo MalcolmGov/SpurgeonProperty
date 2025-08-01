@@ -32,7 +32,7 @@ const INITIAL_FORM_DATA = {
   bathrooms: "2",
   area: "",
   status: "active",
-  agentId: "none"
+  agentId: "9" // Default to Peter Spurgeon
 };
 
 export default function SimplePropertyForm({ property, open, onClose }: SimplePropertyFormProps) {
