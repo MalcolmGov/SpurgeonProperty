@@ -90,17 +90,26 @@ export function SocialMediaGenerator() {
       if (isSelected) {
         return prev.filter(id => id !== propertyId);
       } else {
-        // For social media, limit to 1 property per image for best results
-        return [propertyId];
+        return [...prev, propertyId];
       }
     });
   };
 
-  const generateSocialImage = async () => {
+  const selectAllProperties = () => {
+    if (selectedProperties.length === properties.length) {
+      // If all are selected, deselect all
+      setSelectedProperties([]);
+    } else {
+      // Select all properties
+      setSelectedProperties(properties.map(p => p.id));
+    }
+  };
+
+  const generateSocialImages = async () => {
     if (selectedProperties.length === 0) {
       toast({
-        title: "No Property Selected",
-        description: "Please select a property to generate social media image",
+        title: "No Properties Selected",
+        description: "Please select one or more properties to generate social media images",
         variant: "destructive",
       });
       return;
@@ -109,8 +118,11 @@ export function SocialMediaGenerator() {
     setGenerating(true);
     
     try {
-      const property = properties.find(p => p.id === selectedProperties[0]);
-      if (!property) throw new Error('Property not found');
+      // Generate images for all selected properties
+      for (let i = 0; i < selectedProperties.length; i++) {
+        const propertyId = selectedProperties[i];
+        const property = properties.find(p => p.id === propertyId);
+        if (!property) continue;
 
       // Create a temporary canvas element for rendering
       const tempDiv = document.createElement('div');
@@ -348,22 +360,28 @@ export function SocialMediaGenerator() {
       // Clean up
       document.body.removeChild(tempDiv);
 
-      // Download the image
-      const link = document.createElement('a');
-      link.download = `${property.title.replace(/[^a-zA-Z0-9]/g, '_')}_${selectedFormat.name.replace(/\s+/g, '_')}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+        // Download the image
+        const link = document.createElement('a');
+        link.download = `${property.title.replace(/[^a-zA-Z0-9]/g, '_')}_social_media_${i + 1}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+
+        // Small delay between downloads to avoid browser blocking
+        if (i < selectedProperties.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
+      }
 
       toast({
         title: "Success!",
-        description: `Social media image generated and downloaded: ${selectedFormat.name}`,
+        description: `${selectedProperties.length} social media image${selectedProperties.length > 1 ? 's' : ''} generated and downloaded`,
         variant: "default",
       });
 
     } catch (error: any) {
       toast({
         title: "Generation Failed",
-        description: error.message || "Failed to generate social media image",
+        description: error.message || "Failed to generate social media images",
         variant: "destructive",
       });
     } finally {
@@ -387,13 +405,25 @@ export function SocialMediaGenerator() {
       {/* Property Selection */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CheckSquare className="h-5 w-5" />
-            Select Property
-          </CardTitle>
-          <CardDescription>
-            Choose one property to feature in your social media image
-          </CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <CheckSquare className="h-5 w-5" />
+                Select Properties
+              </CardTitle>
+              <CardDescription>
+                Choose properties to generate social media images ({selectedProperties.length} selected)
+              </CardDescription>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={selectAllProperties}
+              className="min-w-[100px]"
+            >
+              {selectedProperties.length === properties.length ? 'Deselect All' : 'Select All'}
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
@@ -452,7 +482,7 @@ export function SocialMediaGenerator() {
       <Card>
         <CardContent className="pt-6">
           <Button 
-            onClick={generateSocialImage}
+            onClick={generateSocialImages}
             disabled={generating || selectedProperties.length === 0}
             className="w-full bg-gradient-to-r from-purple-600 to-orange-600 hover:from-purple-700 hover:to-orange-700 text-white font-semibold py-3"
             size="lg"
@@ -460,19 +490,25 @@ export function SocialMediaGenerator() {
             {generating ? (
               <>
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                Generating Image...
+                Generating {selectedProperties.length} Image{selectedProperties.length > 1 ? 's' : ''}...
               </>
             ) : (
               <>
                 <Download className="mr-2 h-5 w-5" />
-                Generate & Download {selectedFormat.name}
+                Generate & Download {selectedProperties.length} Image{selectedProperties.length > 1 ? 's' : ''}
               </>
             )}
           </Button>
           
           {selectedProperties.length === 0 && (
             <p className="text-center text-gray-500 text-sm mt-2">
-              Select a property above to generate social media image
+              Select properties above to generate social media images
+            </p>
+          )}
+          
+          {selectedProperties.length > 0 && (
+            <p className="text-center text-gray-600 text-sm mt-2">
+              {selectedProperties.length} propert{selectedProperties.length > 1 ? 'ies' : 'y'} selected • Each will download automatically
             </p>
           )}
         </CardContent>
