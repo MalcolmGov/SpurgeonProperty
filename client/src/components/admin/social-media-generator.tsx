@@ -49,11 +49,11 @@ export function SocialMediaGenerator() {
   const [generating, setGenerating] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
 
-  // Fetch all properties for selection
+  // Fetch all properties for selection (not just featured)
   const { data: properties = [], isLoading } = useQuery({
-    queryKey: ['/api/properties'],
+    queryKey: ['/api/properties', 'all'],
     queryFn: () => 
-      fetch('/api/properties?limit=100', {
+      fetch('/api/properties?limit=100&featured=false', {
         credentials: 'include'
       }).then(res => res.json()) as Promise<Property[]>
   });
