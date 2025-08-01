@@ -28,12 +28,12 @@ interface WhatsAppButtonProps {
 }
 
 function WhatsAppButton({ propertyId, agentId, formData, onClose }: WhatsAppButtonProps) {
-  const { data: property } = useQuery({
+  const { data: property } = useQuery<any>({
     queryKey: [`/api/properties/${propertyId}`],
     enabled: !!propertyId,
   });
 
-  const { data: agent } = useQuery({
+  const { data: agent } = useQuery<any>({
     queryKey: [`/api/agents/${agentId}`],
     enabled: !!agentId,
   });

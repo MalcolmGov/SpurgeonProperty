@@ -3,6 +3,7 @@ import PropertySearch from "@/components/property/property-search";
 import PropertyCard from "@/components/PropertyCard";
 import PropertyCardSkeleton from "@/components/property/property-card-skeleton";
 import AIAssistant from "@/components/AIAssistant";
+import ContactCard from "@/components/ContactCard";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
 import { useProperties } from "@/hooks/use-properties";
