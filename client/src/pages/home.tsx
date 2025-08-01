@@ -563,6 +563,39 @@ export default function Home() {
             </section>
           </FadeInSection>
 
+          {/* Contact Peter Spurgeon Section */}
+          <FadeInSection>
+            <section className="py-16 bg-white dark:bg-slate-900">
+              <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  viewport={{ once: true }}
+                  className="text-center mb-8"
+                >
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                    <span className="bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
+                      Ready to Find Your Dream Property?
+                    </span>
+                  </h2>
+                  <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+                    Connect with Peter Spurgeon, your trusted real estate expert in South Africa
+                  </p>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  viewport={{ once: true }}
+                >
+                  <ContactCard variant="full" />
+                </motion.div>
+              </div>
+            </section>
+          </FadeInSection>
+
           {/* AI Assistant Section - Temporarily hidden */}
           {/* <FadeInSection>
             <section className="py-20 bg-slate-50 dark:bg-slate-800">

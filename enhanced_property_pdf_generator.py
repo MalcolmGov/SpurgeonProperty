@@ -245,23 +245,43 @@ class EnhancedPropertyPDFGenerator:
         canvas_obj.restoreState()
     
     def create_branded_footer(self, canvas_obj, doc):
-        """Create professional branded footer with contact info"""
+        """Create professional branded footer with Peter Spurgeon contact info"""
         canvas_obj.saveState()
         
-        # Footer line
-        canvas_obj.setStrokeColor(self.LIGHT_GRAY)
-        canvas_obj.setLineWidth(1)
-        canvas_obj.line(self.MARGIN, 50, letter[0] - self.MARGIN, 50)
+        # Footer background with gradient effect
+        canvas_obj.setFillColor(self.SECONDARY_GRAY)
+        canvas_obj.rect(0, 0, letter[0], 65, fill=True, stroke=False)
         
-        # Page number
+        # Footer line
+        canvas_obj.setStrokeColor(self.BRAND_PURPLE)
+        canvas_obj.setLineWidth(2)
+        canvas_obj.line(self.MARGIN, 55, letter[0] - self.MARGIN, 55)
+        
+        # Contact Information - Peter Spurgeon
+        canvas_obj.setFont('Helvetica-Bold', 11)
+        canvas_obj.setFillColor(self.BRAND_PURPLE)
+        canvas_obj.drawString(self.MARGIN, 40, "Contact: Peter Spurgeon")
+        
+        canvas_obj.setFont('Helvetica', 10)
+        canvas_obj.setFillColor(self.TEXT_GRAY)
+        canvas_obj.drawString(self.MARGIN, 28, "📱 084 208 9307")
+        canvas_obj.drawString(self.MARGIN, 16, "📧 Peter@spurgeonproperty.com")
+        
+        # Website and company info
+        canvas_obj.setFont('Helvetica', 10)
+        canvas_obj.setFillColor(self.BRAND_ORANGE)
+        canvas_obj.drawCentredString(letter[0]/2, 40, "www.spurgeonproperty.com")
+        canvas_obj.setFillColor(self.MEDIUM_GRAY)
+        canvas_obj.drawCentredString(letter[0]/2, 28, "Professional Real Estate Services")
+        canvas_obj.drawCentredString(letter[0]/2, 16, "Available 7 days a week • 8AM - 8PM")
+        
+        # Page number and copyright
         canvas_obj.setFont('Helvetica', 9)
         canvas_obj.setFillColor(self.MEDIUM_GRAY)
         page_num = canvas_obj.getPageNumber()
-        canvas_obj.drawRightString(letter[0] - self.MARGIN, 35, f"Page {page_num}")
-        
-        # Company footer info
-        canvas_obj.drawString(self.MARGIN, 35, f"© {datetime.now().year} Spurgeon Property")
-        canvas_obj.drawCentredString(letter[0]/2, 35, "Professional Real Estate Services")
+        canvas_obj.drawRightString(letter[0] - self.MARGIN, 40, f"Page {page_num}")
+        canvas_obj.drawRightString(letter[0] - self.MARGIN, 28, f"© {datetime.now().year} Spurgeon Property")
+        canvas_obj.drawRightString(letter[0] - self.MARGIN, 16, "All Rights Reserved")
         
         canvas_obj.restoreState()
     
@@ -525,27 +545,56 @@ class EnhancedPropertyPDFGenerator:
                     story.append(location_para)
                     story.append(Spacer(1, 0.4 * inch))
                 
-                # Agent contact information
-                if property_data.get('agent'):
-                    agent = property_data['agent']
-                    contact_heading = Paragraph('Your Real Estate Professional', self.styles['PropertySubheading'])
-                    story.append(contact_heading)
+                # Peter Spurgeon Contact Information Box
+                contact_heading = Paragraph('Contact Your Real Estate Expert', self.styles['PropertySubheading'])
+                story.append(contact_heading)
+                
+                # Create a styled contact box
+                contact_data = [
+                    ['Contact: Peter Spurgeon', ''],
+                    ['Phone:', '084 208 9307'],
+                    ['Email:', 'Peter@spurgeonproperty.com'],
+                    ['Website:', 'www.spurgeonproperty.com'],
+                    ['Available:', '7 days a week • 8AM - 8PM']
+                ]
+                
+                contact_table = Table(contact_data, colWidths=[1.5*inch, 3.5*inch])
+                contact_table.setStyle(TableStyle([
+                    # Header row styling
+                    ('SPAN', (0, 0), (1, 0)),
+                    ('BACKGROUND', (0, 0), (1, 0), self.BRAND_PURPLE),
+                    ('TEXTCOLOR', (0, 0), (1, 0), white),
+                    ('FONTNAME', (0, 0), (1, 0), 'Helvetica-Bold'),
+                    ('FONTSIZE', (0, 0), (1, 0), 12),
+                    ('ALIGN', (0, 0), (1, 0), 'CENTER'),
                     
-                    agent_name = agent.get('name', 'Spurgeon Property Team')
-                    agent_title = agent.get('title', 'Real Estate Professional')
-                    agent_phone = agent.get('phone', '+27 11 123 4567')
-                    agent_email = agent.get('email', 'info@spurgeonproperty.co.za')
+                    # Contact details styling
+                    ('FONTNAME', (0, 1), (0, -1), 'Helvetica-Bold'),
+                    ('FONTNAME', (1, 1), (1, -1), 'Helvetica'),
+                    ('FONTSIZE', (0, 1), (-1, -1), 10),
+                    ('TEXTCOLOR', (0, 1), (0, -1), self.BRAND_ORANGE),
+                    ('TEXTCOLOR', (1, 1), (1, -1), self.TEXT_GRAY),
                     
-                    contact_info = Paragraph(
-                        f'<b>{agent_name}</b><br/>'
-                        f'<i>{agent_title}</i><br/><br/>'
-                        f'<b>Phone:</b> {agent_phone}<br/>'
-                        f'<b>Email:</b> {agent_email}<br/>'
-                        f'<b>Website:</b> www.spurgeonproperty.co.za<br/><br/>'
-                        f'<span color="{self.MEDIUM_GRAY.hexval()}">Ready to assist with viewings, valuations, and all your property needs.</span>',
-                        self.styles['ContactInfo']
-                    )
-                    story.append(contact_info)
+                    # Table styling
+                    ('BACKGROUND', (0, 1), (-1, -1), self.SECONDARY_GRAY),
+                    ('GRID', (0, 0), (-1, -1), 1, self.LIGHT_GRAY),
+                    ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                    ('TOPPADDING', (0, 0), (-1, -1), 8),
+                    ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+                    ('LEFTPADDING', (0, 0), (-1, -1), 12),
+                    ('RIGHTPADDING', (0, 0), (-1, -1), 12),
+                ]))
+                story.append(contact_table)
+                
+                # Call-to-action
+                cta_text = Paragraph(
+                    f'<span color="{self.MEDIUM_GRAY.hexval()}">Ready to schedule a viewing or get more information? '
+                    f'Contact Peter today for professional guidance and exceptional service.</span>',
+                    self.styles['PropertyBody']
+                )
+                cta_text.style.alignment = TA_CENTER
+                story.append(Spacer(1, 0.2 * inch))
+                story.append(cta_text)
                 
                 # Add page break between properties (except last)
                 if i < len(properties):

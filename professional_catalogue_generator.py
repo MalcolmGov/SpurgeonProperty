@@ -74,6 +74,17 @@ class PropertyCard(Flowable):
         canvas.setFont('Helvetica-Bold', 8)
         canvas.drawString(12*mm, self.height - 18*mm, prop_type.upper())
         
+        # Contact information box (Peter Spurgeon)
+        canvas.setFillColor(BRAND_ORANGE)
+        canvas.rect(10*mm, 5*mm, self.width - 20*mm, 15*mm, fill=1, stroke=0)
+        
+        canvas.setFillColor(white)
+        canvas.setFont('Helvetica-Bold', 7)
+        canvas.drawString(12*mm, 15*mm, "Contact: Peter Spurgeon")
+        canvas.setFont('Helvetica', 6)
+        canvas.drawString(12*mm, 11*mm, "📱 084 208 9307")
+        canvas.drawString(12*mm, 7*mm, "📧 Peter@spurgeonproperty.com")
+        
         # Price
         price_text = self.format_price(self.property_data.get('price'))
         canvas.setFillColor(BRAND_ORANGE)

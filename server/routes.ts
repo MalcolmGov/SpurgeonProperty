@@ -1371,6 +1371,168 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Enhanced PDF Generation with Peter Spurgeon Contact Info
+  app.post('/api/properties/enhanced-pdf', async (req, res) => {
+    try {
+      const { propertyIds, title = 'Premium Property Showcase', clientName = 'Valued Client' } = req.body;
+      
+      if (!propertyIds || !Array.isArray(propertyIds)) {
+        return res.status(400).json({ error: 'Property IDs required' });
+      }
+
+      // Fetch properties with agent information
+      const properties = await Promise.all(
+        propertyIds.map(async (id: number) => {
+          const property = await storage.getProperty(id);
+          if (property) {
+            // Ensure Peter Spurgeon is set as the agent
+            const enhancedProperty = {
+              ...property,
+              agent: {
+                id: 9,
+                name: "Peter Spurgeon",
+                title: "Principal Real Estate Agent", 
+                phone: "084 208 9307",
+                email: "Peter@spurgeonproperty.com",
+                rating: 4.9,
+                avatar: null
+              }
+            };
+            return enhancedProperty;
+          }
+          return null;
+        })
+      );
+
+      const validProperties = properties.filter(p => p !== null);
+      
+      if (validProperties.length === 0) {
+        return res.status(404).json({ error: 'No valid properties found' });
+      }
+
+      // Generate enhanced PDF in uploads directory
+      const uploadsDir = path.join(process.cwd(), 'uploads');
+      const filename = `enhanced_catalogue_${Date.now()}.pdf`;
+      const outputPath = path.join(uploadsDir, filename);
+      
+      console.log(`Generating Enhanced PDF with Peter Spurgeon contact info to: ${outputPath}`);
+      
+      const success = await generateEnhancedPDF(validProperties, outputPath, title, clientName);
+      console.log(`Enhanced PDF generation success: ${success}`);
+
+      if (success && fs.existsSync(outputPath)) {
+        const stats = fs.statSync(outputPath);
+        console.log(`Generated Enhanced PDF file size: ${stats.size} bytes`);
+        
+        if (stats.size === 0) {
+          console.error('Generated Enhanced PDF file is empty');
+          res.status(500).json({ error: 'Generated Enhanced PDF file is empty' });
+          return;
+        }
+        
+        // Return the file URL for download
+        const fileUrl = `/uploads/${filename}`;
+        res.json({ 
+          success: true,
+          message: 'Enhanced PDF with Peter Spurgeon contact info generated successfully',
+          downloadUrl: fileUrl,
+          filename: `${title.replace(/[^a-zA-Z0-9]/g, '_')}_enhanced.pdf`,
+          contactInfo: {
+            agent: "Peter Spurgeon",
+            phone: "084 208 9307",
+            email: "Peter@spurgeonproperty.com",
+            website: "www.spurgeonproperty.com"
+          }
+        });
+        
+        // Schedule cleanup after 10 minutes
+        setTimeout(() => {
+          if (fs.existsSync(outputPath)) {
+            fs.unlinkSync(outputPath);
+            console.log(`Cleaned up Enhanced PDF file: ${filename}`);
+          }
+        }, 10 * 60 * 1000);
+        
+        return;
+      } else {
+        console.error(`Enhanced PDF generation failed or file does not exist at: ${outputPath}`);
+        res.status(500).json({ error: 'Failed to generate Enhanced PDF' });
+        return;
+      }
+    } catch (error) {
+      console.error('Error generating Enhanced PDF:', error);
+      res.status(500).json({ error: 'Failed to generate Enhanced PDF' });
+    }
+  });
+
+  // Helper function to generate Enhanced PDF with Peter Spurgeon contact info
+  async function generateEnhancedPDF(properties: any[], outputPath: string, title: string, clientName?: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      try {
+        // Prepare enhanced data structure for Python script
+        const enhancedData = {
+          properties: properties.map(prop => ({
+            ...prop,
+            images: typeof prop.images === 'string' ? JSON.parse(prop.images || '[]') : (prop.images || []),
+            features: typeof prop.features === 'string' ? JSON.parse(prop.features || '[]') : (prop.features || []),
+            agent: {
+              id: 9,
+              name: "Peter Spurgeon",
+              title: "Principal Real Estate Agent",
+              phone: "084 208 9307", 
+              email: "Peter@spurgeonproperty.com",
+              rating: 4.9
+            }
+          })),
+          clientName: clientName || 'Valued Client',
+          catalogueTitle: title || 'Premium Property Showcase',
+          contactInfo: {
+            agent: "Peter Spurgeon",
+            phone: "084 208 9307",
+            email: "Peter@spurgeonproperty.com",
+            website: "www.spurgeonproperty.com",
+            availability: "7 days a week • 8AM - 8PM"
+          }
+        };
+
+        const tempDataPath = path.join(tempDir, `enhanced_data_${Date.now()}.json`);
+        fs.writeFileSync(tempDataPath, JSON.stringify(enhancedData, null, 2));
+        
+        const pythonScript = path.join(process.cwd(), 'enhanced_property_pdf_generator.py');
+        const python = spawn('python', [pythonScript, tempDataPath, outputPath, title]);
+        
+        python.stdout.on('data', (data) => {
+          console.log(`Enhanced PDF Python stdout: ${data}`);
+        });
+        
+        python.stderr.on('data', (data) => {
+          console.error(`Enhanced PDF Python stderr: ${data}`);
+        });
+        
+        python.on('close', (code) => {
+          // Cleanup temp data file
+          if (fs.existsSync(tempDataPath)) {
+            fs.unlinkSync(tempDataPath);
+          }
+          
+          console.log(`Enhanced PDF Python process exited with code ${code}`);
+          resolve(code === 0 && fs.existsSync(outputPath));
+        });
+        
+        python.on('error', (error) => {
+          console.error('Enhanced PDF Python process error:', error);
+          if (fs.existsSync(tempDataPath)) {
+            fs.unlinkSync(tempDataPath);
+          }
+          resolve(false);
+        });
+      } catch (error) {
+        console.error('Enhanced PDF generation setup error:', error);
+        resolve(false);
+      }
+    });
+  }
+
   // Helper function to generate Python catalogue PDF
   async function generatePythonCataloguePDF(properties: any[], outputPath: string, title: string, clientName?: string): Promise<boolean> {
     return new Promise((resolve) => {

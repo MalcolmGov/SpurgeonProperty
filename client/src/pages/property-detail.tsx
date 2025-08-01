@@ -4,6 +4,7 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import PropertyGallery from "@/components/property/property-gallery";
 import ContactForm from "@/components/forms/contact-form";
+import ContactCard from "@/components/ContactCard";
 import MortgageCalculator from "@/components/MortgageCalculator";
 import { NeighborhoodAnalytics } from "@/components/NeighborhoodAnalytics";
 
@@ -244,6 +245,11 @@ export default function PropertyDetail() {
                     </div>
                   </div>
                 )}
+                
+                {/* Contact Card */}
+                <div className="mt-6">
+                  <ContactCard variant="compact" />
+                </div>
               </CardContent>
             </Card>
           </div>
