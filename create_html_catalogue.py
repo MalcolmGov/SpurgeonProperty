@@ -33,14 +33,55 @@ class HTMLPropertyCatalogue:
         }
         return colors.get(property_type, 'type-default')
     
+    def get_image_data_url(self, image_path):
+        """Convert image to base64 data URL for embedded display"""
+        import base64
+        
+        # Handle different image path formats
+        if image_path.startswith('/uploads/'):
+            full_path = f".{image_path}"
+        elif image_path.startswith('./uploads/'):
+            full_path = image_path
+        elif image_path.startswith('uploads/'):
+            full_path = f"./{image_path}"
+        else:
+            full_path = f"./uploads/{image_path}"
+        
+        try:
+            if os.path.exists(full_path):
+                with open(full_path, 'rb') as image_file:
+                    image_data = base64.b64encode(image_file.read()).decode()
+                    
+                    # Determine MIME type based on file extension
+                    if full_path.lower().endswith(('.jpg', '.jpeg')):
+                        mime_type = 'image/jpeg'
+                    elif full_path.lower().endswith('.png'):
+                        mime_type = 'image/png'
+                    elif full_path.lower().endswith('.webp'):
+                        mime_type = 'image/webp'
+                    else:
+                        mime_type = 'image/jpeg'  # Default
+                    
+                    return f"data:{mime_type};base64,{image_data}"
+            else:
+                print(f"Image not found: {full_path}")
+                return None
+        except Exception as e:
+            print(f"Error processing image {full_path}: {e}")
+            return None
+
     def create_property_card(self, property_data):
         """Create HTML for a single property card"""
         images = property_data.get('images', [])
-        image_url = images[0] if images else '/uploads/placeholder.jpg'
         
-        # Handle local image paths
-        if image_url.startswith('/uploads/'):
-            image_url = f".{image_url}"
+        # Try to get base64 data URL for the first image
+        image_url = None
+        if images:
+            image_url = self.get_image_data_url(images[0])
+        
+        # If no valid image data URL, use placeholder SVG
+        if not image_url:
+            image_url = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjOGI1Y2Y2IiBzdG9wLW9wYWNpdHk9IjAuMiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmYjgwMzciIHN0b3Atb3BhY2l0eT0iMC4yIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWRpZW50KSIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNDAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjOGI1Y2Y2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+U1BVUkdFT04gUHJvcGVydHk8L3RleHQ+CiAgPHRleHQgeD0iNTAlIiB5PSI2MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzk5OTk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIENvbWluZyBTb29uPC90ZXh0Pgo8L3N2Zz4K"
         
         title = property_data.get('title', 'Property Title')
         price = self.format_price(property_data.get('price'))
@@ -78,8 +119,8 @@ class HTMLPropertyCatalogue:
         return f'''
         <div class="property-card">
             <div class="property-image">
-                <img src="{image_url}" alt="{title}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OTk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBGb3VuZDwvdGV4dD4KICA8L3N2Zz4K'">
-                <div class="property-type-badge {type_class}">{property_type}</div>
+                <img src="{image_url}" alt="{title}">
+                <div class="property-type-badge {type_class}">{property_type}</div>  
                 <div class="property-price">{price}</div>
             </div>
             <div class="property-content">

@@ -1991,6 +1991,107 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Generate optimized PDF catalogue using Python generator
+  app.post("/api/properties/optimized-catalogue", requireAdminAuth, async (req: Request, res: Response) => {
+    try {
+      console.log('Generating optimized PDF catalogue...');
+      
+      const { propertyIds, title, clientName } = req.body;
+      
+      // Get properties data
+      let properties;
+      if (propertyIds && propertyIds.length > 0) {
+        properties = [];
+        for (const id of propertyIds) {
+          const property = await storage.getProperty(id);
+          if (property) {
+            properties.push(property);
+          }
+        }
+      } else {
+        properties = await storage.getProperties();
+      }
+      
+      console.log(`Found ${properties.length} properties for optimized PDF catalogue`);
+      
+      if (properties.length === 0) {
+        return res.status(400).json({ error: "No properties available for catalogue generation" });
+      }
+      
+      // Prepare properties data for Python generator
+      const propertiesData = properties.map(prop => {
+        const data = { ...prop };
+        if (typeof data.images === 'string') {
+          try { data.images = JSON.parse(data.images); } catch (e) { data.images = []; }
+        }
+        if (typeof data.features === 'string') {
+          try { data.features = JSON.parse(data.features); } catch (e) { data.features = []; }
+        }
+        return data;
+      });
+      
+      // Write properties to temporary JSON file
+      const jsonFile = path.join(process.cwd(), 'temp_properties_optimized.json');
+      await fs.promises.writeFile(jsonFile, JSON.stringify(propertiesData, null, 2));
+      
+      // Generate optimized PDF using Python script
+      const pythonProcess = spawn('/home/runner/workspace/.pythonlibs/bin/python3', [
+        'optimized_catalogue_generator.py', 
+        jsonFile,
+        title || 'Premium Property Catalogue',
+        clientName || 'Valued Client'
+      ], {
+        cwd: process.cwd(),
+        stdio: ['pipe', 'pipe', 'pipe']
+      });
+      
+      let stdout = '', stderr = '';
+      pythonProcess.stdout.on('data', (data) => { stdout += data.toString(); });
+      pythonProcess.stderr.on('data', (data) => { stderr += data.toString(); });
+      
+      pythonProcess.on('close', async (code) => {
+        await fs.promises.unlink(jsonFile).catch(() => {});
+        
+        if (code === 0) {
+          console.log('Optimized PDF catalogue generated successfully');
+          
+          // Extract filename from Python output
+          const filenameMatch = stdout.match(/PDF saved to: (.+)/);
+          const filename = filenameMatch ? filenameMatch[1] : 'optimized_catalogue.pdf';
+          
+          const pdfPath = path.join(process.cwd(), filename);
+          if (fs.existsSync(pdfPath)) {
+            const fileUrl = `/uploads/${path.basename(filename)}`;
+            
+            // Move file to uploads directory
+            const uploadsPath = path.join(process.cwd(), 'uploads', path.basename(filename));
+            fs.renameSync(pdfPath, uploadsPath);
+            
+            res.json({ 
+              success: true,
+              message: 'Optimized PDF catalogue generated successfully',
+              downloadUrl: fileUrl,
+              filename: path.basename(filename)
+            });
+          } else {
+            res.status(500).json({ error: 'Optimized PDF catalogue file not found' });
+          }
+        } else {
+          console.error('Python script failed:', stderr);
+          res.status(500).json({ error: `Optimized catalogue generation failed: ${stderr || stdout}` });
+        }
+      });
+      
+      pythonProcess.on('error', (error) => {
+        res.status(500).json({ error: `Failed to start optimized catalogue generation: ${error.message}` });
+      });
+      
+    } catch (error) {
+      console.error('Error generating optimized PDF catalogue:', error);
+      res.status(500).json({ error: "Failed to generate optimized PDF catalogue" });
+    }
+  });
+
   // Generate PDF catalogue for professional sharing
   app.post("/api/admin/catalogue/pdf", requireAdminAuth, async (req: Request, res: Response) => {
     try {
