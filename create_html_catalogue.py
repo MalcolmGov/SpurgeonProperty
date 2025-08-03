@@ -492,7 +492,7 @@ class HTMLPropertyCatalogue:
     <div class="catalogue-container">
         <div class="header">
             <div class="logo">SPURGEON Property</div>
-            <div class="subtitle">Property Portfolio - Prepared for Spurgeon Property</div>
+            <div class="subtitle">Property Portfolio</div>
         </div>
         
         <div class="properties-grid {grid_class}">
