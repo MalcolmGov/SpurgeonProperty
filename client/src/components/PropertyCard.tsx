@@ -83,28 +83,35 @@ export default function PropertyCard({
     });
   };
 
-  const handleImageError = () => {
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.error('PropertyCard: Image failed to load for property', property.id, ':', e.currentTarget.src, 'Error:', e);
     setImageError(true);
   };
 
   const getImageSrc = () => {
     if (imageError) {
+      console.log('PropertyCard: Using placeholder due to image error for property:', property.id);
       return `/api/placeholder/400/300`;
     }
     
     // Prioritize featured image if available
     const imageToUse = property.featuredImage || property.images?.[0];
     if (!imageToUse) {
+      console.log('PropertyCard: No image available for property:', property.id);
       return `/api/placeholder/400/300`;
     }
     
     // Ensure the image path starts with /uploads or is a full URL
+    let finalImageSrc;
     if (imageToUse.startsWith('http') || imageToUse.startsWith('/uploads')) {
-      return imageToUse;
+      finalImageSrc = imageToUse;
+    } else {
+      // If it's a relative path, prepend /uploads
+      finalImageSrc = `/uploads/${imageToUse}`;
     }
     
-    // If it's a relative path, prepend /uploads
-    return `/uploads/${imageToUse}`;
+    console.log('PropertyCard: Using image src for property', property.id, ':', finalImageSrc);
+    return finalImageSrc;
   };
 
   const handleShare = async () => {
