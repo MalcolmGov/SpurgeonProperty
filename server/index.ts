@@ -59,20 +59,38 @@ app.use(cors({
 if (process.env.NODE_ENV === 'production') {
   const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
+    max: 200, // Increased general limit
     message: 'Too many requests from this IP, please try again later.',
     standardHeaders: true,
     legacyHeaders: false,
   });
 
+  // More generous API rate limiting for admin operations
   const apiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 50, // More restrictive for API routes
-    message: { error: 'API rate limit exceeded' },
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 150, // Increased from 50 to 150 for admin operations
+    message: { error: 'API rate limit exceeded. Please wait a moment before trying again.' },
+    skip: (req) => {
+      // Skip rate limiting for admin authentication and session checks
+      return req.path === '/api/admin/check-auth' || 
+             req.path === '/api/admin/login' ||
+             req.path.startsWith('/api/admin/session');
+    }
+  });
+
+  // Special rate limiter for admin property operations (very generous)
+  const adminPropertyLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000, // 5 minutes (shorter window)
+    max: 100, // 100 requests per 5 minutes for property operations
+    message: { error: 'Too many property operations. Please wait a moment before continuing.' }
   });
 
   app.use(limiter);
   app.use('/api/', apiLimiter);
+  
+  // Apply generous limits specifically for admin property operations
+  app.use('/api/properties/', adminPropertyLimiter);
+  app.use('/api/admin/properties/', adminPropertyLimiter);
 }
 
 // Compression middleware
