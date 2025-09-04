@@ -90,14 +90,12 @@ export default function PropertyCard({
 
   const getImageSrc = () => {
     if (imageError) {
-      console.log('PropertyCard: Using placeholder due to image error for property:', property.id);
       return `/api/placeholder/400/300`;
     }
     
     // Prioritize featured image if available
     const imageToUse = property.featuredImage || property.images?.[0];
     if (!imageToUse) {
-      console.log('PropertyCard: No image available for property:', property.id);
       return `/api/placeholder/400/300`;
     }
     
@@ -110,7 +108,6 @@ export default function PropertyCard({
       finalImageSrc = `/uploads/${imageToUse}`;
     }
     
-    console.log('PropertyCard: Using image src for property', property.id, ':', finalImageSrc);
     return finalImageSrc;
   };
 
