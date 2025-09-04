@@ -53,12 +53,6 @@ const upload = multer({
   storage: storage_multer,
   limits: { fileSize: 100 * 1024 * 1024 }, // 100MB limit for video files
   fileFilter: (req, file, cb) => {
-    console.log('File upload attempt:', {
-      originalname: file.originalname,
-      mimetype: file.mimetype,
-      size: file.size
-    });
-    
     const allowedImageTypes = /\.(jpeg|jpg|png|gif|webp)$/i;
     const allowedVideoTypes = /\.(mp4|avi|mov|wmv|flv|webm|mkv)$/i;
     const allowedZipTypes = /\.(zip)$/i;
@@ -162,7 +156,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/upload", upload.any(), async (req, res) => {
     try {
       const files = req.files as Express.Multer.File[];
-      console.log('Upload request received with files:', files?.length || 0);
       
       if (!files || files.length === 0) {
         return res.status(400).json({ 
@@ -174,14 +167,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const processedUrls: string[] = [];
       
       for (const file of files) {
-        console.log('Processing file:', file.originalname, 'MIME:', file.mimetype);
         const fileExtension = path.extname(file.originalname).toLowerCase();
         
         if (fileExtension === '.zip') {
           // Process ZIP file
           try {
-            const zip = new AdmZip(file.path);
+            // Verify the ZIP file exists and is readable
+            if (!fs.existsSync(file.path)) {
+              console.error("ZIP file not found:", file.path);
+              continue;
+            }
+            
+            const fileStats = fs.statSync(file.path);
+            if (fileStats.size === 0) {
+              console.error("ZIP file is empty:", file.path);
+              continue;
+            }
+            
+            // Try to read the ZIP file
+            const zipBuffer = fs.readFileSync(file.path);
+            const zip = new AdmZip(zipBuffer);
             const zipEntries = zip.getEntries();
+            
+            if (zipEntries.length === 0) {
+              console.error("ZIP file contains no entries");
+              continue;
+            }
             
             for (const entry of zipEntries) {
               if (!entry.isDirectory) {
@@ -189,15 +200,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 const allowedImageTypes = /\.(jpeg|jpg|png|gif|webp)$/;
                 
                 if (allowedImageTypes.test(entryExtension)) {
-                  // Extract image from ZIP
-                  const imageBuffer = entry.getData();
-                  const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-                  const filename = `property-${uniqueSuffix}${entryExtension}`;
-                  const imagePath = path.join(uploadDir, filename);
-                  
-                  // Write extracted image to uploads directory
-                  fs.writeFileSync(imagePath, imageBuffer);
-                  processedUrls.push(`/uploads/${filename}`);
+                  try {
+                    // Extract image from ZIP
+                    const imageBuffer = entry.getData();
+                    if (imageBuffer && imageBuffer.length > 0) {
+                      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+                      const filename = `property-${uniqueSuffix}${entryExtension}`;
+                      const imagePath = path.join(uploadDir, filename);
+                      
+                      // Write extracted image to uploads directory
+                      fs.writeFileSync(imagePath, imageBuffer);
+                      processedUrls.push(`/uploads/${filename}`);
+                    }
+                  } catch (extractError) {
+                    console.error("Error extracting file:", entry.entryName, extractError);
+                  }
                 }
               }
             }
@@ -221,7 +238,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
       
-      console.log('Processed URLs:', processedUrls);
       
       if (processedUrls.length === 0) {
         return res.status(400).json({
