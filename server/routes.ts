@@ -53,6 +53,12 @@ const upload = multer({
   storage: storage_multer,
   limits: { fileSize: 100 * 1024 * 1024 }, // 100MB limit for video files
   fileFilter: (req, file, cb) => {
+    console.log('File upload attempt:', {
+      originalname: file.originalname,
+      mimetype: file.mimetype,
+      size: file.size
+    });
+    
     const allowedImageTypes = /\.(jpeg|jpg|png|gif|webp)$/i;
     const allowedVideoTypes = /\.(mp4|avi|mov|wmv|flv|webm|mkv)$/i;
     const allowedZipTypes = /\.(zip)$/i;
@@ -70,7 +76,10 @@ const upload = multer({
     const isZip = allowedZipTypes.test(extname) && 
                  (file.mimetype === 'application/zip' || 
                   file.mimetype === 'application/x-zip-compressed' ||
-                  file.mimetype === 'application/octet-stream');
+                  file.mimetype === 'application/octet-stream' ||
+                  file.mimetype === 'application/x-zip' ||
+                  file.mimetype === 'multipart/x-zip' ||
+                  file.mimetype.includes('zip'));
     
     if (isImage || isVideo || isZip) {
       return cb(null, true);
