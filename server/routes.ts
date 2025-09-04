@@ -72,14 +72,8 @@ const upload = multer({
     const isVideo = allowedVideoTypes.test(extname) && 
                    /^video\/(mp4|avi|quicktime|x-msvideo|x-flv|webm|x-matroska)$/i.test(file.mimetype);
     
-    // Check for ZIP files with multiple possible MIME types
-    const isZip = allowedZipTypes.test(extname) && 
-                 (file.mimetype === 'application/zip' || 
-                  file.mimetype === 'application/x-zip-compressed' ||
-                  file.mimetype === 'application/octet-stream' ||
-                  file.mimetype === 'application/x-zip' ||
-                  file.mimetype === 'multipart/x-zip' ||
-                  file.mimetype.includes('zip'));
+    // Check for ZIP files - simplified to only check file extension
+    const isZip = allowedZipTypes.test(extname);
     
     if (isImage || isVideo || isZip) {
       return cb(null, true);
