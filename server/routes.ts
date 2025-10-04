@@ -32,8 +32,12 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import AdmZip from "adm-zip";
 import { spawn } from "child_process";
+import { Client as ObjectStorageClient } from '@replit/object-storage';
 
-// Configure multer for file uploads
+// Initialize Object Storage client
+const objectStorage = new ObjectStorageClient();
+
+// Configure multer for file uploads (now using memory storage for Object Storage)
 const uploadDir = path.join(process.cwd(), 'uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
@@ -206,11 +210,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
                     if (imageBuffer && imageBuffer.length > 0) {
                       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
                       const filename = `property-${uniqueSuffix}${entryExtension}`;
-                      const imagePath = path.join(uploadDir, filename);
                       
-                      // Write extracted image to uploads directory
-                      fs.writeFileSync(imagePath, imageBuffer);
-                      processedUrls.push(`/uploads/${filename}`);
+                      // Upload to Object Storage for persistence
+                      const result = await objectStorage.uploadFromBytes(filename, imageBuffer);
+                      if (result.ok) {
+                        processedUrls.push(`/storage/${filename}`);
+                        console.log("Successfully uploaded:", filename, "to Object Storage");
+                      } else {
+                        console.error("Object Storage upload failed:", result.error);
+                      }
                     }
                   } catch (extractError) {
                     console.error("Error extracting file:", entry.entryName, extractError);
@@ -230,11 +238,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
           }
         } else if (file.mimetype.startsWith('image/')) {
-          // Regular image file
-          processedUrls.push(`/uploads/${file.filename}`);
+          // Regular image file - upload to Object Storage
+          try {
+            const imageBuffer = fs.readFileSync(file.path);
+            const result = await objectStorage.uploadFromBytes(file.filename, imageBuffer);
+            if (result.ok) {
+              processedUrls.push(`/storage/${file.filename}`);
+              console.log("Successfully uploaded:", file.filename, "to Object Storage");
+            }
+            // Clean up temp file
+            fs.unlinkSync(file.path);
+          } catch (err) {
+            console.error("Error uploading image to Object Storage:", err);
+          }
         } else if (file.mimetype.startsWith('video/')) {
-          // Video file - handle separately
-          processedUrls.push(`/uploads/${file.filename}`);
+          // Video file - upload to Object Storage
+          try {
+            const videoBuffer = fs.readFileSync(file.path);
+            const result = await objectStorage.uploadFromBytes(file.filename, videoBuffer);
+            if (result.ok) {
+              processedUrls.push(`/storage/${file.filename}`);
+              console.log("Successfully uploaded:", file.filename, "to Object Storage");
+            }
+            // Clean up temp file
+            fs.unlinkSync(file.path);
+          } catch (err) {
+            console.error("Error uploading video to Object Storage:", err);
+          }
         }
       }
       
@@ -271,6 +301,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: "Failed to upload files",
         error: error instanceof Error ? error.message : "Unknown error"
       });
+    }
+  });
+
+  // Serve images from Object Storage
+  app.get("/storage/:filename", async (req, res) => {
+    try {
+      const { filename } = req.params;
+      const result = await objectStorage.downloadAsBytes(filename);
+      
+      if (result.ok) {
+        // Determine content type based on file extension
+        const ext = path.extname(filename).toLowerCase();
+        const contentTypeMap: Record<string, string> = {
+          '.jpg': 'image/jpeg',
+          '.jpeg': 'image/jpeg',
+          '.png': 'image/png',
+          '.gif': 'image/gif',
+          '.webp': 'image/webp',
+          '.mp4': 'video/mp4',
+          '.avi': 'video/x-msvideo',
+          '.mov': 'video/quicktime',
+          '.webm': 'video/webm'
+        };
+        
+        const contentType = contentTypeMap[ext] || 'application/octet-stream';
+        res.setHeader('Content-Type', contentType);
+        res.setHeader('Cache-Control', 'public, max-age=31536000'); // Cache for 1 year
+        res.send(Buffer.from(result.value));
+      } else {
+        res.status(404).json({ error: 'File not found' });
+      }
+    } catch (error) {
+      console.error("Error serving file from Object Storage:", error);
+      res.status(500).json({ error: 'Failed to retrieve file' });
     }
   });
 
