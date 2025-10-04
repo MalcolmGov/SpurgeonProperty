@@ -25,6 +25,7 @@ The platform employs a full-stack TypeScript architecture.
 - **Runtime**: Node.js with TypeScript
 - **Framework**: Express.js for REST APIs
 - **Database ORM**: Drizzle ORM
+- **File Storage**: Replit Object Storage (with local filesystem fallback)
 - **File Uploads**: Multer
 - **Authentication**: Custom admin authentication with bcrypt
 - **Real-time Features**: WebSocket integration
@@ -58,3 +59,37 @@ The platform employs a full-stack TypeScript architecture.
 - **Other**:
     - ReportLab (Python library for PDF generation)
     - adm-zip (for ZIP file processing)
+
+## File Storage Configuration
+
+### Current Setup
+The application uses **Replit Object Storage** for persistent file storage with automatic fallback to local filesystem:
+
+- **Production (Deployed)**: Files uploaded to local filesystem are lost on redeploy (ephemeral storage)
+- **Development**: Falls back to local filesystem when Object Storage is not configured
+- **With Object Storage**: Files persist across deployments and are accessible in both development and production
+
+### Enabling Object Storage (Production Fix)
+
+To enable persistent file storage that survives deployments:
+
+1. **Enable Object Storage in Replit Workspace**:
+   - Open the Replit workspace
+   - Navigate to "App Storage" or "Object Storage" tab
+   - Click "Enable Object Storage" for your Repl
+
+2. **Verify Configuration**:
+   - Check that `.replit` file contains `[objectStorage]` section
+   - The bucket ID will be automatically configured
+   - No code changes needed - the application will automatically use Object Storage
+
+3. **Migrate Existing Files** (if needed):
+   - Re-upload any property images through the admin interface
+   - Old images in local filesystem will be lost on next deploy
+   - New uploads will automatically use Object Storage
+
+### File Upload Flow
+1. User uploads images/videos via admin property form
+2. Files are saved to Object Storage (or local filesystem as fallback)
+3. URLs are stored in database as `/storage/{filename}` or `/uploads/{filename}`
+4. Images are served via `/storage/:filename` endpoint (Object Storage) or `/uploads/:filename` (static middleware)
