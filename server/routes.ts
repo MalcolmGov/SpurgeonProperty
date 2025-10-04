@@ -32,10 +32,27 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import AdmZip from "adm-zip";
 import { spawn } from "child_process";
-import { Client as ObjectStorageClient } from '@replit/object-storage';
+// Object Storage will be lazy-loaded when needed
+let objectStorage: any | null = null;
+let objectStorageInitialized = false;
 
-// Initialize Object Storage client
-const objectStorage = new ObjectStorageClient();
+async function getObjectStorage() {
+  if (objectStorageInitialized) {
+    return objectStorage;
+  }
+  
+  try {
+    const { Client } = await import('@replit/object-storage');
+    objectStorage = new Client();
+    objectStorageInitialized = true;
+    console.log("Object Storage initialized successfully");
+    return objectStorage;
+  } catch (error) {
+    console.error("Object Storage initialization failed:", error);
+    objectStorageInitialized = true; // Don't try again
+    return null;
+  }
+}
 
 // Configure multer for file uploads (now using memory storage for Object Storage)
 const uploadDir = path.join(process.cwd(), 'uploads');
@@ -211,13 +228,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
                       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
                       const filename = `property-${uniqueSuffix}${entryExtension}`;
                       
-                      // Upload to Object Storage for persistence
-                      const result = await objectStorage.uploadFromBytes(filename, imageBuffer);
-                      if (result.ok) {
-                        processedUrls.push(`/storage/${filename}`);
-                        console.log("Successfully uploaded:", filename, "to Object Storage");
+                      // Try Object Storage first, fall back to local filesystem
+                      const storage = await getObjectStorage();
+                      if (storage) {
+                        try {
+                          const result = await storage.uploadFromBytes(filename, imageBuffer);
+                          if (result.ok) {
+                            processedUrls.push(`/storage/${filename}`);
+                            console.log("Successfully uploaded:", filename, "to Object Storage");
+                          } else {
+                            console.error("Object Storage upload failed:", result.error);
+                            // Fallback to local filesystem
+                            const imagePath = path.join(uploadDir, filename);
+                            fs.writeFileSync(imagePath, imageBuffer);
+                            processedUrls.push(`/uploads/${filename}`);
+                          }
+                        } catch (osError) {
+                          console.error("Object Storage error:", osError);
+                          // Fallback to local filesystem
+                          const imagePath = path.join(uploadDir, filename);
+                          fs.writeFileSync(imagePath, imageBuffer);
+                          processedUrls.push(`/uploads/${filename}`);
+                        }
                       } else {
-                        console.error("Object Storage upload failed:", result.error);
+                        // Object Storage not available, use local filesystem
+                        const imagePath = path.join(uploadDir, filename);
+                        fs.writeFileSync(imagePath, imageBuffer);
+                        processedUrls.push(`/uploads/${filename}`);
                       }
                     }
                   } catch (extractError) {
@@ -238,32 +275,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
           }
         } else if (file.mimetype.startsWith('image/')) {
-          // Regular image file - upload to Object Storage
-          try {
-            const imageBuffer = fs.readFileSync(file.path);
-            const result = await objectStorage.uploadFromBytes(file.filename, imageBuffer);
-            if (result.ok) {
-              processedUrls.push(`/storage/${file.filename}`);
-              console.log("Successfully uploaded:", file.filename, "to Object Storage");
+          // Regular image file - try Object Storage first, fall back to local
+          const storage = await getObjectStorage();
+          if (storage) {
+            try {
+              const imageBuffer = fs.readFileSync(file.path);
+              const result = await storage.uploadFromBytes(file.filename, imageBuffer);
+              if (result.ok) {
+                processedUrls.push(`/storage/${file.filename}`);
+                console.log("Successfully uploaded:", file.filename, "to Object Storage");
+                // Clean up temp file
+                fs.unlinkSync(file.path);
+              } else {
+                // Keep file in local filesystem
+                processedUrls.push(`/uploads/${file.filename}`);
+              }
+            } catch (err) {
+              console.error("Error uploading image to Object Storage:", err);
+              // Keep file in local filesystem
+              processedUrls.push(`/uploads/${file.filename}`);
             }
-            // Clean up temp file
-            fs.unlinkSync(file.path);
-          } catch (err) {
-            console.error("Error uploading image to Object Storage:", err);
+          } else {
+            // Object Storage not available, use local filesystem
+            processedUrls.push(`/uploads/${file.filename}`);
           }
         } else if (file.mimetype.startsWith('video/')) {
-          // Video file - upload to Object Storage
-          try {
-            const videoBuffer = fs.readFileSync(file.path);
-            const result = await objectStorage.uploadFromBytes(file.filename, videoBuffer);
-            if (result.ok) {
-              processedUrls.push(`/storage/${file.filename}`);
-              console.log("Successfully uploaded:", file.filename, "to Object Storage");
+          // Video file - try Object Storage first, fall back to local
+          const storage = await getObjectStorage();
+          if (storage) {
+            try {
+              const videoBuffer = fs.readFileSync(file.path);
+              const result = await storage.uploadFromBytes(file.filename, videoBuffer);
+              if (result.ok) {
+                processedUrls.push(`/storage/${file.filename}`);
+                console.log("Successfully uploaded:", file.filename, "to Object Storage");
+                // Clean up temp file
+                fs.unlinkSync(file.path);
+              } else {
+                // Keep file in local filesystem
+                processedUrls.push(`/uploads/${file.filename}`);
+              }
+            } catch (err) {
+              console.error("Error uploading video to Object Storage:", err);
+              // Keep file in local filesystem
+              processedUrls.push(`/uploads/${file.filename}`);
             }
-            // Clean up temp file
-            fs.unlinkSync(file.path);
-          } catch (err) {
-            console.error("Error uploading video to Object Storage:", err);
+          } else {
+            // Object Storage not available, use local filesystem
+            processedUrls.push(`/uploads/${file.filename}`);
           }
         }
       }
@@ -306,9 +365,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Serve images from Object Storage
   app.get("/storage/:filename", async (req, res) => {
+    const storage = await getObjectStorage();
+    if (!storage) {
+      return res.status(503).json({ error: 'Object Storage not available' });
+    }
+    
     try {
       const { filename } = req.params;
-      const result = await objectStorage.downloadAsBytes(filename);
+      const result = await storage.downloadAsBytes(filename);
       
       if (result.ok) {
         // Determine content type based on file extension
