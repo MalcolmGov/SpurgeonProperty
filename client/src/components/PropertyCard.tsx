@@ -99,9 +99,9 @@ export default function PropertyCard({
       return `/api/placeholder/400/300`;
     }
     
-    // Ensure the image path starts with /uploads or is a full URL
+    // Ensure the image path starts with /uploads, /storage, or is a full URL
     let finalImageSrc;
-    if (imageToUse.startsWith('http') || imageToUse.startsWith('/uploads')) {
+    if (imageToUse.startsWith('http') || imageToUse.startsWith('/uploads') || imageToUse.startsWith('/storage')) {
       finalImageSrc = imageToUse;
     } else {
       // If it's a relative path, prepend /uploads
