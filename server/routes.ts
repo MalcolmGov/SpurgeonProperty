@@ -32,27 +32,36 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import AdmZip from "adm-zip";
 import { spawn } from "child_process";
-// Object Storage will be lazy-loaded when needed
-let objectStorage: any | null = null;
-let objectStorageInitialized = false;
+import { v2 as cloudinary } from 'cloudinary';
 
-async function getObjectStorage() {
-  if (objectStorageInitialized) {
-    return objectStorage;
-  }
-  
-  try {
-    const { Client } = await import('@replit/object-storage');
-    objectStorage = new Client();
-    objectStorageInitialized = true;
-    console.log("Object Storage initialized successfully");
-    return objectStorage;
-  } catch (error) {
-    console.error("Object Storage initialization failed:", error);
-    objectStorageInitialized = true; // Don't try again
-    return null;
-  }
+// Configure Cloudinary
+// Parse CLOUDINARY_URL or use individual env vars
+let cloudName, apiKey, apiSecret;
+
+if (process.env.CLOUDINARY_URL) {
+  // Parse cloudinary://api_key:api_secret@cloud_name format
+  const url = new URL(process.env.CLOUDINARY_URL);
+  cloudName = url.hostname;
+  apiKey = url.username;
+  apiSecret = url.password;
+} else {
+  cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  apiKey = process.env.CLOUDINARY_API_KEY;
+  apiSecret = process.env.CLOUDINARY_API_SECRET;
 }
+
+cloudinary.config({
+  cloud_name: cloudName,
+  api_key: apiKey,
+  api_secret: apiSecret,
+  secure: true
+});
+
+console.log("Cloudinary configured:", {
+  cloud_name: cloudName,
+  api_key_set: !!apiKey,
+  api_secret_set: !!apiSecret
+});
 
 // Configure multer for file uploads (now using memory storage for Object Storage)
 const uploadDir = path.join(process.cwd(), 'uploads');
@@ -225,15 +234,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
                     // Extract image from ZIP
                     const imageBuffer = entry.getData();
                     if (imageBuffer && imageBuffer.length > 0) {
-                      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-                      const filename = `property-${uniqueSuffix}${entryExtension}`;
-                      
-                      // TEMPORARY FIX: Use local filesystem only (Object Storage is broken)
-                      // TODO: Migrate to Cloudinary/S3 for production persistence
-                      const imagePath = path.join(uploadDir, filename);
-                      fs.writeFileSync(imagePath, imageBuffer);
-                      processedUrls.push(`/uploads/${filename}`);
-                      console.log("Saved to local filesystem:", filename);
+                      try {
+                        // Upload to Cloudinary
+                        const uploadResult = await new Promise<any>((resolve, reject) => {
+                          cloudinary.uploader.upload_stream(
+                            {
+                              folder: 'spurgeon-properties',
+                              resource_type: 'image'
+                            },
+                            (error, result) => {
+                              if (error) reject(error);
+                              else resolve(result);
+                            }
+                          ).end(imageBuffer);
+                        });
+                        
+                        processedUrls.push(uploadResult.secure_url);
+                        console.log("Uploaded to Cloudinary:", uploadResult.secure_url);
+                      } catch (cloudinaryError) {
+                        console.error("Cloudinary upload failed, using local fallback:", cloudinaryError);
+                        // Fallback to local filesystem
+                        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+                        const filename = `property-${uniqueSuffix}${entryExtension}`;
+                        const imagePath = path.join(uploadDir, filename);
+                        fs.writeFileSync(imagePath, imageBuffer);
+                        processedUrls.push(`/uploads/${filename}`);
+                      }
                     }
                   } catch (extractError) {
                     console.error("Error extracting file:", entry.entryName, extractError);
@@ -253,13 +279,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
           }
         } else if (file.mimetype.startsWith('image/')) {
-          // TEMPORARY FIX: Use local filesystem only (Object Storage is broken)
-          processedUrls.push(`/uploads/${file.filename}`);
-          console.log("Saved image to local filesystem:", file.filename);
+          // Upload image to Cloudinary
+          try {
+            const uploadResult = await cloudinary.uploader.upload(file.path, {
+              folder: 'spurgeon-properties',
+              resource_type: 'image'
+            });
+            processedUrls.push(uploadResult.secure_url);
+            console.log("Uploaded image to Cloudinary:", uploadResult.secure_url);
+            // Clean up temp file
+            fs.unlinkSync(file.path);
+          } catch (cloudinaryError) {
+            console.error("Cloudinary upload failed, using local fallback:", cloudinaryError);
+            processedUrls.push(`/uploads/${file.filename}`);
+          }
         } else if (file.mimetype.startsWith('video/')) {
-          // TEMPORARY FIX: Use local filesystem only (Object Storage is broken)
-          processedUrls.push(`/uploads/${file.filename}`);
-          console.log("Saved video to local filesystem:", file.filename);
+          // Upload video to Cloudinary
+          try {
+            const uploadResult = await cloudinary.uploader.upload(file.path, {
+              folder: 'spurgeon-properties',
+              resource_type: 'video'
+            });
+            processedUrls.push(uploadResult.secure_url);
+            console.log("Uploaded video to Cloudinary:", uploadResult.secure_url);
+            // Clean up temp file
+            fs.unlinkSync(file.path);
+          } catch (cloudinaryError) {
+            console.error("Cloudinary upload failed, using local fallback:", cloudinaryError);
+            processedUrls.push(`/uploads/${file.filename}`);
+          }
         }
       }
       
