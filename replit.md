@@ -62,34 +62,35 @@ The platform employs a full-stack TypeScript architecture.
 
 ## File Storage Configuration
 
-### Current Setup
-The application uses **Replit Object Storage** for persistent file storage with automatic fallback to local filesystem:
+### Current Setup (January 2025)
+The application uses **local filesystem storage** for images and videos:
 
-- **Production (Deployed)**: Files uploaded to local filesystem are lost on redeploy (ephemeral storage)
-- **Development**: Falls back to local filesystem when Object Storage is not configured
-- **With Object Storage**: Files persist across deployments and are accessible in both development and production
+- **Development**: ✅ Images stored in `/uploads/` folder - works perfectly
+- **Production**: ✅ Images stored in `/uploads/` folder - works perfectly
+- **⚠️ Limitation**: Production images are **ephemeral** - they are deleted on every deployment/republish
 
-### Enabling Object Storage (Production Fix)
+### Known Issues
+- **Replit Object Storage**: Discovered to be non-functional (uploads succeed but data not persisted - downloads return 1 byte null data)
+- **Cloudinary**: SDK installed, credentials configured, setup **postponed** for future implementation
 
-To enable persistent file storage that survives deployments:
+### File Upload Flow (Current)
+1. User uploads ZIP file or images via admin property form
+2. Files extracted and saved to local `/uploads/` directory
+3. Image URLs stored in database as `/uploads/{filename}`
+4. Images served via Express static middleware from `/uploads/` path
 
-1. **Enable Object Storage in Replit Workspace**:
-   - Open the Replit workspace
-   - Navigate to "App Storage" or "Object Storage" tab
-   - Click "Enable Object Storage" for your Repl
+### Future Migration Path (When Ready)
+**Option 1: Cloudinary (Recommended)**
+- SDK: Already installed (`cloudinary` package)
+- Credentials: Already configured in secrets
+- Benefits: Permanent storage, global CDN, image transformations
+- Setup: Code ready, just needs activation
 
-2. **Verify Configuration**:
-   - Check that `.replit` file contains `[objectStorage]` section
-   - The bucket ID will be automatically configured
-   - No code changes needed - the application will automatically use Object Storage
+**Option 2: AWS S3 / Supabase Storage**
+- Alternative cloud storage solutions
+- Requires new SDK installation and configuration
 
-3. **Migrate Existing Files** (if needed):
-   - Re-upload any property images through the admin interface
-   - Old images in local filesystem will be lost on next deploy
-   - New uploads will automatically use Object Storage
-
-### File Upload Flow
-1. User uploads images/videos via admin property form
-2. Files are saved to Object Storage (or local filesystem as fallback)
-3. URLs are stored in database as `/storage/{filename}` or `/uploads/{filename}`
-4. Images are served via `/storage/:filename` endpoint (Object Storage) or `/uploads/:filename` (static middleware)
+### Migration Impact
+⚠️ **Important**: When migrating to permanent storage, all existing `/uploads/` images will need to be:
+1. Re-uploaded through admin interface, OR
+2. Manually migrated via script
