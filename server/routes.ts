@@ -35,32 +35,17 @@ import { spawn } from "child_process";
 import { v2 as cloudinary } from 'cloudinary';
 
 // Configure Cloudinary
-// Parse CLOUDINARY_URL or use individual env vars
-let cloudName, apiKey, apiSecret;
-
-if (process.env.CLOUDINARY_URL) {
-  // Parse cloudinary://api_key:api_secret@cloud_name format
-  const url = new URL(process.env.CLOUDINARY_URL);
-  cloudName = url.hostname;
-  apiKey = url.username;
-  apiSecret = url.password;
-} else {
-  cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-  apiKey = process.env.CLOUDINARY_API_KEY;
-  apiSecret = process.env.CLOUDINARY_API_SECRET;
-}
-
 cloudinary.config({
-  cloud_name: cloudName,
-  api_key: apiKey,
-  api_secret: apiSecret,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'djmjg0eox',
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
   secure: true
 });
 
 console.log("Cloudinary configured:", {
-  cloud_name: cloudName,
-  api_key_set: !!apiKey,
-  api_secret_set: !!apiSecret
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'djmjg0eox',
+  api_key_set: !!process.env.CLOUDINARY_API_KEY,
+  api_secret_set: !!process.env.CLOUDINARY_API_SECRET
 });
 
 // Configure multer for file uploads (now using memory storage for Object Storage)
