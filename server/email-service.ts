@@ -74,16 +74,7 @@ class EmailNotificationService {
   }
 
   private async initializeEmailServices() {
-    // Check if Resend is available
-    const resendClient = await getResendClient();
-    if (resendClient) {
-      this.resendAvailable = true;
-      console.log('Email service initialized with Resend API');
-      console.log('Resend from email:', resendClient.fromEmail);
-      return;
-    }
-
-    // Fallback to Gmail SMTP if Resend not available
+    // Use Gmail SMTP as primary (simpler setup, no domain verification needed)
     const gmailUser = process.env.GMAIL_USER;
     const gmailPassword = process.env.GMAIL_PASS;
     
@@ -96,22 +87,32 @@ class EmailNotificationService {
           pass: cleanPassword
         }
       });
-      console.log('Email service initialized with Gmail credentials for:', gmailUser);
-    } else {
-      console.log('No email service configured - notifications disabled');
+      console.log('Email service initialized with Gmail SMTP for:', gmailUser);
+      return;
     }
+
+    // Fallback to Resend if Gmail not configured
+    const resendClient = await getResendClient();
+    if (resendClient) {
+      this.resendAvailable = true;
+      console.log('Email service initialized with Resend API');
+      console.log('Resend from email:', resendClient.fromEmail);
+      return;
+    }
+
+    console.log('No email service configured - notifications disabled');
   }
 
   async sendLeadNotification(notification: EmailNotification): Promise<boolean> {
-    // Try Resend first (preferred)
+    // Try Gmail first (simpler, no domain verification needed)
+    if (this.transporter) {
+      return this.sendWithGmail(notification);
+    }
+
+    // Fallback to Resend
     const resendClient = await getResendClient();
     if (resendClient) {
       return this.sendWithResend(resendClient, notification);
-    }
-
-    // Fallback to Gmail
-    if (this.transporter) {
-      return this.sendWithGmail(notification);
     }
 
     console.log('Email service not configured - skipping email notification');
@@ -314,7 +315,33 @@ class EmailNotificationService {
   }
 
   async testEmailConnection(): Promise<{ success: boolean; provider: string; error?: string }> {
-    // Test Resend first
+    // Test Gmail first (primary)
+    if (this.transporter) {
+      try {
+        await this.transporter.verify();
+        // Send actual test email
+        await this.transporter.sendMail({
+          from: process.env.GMAIL_USER,
+          to: this.testEmail,
+          subject: '✅ Spurgeon Property - Email Test Successful',
+          html: `
+            <div style="font-family: Arial, sans-serif; padding: 20px;">
+              <h2 style="color: #8B5CF6;">Email Test Successful!</h2>
+              <p>This is a test email from Spurgeon Property.</p>
+              <p>Your email notifications are now working via <strong>Gmail SMTP</strong>.</p>
+              <p style="color: #666; font-size: 12px;">Sent at: ${new Date().toLocaleString('en-ZA', { timeZone: 'Africa/Johannesburg' })}</p>
+            </div>
+          `
+        });
+        console.log('Test email sent successfully via Gmail to:', this.testEmail);
+        return { success: true, provider: 'Gmail' };
+      } catch (error: any) {
+        console.error('Gmail test failed:', error.message);
+        return { success: false, provider: 'Gmail', error: error.message };
+      }
+    }
+
+    // Fallback to Resend
     const resendClient = await getResendClient();
     if (resendClient) {
       try {
@@ -338,16 +365,6 @@ class EmailNotificationService {
         return { success: true, provider: 'Resend' };
       } catch (err: any) {
         return { success: false, provider: 'Resend', error: err.message };
-      }
-    }
-
-    // Test Gmail fallback
-    if (this.transporter) {
-      try {
-        await this.transporter.verify();
-        return { success: true, provider: 'Gmail' };
-      } catch (error: any) {
-        return { success: false, provider: 'Gmail', error: error.message };
       }
     }
 
