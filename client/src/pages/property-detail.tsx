@@ -567,6 +567,7 @@ export default function PropertyDetail() {
           propertyId={property.id}
           agentId={property.agentId}
           onClose={() => setShowContactForm(false)}
+          isOpen={true}
         />
       )}
       
