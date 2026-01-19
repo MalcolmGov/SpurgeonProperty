@@ -34,14 +34,14 @@ class MonitoringService {
   private metrics: SystemMetrics[] = [];
   private errorLog: any[] = [];
   private performanceThresholds = {
-    responseTime: 2000, // 2 seconds
-    memoryUsage: 80, // 80% of available memory
-    errorRate: 0.05, // 5% error rate
-    slowQueryTime: 1000 // 1 second
+    responseTime: 5000, // 5 seconds (relaxed for production)
+    memoryUsage: 92, // 92% of available memory (relaxed threshold)
+    errorRate: 0.10, // 10% error rate
+    slowQueryTime: 2000 // 2 seconds
   };
   
   private alertCooldown = new Map<string, number>();
-  private readonly COOLDOWN_MINUTES = 15;
+  private readonly COOLDOWN_MINUTES = 120; // 2 hours between alerts
   
   constructor() {
     this.startMetricsCollection();
