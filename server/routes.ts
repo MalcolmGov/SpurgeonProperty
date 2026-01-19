@@ -99,7 +99,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Serve static uploaded files
   app.use('/uploads', express.static(uploadDir));
 
-
+  // Test email endpoint
+  app.post("/api/test-email", async (req, res) => {
+    try {
+      const result = await emailService.testEmailConnection();
+      if (result.success) {
+        res.json({ 
+          success: true, 
+          message: `Test email sent successfully via ${result.provider}`,
+          provider: result.provider
+        });
+      } else {
+        res.status(500).json({ 
+          success: false, 
+          message: `Email test failed: ${result.error}`,
+          provider: result.provider
+        });
+      }
+    } catch (error: any) {
+      console.error('Email test error:', error);
+      res.status(500).json({ 
+        success: false, 
+        message: error.message || 'Unknown error testing email'
+      });
+    }
+  });
 
   // Properties routes
   app.get("/api/properties", async (req, res) => {

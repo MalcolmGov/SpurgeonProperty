@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { MailService } from '@sendgrid/mail';
+import { Resend } from 'resend';
 
 interface EmailNotification {
   type: 'NEW_LEAD' | 'APPLICATION_SUBMITTED' | 'PROPERTY_INQUIRY';
@@ -15,27 +15,75 @@ interface EmailNotification {
   propertyImage?: string | null;
 }
 
+// Resend integration - get credentials from Replit connector
+let connectionSettings: any;
+
+async function getResendCredentials() {
+  const hostname = process.env.REPLIT_CONNECTORS_HOSTNAME;
+  const xReplitToken = process.env.REPL_IDENTITY 
+    ? 'repl ' + process.env.REPL_IDENTITY 
+    : process.env.WEB_REPL_RENEWAL 
+    ? 'depl ' + process.env.WEB_REPL_RENEWAL 
+    : null;
+
+  if (!xReplitToken || !hostname) {
+    return null;
+  }
+
+  try {
+    connectionSettings = await fetch(
+      'https://' + hostname + '/api/v2/connection?include_secrets=true&connector_names=resend',
+      {
+        headers: {
+          'Accept': 'application/json',
+          'X_REPLIT_TOKEN': xReplitToken
+        }
+      }
+    ).then(res => res.json()).then(data => data.items?.[0]);
+
+    if (!connectionSettings || !connectionSettings.settings.api_key) {
+      return null;
+    }
+    return { 
+      apiKey: connectionSettings.settings.api_key, 
+      fromEmail: connectionSettings.settings.from_email 
+    };
+  } catch (error) {
+    console.error('Failed to get Resend credentials:', error);
+    return null;
+  }
+}
+
+async function getResendClient() {
+  const credentials = await getResendCredentials();
+  if (!credentials) return null;
+  return {
+    client: new Resend(credentials.apiKey),
+    fromEmail: credentials.fromEmail
+  };
+}
+
 class EmailNotificationService {
   private transporter: nodemailer.Transporter | null = null;
-  private sendGridService: MailService | null = null;
   private ownerEmail = 'peter@spurgeonproperty.com';
   private testEmail = 'malcolmgov24@gmail.com';
+  private resendAvailable = false;
 
   constructor() {
     this.initializeEmailServices();
   }
 
-  private initializeEmailServices() {
-    // Try SendGrid first (simpler and more reliable)
-    const sendGridApiKey = process.env.SENDGRID_API_KEY;
-    if (sendGridApiKey) {
-      this.sendGridService = new MailService();
-      this.sendGridService.setApiKey(sendGridApiKey);
-      console.log('Email service initialized with SendGrid API');
+  private async initializeEmailServices() {
+    // Check if Resend is available
+    const resendClient = await getResendClient();
+    if (resendClient) {
+      this.resendAvailable = true;
+      console.log('Email service initialized with Resend API');
+      console.log('Resend from email:', resendClient.fromEmail);
       return;
     }
 
-    // Fallback to Gmail SMTP if SendGrid not available
+    // Fallback to Gmail SMTP if Resend not available
     const gmailUser = process.env.GMAIL_USER;
     const gmailPassword = process.env.GMAIL_PASS;
     
@@ -55,11 +103,25 @@ class EmailNotificationService {
   }
 
   async sendLeadNotification(notification: EmailNotification): Promise<boolean> {
-    if (!this.transporter && !this.sendGridService) {
-      console.log('Email service not configured - skipping email notification');
-      return false;
+    // Try Resend first (preferred)
+    const resendClient = await getResendClient();
+    if (resendClient) {
+      return this.sendWithResend(resendClient, notification);
     }
 
+    // Fallback to Gmail
+    if (this.transporter) {
+      return this.sendWithGmail(notification);
+    }
+
+    console.log('Email service not configured - skipping email notification');
+    return false;
+  }
+
+  private async sendWithResend(
+    resendClient: { client: Resend; fromEmail: string },
+    notification: EmailNotification
+  ): Promise<boolean> {
     try {
       const subject = this.getEmailSubject(notification);
       const htmlContent = this.generateEmailContent(notification);
@@ -76,30 +138,56 @@ class EmailNotificationService {
       for (const recipient of recipients) {
         const personalizedContent = this.personalizeEmailContent(htmlContent, recipient, notification);
         
-        if (this.sendGridService) {
-          // Use SendGrid API
-          await this.sendGridService.send({
-            to: recipient,
-            from: 'noreply@spurgeonproperty.co.za',
-            subject: subject,
-            html: personalizedContent
-          });
-          console.log(`Email notification sent to ${recipient} via SendGrid`);
-        } else if (this.transporter) {
-          // Use Gmail SMTP fallback
-          await this.transporter.sendMail({
-            from: process.env.GMAIL_USER,
-            to: recipient,
-            subject: subject,
-            html: personalizedContent
-          });
-          console.log(`Email notification sent to ${recipient} via Gmail`);
+        const { data, error } = await resendClient.client.emails.send({
+          from: resendClient.fromEmail || 'Spurgeon Property <onboarding@resend.dev>',
+          to: recipient,
+          subject: subject,
+          html: personalizedContent
+        });
+
+        if (error) {
+          console.error(`Resend error for ${recipient}:`, error);
+        } else {
+          console.log(`Email notification sent to ${recipient} via Resend (ID: ${data?.id})`);
         }
       }
 
       return true;
     } catch (error) {
-      console.error('Failed to send email notification:', error);
+      console.error('Failed to send email notification via Resend:', error);
+      return false;
+    }
+  }
+
+  private async sendWithGmail(notification: EmailNotification): Promise<boolean> {
+    if (!this.transporter) return false;
+
+    try {
+      const subject = this.getEmailSubject(notification);
+      const htmlContent = this.generateEmailContent(notification);
+      
+      const recipients = [this.ownerEmail, this.testEmail];
+      if (notification.agentEmail && 
+          notification.agentEmail !== this.ownerEmail && 
+          notification.agentEmail !== this.testEmail) {
+        recipients.push(notification.agentEmail);
+      }
+
+      for (const recipient of recipients) {
+        const personalizedContent = this.personalizeEmailContent(htmlContent, recipient, notification);
+        
+        await this.transporter.sendMail({
+          from: process.env.GMAIL_USER,
+          to: recipient,
+          subject: subject,
+          html: personalizedContent
+        });
+        console.log(`Email notification sent to ${recipient} via Gmail`);
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Failed to send email notification via Gmail:', error);
       return false;
     }
   }
@@ -122,7 +210,6 @@ class EmailNotificationService {
       role = 'Assigned Agent';
     }
     
-    // Add personalized greeting
     return htmlContent.replace(
       '<div class="content">',
       `<div class="content">
@@ -226,21 +313,45 @@ class EmailNotificationService {
     `;
   }
 
-  // Test email function
-  async testEmailConnection(): Promise<boolean> {
-    if (this.sendGridService) {
-      // SendGrid doesn't need connection testing - API key validation happens on send
-      return true;
-    } else if (this.transporter) {
+  async testEmailConnection(): Promise<{ success: boolean; provider: string; error?: string }> {
+    // Test Resend first
+    const resendClient = await getResendClient();
+    if (resendClient) {
       try {
-        await this.transporter.verify();
-        return true;
-      } catch (error) {
-        console.error('Gmail connection test failed:', error);
-        return false;
+        const { data, error } = await resendClient.client.emails.send({
+          from: resendClient.fromEmail || 'Spurgeon Property <onboarding@resend.dev>',
+          to: this.testEmail,
+          subject: '✅ Spurgeon Property - Email Test Successful',
+          html: `
+            <div style="font-family: Arial, sans-serif; padding: 20px;">
+              <h2 style="color: #8B5CF6;">Email Test Successful!</h2>
+              <p>This is a test email from Spurgeon Property.</p>
+              <p>Your email notifications are now working via <strong>Resend</strong>.</p>
+              <p style="color: #666; font-size: 12px;">Sent at: ${new Date().toLocaleString('en-ZA', { timeZone: 'Africa/Johannesburg' })}</p>
+            </div>
+          `
+        });
+
+        if (error) {
+          return { success: false, provider: 'Resend', error: error.message };
+        }
+        return { success: true, provider: 'Resend' };
+      } catch (err: any) {
+        return { success: false, provider: 'Resend', error: err.message };
       }
     }
-    return false;
+
+    // Test Gmail fallback
+    if (this.transporter) {
+      try {
+        await this.transporter.verify();
+        return { success: true, provider: 'Gmail' };
+      } catch (error: any) {
+        return { success: false, provider: 'Gmail', error: error.message };
+      }
+    }
+
+    return { success: false, provider: 'None', error: 'No email service configured' };
   }
 }
 
