@@ -66,7 +66,7 @@ async function getResendClient() {
 class EmailNotificationService {
   private transporter: nodemailer.Transporter | null = null;
   private ownerEmail = 'peter@spurgeonproperty.com';
-  private testEmail = 'malcolmgov24@gmail.com';
+  private managerEmail = 'malcolmgov24@gmail.com'; // Website manager receives all enquiries
   private resendAvailable = false;
 
   constructor() {
@@ -128,10 +128,10 @@ class EmailNotificationService {
       const htmlContent = this.generateEmailContent(notification);
       
       // Recipients: Owner + Test Email + Assigned Agent (if available)
-      const recipients = [this.ownerEmail, this.testEmail];
+      const recipients = [this.ownerEmail, this.managerEmail];
       if (notification.agentEmail && 
           notification.agentEmail !== this.ownerEmail && 
-          notification.agentEmail !== this.testEmail) {
+          notification.agentEmail !== this.managerEmail) {
         recipients.push(notification.agentEmail);
       }
 
@@ -167,10 +167,10 @@ class EmailNotificationService {
       const subject = this.getEmailSubject(notification);
       const htmlContent = this.generateEmailContent(notification);
       
-      const recipients = [this.ownerEmail, this.testEmail];
+      const recipients = [this.ownerEmail, this.managerEmail];
       if (notification.agentEmail && 
           notification.agentEmail !== this.ownerEmail && 
-          notification.agentEmail !== this.testEmail) {
+          notification.agentEmail !== this.managerEmail) {
         recipients.push(notification.agentEmail);
       }
 
@@ -195,17 +195,17 @@ class EmailNotificationService {
 
   private personalizeEmailContent(htmlContent: string, recipient: string, notification: EmailNotification): string {
     const isOwner = recipient === this.ownerEmail;
-    const isTestUser = recipient === this.testEmail;
+    const isManager = recipient === this.managerEmail;
     
     let greeting: string;
     let role: string;
     
     if (isOwner) {
       greeting = 'Hi Peter,';
-      role = 'Owner';
-    } else if (isTestUser) {
+      role = 'Property Owner';
+    } else if (isManager) {
       greeting = 'Hi Malcolm,';
-      role = 'Admin/Test User';
+      role = 'Website Manager';
     } else {
       greeting = `Hi ${notification.agentName || 'Agent'},`;
       role = 'Assigned Agent';
@@ -322,7 +322,7 @@ class EmailNotificationService {
         // Send actual test email
         await this.transporter.sendMail({
           from: process.env.GMAIL_USER,
-          to: this.testEmail,
+          to: this.managerEmail,
           subject: '✅ Spurgeon Property - Email Test Successful',
           html: `
             <div style="font-family: Arial, sans-serif; padding: 20px;">
@@ -333,7 +333,7 @@ class EmailNotificationService {
             </div>
           `
         });
-        console.log('Test email sent successfully via Gmail to:', this.testEmail);
+        console.log('Test email sent successfully via Gmail to:', this.managerEmail);
         return { success: true, provider: 'Gmail' };
       } catch (error: any) {
         console.error('Gmail test failed:', error.message);
@@ -347,7 +347,7 @@ class EmailNotificationService {
       try {
         const { data, error } = await resendClient.client.emails.send({
           from: resendClient.fromEmail || 'Spurgeon Property <onboarding@resend.dev>',
-          to: this.testEmail,
+          to: this.managerEmail,
           subject: '✅ Spurgeon Property - Email Test Successful',
           html: `
             <div style="font-family: Arial, sans-serif; padding: 20px;">
