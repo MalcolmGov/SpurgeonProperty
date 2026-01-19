@@ -539,22 +539,28 @@ input, textarea, select {
 /* Mobile glow wrapper for property cards - only visible on mobile */
 @keyframes mobile-glow-pulse {
   0%, 100% { 
-    box-shadow: 0 0 15px rgba(139, 92, 246, 0.5), 0 0 30px rgba(251, 146, 60, 0.3);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.6), 0 0 40px rgba(251, 146, 60, 0.4), inset 0 0 2px rgba(139, 92, 246, 0.3);
   }
   50% { 
-    box-shadow: 0 0 25px rgba(139, 92, 246, 0.7), 0 0 45px rgba(251, 146, 60, 0.45);
+    box-shadow: 0 0 35px rgba(139, 92, 246, 0.8), 0 0 60px rgba(251, 146, 60, 0.5), inset 0 0 4px rgba(139, 92, 246, 0.4);
   }
 }
 
 .mobile-glow-wrapper {
   height: 100%;
+  border-radius: 1rem;
 }
 
 @media (max-width: 767px) {
   .mobile-glow-wrapper {
-    padding: 3px;
+    position: relative;
+    padding: 4px;
+    border-radius: 1.25rem;
+    background: linear-gradient(135deg, #8B5CF6 0%, #F97316 50%, #A855F7 100%);
+    animation: mobile-glow-pulse 2s ease-in-out infinite;
+  }
+  
+  .mobile-glow-wrapper > * {
     border-radius: 1rem;
-    background: linear-gradient(135deg, #8B5CF6 0%, #F97316 50%, #8B5CF6 100%);
-    animation: mobile-glow-pulse 2.5s ease-in-out infinite;
   }
 }
