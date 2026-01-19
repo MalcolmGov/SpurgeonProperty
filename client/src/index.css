@@ -536,18 +536,25 @@ input, textarea, select {
   60% { transform: translateY(-5px); }
 }
 
-/* Slow pulse animation for mobile card glow */
-@keyframes pulse-slow {
+/* Mobile glow wrapper for property cards - only visible on mobile */
+@keyframes mobile-glow-pulse {
   0%, 100% { 
-    opacity: 1;
-    box-shadow: 0 0 15px rgba(139, 92, 246, 0.4), 0 0 30px rgba(251, 146, 60, 0.2);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.5), 0 0 30px rgba(251, 146, 60, 0.3);
   }
   50% { 
-    opacity: 0.85;
-    box-shadow: 0 0 25px rgba(139, 92, 246, 0.6), 0 0 50px rgba(251, 146, 60, 0.35);
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.7), 0 0 45px rgba(251, 146, 60, 0.45);
   }
 }
 
-.animate-pulse-slow {
-  animation: pulse-slow 3s ease-in-out infinite;
+.mobile-glow-wrapper {
+  height: 100%;
+}
+
+@media (max-width: 767px) {
+  .mobile-glow-wrapper {
+    padding: 3px;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, #8B5CF6 0%, #F97316 50%, #8B5CF6 100%);
+    animation: mobile-glow-pulse 2.5s ease-in-out infinite;
+  }
 }
