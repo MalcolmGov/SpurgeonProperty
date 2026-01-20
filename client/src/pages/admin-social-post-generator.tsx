@@ -531,29 +531,29 @@ TIKTOK OPTIMIZATION:
                           <img
                             src={getImageSrc(selectedProperty)}
                             alt={selectedProperty.title}
-                            className="w-full h-52 md:h-72 object-cover"
+                            className="w-full h-56 md:h-72 object-cover"
                             style={{ filter: "contrast(1.02) brightness(1.02)" }}
                           />
                           {/* Subtle gradient overlay for text readability */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                           
-                          {/* For Sale Badge - Subtle & Modern */}
-                          <div className="absolute top-4 left-4">
-                            <Badge className="bg-purple-600/90 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 shadow-lg">
+                          {/* For Sale Badge - Larger & Bolder */}
+                          <div className="absolute top-5 left-5">
+                            <div className="bg-orange-500 text-white text-sm font-bold px-5 py-2 rounded-lg shadow-lg">
                               {selectedProperty.listingType === "sale" ? "For Sale" : "For Rent"}
-                            </Badge>
-                          </div>
-                          
-                          {/* Logo - Visible but not overpowering */}
-                          <div className="absolute top-4 right-4">
-                            <div className="bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-md">
-                              <img src="/spurgeon-logo.png" alt="Spurgeon Property" className="h-5" />
                             </div>
                           </div>
                           
-                          {/* PROMINENT PRICE - Overlayed on image bottom */}
-                          <div className="absolute bottom-4 left-4 right-4">
-                            <div className="bg-white/95 backdrop-blur-md rounded-xl px-4 py-3 shadow-xl">
+                          {/* Logo - Visible but not overpowering */}
+                          <div className="absolute top-5 right-5">
+                            <div className="bg-white px-4 py-2 rounded-lg shadow-lg">
+                              <img src="/spurgeon-logo.png" alt="Spurgeon Property" className="h-6" />
+                            </div>
+                          </div>
+                          
+                          {/* PROMINENT PRICE - Compact, Left-aligned */}
+                          <div className="absolute bottom-5 left-5">
+                            <div className="bg-white rounded-lg px-5 py-2.5 shadow-xl inline-block">
                               <p className="text-purple-700 font-black text-2xl md:text-3xl tracking-tight">
                                 {formatPriceShort(selectedProperty.price)}
                               </p>
@@ -562,31 +562,31 @@ TIKTOK OPTIMIZATION:
                         </div>
                         
                         {/* Content Section - Clear Visual Flow */}
-                        <div className="p-5 space-y-4">
+                        <div className="p-6 space-y-5">
                           {/* Title - Strong weight */}
                           <div>
-                            <h3 className="font-bold text-lg md:text-xl text-gray-900 leading-tight">
+                            <h3 className="font-bold text-xl md:text-2xl text-gray-900 leading-tight">
                               {selectedProperty.title}
                             </h3>
                             {/* Location - Softer secondary */}
-                            <p className="text-gray-500 text-sm flex items-center gap-1.5 mt-1">
-                              <MapPin className="h-3.5 w-3.5 text-purple-500" />
+                            <p className="text-gray-500 text-base flex items-center gap-2 mt-2">
+                              <MapPin className="h-4 w-4 text-purple-500" />
                               {selectedProperty.suburb}, {selectedProperty.city}
                             </p>
                           </div>
                           
-                          {/* Key Specs - Clean badges */}
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className="bg-gray-100 text-gray-700 px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5">
-                              <BedDouble className="h-4 w-4 text-purple-500" />
+                          {/* Key Specs - Larger badges with better spacing */}
+                          <div className="flex items-center gap-3 flex-wrap">
+                            <span className="border-2 border-gray-200 bg-white text-gray-800 px-4 py-2 rounded-full text-base font-semibold flex items-center gap-2">
+                              <BedDouble className="h-5 w-5 text-purple-600" />
                               {selectedProperty.bedrooms} Beds
                             </span>
-                            <span className="bg-gray-100 text-gray-700 px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5">
-                              <Bath className="h-4 w-4 text-purple-500" />
+                            <span className="border-2 border-gray-200 bg-white text-gray-800 px-4 py-2 rounded-full text-base font-semibold flex items-center gap-2">
+                              <Bath className="h-5 w-5 text-purple-600" />
                               {selectedProperty.bathrooms} Baths
                             </span>
                             {selectedProperty.area > 0 && (
-                              <span className="bg-gray-100 text-gray-700 px-3 py-1.5 rounded-full text-sm font-medium">
+                              <span className="border-2 border-gray-200 bg-white text-gray-800 px-4 py-2 rounded-full text-base font-semibold">
                                 {selectedProperty.area}m²
                               </span>
                             )}
