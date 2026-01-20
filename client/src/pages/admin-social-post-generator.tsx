@@ -3,11 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Copy, Download, Share2, Image, Loader2, CheckCircle, Home, MapPin, BedDouble, Bath, Sparkles } from "lucide-react";
-import { SiFacebook, SiInstagram, SiTiktok } from "react-icons/si";
+import { Copy, Download, Share2, Loader2, Home, MapPin, BedDouble, Bath, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import html2canvas from "html2canvas";
 import AdminSidebar from "@/components/admin/sidebar";
@@ -31,8 +28,6 @@ interface Property {
   status: string;
 }
 
-type Platform = "facebook" | "instagram" | "tiktok";
-
 const CONTACT_DETAILS = {
   agent: "Peter Spurgeon",
   phone: "084 208 9307",
@@ -43,12 +38,10 @@ const CONTACT_DETAILS = {
 export default function AdminSocialPostGenerator() {
   const { toast } = useToast();
   const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(null);
-  const [selectedPlatform, setSelectedPlatform] = useState<Platform>("facebook");
   const [generatedPost, setGeneratedPost] = useState<{
     caption: string;
-    visualLayout: string;
     cta: string;
-    hashtags?: string[];
+    hashtags: string[];
   } | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -102,7 +95,7 @@ export default function AdminSocialPostGenerator() {
     return hooks.length > 0 ? hooks[0] : `Exceptional Value in ${property.suburb}`;
   };
 
-  const generateFacebookPost = (property: Property) => {
+  const generateSocialPost = (property: Property) => {
     const features = property.features?.slice(0, 4).join(" • ") || "";
     const lifestyleHook = getLifestyleHook(property);
     return {
@@ -126,65 +119,7 @@ Contact ${CONTACT_DETAILS.agent} to View
 📞 ${CONTACT_DETAILS.phone}
 📧 ${CONTACT_DETAILS.email}
 🌐 ${CONTACT_DETAILS.website}`,
-      visualLayout: `KEY DESIGN ELEMENTS:
-• Hero property image with light contrast enhancement
-• Prominent price overlay (${formatPriceShort(property.price)}) on white pill at image bottom
-• Subtle "For ${property.listingType === "sale" ? "Sale" : "Rent"}" badge (top-left, purple)
-• Spurgeon Property logo (top-right, white background)
-• Refined purple-to-orange gradient border
-
-VISUAL FLOW:
-Image → Price → Title → Key Specs → Contact
-
-TYPOGRAPHY:
-• Strong headline weight for title
-• Softer secondary text for location
-• Mobile-first readable sizes
-
-PLATFORM OPTIMIZATION:
-• Safe margins on all edges
-• No text near edges
-• Readable on small screens`,
       cta: `Contact ${CONTACT_DETAILS.agent} to View 📞`,
-    };
-  };
-
-  const generateInstagramPost = (property: Property) => {
-    const features = property.features?.slice(0, 3) || [];
-    const lifestyleHook = getLifestyleHook(property);
-    return {
-      caption: `✨ ${lifestyleHook} ✨
-
-📍 ${property.suburb}, ${property.city}
-
-${property.bedrooms} bed | ${property.bathrooms} bath${property.area > 0 ? ` | ${property.area}m²` : ""}
-${features.length > 0 ? "\n" + features.map(f => `• ${f}`).join("\n") : ""}
-
-💰 ${formatPrice(property.price)}
-
-Ready to make this yours?
-DM us or tap the link in bio! 👆
-
-—
-Contact ${CONTACT_DETAILS.agent} to View
-📞 ${CONTACT_DETAILS.phone}
-📧 ${CONTACT_DETAILS.email}`,
-      visualLayout: `KEY DESIGN ELEMENTS:
-• Property hero image with subtle contrast enhancement
-• Prominent price pill (${formatPriceShort(property.price)}) overlayed at bottom
-• Modern "For ${property.listingType === "sale" ? "Sale" : "Rent"}" badge (top-left)
-• Logo badge (top-right, white bg, subtle)
-• Refined gradient border
-
-VISUAL FLOW:
-Image → Price → Title → Specs → CTA → Contact
-
-INSTAGRAM OPTIMIZATION:
-• Square 1:1 or 4:5 aspect ratio
-• Safe margins (no edge text)
-• Mobile-first typography
-• Lifestyle-focused aesthetic`,
-      cta: `DM for details or call ${CONTACT_DETAILS.phone} 💬`,
       hashtags: [
         "#SpurgeonProperty",
         "#SouthAfricanProperty",
@@ -194,49 +129,6 @@ INSTAGRAM OPTIMIZATION:
         "#PropertyForSale",
         "#RealEstate",
         "#LuxuryLiving"
-      ],
-    };
-  };
-
-  const generateTikTokPost = (property: Property) => {
-    const lifestyleHook = getLifestyleHook(property);
-    return {
-      caption: `Wait till you see inside 👀🏡
-
-✨ ${lifestyleHook}
-
-📍 ${property.suburb}
-💰 ${formatPriceShort(property.price)}
-🛏️ ${property.bedrooms} beds | 🚿 ${property.bathrooms} baths
-
-Contact ${CONTACT_DETAILS.agent}
-📞 ${CONTACT_DETAILS.phone}
-
-Link in bio! 🔗`,
-      visualLayout: `KEY DESIGN ELEMENTS:
-• Property image as cover/thumbnail
-• Bold overlay: "${lifestyleHook.toUpperCase()}"
-• Price prominently displayed
-• Spurgeon Property logo as outro
-
-ON-SCREEN TEXT SUGGESTIONS:
-• "Wait till you see inside 👀"
-• "${formatPriceShort(property.price)}" (large, animated reveal)
-• "${property.bedrooms} beds | ${property.bathrooms} baths"
-
-TIKTOK OPTIMIZATION:
-• Vertical 9:16 format
-• Safe zones respected
-• High energy, scroll-stopping
-• Quick-cut transitions`,
-      cta: `Comment 'INFO' or call ${CONTACT_DETAILS.phone} 👇`,
-      hashtags: [
-        "#PropertyTour",
-        "#DreamHome",
-        "#HouseHunting",
-        `#${property.city.replace(/\s/g, "")}`,
-        "#SouthAfrica",
-        "#RealEstateTikTok"
       ],
     };
   };
@@ -254,23 +146,12 @@ TIKTOK OPTIMIZATION:
     setIsGenerating(true);
 
     setTimeout(() => {
-      let post;
-      switch (selectedPlatform) {
-        case "facebook":
-          post = generateFacebookPost(selectedProperty);
-          break;
-        case "instagram":
-          post = generateInstagramPost(selectedProperty);
-          break;
-        case "tiktok":
-          post = generateTikTokPost(selectedProperty);
-          break;
-      }
+      const post = generateSocialPost(selectedProperty);
       setGeneratedPost(post);
       setIsGenerating(false);
       toast({
         title: "Post generated!",
-        description: `${selectedPlatform.charAt(0).toUpperCase() + selectedPlatform.slice(1)} post ready for ${selectedProperty.title}`,
+        description: `Social media post ready for ${selectedProperty.title}`,
       });
     }, 800);
   };
@@ -299,7 +180,7 @@ TIKTOK OPTIMIZATION:
       });
       
       const link = document.createElement("a");
-      link.download = `${selectedProperty.title.replace(/[^a-zA-Z0-9]/g, "_")}_${selectedPlatform}_post.png`;
+      link.download = `${selectedProperty.title.replace(/[^a-zA-Z0-9]/g, "_")}_social_post.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
       
@@ -308,28 +189,6 @@ TIKTOK OPTIMIZATION:
       toast({ title: "Download failed", description: "Could not generate image", variant: "destructive" });
     } finally {
       setIsDownloading(false);
-    }
-  };
-
-  const getPlatformIcon = (platform: Platform) => {
-    switch (platform) {
-      case "facebook":
-        return <SiFacebook className="h-5 w-5" />;
-      case "instagram":
-        return <SiInstagram className="h-5 w-5" />;
-      case "tiktok":
-        return <SiTiktok className="h-5 w-5" />;
-    }
-  };
-
-  const getPlatformColor = (platform: Platform) => {
-    switch (platform) {
-      case "facebook":
-        return "bg-blue-600";
-      case "instagram":
-        return "bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500";
-      case "tiktok":
-        return "bg-black";
     }
   };
 
@@ -423,67 +282,27 @@ TIKTOK OPTIMIZATION:
               </CardContent>
             </Card>
 
-            {/* Platform Selection */}
+            {/* Generate Post */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Share2 className="h-5 w-5 text-orange-500" />
-                  Select Platform
+                  Generate Social Post
                 </CardTitle>
-                <CardDescription>Choose the social media platform</CardDescription>
+                <CardDescription>Create a post for any social media platform</CardDescription>
               </CardHeader>
               <CardContent>
-                <Tabs value={selectedPlatform} onValueChange={(val) => {
-                  setSelectedPlatform(val as Platform);
-                  setGeneratedPost(null);
-                }}>
-                  <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="facebook" className="flex items-center gap-2">
-                      <SiFacebook className="h-4 w-4" />
-                      <span className="hidden sm:inline">Facebook</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="instagram" className="flex items-center gap-2">
-                      <SiInstagram className="h-4 w-4" />
-                      <span className="hidden sm:inline">Instagram</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="tiktok" className="flex items-center gap-2">
-                      <SiTiktok className="h-4 w-4" />
-                      <span className="hidden sm:inline">TikTok</span>
-                    </TabsTrigger>
-                  </TabsList>
-
-                  <TabsContent value="facebook" className="mt-4">
-                    <div className="text-sm text-gray-600 space-y-2">
-                      <p>✅ 2-4 short paragraphs</p>
-                      <p>✅ Professional but inviting tone</p>
-                      <p>✅ Minimal emojis</p>
-                      <p>✅ Clear call-to-action</p>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="instagram" className="mt-4">
-                    <div className="text-sm text-gray-600 space-y-2">
-                      <p>✅ Short, punchy, lifestyle-focused</p>
-                      <p>✅ Emojis encouraged</p>
-                      <p>✅ Line breaks for readability</p>
-                      <p>✅ 5-8 relevant hashtags</p>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="tiktok" className="mt-4">
-                    <div className="text-sm text-gray-600 space-y-2">
-                      <p>✅ Very short and scroll-stopping</p>
-                      <p>✅ Energetic tone</p>
-                      <p>✅ Hook + CTA format</p>
-                      <p>✅ Suggested on-screen text</p>
-                    </div>
-                  </TabsContent>
-                </Tabs>
+                <div className="text-sm text-gray-600 space-y-2 mb-6">
+                  <p>✅ Professional property description</p>
+                  <p>✅ Key details and features</p>
+                  <p>✅ Contact information included</p>
+                  <p>✅ Relevant hashtags for reach</p>
+                </div>
 
                 <Button
                   onClick={generatePost}
                   disabled={!selectedProperty || isGenerating}
-                  className="w-full mt-6 bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600"
+                  className="w-full bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600"
                 >
                   {isGenerating ? (
                     <>
@@ -510,10 +329,10 @@ TIKTOK OPTIMIZATION:
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                       <span className="flex items-center gap-2">
-                        {getPlatformIcon(selectedPlatform)}
-                        {selectedPlatform.charAt(0).toUpperCase() + selectedPlatform.slice(1)} Post
+                        <Share2 className="h-5 w-5 text-purple-600" />
+                        Social Media Post
                       </span>
-                      <Badge className={`${getPlatformColor(selectedPlatform)} text-white`}>
+                      <Badge className="bg-gradient-to-r from-purple-600 to-orange-500 text-white">
                         Ready
                       </Badge>
                     </CardTitle>
