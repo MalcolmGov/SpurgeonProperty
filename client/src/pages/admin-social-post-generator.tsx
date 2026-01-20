@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Copy, Download, Share2, Loader2, Home, MapPin, BedDouble, Bath, Sparkles } from "lucide-react";
+import { Copy, Download, Share2, Image, Loader2, Home, MapPin, BedDouble, Bath, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import html2canvas from "html2canvas";
 import AdminSidebar from "@/components/admin/sidebar";
