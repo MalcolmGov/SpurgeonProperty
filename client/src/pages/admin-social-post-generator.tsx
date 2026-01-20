@@ -53,6 +53,7 @@ export default function AdminSocialPostGenerator() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
+  const pricePillRef = useRef<HTMLDivElement>(null);
 
   const { data: properties = [], isLoading } = useQuery<Property[]>({
     queryKey: ["/api/properties", "social-generator"],
@@ -288,8 +289,13 @@ TIKTOK OPTIMIZATION:
     
     setIsDownloading(true);
     try {
+      // Get the bounding rect of the price pill before html2canvas clones the DOM
+      const previewRect = previewRef.current.getBoundingClientRect();
+      const pricePillRect = pricePillRef.current?.getBoundingClientRect();
+      
+      const scale = 2;
       const canvas = await html2canvas(previewRef.current, {
-        scale: 2,
+        scale,
         useCORS: true,
         allowTaint: true,
         backgroundColor: "#ffffff",
@@ -297,29 +303,37 @@ TIKTOK OPTIMIZATION:
         imageTimeout: 15000
       });
       
-      // Draw price text directly onto canvas to ensure it renders
+      // Draw price text directly onto canvas using measured coordinates
       const ctx = canvas.getContext('2d');
-      if (ctx) {
+      if (ctx && pricePillRect) {
         const priceText = formatPriceShort(selectedProperty.price);
         
-        // Calculate position (bottom-left of image area, scaled by 2)
-        const imageHeight = 224 * 2; // h-56 = 224px, scaled 2x
-        const priceBoxX = 20 * 2; // left-5 = 20px
-        const priceBoxY = imageHeight - 20 * 2; // bottom-5 from image
+        // Calculate position relative to preview container, scaled
+        const relativeX = (pricePillRect.left - previewRect.left) * scale;
+        const relativeY = (pricePillRect.top - previewRect.top) * scale;
+        const pillWidth = pricePillRect.width * scale;
+        const pillHeight = pricePillRect.height * scale;
         
-        // Draw white background box
+        // Save context state
+        ctx.save();
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
+        
+        // Draw white background pill
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
-        ctx.roundRect(priceBoxX, priceBoxY - 52, 160, 52, 8);
+        ctx.roundRect(relativeX, relativeY, pillWidth, pillHeight, 8 * scale);
         ctx.fill();
-        ctx.shadowColor = 'rgba(0,0,0,0.15)';
-        ctx.shadowBlur = 10;
         
-        // Draw price text
+        // Draw price text centered in the pill
         ctx.fillStyle = '#7c3aed';
-        ctx.font = 'bold 52px Arial, sans-serif';
+        ctx.font = `bold ${26 * scale}px Arial, sans-serif`;
         ctx.textBaseline = 'middle';
-        ctx.fillText(priceText, priceBoxX + 20, priceBoxY - 26);
+        ctx.textAlign = 'left';
+        ctx.fillText(priceText, relativeX + (10 * scale), relativeY + (pillHeight / 2));
+        
+        // Restore context state
+        ctx.restore();
       }
       
       const link = document.createElement("a");
@@ -581,6 +595,7 @@ TIKTOK OPTIMIZATION:
                           {/* PROMINENT PRICE - Compact, Left-aligned */}
                           <div className="absolute bottom-5 left-5">
                             <div 
+                              ref={pricePillRef}
                               className="rounded-lg shadow-xl inline-block"
                               style={{
                                 backgroundColor: '#ffffff',
