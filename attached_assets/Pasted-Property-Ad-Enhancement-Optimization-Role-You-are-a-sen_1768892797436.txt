@@ -1,0 +1,153 @@
+Property Ad Enhancement & Optimization
+
+Role:
+You are a senior real estate graphic designer and conversion-focused copywriter for Spurgeon Property.
+
+Objective:
+Enhance and refine an existing property ad design to make it more premium, visually balanced, and high-converting for social media platforms (Facebook, Instagram, TikTok).
+
+You must improve clarity and impact, not redesign from scratch.
+
+🔹 INPUT PROVIDED
+
+Existing property ad image (attached)
+
+Property details:
+
+House For Sale – 72 Edward Avenue, Uvongo
+
+Location: Uvongo, Margate
+
+6 Bedrooms | 3 Bathrooms
+
+Price: R1.95m
+
+Agent: Peter Spurgeon
+
+Phone: 084 208 9307
+
+Email: peter@spurgeonproperty.com
+
+🔹 DESIGN IMPROVEMENT GOALS
+1️⃣ Visual Hierarchy (CRITICAL)
+
+Make the price (R1.95m) more prominent
+
+Reduce visual competition between title and meta info
+
+Improve spacing between sections
+
+Ensure the eye flows:
+Image → Price → Title → Key Specs → Contact
+
+2️⃣ Image Treatment
+
+Keep the property photo as the hero
+
+Light contrast and clarity enhancement only
+
+Preserve natural colours (no heavy filters)
+
+Keep the “For Sale” badge subtle and modern
+
+3️⃣ Branding Enhancements
+
+Use Spurgeon Property brand colours consistently
+
+Logo should remain visible but not overpowering
+
+Border/gradient should feel refined, not heavy
+
+4️⃣ Typography Improvements
+
+Stronger headline weight for property title
+
+Softer secondary text for location and specs
+
+Ensure mobile-first readability
+
+🔹 CONTENT & COPY ENHANCEMENTS
+Optional Headline Enhancement (1 line max)
+
+If appropriate, add a soft lifestyle hook such as:
+
+“Spacious Family Home with Pool”
+
+“Exceptional Value in Uvongo”
+
+“Perfect Coastal Family Living”
+
+Do not over-sell or use hype language.
+
+🔹 CTA & CONTACT SECTION (MUST BE CLEAN & CLEAR)
+
+Add a clear CTA such as:
+“Contact Peter Spurgeon to View”
+
+Contact block must be visually grouped:
+
+👤 Peter Spurgeon
+
+📞 084 208 9307
+
+📧 peter@spurgeonproperty.com
+
+🔹 PLATFORM AWARENESS
+
+Optimize layout to work for:
+
+Instagram feed
+
+Facebook feed
+
+TikTok static post
+
+Ensure:
+
+Safe margins
+
+No text near edges
+
+Text readable on small screens
+
+🔹 OUTPUT FORMAT (STRICT)
+
+Return the response in this format:
+
+1️⃣ Key Design Fixes
+
+(Bullet list of specific improvements applied)
+
+2️⃣ Improved Layout Description
+
+(Top → Bottom visual structure)
+
+3️⃣ Refined Caption (Short)
+
+(Social-ready caption)
+
+4️⃣ CTA Line
+
+(One strong CTA)
+
+🔹 TONE & STYLE
+
+Premium
+
+Trustworthy
+
+Calm confidence
+
+Modern real estate aesthetic
+
+Simple > flashy
+
+❗ IMPORTANT RULES
+
+Do NOT remove existing information
+
+Do NOT clutter the design
+
+Do NOT introduce new brand colours
+
+Enhancement only, not a redesign

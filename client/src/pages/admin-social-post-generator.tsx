@@ -91,47 +91,73 @@ export default function AdminSocialPostGenerator() {
     return `/uploads/${imageToUse}`;
   };
 
+  const getLifestyleHook = (property: Property) => {
+    const hooks = [];
+    if (property.features?.some(f => f.toLowerCase().includes("pool"))) hooks.push("With Swimming Pool");
+    if (property.features?.some(f => f.toLowerCase().includes("garden"))) hooks.push("Beautiful Garden Home");
+    if (property.features?.some(f => f.toLowerCase().includes("sea") || f.toLowerCase().includes("beach") || f.toLowerCase().includes("ocean"))) hooks.push("Coastal Living at Its Best");
+    if (property.bedrooms >= 4) hooks.push("Spacious Family Home");
+    if (property.suburb.toLowerCase().includes("beach") || property.city.toLowerCase().includes("coast")) hooks.push("Perfect Coastal Living");
+    return hooks.length > 0 ? hooks[0] : `Exceptional Value in ${property.suburb}`;
+  };
+
   const generateFacebookPost = (property: Property) => {
     const features = property.features?.slice(0, 4).join(" • ") || "";
+    const lifestyleHook = getLifestyleHook(property);
     return {
       caption: `🏡 ${property.listingType === "sale" ? "FOR SALE" : "FOR RENT"} | ${property.suburb}, ${property.city}
 
+✨ ${lifestyleHook}
+
 ${property.title}
 
-${property.description.slice(0, 200)}${property.description.length > 200 ? "..." : ""}
+${property.description.slice(0, 180)}${property.description.length > 180 ? "..." : ""}
 
-✨ Key Features:
 🛏️ ${property.bedrooms} Bedrooms | 🚿 ${property.bathrooms} Bathrooms
-${property.area > 0 ? `📐 ${property.area}m² | ` : ""}${property.propertyType.charAt(0).toUpperCase() + property.propertyType.slice(1)}
-${features ? `\n🌟 ${features}` : ""}
+${property.area > 0 ? `📐 ${property.area}m² ` : ""}${features ? `\n🌟 ${features}` : ""}
 
 💰 ${formatPrice(property.price)}
 
-📞 Contact ${CONTACT_DETAILS.agent} today for a viewing!
-📧 ${CONTACT_DETAILS.email}
-☎️ ${CONTACT_DETAILS.phone}
+—
+Contact ${CONTACT_DETAILS.agent} to View
 
-🌐 View more at ${CONTACT_DETAILS.website}`,
-      visualLayout: `• Property card screenshot as hero image
-• Slight gradient overlay on edges (purple to orange)
-• "For ${property.listingType === "sale" ? "Sale" : "Rent"}" badge top-left
-• Spurgeon Property logo bottom-right
-• Clean, premium aesthetic
-• No text overlay on main image`,
-      cta: "Book a viewing today! 📞",
+👤 ${CONTACT_DETAILS.agent}
+📞 ${CONTACT_DETAILS.phone}
+📧 ${CONTACT_DETAILS.email}
+🌐 ${CONTACT_DETAILS.website}`,
+      visualLayout: `KEY DESIGN ELEMENTS:
+• Hero property image with light contrast enhancement
+• Prominent price overlay (${formatPriceShort(property.price)}) on white pill at image bottom
+• Subtle "For ${property.listingType === "sale" ? "Sale" : "Rent"}" badge (top-left, purple)
+• Spurgeon Property logo (top-right, white background)
+• Refined purple-to-orange gradient border
+
+VISUAL FLOW:
+Image → Price → Title → Key Specs → Contact
+
+TYPOGRAPHY:
+• Strong headline weight for title
+• Softer secondary text for location
+• Mobile-first readable sizes
+
+PLATFORM OPTIMIZATION:
+• Safe margins on all edges
+• No text near edges
+• Readable on small screens`,
+      cta: `Contact ${CONTACT_DETAILS.agent} to View 📞`,
     };
   };
 
   const generateInstagramPost = (property: Property) => {
     const features = property.features?.slice(0, 3) || [];
+    const lifestyleHook = getLifestyleHook(property);
     return {
-      caption: `✨ Dream home alert! ✨
+      caption: `✨ ${lifestyleHook} ✨
 
 📍 ${property.suburb}, ${property.city}
 
 ${property.bedrooms} bed | ${property.bathrooms} bath${property.area > 0 ? ` | ${property.area}m²` : ""}
-
-${features.length > 0 ? features.map(f => `• ${f}`).join("\n") : ""}
+${features.length > 0 ? "\n" + features.map(f => `• ${f}`).join("\n") : ""}
 
 💰 ${formatPrice(property.price)}
 
@@ -139,16 +165,25 @@ Ready to make this yours?
 DM us or tap the link in bio! 👆
 
 —
-👤 ${CONTACT_DETAILS.agent}
+Contact ${CONTACT_DETAILS.agent} to View
 📞 ${CONTACT_DETAILS.phone}
 📧 ${CONTACT_DETAILS.email}`,
-      visualLayout: `• Property card as main visual
-• Gradient frame border (purple/orange)
-• Minimal text overlay
-• "Swipe for more" indicator if carousel
-• Spurgeon Property watermark bottom-right
+      visualLayout: `KEY DESIGN ELEMENTS:
+• Property hero image with subtle contrast enhancement
+• Prominent price pill (${formatPriceShort(property.price)}) overlayed at bottom
+• Modern "For ${property.listingType === "sale" ? "Sale" : "Rent"}" badge (top-left)
+• Logo badge (top-right, white bg, subtle)
+• Refined gradient border
+
+VISUAL FLOW:
+Image → Price → Title → Specs → CTA → Contact
+
+INSTAGRAM OPTIMIZATION:
+• Square 1:1 or 4:5 aspect ratio
+• Safe margins (no edge text)
+• Mobile-first typography
 • Lifestyle-focused aesthetic`,
-      cta: "DM us for more info! 💬",
+      cta: `DM for details or call ${CONTACT_DETAILS.phone} 💬`,
       hashtags: [
         "#SpurgeonProperty",
         "#SouthAfricanProperty",
@@ -163,23 +198,37 @@ DM us or tap the link in bio! 👆
   };
 
   const generateTikTokPost = (property: Property) => {
+    const lifestyleHook = getLifestyleHook(property);
     return {
       caption: `Wait till you see inside 👀🏡
+
+✨ ${lifestyleHook}
 
 📍 ${property.suburb}
 💰 ${formatPriceShort(property.price)}
 🛏️ ${property.bedrooms} beds | 🚿 ${property.bathrooms} baths
 
-Link in bio! 🔗
+Contact ${CONTACT_DETAILS.agent}
+📞 ${CONTACT_DETAILS.phone}
 
-#${property.city.replace(/\s/g, "")} #PropertyTour #DreamHome`,
-      visualLayout: `• Property card as thumbnail/cover
-• Bold "WAIT TILL YOU SEE THIS" text overlay
-• Animated price reveal
-• Quick-cut transitions suggested
+Link in bio! 🔗`,
+      visualLayout: `KEY DESIGN ELEMENTS:
+• Property image as cover/thumbnail
+• Bold overlay: "${lifestyleHook.toUpperCase()}"
+• Price prominently displayed
 • Spurgeon Property logo as outro
-• Vertical 9:16 format`,
-      cta: "Comment 'INFO' for details! 👇",
+
+ON-SCREEN TEXT SUGGESTIONS:
+• "Wait till you see inside 👀"
+• "${formatPriceShort(property.price)}" (large, animated reveal)
+• "${property.bedrooms} beds | ${property.bathrooms} baths"
+
+TIKTOK OPTIMIZATION:
+• Vertical 9:16 format
+• Safe zones respected
+• High energy, scroll-stopping
+• Quick-cut transitions`,
+      cta: `Comment 'INFO' or call ${CONTACT_DETAILS.phone} 👇`,
       hashtags: [
         "#PropertyTour",
         "#DreamHome",
@@ -467,51 +516,105 @@ Link in bio! 🔗
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {/* Visual Preview */}
+                    {/* Visual Preview - Enhanced Premium Design */}
                     <div 
                       ref={previewRef}
-                      className="relative rounded-xl overflow-hidden border-4 border-purple-200"
+                      className="relative rounded-2xl overflow-hidden"
                       style={{ 
-                        background: "linear-gradient(135deg, #8B5CF6 0%, #F97316 100%)",
-                        padding: "4px"
+                        background: "linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #F97316 100%)",
+                        padding: "3px"
                       }}
                     >
-                      <div className="bg-white rounded-lg overflow-hidden">
+                      <div className="bg-white rounded-xl overflow-hidden">
+                        {/* Hero Image Section */}
                         <div className="relative">
                           <img
                             src={getImageSrc(selectedProperty)}
                             alt={selectedProperty.title}
-                            className="w-full h-48 md:h-64 object-cover"
+                            className="w-full h-52 md:h-72 object-cover"
+                            style={{ filter: "contrast(1.02) brightness(1.02)" }}
                           />
-                          <div className="absolute top-3 left-3">
-                            <Badge className="bg-green-500 text-white">
+                          {/* Subtle gradient overlay for text readability */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                          
+                          {/* For Sale Badge - Subtle & Modern */}
+                          <div className="absolute top-4 left-4">
+                            <Badge className="bg-purple-600/90 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 shadow-lg">
                               {selectedProperty.listingType === "sale" ? "For Sale" : "For Rent"}
                             </Badge>
                           </div>
-                          <div className="absolute bottom-3 right-3">
-                            <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
-                              <img src="/spurgeon-logo.png" alt="Spurgeon Property" className="h-6" />
+                          
+                          {/* Logo - Visible but not overpowering */}
+                          <div className="absolute top-4 right-4">
+                            <div className="bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-md">
+                              <img src="/spurgeon-logo.png" alt="Spurgeon Property" className="h-5" />
+                            </div>
+                          </div>
+                          
+                          {/* PROMINENT PRICE - Overlayed on image bottom */}
+                          <div className="absolute bottom-4 left-4 right-4">
+                            <div className="bg-white/95 backdrop-blur-md rounded-xl px-4 py-3 shadow-xl">
+                              <p className="text-purple-700 font-black text-2xl md:text-3xl tracking-tight">
+                                {formatPriceShort(selectedProperty.price)}
+                              </p>
                             </div>
                           </div>
                         </div>
-                        <div className="p-4">
-                          <h3 className="font-bold text-lg">{selectedProperty.title}</h3>
-                          <p className="text-gray-600 text-sm flex items-center gap-1">
-                            <MapPin className="h-3 w-3" />
-                            {selectedProperty.suburb}, {selectedProperty.city}
-                          </p>
-                          <div className="flex items-center gap-4 mt-2 text-sm">
-                            <span>{selectedProperty.bedrooms} Beds</span>
-                            <span>{selectedProperty.bathrooms} Baths</span>
-                            {selectedProperty.area > 0 && <span>{selectedProperty.area}m²</span>}
+                        
+                        {/* Content Section - Clear Visual Flow */}
+                        <div className="p-5 space-y-4">
+                          {/* Title - Strong weight */}
+                          <div>
+                            <h3 className="font-bold text-lg md:text-xl text-gray-900 leading-tight">
+                              {selectedProperty.title}
+                            </h3>
+                            {/* Location - Softer secondary */}
+                            <p className="text-gray-500 text-sm flex items-center gap-1.5 mt-1">
+                              <MapPin className="h-3.5 w-3.5 text-purple-500" />
+                              {selectedProperty.suburb}, {selectedProperty.city}
+                            </p>
                           </div>
-                          <p className="text-purple-600 font-bold text-xl mt-2">
-                            {formatPriceShort(selectedProperty.price)}
-                          </p>
-                          <div className="mt-3 pt-3 border-t text-xs text-gray-500">
-                            <p>👤 {CONTACT_DETAILS.agent}</p>
-                            <p>📞 {CONTACT_DETAILS.phone}</p>
-                            <p>📧 {CONTACT_DETAILS.email}</p>
+                          
+                          {/* Key Specs - Clean badges */}
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="bg-gray-100 text-gray-700 px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5">
+                              <BedDouble className="h-4 w-4 text-purple-500" />
+                              {selectedProperty.bedrooms} Beds
+                            </span>
+                            <span className="bg-gray-100 text-gray-700 px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5">
+                              <Bath className="h-4 w-4 text-purple-500" />
+                              {selectedProperty.bathrooms} Baths
+                            </span>
+                            {selectedProperty.area > 0 && (
+                              <span className="bg-gray-100 text-gray-700 px-3 py-1.5 rounded-full text-sm font-medium">
+                                {selectedProperty.area}m²
+                              </span>
+                            )}
+                          </div>
+                          
+                          {/* CTA Line */}
+                          <div className="bg-gradient-to-r from-purple-50 to-orange-50 rounded-lg px-4 py-2">
+                            <p className="text-purple-700 font-semibold text-sm">
+                              Contact {CONTACT_DETAILS.agent} to View
+                            </p>
+                          </div>
+                          
+                          {/* Contact Block - Visually Grouped */}
+                          <div className="border-t border-gray-100 pt-4">
+                            <div className="bg-gray-50 rounded-lg p-3 space-y-1.5">
+                              <p className="text-gray-800 font-semibold text-sm flex items-center gap-2">
+                                <span className="w-5 text-center">👤</span>
+                                {CONTACT_DETAILS.agent}
+                              </p>
+                              <p className="text-gray-600 text-sm flex items-center gap-2">
+                                <span className="w-5 text-center">📞</span>
+                                {CONTACT_DETAILS.phone}
+                              </p>
+                              <p className="text-gray-600 text-sm flex items-center gap-2">
+                                <span className="w-5 text-center">📧</span>
+                                {CONTACT_DETAILS.email}
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
