@@ -294,9 +294,33 @@ TIKTOK OPTIMIZATION:
         allowTaint: true,
         backgroundColor: "#ffffff",
         logging: false,
-        imageTimeout: 15000,
-        removeContainer: true
+        imageTimeout: 15000
       });
+      
+      // Draw price text directly onto canvas to ensure it renders
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        const priceText = formatPriceShort(selectedProperty.price);
+        
+        // Calculate position (bottom-left of image area, scaled by 2)
+        const imageHeight = 224 * 2; // h-56 = 224px, scaled 2x
+        const priceBoxX = 20 * 2; // left-5 = 20px
+        const priceBoxY = imageHeight - 20 * 2; // bottom-5 from image
+        
+        // Draw white background box
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.roundRect(priceBoxX, priceBoxY - 52, 160, 52, 8);
+        ctx.fill();
+        ctx.shadowColor = 'rgba(0,0,0,0.15)';
+        ctx.shadowBlur = 10;
+        
+        // Draw price text
+        ctx.fillStyle = '#7c3aed';
+        ctx.font = 'bold 52px Arial, sans-serif';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(priceText, priceBoxX + 20, priceBoxY - 26);
+      }
       
       const link = document.createElement("a");
       link.download = `${selectedProperty.title.replace(/[^a-zA-Z0-9]/g, "_")}_${selectedPlatform}_post.png`;
