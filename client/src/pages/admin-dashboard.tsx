@@ -97,29 +97,29 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <StatsCard
               title="Active Properties"
-              value={(stats as any)?.activeProperties?.toString() || "20"}
-              change="+8%"
+              value={isLoading ? "..." : ((stats as any)?.activeProperties?.toString() || "0")}
+              change=""
               icon={Home}
-              trend="up"
+              trend="neutral"
             />
             <StatsCard
               title="Total Leads"
-              value={(stats as any)?.totalLeads?.toString() || "27"}
-              change="+15%"
+              value={isLoading ? "..." : ((stats as any)?.totalLeads?.toString() || "0")}
+              change=""
               icon={Users}
-              trend="up"
+              trend="neutral"
             />
             <StatsCard
               title="New Leads"
-              value={(stats as any)?.newLeads?.toString() || "22"}
-              change="+12%"
+              value={isLoading ? "..." : ((stats as any)?.newLeads?.toString() || "0")}
+              change=""
               icon={Eye}
-              trend="up"
+              trend="neutral"
             />
             <StatsCard
               title="Active Agents"
-              value={(stats as any)?.totalAgents?.toString() || "3"}
-              change="0%"
+              value={isLoading ? "..." : ((stats as any)?.totalAgents?.toString() || "0")}
+              change=""
               icon={TrendingUp}
               trend="neutral"
             />
