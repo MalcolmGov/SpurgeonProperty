@@ -293,6 +293,17 @@ TIKTOK OPTIMIZATION:
         useCORS: true,
         allowTaint: true,
         backgroundColor: "#ffffff",
+        logging: false,
+        onclone: (clonedDoc) => {
+          const priceElement = clonedDoc.querySelector('[data-price-element]') as HTMLElement;
+          if (priceElement) {
+            priceElement.style.fontFamily = 'Arial, Helvetica, sans-serif';
+            priceElement.style.fontWeight = '900';
+            priceElement.style.color = '#7c3aed';
+            priceElement.style.fontSize = '28px';
+            priceElement.style.letterSpacing = '-0.5px';
+          }
+        }
       });
       
       const link = document.createElement("a");
@@ -554,7 +565,17 @@ TIKTOK OPTIMIZATION:
                           {/* PROMINENT PRICE - Compact, Left-aligned */}
                           <div className="absolute bottom-5 left-5">
                             <div className="bg-white rounded-lg px-5 py-2.5 shadow-xl inline-block">
-                              <p className="text-purple-700 font-black text-2xl md:text-3xl tracking-tight">
+                              <p 
+                                data-price-element="true"
+                                style={{
+                                  fontFamily: 'Arial, Helvetica, sans-serif',
+                                  fontWeight: 900,
+                                  color: '#7c3aed',
+                                  fontSize: '28px',
+                                  letterSpacing: '-0.5px',
+                                  lineHeight: 1.2
+                                }}
+                              >
                                 {formatPriceShort(selectedProperty.price)}
                               </p>
                             </div>
