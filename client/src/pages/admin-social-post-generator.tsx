@@ -289,9 +289,10 @@ TIKTOK OPTIMIZATION:
     
     setIsDownloading(true);
     try {
-      // Get the bounding rect of the price pill before html2canvas clones the DOM
-      const previewRect = previewRef.current.getBoundingClientRect();
-      const pricePillRect = pricePillRef.current?.getBoundingClientRect();
+      // Hide the price pill before capture - we'll draw it manually
+      if (pricePillRef.current) {
+        pricePillRef.current.style.visibility = 'hidden';
+      }
       
       const scale = 2;
       const canvas = await html2canvas(previewRef.current, {
@@ -303,36 +304,56 @@ TIKTOK OPTIMIZATION:
         imageTimeout: 15000
       });
       
-      // Draw price text directly onto canvas using measured coordinates
+      // Restore price pill visibility
+      if (pricePillRef.current) {
+        pricePillRef.current.style.visibility = 'visible';
+      }
+      
+      // Draw price manually at fixed position (bottom-left of image area)
       const ctx = canvas.getContext('2d');
-      if (ctx && pricePillRect) {
+      if (ctx) {
         const priceText = formatPriceShort(selectedProperty.price);
         
-        // Calculate position relative to preview container, scaled
-        const relativeX = (pricePillRect.left - previewRect.left) * scale;
-        const relativeY = (pricePillRect.top - previewRect.top) * scale;
-        const pillWidth = pricePillRect.width * scale;
-        const pillHeight = pricePillRect.height * scale;
+        // Image height is h-56 = 224px, position at bottom-5 left-5 = 20px from edges
+        const imageHeight = 224 * scale;
+        const margin = 20 * scale;
+        const pillPadding = 10 * scale;
+        const fontSize = 26 * scale;
         
-        // Save context state
+        // Measure text width
+        ctx.font = `bold ${fontSize}px Arial, sans-serif`;
+        const textWidth = ctx.measureText(priceText).width;
+        const pillWidth = textWidth + (pillPadding * 4);
+        const pillHeight = fontSize + (pillPadding * 2);
+        
+        // Position from bottom of image area
+        const pillX = margin;
+        const pillY = imageHeight - margin - pillHeight;
+        
+        // Save context and reset any inherited styles
         ctx.save();
         ctx.globalAlpha = 1;
-        ctx.shadowBlur = 0;
+        ctx.shadowColor = 'rgba(0,0,0,0.2)';
+        ctx.shadowBlur = 10;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 4;
         
         // Draw white background pill
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
-        ctx.roundRect(relativeX, relativeY, pillWidth, pillHeight, 8 * scale);
+        ctx.roundRect(pillX, pillY, pillWidth, pillHeight, 8 * scale);
         ctx.fill();
         
-        // Draw price text centered in the pill
+        // Reset shadow for text
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
+        
+        // Draw price text
         ctx.fillStyle = '#7c3aed';
-        ctx.font = `bold ${26 * scale}px Arial, sans-serif`;
         ctx.textBaseline = 'middle';
         ctx.textAlign = 'left';
-        ctx.fillText(priceText, relativeX + (10 * scale), relativeY + (pillHeight / 2));
+        ctx.fillText(priceText, pillX + (pillPadding * 2), pillY + (pillHeight / 2));
         
-        // Restore context state
         ctx.restore();
       }
       
@@ -343,6 +364,10 @@ TIKTOK OPTIMIZATION:
       
       toast({ title: "Image downloaded!", description: "Social media image saved" });
     } catch (error) {
+      // Restore visibility on error
+      if (pricePillRef.current) {
+        pricePillRef.current.style.visibility = 'visible';
+      }
       toast({ title: "Download failed", description: "Could not generate image", variant: "destructive" });
     } finally {
       setIsDownloading(false);
