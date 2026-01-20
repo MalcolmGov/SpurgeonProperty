@@ -289,73 +289,14 @@ TIKTOK OPTIMIZATION:
     
     setIsDownloading(true);
     try {
-      // Hide the price pill before capture - we'll draw it manually
-      if (pricePillRef.current) {
-        pricePillRef.current.style.visibility = 'hidden';
-      }
-      
-      const scale = 2;
       const canvas = await html2canvas(previewRef.current, {
-        scale,
+        scale: 2,
         useCORS: true,
         allowTaint: true,
         backgroundColor: "#ffffff",
         logging: false,
         imageTimeout: 15000
       });
-      
-      // Restore price pill visibility
-      if (pricePillRef.current) {
-        pricePillRef.current.style.visibility = 'visible';
-      }
-      
-      // Draw price manually at fixed position (bottom-left of image area)
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        const priceText = formatPriceShort(selectedProperty.price);
-        
-        // Image height is h-56 = 224px, position at bottom-5 left-5 = 20px from edges
-        const imageHeight = 224 * scale;
-        const margin = 20 * scale;
-        const pillPadding = 10 * scale;
-        const fontSize = 26 * scale;
-        
-        // Measure text width
-        ctx.font = `bold ${fontSize}px Arial, sans-serif`;
-        const textWidth = ctx.measureText(priceText).width;
-        const pillWidth = textWidth + (pillPadding * 4);
-        const pillHeight = fontSize + (pillPadding * 2);
-        
-        // Position from bottom of image area
-        const pillX = margin;
-        const pillY = imageHeight - margin - pillHeight;
-        
-        // Save context and reset any inherited styles
-        ctx.save();
-        ctx.globalAlpha = 1;
-        ctx.shadowColor = 'rgba(0,0,0,0.2)';
-        ctx.shadowBlur = 10;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 4;
-        
-        // Draw white background pill
-        ctx.fillStyle = '#ffffff';
-        ctx.beginPath();
-        ctx.roundRect(pillX, pillY, pillWidth, pillHeight, 8 * scale);
-        ctx.fill();
-        
-        // Reset shadow for text
-        ctx.shadowBlur = 0;
-        ctx.shadowOffsetY = 0;
-        
-        // Draw price text
-        ctx.fillStyle = '#7c3aed';
-        ctx.textBaseline = 'middle';
-        ctx.textAlign = 'left';
-        ctx.fillText(priceText, pillX + (pillPadding * 2), pillY + (pillHeight / 2));
-        
-        ctx.restore();
-      }
       
       const link = document.createElement("a");
       link.download = `${selectedProperty.title.replace(/[^a-zA-Z0-9]/g, "_")}_${selectedPlatform}_post.png`;
@@ -364,10 +305,6 @@ TIKTOK OPTIMIZATION:
       
       toast({ title: "Image downloaded!", description: "Social media image saved" });
     } catch (error) {
-      // Restore visibility on error
-      if (pricePillRef.current) {
-        pricePillRef.current.style.visibility = 'visible';
-      }
       toast({ title: "Download failed", description: "Could not generate image", variant: "destructive" });
     } finally {
       setIsDownloading(false);
@@ -617,33 +554,20 @@ TIKTOK OPTIMIZATION:
                             </div>
                           </div>
                           
-                          {/* PROMINENT PRICE - Compact, Left-aligned */}
-                          <div className="absolute bottom-5 left-5">
-                            <div 
-                              ref={pricePillRef}
-                              className="rounded-lg shadow-xl inline-block"
-                              style={{
-                                backgroundColor: '#ffffff',
-                                padding: '10px 20px'
-                              }}
-                            >
-                              <span 
-                                style={{
-                                  fontFamily: 'Arial, sans-serif',
-                                  fontWeight: 'bold',
-                                  color: '#7c3aed',
-                                  fontSize: '26px',
-                                  display: 'block'
-                                }}
-                              >
-                                {formatPriceShort(selectedProperty.price)}
-                              </span>
-                            </div>
-                          </div>
                         </div>
                         
                         {/* Content Section - Clear Visual Flow */}
-                        <div className="p-6 space-y-5">
+                        <div className="p-6 space-y-4">
+                          {/* PRICE - Prominent and reliable */}
+                          <div 
+                            ref={pricePillRef}
+                            className="inline-block bg-purple-600 text-white px-5 py-2 rounded-lg"
+                          >
+                            <span className="font-bold text-2xl">
+                              {formatPriceShort(selectedProperty.price)}
+                            </span>
+                          </div>
+                          
                           {/* Title - Strong weight */}
                           <div>
                             <h3 className="font-bold text-xl md:text-2xl text-gray-900 leading-tight">
