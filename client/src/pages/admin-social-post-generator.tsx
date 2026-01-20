@@ -294,16 +294,8 @@ TIKTOK OPTIMIZATION:
         allowTaint: true,
         backgroundColor: "#ffffff",
         logging: false,
-        onclone: (clonedDoc) => {
-          const priceElement = clonedDoc.querySelector('[data-price-element]') as HTMLElement;
-          if (priceElement) {
-            priceElement.style.fontFamily = 'Arial, Helvetica, sans-serif';
-            priceElement.style.fontWeight = '900';
-            priceElement.style.color = '#7c3aed';
-            priceElement.style.fontSize = '28px';
-            priceElement.style.letterSpacing = '-0.5px';
-          }
-        }
+        imageTimeout: 15000,
+        removeContainer: true
       });
       
       const link = document.createElement("a");
@@ -564,20 +556,24 @@ TIKTOK OPTIMIZATION:
                           
                           {/* PROMINENT PRICE - Compact, Left-aligned */}
                           <div className="absolute bottom-5 left-5">
-                            <div className="bg-white rounded-lg px-5 py-2.5 shadow-xl inline-block">
-                              <p 
-                                data-price-element="true"
+                            <div 
+                              className="rounded-lg shadow-xl inline-block"
+                              style={{
+                                backgroundColor: '#ffffff',
+                                padding: '10px 20px'
+                              }}
+                            >
+                              <span 
                                 style={{
-                                  fontFamily: 'Arial, Helvetica, sans-serif',
-                                  fontWeight: 900,
+                                  fontFamily: 'Arial, sans-serif',
+                                  fontWeight: 'bold',
                                   color: '#7c3aed',
-                                  fontSize: '28px',
-                                  letterSpacing: '-0.5px',
-                                  lineHeight: 1.2
+                                  fontSize: '26px',
+                                  display: 'block'
                                 }}
                               >
                                 {formatPriceShort(selectedProperty.price)}
-                              </p>
+                              </span>
                             </div>
                           </div>
                         </div>
