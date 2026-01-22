@@ -195,23 +195,19 @@ export default function Contact() {
                     </div>
                   </Card>
 
-                  {/* Service Areas Card */}
+                  {/* Physical Address Card */}
                   <Card className="p-8 hover:shadow-xl transition-all duration-300 border-l-4 border-l-orange-500 bg-gradient-to-r from-white to-orange-50/50 dark:from-slate-800 dark:to-orange-900/10">
                     <div className="flex items-start space-x-6">
                       <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg">
                         <MapPin className="w-8 h-8 text-white" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-bold text-xl mb-3 text-gray-900 dark:text-white">Service Areas</h3>
-                        <div className="text-gray-600 dark:text-gray-300">
-                          <p className="text-lg mb-2">Serving all major areas across South Africa</p>
-                          <div className="flex flex-wrap gap-2 mt-3">
-                            {['Cape Town', 'Johannesburg', 'Durban', 'Pretoria', 'Port Elizabeth', 'Bloemfontein'].map((city) => (
-                              <Badge key={city} variant="secondary" className="bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
-                                {city}
-                              </Badge>
-                            ))}
-                          </div>
+                        <h3 className="font-bold text-xl mb-3 text-gray-900 dark:text-white">Visit Our Office</h3>
+                        <div className="text-gray-600 dark:text-gray-300 space-y-1">
+                          <p className="text-lg font-medium">Eastlands Office Park</p>
+                          <p>Bentel Avenue, Jansen Park</p>
+                          <p>Boksburg</p>
+                          <p>Regus Building, First Floor</p>
                         </div>
                       </div>
                     </div>

@@ -128,8 +128,10 @@ export default function Footer() {
               <div className="flex items-start space-x-3">
                 <MapPin className="w-4 h-4 text-orange-primary mt-1" />
                 <span>
-                  South Africa<br />
-                  Property Services
+                  Eastlands Office Park<br />
+                  Bentel Avenue, Jansen Park<br />
+                  Boksburg<br />
+                  Regus Building, First Floor
                 </span>
               </div>
             </div>
