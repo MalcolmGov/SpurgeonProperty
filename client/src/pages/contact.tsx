@@ -127,7 +127,7 @@ export default function Contact() {
                         <div className="space-y-2">
                           <div className="flex items-center gap-3">
                             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                            <p className="font-semibold text-lg text-gray-800 dark:text-gray-100">Office: 011 391 2152</p>
+                            <p className="font-semibold text-lg text-gray-800 dark:text-gray-100">Office: +27 101 426 949</p>
                           </div>
                           <div className="flex items-center gap-3">
                             <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
