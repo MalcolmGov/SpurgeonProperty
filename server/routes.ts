@@ -757,10 +757,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     const height = parseInt(req.params.height) || 300;
     
     const svg = `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="${width}" height="${height}" fill="#F3F4F6"/>
-      <path d="m${width * 0.4375} ${height * 0.4667} ${width * 0.125} ${height * 0.1667} ${width * 0.0625} -${height * 0.0833} ${width * 0.125} ${height * 0.1667}V${height * 0.6}H${width * 0.4375}V${height * 0.4667}Z" fill="#E5E7EB"/>
-      <circle cx="${width * 0.45}" cy="${height * 0.4}" r="${width * 0.025}" fill="#E5E7EB"/>
-      <text x="${width * 0.5}" y="${height * 0.517}" fill="#9B9B9B" font-family="sans-serif" font-size="14" text-anchor="middle">Property Image</text>
+      <defs>
+        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#f8f4ff;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#fff5f0;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#9333ea;stop-opacity:0.3" />
+          <stop offset="100%" style="stop-color:#f97316;stop-opacity:0.3" />
+        </linearGradient>
+      </defs>
+      <rect width="${width}" height="${height}" fill="url(#bgGrad)"/>
+      <rect x="${width * 0.35}" y="${height * 0.25}" width="${width * 0.30}" height="${height * 0.35}" rx="8" fill="url(#iconGrad)"/>
+      <path d="M${width * 0.43} ${height * 0.52} L${width * 0.50} ${height * 0.40} L${width * 0.57} ${height * 0.52}" stroke="#9333ea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.5"/>
+      <circle cx="${width * 0.55}" cy="${height * 0.35}" r="${width * 0.025}" fill="#f97316" opacity="0.4"/>
+      <text x="${width * 0.5}" y="${height * 0.72}" fill="#9333ea" font-family="system-ui, sans-serif" font-size="13" font-weight="500" text-anchor="middle" opacity="0.6">Image Coming Soon</text>
     </svg>`;
     
     res.setHeader('Content-Type', 'image/svg+xml');
