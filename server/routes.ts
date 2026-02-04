@@ -48,6 +48,16 @@ console.log("Cloudinary configured:", {
   api_secret_set: !!process.env.CLOUDINARY_API_SECRET
 });
 
+// Test Cloudinary connection at startup
+(async () => {
+  try {
+    const result = await cloudinary.api.ping();
+    console.log("Cloudinary connection test: SUCCESS", result);
+  } catch (error: any) {
+    console.error("Cloudinary connection test: FAILED", error?.message || error);
+  }
+})();
+
 // Configure multer for file uploads (now using memory storage for Object Storage)
 const uploadDir = path.join(process.cwd(), 'uploads');
 if (!fs.existsSync(uploadDir)) {
