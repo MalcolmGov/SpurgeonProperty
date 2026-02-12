@@ -362,7 +362,7 @@ export default function PropertyCard({
       whileTap={{ scale: 0.97 }}
       className="group"
     >
-      <Card className="overflow-hidden bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800 border-0 shadow-lg hover:shadow-2xl transition-all duration-500 group-hover:shadow-purple-500/10">
+      <Card className="overflow-hidden bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800 border border-slate-200 dark:border-slate-700 md:border-0 shadow-lg hover:shadow-2xl transition-all duration-500 group-hover:shadow-purple-500/10 rounded-2xl ring-1 ring-slate-200/60 dark:ring-slate-700/60 md:ring-0">
         <div className="relative overflow-hidden">
           {/* Premium Image with Overlay */}
           <div className="relative h-56 sm:h-64 overflow-hidden">
