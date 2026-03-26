@@ -142,6 +142,9 @@ class MonitoringService {
 
   // Send daily analytics email
   async sendDailyAnalyticsReport() {
+    // System email alerts are disabled
+    return;
+
     try {
       const metrics = await this.generateDailyReport();
       const systemHealth = this.getHealthStatus();
@@ -211,6 +214,9 @@ class MonitoringService {
 
   // Send performance alerts
   private async sendPerformanceAlert(alert: PerformanceAlert) {
+    // System email alerts are disabled
+    return;
+
     const alertKey = `${alert.type}_${alert.severity}`;
     const now = Date.now();
     
@@ -243,6 +249,9 @@ class MonitoringService {
 
   // Critical error immediate alert
   private async sendCriticalErrorAlert(errorEntry: any) {
+    // System email alerts are disabled
+    return;
+
     try {
       const emailContent = `
         <h2>🚨 Critical Error Detected - Spurgeon Property</h2>
