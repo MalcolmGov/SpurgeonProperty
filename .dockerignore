@@ -1,0 +1,30 @@
+.git
+.github
+.vercel
+.vercelignore
+.replit
+replit.nix
+.breakpoints
+.upm
+
+node_modules
+dist
+.next
+
+# Python scratch — not needed for Node runtime
+__pycache__
+*.pyc
+.venv
+venv
+*.pdf
+
+# Docs / env
+*.md
+.env
+.env.*
+.vscode
+.idea
+
+# Repo-root logs
+*.log
+debug_*.json
