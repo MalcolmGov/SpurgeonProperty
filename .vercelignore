@@ -3,9 +3,10 @@ node_modules
 .next
 dist
 
-# Large Replit-era assets (63 MB). If any are needed in prod,
-# they should already be on Cloudinary (cloud: djmjg0eox).
-attached_assets
+# attached_assets/ is kept — client/src/pages/services.tsx imports
+# from @assets/ (alias → attached_assets/). Vite tree-shakes so only
+# referenced files end up in the built output; the whole 63 MB folder
+# doesn't ship to production, only the ~200 KB services image bundles in.
 
 # Generated PDFs — re-generated on demand at runtime
 *.pdf
