@@ -20,10 +20,12 @@ RUN npm run build
 
 # Runtime
 ENV NODE_ENV=production
-ENV PORT=5000
-EXPOSE 5000
+# Don't hardcode PORT — Railway injects its own PORT env var and the
+# server reads process.env.PORT. Hardcoding here breaks Railway's
+# public-domain routing because Railway wires the domain to whatever
+# port it assigned, not 5000.
 
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
-  CMD curl -fsS http://localhost:${PORT}/health || exit 1
+  CMD curl -fsS "http://localhost:${PORT:-5000}/health" || exit 1
 
 CMD ["npm", "start"]
