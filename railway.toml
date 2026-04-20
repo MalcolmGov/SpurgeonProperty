@@ -1,0 +1,14 @@
+# Force Railway to use the Dockerfile rather than Railpack auto-detection,
+# which currently mis-identifies this as a Python project because of the
+# catalogue-generation scripts in the repo root.
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+numReplicas = 1
+healthcheckPath = "/health"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 5
