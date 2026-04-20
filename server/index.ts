@@ -235,9 +235,9 @@ async function startServer() {
       serveStatic(app);
     }
 
-    // ALWAYS serve the app on port 5000
-    const port = 5000;
-    
+    // Port: Vercel / Railway / Replit all set PORT. Fall back to 5000 for local dev.
+    const port = parseInt(process.env.PORT || "5000", 10);
+
     return new Promise<void>((resolve, reject) => {
       server.listen({
         port,

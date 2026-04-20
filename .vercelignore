@@ -1,0 +1,34 @@
+# Do not ship to Vercel build env
+node_modules
+.next
+dist
+
+# Large Replit-era assets (63 MB). If any are needed in prod,
+# they should already be on Cloudinary (cloud: djmjg0eox).
+attached_assets
+
+# Generated PDFs — re-generated on demand at runtime
+*.pdf
+
+# Python scratch files
+__pycache__
+*.pyc
+.venv
+venv
+
+# Local env + editor
+.env
+.env.local
+.env.*.local
+.vscode
+.idea
+
+# Replit leftovers
+.replit
+replit.nix
+.breakpoints
+.upm
+
+# Logs + debug
+*.log
+debug_*.json
