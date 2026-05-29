@@ -9,6 +9,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { X } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  isPriceOnApplication,
+  normalizePropertyPriceForSave,
+  priceInputValueFromStored,
+} from "@/lib/property-price";
 
 interface MinimalPropertyFormProps {
   open: boolean;
@@ -53,6 +59,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
   const [newVideoUrl, setNewVideoUrl] = useState("");
   const [featuredImageIndex, setFeaturedImageIndex] = useState<number | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [isPoa, setIsPoa] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -72,11 +79,13 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
   useEffect(() => {
     console.log('MinimalPropertyForm: property changed', { property, open });
     if (property && open) {
+      const poa = isPriceOnApplication(property.price);
+      setIsPoa(poa);
       setFormData({
         title: property.title || "",
         description: property.description || "",
         additionalInfo: property.additionalInfo || "",
-        price: property.price || "",
+        price: poa ? "" : priceInputValueFromStored(property.price),
         monthlyRates: property.monthlyRates || "",
         monthlyLevies: property.monthlyLevies || "",
         address: property.address || "",
@@ -119,6 +128,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       }
     } else if (open && !property) {
       // Reset form for new property
+      setIsPoa(false);
       setFormData({
         title: "",
         description: "",
@@ -182,7 +192,13 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
   };
 
   const mutation = useMutation({
-    mutationFn: async (data: typeof formData) => {
+    mutationFn: async ({
+      data,
+      isPoa: saveAsPoa,
+    }: {
+      data: typeof formData;
+      isPoa: boolean;
+    }) => {
       // Upload images and videos if any
       let regularUploadedImages: string[] = [];
       let uploadedVideoFiles: string[] = [];
@@ -256,7 +272,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         title: data.title.trim(),
         description: data.description.trim(),
         additionalInfo: data.additionalInfo.trim(),
-        price: data.price.trim(),
+        price: normalizePropertyPriceForSave(data.price, saveAsPoa),
         monthlyRates: data.monthlyRates.trim(),
         monthlyLevies: data.monthlyLevies.trim(),
         address: data.address.trim(),
@@ -305,6 +321,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
       });
       
       // Reset form
+      setIsPoa(false);
       setFormData({
         title: "",
         description: "",
@@ -364,7 +381,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
     }
 
     console.log('MinimalPropertyForm: Calling mutation');
-    mutation.mutate(formData);
+    mutation.mutate({ data: formData, isPoa });
   };
 
   const handleChange = (field: string, value: string | boolean) => {
@@ -616,15 +633,37 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
                 <label className="block text-sm font-medium mb-1">
                   Sale Price (ZAR)
                 </label>
+                <div className="flex items-center gap-2 mb-2">
+                  <Checkbox
+                    id="price-poa"
+                    checked={isPoa}
+                    onCheckedChange={(checked) => {
+                      const poa = checked === true;
+                      setIsPoa(poa);
+                      if (poa) {
+                        handleChange("price", "");
+                      }
+                    }}
+                  />
+                  <label
+                    htmlFor="price-poa"
+                    className="text-sm font-medium cursor-pointer select-none"
+                  >
+                    Price on Application (POA)
+                  </label>
+                </div>
                 <input
                   type="number"
                   value={formData.price}
                   onChange={(e) => handleChange("price", e.target.value)}
-                  placeholder="Leave empty for POA (Price on Application)"
-                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                  placeholder={isPoa ? "POA — no amount required" : "e.g. 2500000"}
+                  disabled={isPoa}
+                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 disabled:opacity-60 disabled:cursor-not-allowed"
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  Leave empty to display "POA" (Price on Application)
+                  {isPoa
+                    ? "Listings will show POA on property cards and detail pages."
+                    : "Enter the sale price in ZAR, or tick POA above."}
                 </p>
               </div>
               <div>

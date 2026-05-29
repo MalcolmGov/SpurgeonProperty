@@ -29,6 +29,10 @@ import {
   Play
 } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
+import {
+  formatPropertyPrice,
+  isPriceOnApplication,
+} from "@/lib/property-price";
 
 interface PropertyCardProps {
   property: PropertyWithAgent;
@@ -50,30 +54,8 @@ export default function PropertyCard({
   const [shareClicked, setShareClicked] = useState(false);
   const { toast } = useToast();
 
-  const formatPrice = (price: string) => {
-    if (!price || price === '' || price === 'null' || price === 'undefined') {
-      return 'POA';
-    }
-    
-    // Check for POA specifically
-    if (price.toString().trim().toUpperCase() === 'POA') {
-      return 'POA';
-    }
-    
-    // If price is already formatted (starts with "R"), return as is
-    if (price.toString().trim().startsWith('R')) {
-      return price.toString().trim();
-    }
-    
-    // Try to parse as number and format
-    const numericPrice = parseFloat(price.replace(/[^\d.-]/g, ''));
-    if (!isNaN(numericPrice)) {
-      return `R ${numericPrice.toLocaleString('en-ZA')}`;
-    }
-    
-    // For any non-numeric value, return as POA
-    return 'POA';
-  };
+  const displayPrice = formatPropertyPrice(property.price);
+  const poa = isPriceOnApplication(property.price);
 
   const handleFavorite = () => {
     setIsFavorited(!isFavorited);
@@ -300,8 +282,15 @@ export default function PropertyCard({
                 
                 {/* Compact Price Overlay */}
                 <div className="absolute bottom-1 left-1 right-1">
-                  <div className="bg-gradient-to-r from-purple-600/90 to-purple-700/90 text-white px-2 py-1 rounded-lg backdrop-blur-sm text-xs font-bold text-center">
-                    {formatPrice(property.price)}
+                  <div
+                    className={`text-white px-2 py-1 rounded-lg backdrop-blur-sm text-xs font-bold text-center ${
+                      poa
+                        ? "bg-gradient-to-r from-amber-600/95 to-orange-600/95"
+                        : "bg-gradient-to-r from-purple-600/90 to-purple-700/90"
+                    }`}
+                    title={poa ? "Price on Application" : undefined}
+                  >
+                    {displayPrice}
                   </div>
                 </div>
               </div>
@@ -488,9 +477,16 @@ export default function PropertyCard({
 
           {/* Premium Price Badge */}
           <div className="absolute bottom-4 left-4">
-            <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-4 py-2 rounded-xl shadow-lg backdrop-blur-sm border border-white/20">
+            <div
+              className={`text-white px-4 py-2 rounded-xl shadow-lg backdrop-blur-sm border border-white/20 ${
+                poa
+                  ? "bg-gradient-to-r from-amber-600 to-orange-600"
+                  : "bg-gradient-to-r from-purple-600 to-purple-700"
+              }`}
+              title={poa ? "Price on Application" : undefined}
+            >
               <span className="text-lg font-bold tracking-tight">
-                {formatPrice(property.price)}
+                {displayPrice}
               </span>
             </div>
           </div>

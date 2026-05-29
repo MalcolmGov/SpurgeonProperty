@@ -30,6 +30,10 @@ import {
   MessageCircle
 } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
+import {
+  formatPropertyPrice,
+  isPriceOnApplication,
+} from "@/lib/property-price";
 
 export default function PropertyDetail() {
   const params = useParams();
@@ -75,33 +79,8 @@ export default function PropertyDetail() {
     );
   }
 
-  const formatPrice = (price: string) => {
-    if (!price || price === '' || price === 'null' || price === 'undefined') {
-      return 'POA';
-    }
-    
-    // Check for POA specifically
-    if (price.toString().trim().toUpperCase() === 'POA') {
-      return 'POA';
-    }
-    
-    // If price is already formatted (starts with "R"), return as is
-    if (price.toString().trim().startsWith('R')) {
-      return price.toString().trim();
-    }
-    
-    // Extract numeric value from string
-    const numericPrice = parseFloat(price.toString().replace(/[^\d.]/g, ''));
-    
-    if (isNaN(numericPrice)) {
-      return 'POA';
-    }
-    
-    return `R ${new Intl.NumberFormat('en-ZA', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(numericPrice)}`;
-  };
+  const displayPrice = formatPropertyPrice(property.price);
+  const poa = isPriceOnApplication(property.price);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 overflow-x-hidden">
@@ -136,8 +115,11 @@ export default function PropertyDetail() {
             <Card className="lg:sticky lg:top-24">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-3xl font-bold text-purple-primary">
-                    {formatPrice(property.price)}
+                  <span
+                    className={`text-3xl font-bold ${poa ? "text-amber-600" : "text-purple-primary"}`}
+                    title={poa ? "Price on Application" : undefined}
+                  >
+                    {displayPrice}
                   </span>
                   <div className="flex space-x-2">
                     <Button
@@ -555,10 +537,14 @@ export default function PropertyDetail() {
           </CardContent>
         </Card>
 
-        {/* Mortgage Calculator */}
-        <div className="mt-8">
-          <MortgageCalculator propertyPrice={parseInt(property.price)} />
-        </div>
+        {/* Mortgage Calculator — only when a numeric price is set */}
+        {!poa && (
+          <div className="mt-8">
+            <MortgageCalculator
+              propertyPrice={parseInt(property.price.replace(/[^\d]/g, ""), 10)}
+            />
+          </div>
+        )}
       </div>
       
       {/* Contact Form Modal */}

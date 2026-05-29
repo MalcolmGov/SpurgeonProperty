@@ -60,3 +60,4 @@ tmp/
 replit.nix
 .breakpoints
 .upm/
+.vercel

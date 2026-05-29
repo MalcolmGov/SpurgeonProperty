@@ -13,6 +13,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Search, Edit, Eye, Trash, Download } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
+import { formatPropertyPrice } from "@/lib/property-price";
 
 export default function AdminProperties() {
   // Dialog state
@@ -115,7 +116,7 @@ export default function AdminProperties() {
         `"${property.title.replace(/"/g, '""')}"`,
         property.propertyType || '',
         property.listingType || 'sale',
-        `"${formatPrice(property.price).replace(/"/g, '""')}"`,
+        `"${formatPropertyPrice(property.price).replace(/"/g, '""')}"`,
         property.status || 'active',
         property.bedrooms || '',
         property.bathrooms || '',
@@ -158,34 +159,6 @@ export default function AdminProperties() {
       default:
         return "bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200";
     }
-  };
-
-  const formatPrice = (price: string) => {
-    if (!price || price === '' || price === 'null' || price === 'undefined') {
-      return 'POA';
-    }
-    
-    // Check for POA specifically
-    if (price.toString().trim().toUpperCase() === 'POA') {
-      return 'POA';
-    }
-    
-    // If price is already formatted (starts with "R"), return as is
-    if (price.toString().trim().startsWith('R')) {
-      return price.toString().trim();
-    }
-    
-    // Extract numeric value from string
-    const numericPrice = parseFloat(price.toString().replace(/[^\d.]/g, ''));
-    
-    if (isNaN(numericPrice)) {
-      return 'POA';
-    }
-    
-    return `R ${new Intl.NumberFormat('en-ZA', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(numericPrice)}`;
   };
 
   return (
@@ -375,7 +348,7 @@ export default function AdminProperties() {
                             </Badge>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900 dark:text-white">
-                            {formatPrice(property.price)}
+                            {formatPropertyPrice(property.price)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             {property.agent ? (

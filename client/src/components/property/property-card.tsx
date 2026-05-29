@@ -5,6 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Heart, Bed, Bath, Square, MapPin, Play } from "lucide-react";
 import { useState } from "react";
 import type { PropertyWithAgent } from "@shared/schema";
+import {
+  formatPropertyPrice,
+  isPriceOnApplication,
+} from "@/lib/property-price";
 
 interface PropertyCardProps {
   property: PropertyWithAgent;
@@ -14,30 +18,8 @@ interface PropertyCardProps {
 export default function PropertyCard({ property, viewMode = "grid" }: PropertyCardProps) {
   const [isFavorited, setIsFavorited] = useState(false);
 
-  const formatPrice = (price: string) => {
-    if (!price || price === '' || price === 'null' || price === 'undefined') {
-      return 'POA';
-    }
-    
-    if (price.toString().trim().toUpperCase() === 'POA') {
-      return 'POA';
-    }
-    
-    if (price.toString().trim().startsWith('R')) {
-      return price.toString().trim();
-    }
-    
-    const numericPrice = parseFloat(price.toString().replace(/[^\d.]/g, ''));
-    
-    if (isNaN(numericPrice)) {
-      return 'POA';
-    }
-    
-    return `R ${new Intl.NumberFormat('en-ZA', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(numericPrice)}`;
-  };
+  const displayPrice = formatPropertyPrice(property.price);
+  const poa = isPriceOnApplication(property.price);
 
   const toggleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -140,8 +122,13 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
                 <Heart className={`w-5 h-5 ${isFavorited ? 'fill-current text-red-500' : ''}`} />
               </Button>
               <div className="absolute bottom-3 left-3">
-                <span className="bg-purple-primary text-white px-3 py-1 rounded-full text-sm font-semibold">
-                  {formatPrice(property.price)}
+                <span
+                  className={`text-white px-3 py-1 rounded-full text-sm font-semibold ${
+                    poa ? "bg-amber-600" : "bg-purple-primary"
+                  }`}
+                  title={poa ? "Price on Application" : undefined}
+                >
+                  {displayPrice}
                 </span>
               </div>
             </div>
@@ -282,8 +269,13 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
             </div>
             
             <div className="absolute bottom-3 left-3">
-              <span className="bg-purple-primary text-white px-3 py-1.5 rounded-lg text-sm font-semibold shadow-md">
-                {formatPrice(property.price)}
+              <span
+                className={`text-white px-3 py-1.5 rounded-lg text-sm font-semibold shadow-md ${
+                  poa ? "bg-amber-600" : "bg-purple-primary"
+                }`}
+                title={poa ? "Price on Application" : undefined}
+              >
+                {displayPrice}
               </span>
             </div>
           </div>
