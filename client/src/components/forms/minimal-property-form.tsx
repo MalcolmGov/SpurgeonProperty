@@ -15,6 +15,7 @@ import {
   normalizePropertyPriceForSave,
   priceInputValueFromStored,
 } from "@/lib/property-price";
+import { showsBedroomsAndBathrooms } from "@/lib/property-display";
 
 interface MinimalPropertyFormProps {
   open: boolean;
@@ -282,8 +283,12 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
         postalCode: data.postalCode.trim(),
         propertyType: data.propertyType,
         listingType: data.listingType,
-        bedrooms: parseInt(data.bedrooms) || 3,
-        bathrooms: data.bathrooms,
+        bedrooms: showsBedroomsAndBathrooms(data.propertyType)
+          ? parseInt(data.bedrooms) || 3
+          : 0,
+        bathrooms: showsBedroomsAndBathrooms(data.propertyType)
+          ? data.bathrooms
+          : "N/A",
         area: parseInt(data.area) || 0,
         lotSize: formattedLotSize,
         parkingSpaces: parseInt(data.parkingSpaces) || 0,
@@ -553,7 +558,18 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
               </div>
               <div>
                 <Label htmlFor="propertyType">Property Type</Label>
-                <Select value={formData.propertyType} onValueChange={(value) => handleChange("propertyType", value)}>
+                <Select
+                  value={formData.propertyType}
+                  onValueChange={(value) => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      propertyType: value,
+                      ...(showsBedroomsAndBathrooms(value)
+                        ? {}
+                        : { bedrooms: "0", bathrooms: "N/A" }),
+                    }));
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -769,7 +785,7 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
             <h3 className="text-lg font-semibold">Property Details</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {/* Only show bedrooms/bathrooms for residential properties */}
-              {!["commercial", "land"].includes(formData.propertyType) && (
+              {showsBedroomsAndBathrooms(formData.propertyType) && (
                 <>
                   <div>
                     <label className="block text-sm font-medium mb-1">Bedrooms</label>
@@ -805,12 +821,16 @@ export default function MinimalPropertyForm({ open, onClose, property }: Minimal
                 </>
               )}
               <div>
-                <label className="block text-sm font-medium mb-1">Floor Area (m²)</label>
+                <label className="block text-sm font-medium mb-1">
+                  {formData.propertyType === "commercial"
+                    ? "Floor Area (m² per floor)"
+                    : "Floor Area (m²)"}
+                </label>
                 <input
                   type="number"
                   value={formData.area}
                   onChange={(e) => handleChange("area", e.target.value)}
-                  placeholder="150"
+                  placeholder={formData.propertyType === "commercial" ? "30" : "150"}
                   className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
                 />
               </div>

@@ -33,6 +33,7 @@ import {
   formatPropertyPrice,
   isPriceOnApplication,
 } from "@/lib/property-price";
+import { showsBedroomsAndBathrooms } from "@/lib/property-display";
 
 interface PropertyCardProps {
   property: PropertyWithAgent;
@@ -56,6 +57,7 @@ export default function PropertyCard({
 
   const displayPrice = formatPropertyPrice(property.price);
   const poa = isPriceOnApplication(property.price);
+  const showRooms = showsBedroomsAndBathrooms(property.propertyType);
 
   const handleFavorite = () => {
     setIsFavorited(!isFavorited);
@@ -313,23 +315,33 @@ export default function PropertyCard({
 
                 {/* Compact Property Stats */}
                 <div className="flex items-center gap-3 pt-1">
-                  <div className="flex items-center gap-1">
-                    <div className="w-5 h-5 bg-gradient-to-r from-purple-500 to-purple-600 rounded-md flex items-center justify-center">
-                      <Bed className="h-2.5 w-2.5 text-white" />
-                    </div>
-                    <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">{property.bedrooms}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="w-5 h-5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-md flex items-center justify-center">
-                      <Bath className="h-2.5 w-2.5 text-white" />
-                    </div>
-                    <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">{property.bathrooms}</span>
-                  </div>
+                  {showRooms && (
+                    <>
+                      <div className="flex items-center gap-1">
+                        <div className="w-5 h-5 bg-gradient-to-r from-purple-500 to-purple-600 rounded-md flex items-center justify-center">
+                          <Bed className="h-2.5 w-2.5 text-white" />
+                        </div>
+                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                          {property.bedrooms}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-5 h-5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-md flex items-center justify-center">
+                          <Bath className="h-2.5 w-2.5 text-white" />
+                        </div>
+                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                          {property.bathrooms}
+                        </span>
+                      </div>
+                    </>
+                  )}
                   <div className="flex items-center gap-1">
                     <div className="w-5 h-5 bg-gradient-to-r from-green-500 to-green-600 rounded-md flex items-center justify-center">
                       <Square className="h-2.5 w-2.5 text-white" />
                     </div>
-                    <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">{property.area}m²</span>
+                    <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                      {property.area}m²
+                    </span>
                   </div>
                 </div>
 
@@ -510,9 +522,8 @@ export default function PropertyCard({
           </div>
 
           {/* Premium Property Details */}
-          <div className={`grid gap-4 py-3 px-4 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 rounded-xl border border-slate-200 dark:border-slate-600 ${!["commercial", "land"].includes(property.propertyType) ? "grid-cols-3" : "grid-cols-1"}`}>
-            {/* Only show bedrooms/bathrooms for residential properties */}
-            {!["commercial", "land"].includes(property.propertyType) && (
+          <div className={`grid gap-4 py-3 px-4 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 rounded-xl border border-slate-200 dark:border-slate-600 ${showRooms ? "grid-cols-3" : "grid-cols-1"}`}>
+            {showRooms && (
               <>
                 <div className="flex flex-col items-center text-center">
                   <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg mb-1">

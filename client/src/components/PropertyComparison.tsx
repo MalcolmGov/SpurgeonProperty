@@ -18,6 +18,7 @@ import {
   Zap
 } from "lucide-react";
 import type { PropertyWithAgent } from "@shared/schema";
+import { showsBedroomsAndBathrooms } from "@/lib/property-display";
 
 interface PropertyComparisonProps {
   selectedProperties: number[];
@@ -160,14 +161,18 @@ export default function PropertyComparison({
 
                         {/* Key Specs */}
                         <div className="grid grid-cols-2 gap-2 text-sm">
-                          <div className="flex items-center gap-1">
-                            <Bed className="h-3 w-3 text-gray-400" />
-                            <span>{property.bedrooms} bed</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Bath className="h-3 w-3 text-gray-400" />
-                            <span>{property.bathrooms} bath</span>
-                          </div>
+                          {showsBedroomsAndBathrooms(property.propertyType) && (
+                            <>
+                              <div className="flex items-center gap-1">
+                                <Bed className="h-3 w-3 text-gray-400" />
+                                <span>{property.bedrooms} bed</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Bath className="h-3 w-3 text-gray-400" />
+                                <span>{property.bathrooms} bath</span>
+                              </div>
+                            </>
+                          )}
                           <div className="flex items-center gap-1">
                             <Square className="h-3 w-3 text-gray-400" />
                             <span>{property.area}m²</span>

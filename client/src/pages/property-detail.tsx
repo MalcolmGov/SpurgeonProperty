@@ -34,6 +34,11 @@ import {
   formatPropertyPrice,
   isPriceOnApplication,
 } from "@/lib/property-price";
+import {
+  filterPropertyFeatures,
+  isCommercialProperty,
+  showsBedroomsAndBathrooms,
+} from "@/lib/property-display";
 
 export default function PropertyDetail() {
   const params = useParams();
@@ -81,6 +86,12 @@ export default function PropertyDetail() {
 
   const displayPrice = formatPropertyPrice(property.price);
   const poa = isPriceOnApplication(property.price);
+  const showRooms = showsBedroomsAndBathrooms(property.propertyType);
+  const isCommercial = isCommercialProperty(property.propertyType);
+  const displayFeatures = filterPropertyFeatures(
+    property.features,
+    property.propertyType
+  );
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 overflow-x-hidden">
@@ -108,6 +119,91 @@ export default function PropertyDetail() {
           {/* Image Gallery */}
           <div className="lg:col-span-2">
             <PropertyGallery images={property.images || []} title={property.title} />
+
+            {/* Quick stats below gallery */}
+            <div
+              className={`grid gap-4 mt-6 ${
+                showRooms ? "grid-cols-3" : "grid-cols-2 sm:grid-cols-3"
+              }`}
+            >
+              {showRooms ? (
+                <>
+                  <div className="text-center p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <div className="text-2xl font-bold text-slate-800 dark:text-white">
+                      {property.bedrooms}
+                    </div>
+                    <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center mt-1">
+                      <Bed className="w-4 h-4 mr-1" />
+                      Bedrooms
+                    </div>
+                  </div>
+                  <div className="text-center p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <div className="text-2xl font-bold text-slate-800 dark:text-white">
+                      {property.bathrooms}
+                    </div>
+                    <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center mt-1">
+                      <Bath className="w-4 h-4 mr-1" />
+                      Bathrooms
+                    </div>
+                  </div>
+                  <div className="text-center p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <div className="text-2xl font-bold text-slate-800 dark:text-white">
+                      {property.area.toLocaleString()}
+                    </div>
+                    <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center mt-1">
+                      <Square className="w-4 h-4 mr-1" />
+                      Floor Area (m²)
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {isCommercial ? (
+                    <div className="text-center p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                      <div className="text-2xl font-bold text-slate-800 dark:text-white">
+                        {property.area.toLocaleString()}
+                      </div>
+                      <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center mt-1">
+                        <Square className="w-4 h-4 mr-1" />
+                        m² per floor
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                      <div className="text-2xl font-bold text-slate-800 dark:text-white">
+                        {property.area.toLocaleString()}
+                      </div>
+                      <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center mt-1">
+                        <Square className="w-4 h-4 mr-1" />
+                        Total Area (m²)
+                      </div>
+                    </div>
+                  )}
+                  {property.lotSize && (
+                    <div className="text-center p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                      <div className="text-2xl font-bold text-slate-800 dark:text-white">
+                        {property.lotSize}
+                      </div>
+                      <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center mt-1">
+                        <Square className="w-4 h-4 mr-1" />
+                        Lot Size
+                      </div>
+                    </div>
+                  )}
+                  {property.parking && (
+                    <div className="text-center p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                      <div className="text-2xl font-bold text-slate-800 dark:text-white">
+                        {property.parking}
+                      </div>
+                      <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center mt-1">
+                        <Car className="w-4 h-4 mr-1" />
+                        Parking
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
           </div>
           
           {/* Property Info Sidebar */}
@@ -141,31 +237,70 @@ export default function PropertyDetail() {
                   {property.address}, {property.suburb}, {property.city}, {property.province} {property.postalCode}
                 </p>
                 
-                {/* Property Features */}
-                <div className="grid grid-cols-3 gap-4 mb-6">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-slate-800 dark:text-white">{property.bedrooms}</div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center">
-                      <Bed className="w-4 h-4 mr-1" />
-                      Bedrooms
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-slate-800 dark:text-white">{property.bathrooms}</div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center">
-                      <Bath className="w-4 h-4 mr-1" />
-                      Bathrooms
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-slate-800 dark:text-white">
-                      {property.area.toLocaleString()}
-                    </div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center">
-                      <Square className="w-4 h-4 mr-1" />
-                      Sq Ft
-                    </div>
-                  </div>
+                {/* Property stats — commercial shows m² per floor, not bedrooms */}
+                <div
+                  className={`grid gap-4 mb-6 ${
+                    showRooms ? "grid-cols-3" : isCommercial ? "grid-cols-2" : "grid-cols-1"
+                  }`}
+                >
+                  {showRooms ? (
+                    <>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-slate-800 dark:text-white">
+                          {property.bedrooms}
+                        </div>
+                        <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center">
+                          <Bed className="w-4 h-4 mr-1" />
+                          Bedrooms
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-slate-800 dark:text-white">
+                          {property.bathrooms}
+                        </div>
+                        <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center">
+                          <Bath className="w-4 h-4 mr-1" />
+                          Bathrooms
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-slate-800 dark:text-white">
+                          {property.area.toLocaleString()}
+                        </div>
+                        <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center">
+                          <Square className="w-4 h-4 mr-1" />
+                          Floor Area (m²)
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {isCommercial && (
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-slate-800 dark:text-white">
+                            {property.area.toLocaleString()}
+                          </div>
+                          <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center">
+                            <Square className="w-4 h-4 mr-1" />
+                            m² per floor
+                          </div>
+                        </div>
+                      )}
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-slate-800 dark:text-white">
+                          {isCommercial && property.lotSize
+                            ? property.lotSize
+                            : property.area.toLocaleString()}
+                        </div>
+                        <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center">
+                          <Square className="w-4 h-4 mr-1" />
+                          {isCommercial && property.lotSize
+                            ? "Lot Size"
+                            : "Total Area (m²)"}
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
                 
                 {/* Contact Buttons */}
@@ -297,7 +432,30 @@ export default function PropertyDetail() {
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-slate-600 dark:text-slate-400">Property Type:</span>
-                        <span className="capitalize">{property.propertyType}</span>
+                        <span className="capitalize">{property.propertyType.replace("_", " ")}</span>
+                      </div>
+                      {showRooms ? (
+                        <>
+                          <div className="flex justify-between">
+                            <span className="text-slate-600 dark:text-slate-400">Bedrooms:</span>
+                            <span>{property.bedrooms}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-slate-600 dark:text-slate-400">Bathrooms:</span>
+                            <span>{property.bathrooms}</span>
+                          </div>
+                        </>
+                      ) : isCommercial ? (
+                        <div className="flex justify-between">
+                          <span className="text-slate-600 dark:text-slate-400">Floor area:</span>
+                          <span>{property.area.toLocaleString()} m² per floor</span>
+                        </div>
+                      ) : null}
+                      <div className="flex justify-between">
+                        <span className="text-slate-600 dark:text-slate-400">
+                          {showRooms ? "Floor Area:" : "Total Area:"}
+                        </span>
+                        <span>{property.area.toLocaleString()} m²</span>
                       </div>
                       {property.yearBuilt && (
                         <div className="flex justify-between">
@@ -327,12 +485,16 @@ export default function PropertyDetail() {
                   <div>
                     <h4 className="font-semibold text-slate-800 dark:text-white mb-3">Key Features</h4>
                     <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                      {property.features?.map((feature, index) => (
-                        <li key={index} className="flex items-center">
-                          <Check className="w-4 h-4 text-green-500 mr-2" />
-                          {feature}
-                        </li>
-                      ))}
+                      {displayFeatures.length > 0 ? (
+                        displayFeatures.map((feature, index) => (
+                          <li key={index} className="flex items-center">
+                            <Check className="w-4 h-4 text-green-500 mr-2" />
+                            {feature}
+                          </li>
+                        ))
+                      ) : (
+                        <li className="text-slate-500">No features listed</li>
+                      )}
                     </ul>
                   </div>
                 </div>
@@ -340,7 +502,7 @@ export default function PropertyDetail() {
               
               <TabsContent value="features">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {property.features?.map((feature, index) => (
+                  {displayFeatures.map((feature, index) => (
                     <div key={index} className="flex items-center p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                       <Check className="w-5 h-5 text-green-500 mr-3" />
                       <span className="text-slate-700 dark:text-slate-300">{feature}</span>

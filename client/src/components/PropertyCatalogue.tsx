@@ -9,6 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
 import { Download, FileText, MapPin, Bed, Bath, Square } from 'lucide-react';
 import type { PropertyWithAgent } from '@shared/schema';
+import { showsBedroomsAndBathrooms } from '@/lib/property-display';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
@@ -159,7 +160,7 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
                     ${property.address}, ${property.suburb}, ${property.city}, ${property.province}
                   </div>
 
-                  ${!["commercial", "land"].includes(property.propertyType) ? `
+                  ${showsBedroomsAndBathrooms(property.propertyType) ? `
                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 18px;">
                       <div style="text-align: center; padding: 14px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
                         <div style="font-weight: 600; color: #1f2937; font-size: 18px;">🛏️ ${property.bedrooms}</div>
@@ -499,7 +500,7 @@ export default function PropertyCatalogue({ className }: PropertyCatalogueProps)
                       </p>
                       <div className="flex items-center space-x-4 mt-2 text-xs text-slate-500">
                         <span className="font-medium text-purple-600">{formatPrice(property.price)}</span>
-                        {!["commercial", "land"].includes(property.propertyType) && (
+                        {showsBedroomsAndBathrooms(property.propertyType) && (
                           <>
                             <span className="flex items-center">
                               <Bed className="h-3 w-3 mr-1" />{property.bedrooms}

@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Send, Bot, User, Sparkles, MessageCircle, Loader2, Home, Calculator, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { showsBedroomsAndBathrooms } from "@/lib/property-display";
 
 interface AIAssistantProps {
   onSearchQuery?: (query: string, filters: any) => void;
@@ -239,7 +240,10 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
                             </Badge>
                           </div>
                           <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
-                            {property.bedrooms} bed, {property.bathrooms} bath • {property.suburb}, {property.city}
+                            {showsBedroomsAndBathrooms(property.propertyType)
+                              ? `${property.bedrooms} bed, ${property.bathrooms} bath • `
+                              : ""}
+                            {property.suburb}, {property.city}
                           </p>
                           <div className="flex gap-1 flex-wrap">
                             <Badge variant="secondary" className="text-xs">

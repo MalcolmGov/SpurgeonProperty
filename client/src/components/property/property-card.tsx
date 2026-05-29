@@ -9,6 +9,7 @@ import {
   formatPropertyPrice,
   isPriceOnApplication,
 } from "@/lib/property-price";
+import { showsBedroomsAndBathrooms } from "@/lib/property-display";
 
 interface PropertyCardProps {
   property: PropertyWithAgent;
@@ -20,6 +21,7 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
 
   const displayPrice = formatPropertyPrice(property.price);
   const poa = isPriceOnApplication(property.price);
+  const showRooms = showsBedroomsAndBathrooms(property.propertyType);
 
   const toggleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -141,7 +143,7 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
                 <span className="line-clamp-2">{property.address}, {property.suburb}, {property.city}, {property.province}</span>
               </p>
               <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 dark:text-slate-400 mb-4">
-                {!["commercial", "land"].includes(property.propertyType) && (
+                {showRooms && (
                   <>
                     <div className="flex items-center">
                       <div className="w-8 h-8 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mr-2">
@@ -291,7 +293,7 @@ export default function PropertyCard({ property, viewMode = "grid" }: PropertyCa
             </p>
             
             <div className="flex flex-wrap gap-4 mb-4 py-3 border-y border-slate-200 dark:border-slate-600">
-              {!["commercial", "land"].includes(property.propertyType) && (
+              {showRooms && (
                 <>
                   <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
                     <div className="w-8 h-8 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mr-2">

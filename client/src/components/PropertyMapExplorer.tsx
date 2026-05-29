@@ -13,6 +13,7 @@ import { MapPin, Bed, Bath, Square, Filter, X } from "lucide-react";
 import { useProperties } from "@/hooks/use-properties";
 import type { PropertyWithAgent } from "@shared/schema";
 import { Link } from "wouter";
+import { showsBedroomsAndBathrooms } from "@/lib/property-display";
 
 // Fix for default Leaflet markers
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -341,14 +342,18 @@ export default function PropertyMapExplorer() {
                         </p>
                         
                         <div className="flex justify-between text-sm text-slate-600 mb-3">
-                          <span className="flex items-center">
-                            <Bed className="w-3 h-3 mr-1" />
-                            {property.bedrooms} beds
-                          </span>
-                          <span className="flex items-center">
-                            <Bath className="w-3 h-3 mr-1" />
-                            {property.bathrooms} baths
-                          </span>
+                          {showsBedroomsAndBathrooms(property.propertyType) && (
+                            <>
+                              <span className="flex items-center">
+                                <Bed className="w-3 h-3 mr-1" />
+                                {property.bedrooms} beds
+                              </span>
+                              <span className="flex items-center">
+                                <Bath className="w-3 h-3 mr-1" />
+                                {property.bathrooms} baths
+                              </span>
+                            </>
+                          )}
                           <span className="flex items-center">
                             <Square className="w-3 h-3 mr-1" />
                             {property.area}m²
