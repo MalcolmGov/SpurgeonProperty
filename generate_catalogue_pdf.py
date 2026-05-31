@@ -24,7 +24,7 @@ def main():
         
         properties = catalogue_data.get('properties', [])
         title = catalogue_data.get('title', 'Property Catalogue')
-        client_name = catalogue_data.get('clientName')
+        catalogue_data.get('clientName')
         
         if not properties:
             print("No properties provided for catalogue")

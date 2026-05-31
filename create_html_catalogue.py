@@ -18,7 +18,7 @@ class HTMLPropertyCatalogue:
             return "POA"
         try:
             return f"R {int(price):,}"
-        except:
+        except Exception:
             return "POA"
     
     def get_property_type_color(self, property_type):

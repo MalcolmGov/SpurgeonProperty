@@ -2,7 +2,6 @@
 """Debug script to test PDF generation with real property data"""
 
 import json
-import sys
 
 def debug_property_data():
     """Debug property data structure"""

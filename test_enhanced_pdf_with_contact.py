@@ -4,7 +4,6 @@ Test script for enhanced PDF generation with Peter Spurgeon contact information
 This script generates a sample property PDF with enhanced contact details and branding.
 """
 
-import json
 from enhanced_property_pdf_generator import EnhancedPropertyPDFGenerator
 
 def create_sample_property():
@@ -59,11 +58,6 @@ def main():
     properties = [create_sample_property()]
     
     # Create PDF data structure
-    pdf_data = {
-        "properties": properties,
-        "clientName": "Prospective Buyer",
-        "catalogueTitle": "Premium Property Showcase"
-    }
     
     # Initialize PDF generator
     generator = EnhancedPropertyPDFGenerator(

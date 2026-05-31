@@ -4,7 +4,6 @@ Test script for optimized catalogue generation
 This script tests the comprehensive PDF catalogue system with multiple properties.
 """
 
-import json
 from optimized_catalogue_generator import OptimizedCatalogueGenerator
 
 def create_sample_properties():

@@ -1,8 +1,6 @@
 """
 Test Python PDF generator with actual property data from the database
 """
-import json
-import sys
 from property_pdf_generator import PropertyPDFGenerator
 
 def test_with_actual_data():

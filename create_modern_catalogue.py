@@ -6,16 +6,13 @@ Creates professional, eye-catching property catalogues optimized for social medi
 
 import json
 import sys
-from reportlab.lib.pagesizes import A4, landscape
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle, PageBreak
+from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import inch, mm
-from reportlab.lib.colors import Color, white, black
+from reportlab.lib.units import mm
+from reportlab.lib.colors import Color, white
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 from reportlab.pdfgen import canvas
-from reportlab.lib.utils import ImageReader
 import os
-from urllib.parse import urlparse
 import requests
 from PIL import Image as PILImage
 import io
@@ -110,7 +107,7 @@ class ModernPropertyCatalogue:
             return "POA (Price on Application)"
         try:
             return f"R {int(price):,}"
-        except:
+        except Exception:
             return "POA (Price on Application)"
     
     def get_property_type_color(self, property_type):

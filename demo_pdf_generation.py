@@ -4,8 +4,6 @@ Demo script for the Property PDF Generator
 Shows integration with existing property data and generates sample PDFs
 """
 
-import os
-import json
 from property_pdf_generator import PropertyPDFGenerator
 
 def create_sample_properties():

@@ -6,13 +6,7 @@ Creates modern, eye-catching graphics optimized for Instagram, Facebook, and oth
 
 import json
 import sys
-from reportlab.lib.pagesizes import A4
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import mm
-from reportlab.lib.colors import Color, white, black
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
-from reportlab.pdfgen import canvas
+from reportlab.lib.colors import white
 import os
 from PIL import Image as PILImage, ImageDraw, ImageFont
 import requests
@@ -106,7 +100,7 @@ class SocialMediaGraphics:
             title_font = ImageFont.truetype("arial.ttf", self.font_sizes['title'])
             subtitle_font = ImageFont.truetype("arial.ttf", self.font_sizes['subtitle'])
             body_font = ImageFont.truetype("arial.ttf", self.font_sizes['body'])
-        except:
+        except Exception:
             # Fallback to default font
             title_font = ImageFont.load_default()
             subtitle_font = ImageFont.load_default()
@@ -233,7 +227,7 @@ class SocialMediaGraphics:
             title_font = ImageFont.truetype("arial.ttf", 52)
             subtitle_font = ImageFont.truetype("arial.ttf", 36)
             body_font = ImageFont.truetype("arial.ttf", 28)
-        except:
+        except Exception:
             title_font = ImageFont.load_default()
             subtitle_font = ImageFont.load_default()
             body_font = ImageFont.load_default()
@@ -383,7 +377,7 @@ class SocialMediaGraphics:
             title_font = ImageFont.truetype("arial.ttf", 36)
             subtitle_font = ImageFont.truetype("arial.ttf", 24)
             body_font = ImageFont.truetype("arial.ttf", 20)
-        except:
+        except Exception:
             title_font = ImageFont.load_default()
             subtitle_font = ImageFont.load_default()
             body_font = ImageFont.load_default()

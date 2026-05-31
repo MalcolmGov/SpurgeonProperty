@@ -7,13 +7,12 @@ Creates modern, eye-catching catalogues optimized for social media and print
 import json
 import sys
 from reportlab.lib.pagesizes import A4
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether
+from reportlab.platypus import SimpleDocTemplate, Spacer, Table, TableStyle, KeepTogether
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import inch, mm
-from reportlab.lib.colors import Color, white, black, grey
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
+from reportlab.lib.units import mm
+from reportlab.lib.colors import Color, white, grey
+from reportlab.lib.enums import TA_CENTER
 from reportlab.platypus.flowables import Flowable
-import os
 
 # Modern color palette (RGB 0-1 values for ReportLab)
 BRAND_PURPLE = Color(139/255, 92/255, 246/255)
