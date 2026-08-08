@@ -596,8 +596,8 @@ export default function Home() {
             </section>
           </FadeInSection>
 
-          {/* AI Assistant Section - Temporarily hidden */}
-          {/* <FadeInSection>
+          {/* AI Assistant Section */}
+          <FadeInSection>
             <section className="py-20 bg-slate-50 dark:bg-slate-800">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
@@ -667,7 +667,7 @@ export default function Home() {
                 </div>
               </div>
             </section>
-          </FadeInSection> */}
+          </FadeInSection>
 
           <Footer />
         </div>
