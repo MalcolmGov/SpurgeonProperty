@@ -6,6 +6,7 @@ import type { ChatSession, ChatMessage, InsertChatSession, InsertChatMessage, Pr
 import { matchFAQ } from "./knowledge-base/faq-matcher";
 import { parsePropertyQuery, findProperties, formatPropertyResponse } from "./knowledge-base/property-query";
 import { submitLead } from "./knowledge-base/lead-capture";
+import { hasLeadIntent } from "./knowledge-base/lead-intent";
 
 interface ChatRequest {
   message: string;
@@ -60,8 +61,13 @@ class AIChatbotService {
       // Save user message
       await this.saveMessage(session.sessionId, 'user', request.message);
 
+      // If the user wants to be contacted or book a viewing, skip straight
+      // to the LLM (which can call submit_lead) - don't let the FAQ or
+      // property-search shortcuts intercept it with a canned answer.
+      const leadIntent = hasLeadIntent(request.message);
+
       // 1. FAQ knowledge base - answered from static Q&A data, no LLM call
-      const faqMatch = matchFAQ(request.message);
+      const faqMatch = leadIntent ? null : matchFAQ(request.message);
       if (faqMatch) {
         const response: ChatResponse = {
           response: faqMatch.entry.answer,
@@ -81,7 +87,9 @@ class AIChatbotService {
       }
 
       // 2. Property listings - answered from a direct DB lookup, no LLM call
-      const propertyQuery = await parsePropertyQuery(request.message);
+      const propertyQuery = leadIntent
+        ? { isPropertyQuery: false, filters: {} }
+        : await parsePropertyQuery(request.message);
       if (propertyQuery.isPropertyQuery) {
         const { results, totalActive } = await findProperties(propertyQuery.filters);
         const responseText = formatPropertyResponse(results, propertyQuery.filters, totalActive);

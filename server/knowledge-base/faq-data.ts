@@ -230,16 +230,5 @@ export const FAQ_ENTRIES: FaqEntry[] = [
     keywords: ["your agents", "who is peter spurgeon", "who is louis smit", "managing director", "meet the team"],
     answer: "Peter Spurgeon is our Managing Director, leading Spurgeon Property with extensive experience in the South African real estate market (084 208 9307, Peter@spurgeonproperty.com). Louis Smit is also part of our agent team (083 677 3748, louissm@spurgeonproperty.com).",
     suggestions: ["What's your phone number?", "How do I book a viewing?"]
-  },
-  {
-    id: "book-viewing",
-    category: "buying",
-    question: "How do I book a property viewing?",
-    keywords: [
-      "book a viewing", "schedule a viewing", "arrange a viewing", "see a property",
-      "view a property", "book a visit"
-    ],
-    answer: "You can book a viewing by calling us on +27 10 142 6931, WhatsApping 084 208 9307, or emailing Peter@spurgeonproperty.com. You can also reach out directly from any property's listing page on the site and an agent will arrange a time with you.",
-    suggestions: ["What's your phone number?", "What are your business hours?"]
   }
 ];
