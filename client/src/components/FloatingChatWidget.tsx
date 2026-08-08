@@ -19,10 +19,16 @@ export default function FloatingChatWidget() {
     sendMessage,
     handleKeyPress,
     handleSuggestionClick,
+    clearSession,
     formatTimestamp,
     messagesEndRef,
     inputRef,
   } = useAIChat();
+
+  const closeAndReset = () => {
+    setIsOpen(false);
+    clearSession();
+  };
 
   return (
     <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
@@ -48,7 +54,7 @@ export default function FloatingChatWidget() {
                 <p className="text-white/80 text-xs truncate">Online • Ready to help</p>
               </div>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={closeAndReset}
                 aria-label="Close chat"
                 className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors flex-shrink-0"
               >
@@ -193,7 +199,7 @@ export default function FloatingChatWidget() {
 
       {/* Floating toggle button */}
       <motion.button
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={() => (isOpen ? closeAndReset() : setIsOpen(true))}
         aria-label={isOpen ? "Close property assistant" : "Open property assistant"}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}

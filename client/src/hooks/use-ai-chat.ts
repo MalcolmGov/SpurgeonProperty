@@ -30,16 +30,20 @@ interface UseAIChatOptions {
   onSearchQuery?: (query: string, filters: any) => void;
 }
 
+function generateSessionId(): string {
+  return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+}
+
 export function useAIChat({ onSearchQuery }: UseAIChatOptions = {}) {
   const [messages, setMessages] = useState<AIChatMessage[]>([WELCOME_MESSAGE]);
   const [inputMessage, setInputMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
-  const [sessionId] = useState<string>(() => {
+  const [sessionId, setSessionId] = useState<string>(() => {
     const stored = localStorage.getItem('ai-chat-session');
     if (stored) {
       return stored;
     }
-    const newSessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const newSessionId = generateSessionId();
     localStorage.setItem('ai-chat-session', newSessionId);
     return newSessionId;
   });
@@ -135,6 +139,14 @@ export function useAIChat({ onSearchQuery }: UseAIChatOptions = {}) {
     inputRef.current?.focus();
   };
 
+  const clearSession = () => {
+    const newSessionId = generateSessionId();
+    localStorage.setItem('ai-chat-session', newSessionId);
+    setSessionId(newSessionId);
+    setMessages([WELCOME_MESSAGE]);
+    setInputMessage("");
+  };
+
   const formatTimestamp = (date: Date) => {
     return date.toLocaleTimeString('en-ZA', {
       hour: '2-digit',
@@ -150,6 +162,7 @@ export function useAIChat({ onSearchQuery }: UseAIChatOptions = {}) {
     sendMessage,
     handleKeyPress,
     handleSuggestionClick,
+    clearSession,
     formatTimestamp,
     messagesEndRef,
     inputRef,
