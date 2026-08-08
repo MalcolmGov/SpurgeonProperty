@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { ThemeProvider } from "@/contexts/theme-context";
+import FloatingChatWidget from "@/components/FloatingChatWidget";
 import Home from "@/pages/home";
 import About from "@/pages/about";
 import Contact from "@/pages/contact";
@@ -32,6 +33,7 @@ const AdminMonitoring = lazy(() => import("@/pages/admin-monitoring-simple"));
 
 function Router() {
   const [location] = useLocation();
+  const isAdminRoute = location.startsWith("/admin");
 
   // Scroll to top whenever route changes
   useEffect(() => {
@@ -44,31 +46,34 @@ function Router() {
   }, [location]);
 
   return (
-    <Switch>
-      <Route path="/admin/login" component={SimpleAdminLogin} />
-      <Route path="/admin/ai-tools" component={AdminAITools} />
-      <Route path="/admin/properties" component={AdminProperties} />
-      <Route path="/admin/leads" component={AdminLeads} />
-      <Route path="/admin/agents" component={AdminAgents} />
-      <Route path="/admin/monitoring" component={AdminMonitoring} />
-      <Route path="/admin/social-ads" component={AdminSocialAdsSimple} />
-      <Route path="/admin/catalogue" component={AdminCatalogue} />
-      <Route path="/admin/social-post" component={AdminSocialPostGenerator} />
-      <Route path="/admin/social-media" component={() => <SocialMediaGenerator />} />
-      <Route path="/admin/settings" component={AdminSettings} />
-      <Route path="/admin/dashboard" component={AdminDashboard} />
-      <Route path="/admin" component={AdminDashboard} />
-      <Route path="/properties/:id" component={PropertyDetail} />
-      <Route path="/properties" component={Properties} />
-      <Route path="/services" component={Services} />
-      <Route path="/rentals" component={Rentals} />
-      <Route path="/about" component={About} />
-      <Route path="/contact" component={Contact} />
-      <Route path="/sell-property" component={SellProperty} />
-      <Route path="/map" component={MapPage} />
-      <Route path="/" component={Home} />
-      <Route component={NotFound} />
-    </Switch>
+    <>
+      <Switch>
+        <Route path="/admin/login" component={SimpleAdminLogin} />
+        <Route path="/admin/ai-tools" component={AdminAITools} />
+        <Route path="/admin/properties" component={AdminProperties} />
+        <Route path="/admin/leads" component={AdminLeads} />
+        <Route path="/admin/agents" component={AdminAgents} />
+        <Route path="/admin/monitoring" component={AdminMonitoring} />
+        <Route path="/admin/social-ads" component={AdminSocialAdsSimple} />
+        <Route path="/admin/catalogue" component={AdminCatalogue} />
+        <Route path="/admin/social-post" component={AdminSocialPostGenerator} />
+        <Route path="/admin/social-media" component={() => <SocialMediaGenerator />} />
+        <Route path="/admin/settings" component={AdminSettings} />
+        <Route path="/admin/dashboard" component={AdminDashboard} />
+        <Route path="/admin" component={AdminDashboard} />
+        <Route path="/properties/:id" component={PropertyDetail} />
+        <Route path="/properties" component={Properties} />
+        <Route path="/services" component={Services} />
+        <Route path="/rentals" component={Rentals} />
+        <Route path="/about" component={About} />
+        <Route path="/contact" component={Contact} />
+        <Route path="/sell-property" component={SellProperty} />
+        <Route path="/map" component={MapPage} />
+        <Route path="/" component={Home} />
+        <Route component={NotFound} />
+      </Switch>
+      {!isAdminRoute && <FloatingChatWidget />}
+    </>
   );
 }
 
