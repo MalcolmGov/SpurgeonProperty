@@ -155,53 +155,55 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
             <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
-        
-        {/* Chat Input Area */}
-        <div className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-2 sm:p-3">
-          <div className="flex gap-2 sm:gap-3 items-end">
-            <div className="flex-1 relative min-w-0">
-              <Input
-                ref={inputRef}
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Ask about properties..."
-                disabled={isProcessing}
-                className="w-full py-2 sm:py-3 text-xs sm:text-sm border-gray-300 dark:border-gray-600 rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 dark:bg-gray-800"
-              />
-            </div>
-            <Button
-              onClick={sendMessage}
-              disabled={!inputMessage.trim() || isProcessing}
-              className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg flex-shrink-0"
+      </div>
+
+      {/* Chat Input Area - a sibling of the messages area, not nested
+          inside its overflow-hidden container, so it always stays visible
+          instead of being clipped when the panel's height is constrained */}
+      <div className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-2 sm:p-3 flex-shrink-0">
+        <div className="flex gap-2 sm:gap-3 items-end">
+          <div className="flex-1 relative min-w-0">
+            <Input
+              ref={inputRef}
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Ask about properties..."
+              disabled={isProcessing}
+              className="w-full py-2 sm:py-3 text-xs sm:text-sm border-gray-300 dark:border-gray-600 rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 dark:bg-gray-800"
+            />
+          </div>
+          <Button
+            onClick={sendMessage}
+            disabled={!inputMessage.trim() || isProcessing}
+            className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg flex-shrink-0"
+          >
+            {isProcessing ? (
+              <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+            ) : (
+              <Send className="w-4 h-4 sm:w-5 sm:h-5" />
+            )}
+          </Button>
+        </div>
+
+        {/* Quick Action Buttons */}
+        <div className="flex flex-wrap gap-1 sm:gap-2 mt-2 sm:mt-3">
+          {quickSuggestions.map((suggestion, index) => (
+            <button
+              key={index}
+              className="text-xs px-2 py-1 sm:px-3 sm:py-1.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600 flex-shrink-0"
+              onClick={() => handleSuggestionClick(suggestion)}
+              disabled={isProcessing}
             >
-              {isProcessing ? (
-                <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
-              ) : (
-                <Send className="w-4 h-4 sm:w-5 sm:h-5" />
-              )}
-            </Button>
-          </div>
-          
-          {/* Quick Action Buttons */}
-          <div className="flex flex-wrap gap-1 sm:gap-2 mt-2 sm:mt-3">
-            {quickSuggestions.map((suggestion, index) => (
-              <button
-                key={index}
-                className="text-xs px-2 py-1 sm:px-3 sm:py-1.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600 flex-shrink-0"
-                onClick={() => handleSuggestionClick(suggestion)}
-                disabled={isProcessing}
-              >
-                {suggestion}
-              </button>
-            ))}
-          </div>
-          
-          {/* Powered by indicator */}
-          <div className="flex items-center justify-center mt-3 text-xs text-gray-400 dark:text-gray-500">
-            <Sparkles className="w-3 h-3 mr-1" />
-            Powered by OpenAI GPT-4o
-          </div>
+              {suggestion}
+            </button>
+          ))}
+        </div>
+
+        {/* Powered by indicator */}
+        <div className="flex items-center justify-center mt-3 text-xs text-gray-400 dark:text-gray-500">
+          <Sparkles className="w-3 h-3 mr-1" />
+          Powered by OpenAI GPT-4o
         </div>
       </div>
     </div>

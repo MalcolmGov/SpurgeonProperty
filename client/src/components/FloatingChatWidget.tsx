@@ -160,37 +160,39 @@ export default function FloatingChatWidget() {
                   <div ref={messagesEndRef} />
                 </div>
               </ScrollArea>
+            </div>
 
-              {/* Input */}
-              <div className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-2 sm:p-3">
-                <div className="flex gap-2 items-end">
-                  <div className="flex-1 relative min-w-0">
-                    <Input
-                      ref={inputRef}
-                      value={inputMessage}
-                      onChange={(e) => setInputMessage(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                      placeholder="Ask about properties..."
-                      disabled={isProcessing}
-                      className="w-full py-2 text-xs border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 dark:bg-gray-800"
-                    />
-                  </div>
-                  <Button
-                    onClick={sendMessage}
-                    disabled={!inputMessage.trim() || isProcessing}
-                    className="h-9 w-9 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg flex-shrink-0"
-                  >
-                    {isProcessing ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Send className="w-4 h-4" />
-                    )}
-                  </Button>
+            {/* Input - a sibling of the messages area, not nested inside its
+                overflow-hidden container, so it always stays visible instead
+                of being clipped when the panel's height is constrained */}
+            <div className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-2 sm:p-3 flex-shrink-0">
+              <div className="flex gap-2 items-end">
+                <div className="flex-1 relative min-w-0">
+                  <Input
+                    ref={inputRef}
+                    value={inputMessage}
+                    onChange={(e) => setInputMessage(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Ask about properties..."
+                    disabled={isProcessing}
+                    className="w-full py-2 text-xs border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 dark:bg-gray-800"
+                  />
                 </div>
-                <div className="flex items-center justify-center mt-2 text-xs text-gray-400 dark:text-gray-500">
-                  <Sparkles className="w-3 h-3 mr-1" />
-                  Powered by OpenAI GPT-4o
-                </div>
+                <Button
+                  onClick={sendMessage}
+                  disabled={!inputMessage.trim() || isProcessing}
+                  className="h-9 w-9 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg flex-shrink-0"
+                >
+                  {isProcessing ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Send className="w-4 h-4" />
+                  )}
+                </Button>
+              </div>
+              <div className="flex items-center justify-center mt-2 text-xs text-gray-400 dark:text-gray-500">
+                <Sparkles className="w-3 h-3 mr-1" />
+                Powered by OpenAI GPT-4o
               </div>
             </div>
           </motion.div>
