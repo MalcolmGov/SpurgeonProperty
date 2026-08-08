@@ -1,6 +1,6 @@
 import { db } from './db';
 import { properties, agents, leads, inquiries } from '@shared/schema';
-import { eq, and, or, like, gte, lte, desc, asc, count } from 'drizzle-orm';
+import { eq, and, or, like, gte, lte, desc, asc, count, sql } from 'drizzle-orm';
 import type { 
   Property, 
   InsertProperty, 
@@ -226,7 +226,7 @@ export class DatabaseStorage implements IStorage {
 
   async incrementPropertyViews(id: number): Promise<void> {
     try {
-      await db.execute(`UPDATE properties SET views = views + 1 WHERE id = ${id}`);
+      await db.execute(sql`UPDATE properties SET views = views + 1 WHERE id = ${id}`);
     } catch (error) {
       console.error('Error incrementing property views:', error);
     }
