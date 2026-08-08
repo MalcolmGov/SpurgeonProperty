@@ -3,6 +3,8 @@ import { db } from "./db";
 import { chatSessions, chatMessages, properties, agents } from "@shared/schema";
 import { eq, desc, and, or, gte, lte, ilike } from "drizzle-orm";
 import type { ChatSession, ChatMessage, InsertChatSession, InsertChatMessage, PropertyWithAgent } from "@shared/schema";
+import { matchFAQ } from "./knowledge-base/faq-matcher";
+import { parsePropertyQuery, findProperties, formatPropertyResponse } from "./knowledge-base/property-query";
 
 interface ChatRequest {
   message: string;
@@ -53,22 +55,68 @@ class AIChatbotService {
     try {
       // Get or create chat session
       const session = await this.getOrCreateSession(request.sessionId, request.userId);
-      
+
       // Save user message
       await this.saveMessage(session.sessionId, 'user', request.message);
-      
-      // Get conversation history
+
+      // 1. FAQ knowledge base - answered from static Q&A data, no LLM call
+      const faqMatch = matchFAQ(request.message);
+      if (faqMatch) {
+        const response: ChatResponse = {
+          response: faqMatch.entry.answer,
+          sessionId: session.sessionId,
+          suggestions: faqMatch.entry.suggestions || [],
+          properties: [],
+          filters: {},
+          intent: "faq",
+          confidence: faqMatch.score
+        };
+        await this.saveMessage(session.sessionId, 'assistant', response.response, {
+          intent: "faq",
+          faqId: faqMatch.entry.id,
+          confidence: faqMatch.score
+        });
+        return response;
+      }
+
+      // 2. Property listings - answered from a direct DB lookup, no LLM call
+      const propertyQuery = await parsePropertyQuery(request.message);
+      if (propertyQuery.isPropertyQuery) {
+        const { results, totalActive } = await findProperties(propertyQuery.filters);
+        const responseText = formatPropertyResponse(results, propertyQuery.filters, totalActive);
+        const suggestions = this.generateSuggestions("property_search", session, results);
+
+        const response: ChatResponse = {
+          response: responseText,
+          sessionId: session.sessionId,
+          suggestions,
+          properties: results,
+          filters: propertyQuery.filters,
+          intent: "property_search",
+          confidence: 0.85
+        };
+        await this.saveMessage(session.sessionId, 'assistant', response.response, {
+          intent: "property_search",
+          searchFilters: propertyQuery.filters
+        });
+        await this.updateSessionContext(session.sessionId, {
+          ...session.conversationContext,
+          lastSearch: propertyQuery.filters
+        });
+        return response;
+      }
+
+      // 3. Fall back to the LLM for anything not covered by the FAQ or
+      // property knowledge base (general conversation, advice, follow-ups)
       const history = await this.getConversationHistory(session.sessionId);
-      
-      // Process with AI
       const aiResponse = await this.generateAIResponse(request.message, session, history);
-      
+
       // Save AI response
       await this.saveMessage(session.sessionId, 'assistant', aiResponse.response, aiResponse.metadata);
-      
+
       // Update session context
       await this.updateSessionContext(session.sessionId, aiResponse.context);
-      
+
       return {
         response: aiResponse.response,
         sessionId: session.sessionId,
