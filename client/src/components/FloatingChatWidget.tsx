@@ -6,8 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Bot, User, Sparkles, MessageCircle, Loader2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { showsBedroomsAndBathrooms } from "@/lib/property-display";
 import { useAIChat } from "@/hooks/use-ai-chat";
+import ChatPropertyCard from "@/components/ChatPropertyCard";
 
 export default function FloatingChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -91,23 +91,8 @@ export default function FloatingChatWidget() {
                             <p className="text-xs font-medium text-blue-600">
                               Found {message.properties.length} property matches:
                             </p>
-                            {message.properties.slice(0, 3).map((property: any, index: number) => (
-                              <div key={index} className="p-2 bg-white/90 dark:bg-gray-800/90 rounded border text-gray-900 dark:text-gray-100">
-                                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-1 gap-1">
-                                  <p className="text-xs font-medium line-clamp-2 flex-1">
-                                    {property.title}
-                                  </p>
-                                  <Badge variant="outline" className="text-xs self-start sm:ml-2 shrink-0">
-                                    {property.price ? `R${parseInt(property.price).toLocaleString()}` : 'Contact for price'}
-                                  </Badge>
-                                </div>
-                                <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
-                                  {showsBedroomsAndBathrooms(property.propertyType)
-                                    ? `${property.bedrooms} bed, ${property.bathrooms} bath • `
-                                    : ""}
-                                  {property.suburb}, {property.city}
-                                </p>
-                              </div>
+                            {message.properties.slice(0, 3).map((property: any) => (
+                              <ChatPropertyCard key={property.id} property={property} />
                             ))}
                             {message.properties.length > 3 && (
                               <p className="text-xs text-gray-500 italic">

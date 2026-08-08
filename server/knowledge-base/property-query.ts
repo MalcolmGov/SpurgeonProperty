@@ -201,11 +201,6 @@ export async function findProperties(filters: ParsedFilters): Promise<{ results:
   return { results: filtered.slice(0, 6), totalActive: all.length };
 }
 
-function formatPrice(price: string): string {
-  const n = priceAsNumber(price);
-  return n !== null ? `R${n.toLocaleString()}` : price;
-}
-
 export function formatPropertyResponse(
   results: PropertyWithAgent[],
   filters: ParsedFilters,
@@ -224,14 +219,9 @@ export function formatPropertyResponse(
     return `I couldn't find any properties${criteriaText} right now. We currently have ${totalActive} active listings - try widening your search (a different area, price range, or bedroom count) and I'll take another look.`;
   }
 
-  const lines = results.map((p) => {
-    const bedBath = p.bedrooms ? `${p.bedrooms} bed, ${p.bathrooms} bath • ` : "";
-    return `• ${p.title} - ${formatPrice(p.price)}${p.listingType === "rent" ? "/month" : ""} - ${bedBath}${p.suburb}, ${p.city}`;
-  });
-
-  const intro = results.length === 1
+  // Per-property detail (image, price, link) is rendered as cards from the
+  // `properties` array on the frontend - keep this to a short intro only.
+  return results.length === 1
     ? "I found 1 property matching your search:"
-    : `I found ${results.length} propert${results.length === 1 ? "y" : "ies"} matching your search${totalActive > results.length ? ` (out of ${totalActive} active listings)` : ""}:`;
-
-  return `${intro}\n\n${lines.join("\n")}`;
+    : `I found ${results.length} properties matching your search${totalActive > results.length ? ` (out of ${totalActive} active listings)` : ""}:`;
 }
