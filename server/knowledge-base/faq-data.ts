@@ -1,3 +1,5 @@
+import { HOME_LOAN_APPLY_URL } from "./home-loan";
+
 export interface FaqEntry {
   id: string;
   category: string;
@@ -153,14 +155,16 @@ export const FAQ_ENTRIES: FaqEntry[] = [
     question: "Do you help with home loans or mortgages?",
     keywords: [
       "home loan", "mortgage", "bond", "financing", "pre-approval",
-      "first-time buyer", "refinance", "refinancing"
+      "first-time buyer", "refinance", "refinancing", "apply for a bond",
+      "apply for a home loan", "bond application", "get a bond"
     ],
     answer: "Yes - we offer comprehensive home loan and financing solutions, including:\n\n" +
       "• First-time buyer assistance\n" +
       "• Refinancing and debt consolidation\n" +
       "• Investment property loans\n" +
       "• Commercial property financing\n\n" +
-      "We help from pre-approval right through to settlement.",
+      "We help from pre-approval right through to settlement. You can start your application directly with our finance partner here:\n\n" +
+      `[Apply for a Home Loan / Bond →](${HOME_LOAN_APPLY_URL})`,
     suggestions: ["What services do you offer?", "What's your phone number?"]
   },
   {

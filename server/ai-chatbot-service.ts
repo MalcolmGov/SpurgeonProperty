@@ -7,6 +7,7 @@ import { matchFAQ } from "./knowledge-base/faq-matcher";
 import { parsePropertyQuery, findProperties, formatPropertyResponse } from "./knowledge-base/property-query";
 import { submitLead } from "./knowledge-base/lead-capture";
 import { hasLeadIntent } from "./knowledge-base/lead-intent";
+import { notifyHomeLoanInquiry, HOME_LOAN_APPLY_URL } from "./knowledge-base/home-loan";
 
 interface ChatRequest {
   message: string;
@@ -69,6 +70,14 @@ class AIChatbotService {
       // 1. FAQ knowledge base - answered from static Q&A data, no LLM call
       const faqMatch = leadIntent ? null : matchFAQ(request.message);
       if (faqMatch) {
+        if (faqMatch.entry.id === "home-loans") {
+          // No name/email is collected here - this is a heads-up to Peter
+          // and the manager, not a contactable lead record.
+          notifyHomeLoanInquiry(request.message, session.sessionId).catch((error) => {
+            console.error("Failed to send home loan inquiry notification:", error);
+          });
+        }
+
         const response: ChatResponse = {
           response: faqMatch.entry.answer,
           sessionId: session.sessionId,
@@ -349,6 +358,9 @@ Guidelines:
 6. Update user preferences when they mention new requirements
 7. Suggest relevant properties and neighborhoods
 8. Be helpful with property market insights for South Africa
+
+Home loans / bonds:
+- If someone wants to apply for a home loan or bond, point them to: [Apply for a Home Loan / Bond →](${HOME_LOAN_APPLY_URL})
 
 Booking a viewing or passing on a lead:
 - If the user wants to book a viewing, wants an agent to contact them, or clearly wants to be followed up with, collect their full name and email address (phone is a nice-to-have but not required) before calling submit_lead. Ask for whichever of these you don't already have from earlier in the conversation - one at a time, don't interrogate them.

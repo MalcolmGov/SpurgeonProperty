@@ -8,6 +8,7 @@ import { Send, Bot, User, Sparkles, MessageCircle, Loader2, Home, Calculator, Ma
 import { cn } from "@/lib/utils";
 import { useAIChat } from "@/hooks/use-ai-chat";
 import ChatPropertyCard from "@/components/ChatPropertyCard";
+import { linkifyText } from "@/lib/linkify";
 
 interface AIAssistantProps {
   onSearchQuery?: (query: string, filters: any) => void;
@@ -84,7 +85,7 @@ export default function AIAssistant({ onSearchQuery, propertyContext, className 
                       : "bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-600 rounded-bl-md"
                   )}
                 >
-                  <p className="whitespace-pre-wrap">{message.content}</p>
+                  <p className="whitespace-pre-wrap">{linkifyText(message.content)}</p>
                   
                   {message.properties && message.properties.length > 0 && (
                     <div className="mt-3 space-y-2">
