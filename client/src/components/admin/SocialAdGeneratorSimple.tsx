@@ -50,7 +50,9 @@ export default function SocialAdGeneratorSimple() {
   
   // Fetch properties for selection
   const { data: properties = [], isLoading, error } = useQuery({
-    queryKey: ['/api/properties'],
+    // Without an explicit limit the API defaults to 20 most-recently-created
+    // properties, so older listings wouldn't be selectable here at all.
+    queryKey: ['/api/properties?limit=1000'],
     select: (data: Property[]) => {
       console.log('Properties data received:', data);
       return data?.filter(p => p.listingType === 'sale' || p.listingType === 'rent') || [];

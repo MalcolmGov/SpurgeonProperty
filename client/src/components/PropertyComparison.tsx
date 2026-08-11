@@ -32,7 +32,9 @@ export default function PropertyComparison({
   onClearAll 
 }: PropertyComparisonProps) {
   const { data: properties = [] } = useQuery<PropertyWithAgent[]>({
-    queryKey: ["/api/properties"],
+    // Without an explicit limit the API defaults to 20 most-recently-created
+    // properties, so comparing an older listing would silently show nothing.
+    queryKey: ["/api/properties?limit=1000"],
   });
 
   const comparisonProperties = properties.filter(p => 

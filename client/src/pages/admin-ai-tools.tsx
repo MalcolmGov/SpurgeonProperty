@@ -13,7 +13,9 @@ export default function AdminAIToolsPage() {
   const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(null);
 
   const { data: properties = [], isLoading } = useQuery<PropertyWithAgent[]>({
-    queryKey: ["/api/properties"],
+    // Without an explicit limit the API defaults to 20 most-recently-created
+    // properties, so older listings wouldn't be selectable here at all.
+    queryKey: ["/api/properties?limit=1000"],
   });
 
   const selectedProperty = properties.find(p => p.id === selectedPropertyId);
