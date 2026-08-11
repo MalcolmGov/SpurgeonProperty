@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -210,9 +211,8 @@ export default function SimpleAdminLogin() {
                         <FormLabel>Password</FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                            <Input
-                              type="password"
+                            <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
+                            <PasswordInput
                               placeholder="Enter your password"
                               className="pl-10"
                               {...field}
@@ -300,9 +300,8 @@ export default function SimpleAdminLogin() {
                         <FormLabel>Password</FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                            <Input
-                              type="password"
+                            <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
+                            <PasswordInput
                               placeholder="Enter your password (min 8 characters)"
                               className="pl-10"
                               {...field}
@@ -321,9 +320,8 @@ export default function SimpleAdminLogin() {
                         <FormLabel>Confirm Password</FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                            <Input
-                              type="password"
+                            <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
+                            <PasswordInput
                               placeholder="Confirm your password"
                               className="pl-10"
                               {...field}
