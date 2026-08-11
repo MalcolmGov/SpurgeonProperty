@@ -36,7 +36,12 @@ export default function Rentals() {
       if (maxPrice) params.set('maxPrice', maxPrice);
       if (bedrooms) params.set('bedrooms', bedrooms);
       if (city) params.set('city', city);
-      
+
+      // The API defaults to limit=20 when none is given, which silently
+      // truncates the list to the 20 most recently created matches - this
+      // page has no pagination UI, so it needs every matching rental.
+      params.set('limit', '1000');
+
       const url = `/api/properties?${params.toString()}`;
       console.log('Rentals page API call URL:', url);
       

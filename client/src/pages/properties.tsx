@@ -74,7 +74,14 @@ export default function Properties() {
     if (searchFilters.province !== "all") params.append('province', searchFilters.province.toLowerCase().replace(/\s+/g, '-'));
     if (searchFilters.status !== "all") params.append('status', searchFilters.status);
     if (searchFilters.featured) params.append('featured', 'true');
-    
+
+    // Pagination below is client-side (sortedProperties.slice), which only
+    // works if this fetches every matching property - the API defaults to
+    // limit=20 when none is given, which was silently hiding listings
+    // outside the 20 most recently created (e.g. an active property that
+    // hadn't been touched in a while just never made it into the response).
+    params.append('limit', '1000');
+
     return params.toString();
   };
 
